@@ -8,13 +8,13 @@ Host: macOS arm64, Rust 1.96.0. Runtime: winit 0.30.13, wgpu 30.0.1, Apple M5 Pr
 cargo fmt --all -- --check
 cargo test --workspace --locked --offline
 cargo clippy --workspace --all-targets --locked --offline -- -D warnings
-cargo build --workspace --locked --offline
-target/debug/phone-desktop --smoke-test /tmp/ta1278-smoke
+cargo build --release --workspace --locked --offline
+target/release/phone-desktop --smoke-test /tmp/ta1278-smoke
 ```
 
-The offline commands require a prior Cargo dependency fetch. The smoke run opens a real window, presents 43 home/menu/SMS/browser/music/theme, organizer, utility and game scenarios through wgpu and exits. Its PNGs are the CPU framebuffer uploaded to the GPU, not GPU readbacks. The latest run reported 44 presented frames using Metal. All 43 previews and a contact sheet are in `docs/images/`, with SHA-256 hashes. Menu, theme, SMS/recipient/prediction, browser controls, music, organizer and utility layouts were inspected. These are replica previews, not handset screenshots.
+The offline commands require a prior Cargo dependency fetch. The smoke run opens a real window, presents 51 home/menu/SMS/browser/music/theme, organizer, utility and game scenarios through wgpu and exits. Its PNGs are the CPU framebuffer uploaded to the GPU, not GPU readbacks. The latest run reported 52 presented frames using Metal. All 51 previews and a contact sheet are in `docs/images/`, with SHA-256 hashes. Menu, theme, SMS/recipient/prediction, browser controls, music, organizer and utility layouts were inspected. These are replica previews, not handset screenshots.
 
-56 Rust tests pass (24 core, 32 desktop). `scripts/check-recovered-table.py` also checks all ten Latin multi-tap rows against the extracted firmware table.
+61 Rust tests pass (27 core, 34 desktop). `scripts/check-recovered-table.py` also checks all ten Latin multi-tap rows against the extracted firmware table.
 
 Tests cover multi-tap replacement/timeout, UTF-16 edits and limits, SMS language/count boundaries, draft replacement and local queueing, independent keyboard/mouse holds, long press/cancellation, stale browser responses, history/error handling, HTML fields, GET query encoding, checkbox/select reset, field cancel/commit, multi-select Back, music seek/release and EOF, storage round-trip/corrupt-file retention, and drawing each screen with SMS overlays. Additional tests cover candidate confirmation before sending, spelling filtering, preview text without committing it, pixel-based cursor movement across short lines, menu focus restoration, insert-submenu return paths, and save failure/retry handling. These are synthetic tests, not equivalence proof against the handset.
 
@@ -85,3 +85,56 @@ The final winit/wgpu Metal run generated **43 framebuffer previews with 44 prese
 The browser-layout pass used several measured iterations: inline flow first, then footer/popup geometry, then focused settings row heights. The final previews include the actual two-choice font and clear menus. Clear activation remains unavailable, rather than pretending the previously invented bookmarks/offline clear list is native. Fonts, rounded controls, complex HTML and unobserved app branches still differ; test success is not full replica acceptance.
 
 The 256 temporary layout-run files were moved to `../ta-1278-source/replica-validation/20261025-browser-layout/` and checked by SHA-256 before removing their temporary copies. Raw device sessions 284–312 were likewise retained in the verified external handset archive; duplicate temporary directories were removed. Public comparisons and replica previews remain in the project.
+
+## Release build and recovered Snake follow-up
+
+The previous working state was committed and pushed as `a1efd51` before this follow-up. The packaging script now uses release optimization; bundled executable is 36,772,320 bytes, about 48.5% below the old debug executable. [Size and code audit](build-size.md) records limits and hashes.
+
+New Snake tests cover extracted timer/map values, initial body, wrap, old-tail collision, queued turns, fruit/bonus rules, settings preview/cancel, paused-game reset, per-map score insertion and corrupt-settings retention. 61 Rust tests (27 core / 34 desktop), Clippy with warnings denied, formatting, resource hashes/glyph coverage, recovered multi-tap rows and whitespace checks passed. The final signed app produced 51 scenes / 52 presented frames on Metal. Fifteen native/replica pairs include four Snake comparisons.
+
+`recover-snake.py` checks original hashes, pointers and selected instruction operands, and records bounded code bytes. It verifies the extracted inputs, not full execution equivalence. Native game PRNG, timing parity, sound and death/win effects remain open. Complex browser compatibility was deprioritized at the user's request.
+
+The 192 validation files from this follow-up were hash-verified into `../ta-1278-source/replica-validation/20261025-release-snake/`; temporary copies were removed. The 146 files in temporary handset sessions 313–329 were removed only after comparison with the external archive. Public evidence and previews remain in the repository.
+
+## Alarm code and control follow-up
+
+`recover-alarm.py --disassemble` verifies the original firmware and extracts seven weekday masks and five snooze choices. [Code and handset evidence](alarm-recovery.md) separate native behavior from the local scheduler. 27 new connections generated 83 captures and 28 guarded key actions; seven reviewed images bring the public total to 172. Session 338 was rejected locally before any device action. One newly created test alarm was removed immediately; original records remained unchanged.
+
+68 Rust tests (27 core / 41 desktop), warnings-denied Clippy, formatting, asset hashes/coverage, 14 handset host-protocol tests and whitespace checks pass. The earlier test expecting the old generic alarm notice failed after the dedicated alert queue was introduced; it was updated to check the queue and same-minute deduplication. New tests cover draft cancellation, picker apply/cancel differences, name limits, transient time edits, native weekday bits, multiple alerts, midnight snooze, interrupted editor retention and capacity/delete-all cancellation.
+
+The final signed release produced 60 synthetic scenes / 61 presented Metal frames. Twenty labeled comparisons include five new alarm pairs; checkbox marks, selected radio contrast, footer icons and bottom menu geometry were adjusted after visual review. The complete app is 36,873,860 bytes. These are local implementation checks, not complete handset acceptance. Original alarm records were not copied into the app or public screenshots.
+
+The 144 temporary validation/disassembly files were SHA-256 checked into `../ta-1278-source/replica-validation/20261025-alarm/`. The 241 raw files from sessions 330–357 were checked against the external handset archive before removing temporary duplicates. That archive now contains 8,607 files. Public images and code evidence remain in this repository; this continuation is not committed or pushed.
+
+## SMS lifecycle follow-up
+
+The queue now waits for the actual local store write before closing its editor. On failure, it restores the removed draft, rolls back only the staged outbox item and keeps the edited text. New local views support reader scrolling, retry without duplicate records, edit-as-new, forwarding and delete confirmation; their geometry is not claimed to be the native conversation UI. Old oversized drafts reopen without silently dropping text.
+
+`recover-sms-lifecycle.py` checks the immutable firmware and reviewed code hashes, regenerates a bounded Thumb listing and evaluates all 65,536 network-reason inputs. It recovers the 19-entry retry table and checks seven UI operation-label literal references. The Rust pure retry decision is separate from desktop no-service handling. No device operation or private-message access occurred.
+
+76 Rust tests (29 core / 47 desktop) pass, including an actual temporary-file write failure followed by rollback/retry, interrupted draft preservation, stale receipt refusal, reader focus/scroll, copy/forward/delete cancellation, native operation-label lookup and exhaustive retry priority. Clippy with warnings denied, formatting and asset checks pass. The first Clippy pass flagged three unnecessary clones in tests; they were removed.
+
+The final signed release produced 67 synthetic framebuffers / 68 presented Metal frames. The new SMS scenes were visually checked. Final comparisons were regenerated after correcting the empty-recipient caret. The app bundle is 36,890,659 bytes (about 35.18 MiB). No SMS reader comparison to native conversation pixels is claimed.
+
+Visual follow-up found long forwarded text covering the recipient field. The existing native recipient-focus capture supplied the y=91 body bound. The fix limits inactive-body height and removes its stray caret; a pixel-region regression checks that the header and recipient cursor remain unchanged. A 21st comparison pairs these focus states, with deliberately different synthetic text.
+
+All four temporary SMS validation runs were SHA-256 checked into `../ta-1278-source/replica-validation/20261025-sms-lifecycle/` before their temporary copies were removed. Current public screenshots and 21 comparison pairs remain in the repository. This continuation is uncommitted.
+
+
+## VFS, audio and Home footer follow-up (2026-10-25)
+
+- 84 default Rust tests passed (29 core, 52 desktop, 3 VFS); one hardware-dependent test is excluded from the default run. Warnings-denied Clippy, fmt, resource hashes and recovered-table checks passed.
+- The explicit audio test passed separately with a generated silent WAV and MP3 on CoreAudio. Advancing clock, pause, seek and EOF were asserted; no listening-quality claim.
+- A real winit window browsed the mounted card/Music directory, opened Validation.mp3, displayed EOF at 0:03 and saved the virtual path/position on close. `vfs-*-window.png` are window captures, not handset evidence.
+- The signed app completed 67 synthetic scenes / 68 presented Metal frames after the Home footer correction.
+- [Home footer bounds](evidence/home-softkeys.json) compare original icon resources with native session 283. The side icons and center text now share the native footer geometry; one-pixel raster differences remain. Other shortcut icon assignments are still fallback artwork.
+- [Storage boundaries](storage.md) distinguish the shipped directory VFS from future image and hot-plug backends.
+
+
+## VFS failure paths and common softkeys follow-up (2026-10-25)
+
+- 88 default tests pass (29 core, 56 desktop, 3 VFS). Four new tests cover failed navigation without losing Back history; pending-scan save and failed-write retention; stale-scan rejection after rename/delete; and not inventing a played track during initial scanning.
+- Native menu/back resources 01160 / 01151 replace font-character stand-ins in common footers and browser chrome. They use the same 26×26 slots at (5,287) and (208,287) as the native captures. Music and Files center labels use measured footer alignment.
+- Music Home uses the captured 全部播放 label, 84px first row, play triangle and 播放 center action. The triangle is a measured drawing; menu/back icons are recovered assets. The smoke fixture may show a current-track row absent from the empty native library.
+- Configurable Home shortcuts other than Opera/Messages still use fallback menu artwork. A targeted literal lookup did not establish their native mapping, so no additional mapping is claimed recovered.
+- The previous explicit WAV/MP3 CoreAudio evidence remains separate; the audio decoder/output module did not change in this follow-up.

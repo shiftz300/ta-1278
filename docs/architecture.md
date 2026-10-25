@@ -8,19 +8,22 @@
 |---|---|
 | `phone-core/input.rs` | Key sources, holds, repeat and cancellation |
 | `editor.rs`, `predict.rs` | UTF-16 edits, multi-tap, pinyin/stroke replacements |
-| `sms.rs` | Recovered count rules and local draft/outbox model |
+| `sms.rs`, `sms_retry.rs` | Recovered count/error rules and local draft/outbox transactions |
 | `browser.rs` | Pages, request generations, history/forward, focus/scroll and forms |
-| `music.rs` | Playback state, seek, repeat and synthetic progress |
+| `music.rs` | Playback controls, seek and repeat; external audio clock in normal runs |
 | `utilities.rs`, `calendar.rs`, `snake.rs` | Local utility models, date arithmetic and replacement game rules |
 | `phone-desktop/main.rs`, `host_input.rs`, `smoke.rs` | Window lifecycle, events, clocks, adapter scheduling and smoke run |
 | `phone.rs`, `phone/overlays.rs` | Top-level routes and shared editor/menu overlays |
-| `phone/sms.rs`, `browser.rs`, `browser_data.rs`, `music.rs` | App routes and browser persistence |
+| `phone/sms.rs`, `mail.rs`, `browser.rs`, `browser_data.rs`, `music.rs` | App routes, local mailbox reading and browser persistence |
 | `phone/settings.rs`, `organizer.rs`, `tools.rs`, `snake.rs` | Separate settings, organizer, utility and game routes |
 | `views/` | Per-app rendering; no network or storage operations |
 | `canvas.rs`, `candidate_view.rs`, `theme.rs`, `menu.rs` | Fonts, pixels, prediction panels, recovered colors and observed menu order |
 | `gpu.rs`, `display.wgsl` | Surface and texture presentation |
 | `web.rs`, `web/flow.rs`, `phone-core/web_flow.rs` | Bounded HTTP worker, DOM control mapping and ordered HTML layout tokens |
 | `views/browser_layout.rs`, `browser_chrome.rs`, `softkeys.rs` | Shared paint/focus geometry, measured native overlays and key labels |
+| `phone-vfs` | Virtual mount table, stream/volume interface and directory adapter |
+| `media.rs`, `audio.rs`, `phone/files.rs`, `views/files.rs` | Shared file/library service, audio output and separate file-manager UI |
+| `config.rs` | Host capability flags, separate from native settings |
 | `storage.rs` | Bounded local JSON loading, sync and atomic replacement |
 
 Core code has no USB, modem, network or filesystem access. The browser worker receives only a URL and cannot access the mailbox. No firmware binary is executed.
@@ -53,7 +56,7 @@ Browser opens its four-entry start page. `about:demo` is an offline test documen
 
 HTTP has a 12-second timeout, 2 MiB decoded-body limit and two waiting jobs. Stop invalidates results; it does not abort the worker's underlying request immediately. Back holds 32 pages; persistent history holds 100 URLs, offline storage 20 parsed documents. Offline snapshots restore initial fields and clear passwords. No JS/CSS renderer, POST, WML, images or downloads. Native settings now use one home type, two font sizes and an inline image checkbox. Clear entry/cancel is sampled; activation is unavailable because native commit behavior is unknown. Restore confirmation remains host policy. Saved pages without flow data still load. See [layout evidence](browser-layout.md).
 
-Music has three synthetic tracks and no audio output. Playback time continues outside the player; held seek is canceled on navigation. Utility timer/stopwatch state continues offscreen while the program runs. Radio/flashlight/recording only change local state. Recorder entries contain durations, not sound. Organizer alarms show local dialogs while running; no OS scheduler or snooze is implemented. Dates use UTC+8. Snake is a playable replacement; its maps/physics are not native evidence.
+Music decodes MP3/WAV from the VFS. Playback time comes from the audio sink and continues outside the player; held seek is canceled on navigation. Three synthetic tracks are retained only for screenshot smoke scenes. See [storage](storage.md). Utility timer/stopwatch state continues offscreen while the program runs. Radio/flashlight/recording only change local state. Recorder entries contain durations, not sound. Organizer alarms show local dialogs and snooze while running; no OS wake scheduler is implemented. Dates use UTC+8. Snake is a playable replacement; its maps/physics are not native evidence.
 
 ## Data
 
@@ -63,6 +66,8 @@ macOS data directory: `~/Library/Application Support/TA1278 Replica/`. Override 
 - `preferences.json`: accent and side shortcuts.
 - `browser.json`: bookmarks, history, offline documents and browser preferences.
 - `organizer.json`: local contacts, calendar entries and alarms.
+- `music.json`: volume, repeat, shuffle, virtual track path and paused resume position.
+- `files/`, `card/`: default VFS volumes, separate from private app records.
 
 Writes use a temporary file, sync and rename. Corrupt/oversized existing files are retained and startup fails rather than overwriting them. All dirty stores block normal window close on save failure. App data is separate from firmware, acquisition archives and public screenshots.
 

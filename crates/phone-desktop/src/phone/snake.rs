@@ -1,4 +1,5 @@
 use super::*;
+use serde::{Deserialize, Serialize};
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Default)]
 pub enum SnakeView {
     #[default]
@@ -6,68 +7,132 @@ pub enum SnakeView {
     Game,
     Types,
     Level,
+    Scores,
+    Sound,
 }
-pub const GAME_TYPES: [&str; 6] = ["经典", "盒子", "隧道", "磨坊", "轨道", "公寓"];
+/// Host storage mirrors the native six exposed map score lists; no phone NV is read.
+#[derive(Serialize, Deserialize)]
+pub struct SnakeData {
+    pub level: u8,
+    pub kind: usize,
+    pub sound: bool,
+    pub scores: [[u16; 5]; 6],
+}
+impl Default for SnakeData {
+    fn default() -> Self {
+        Self {
+            level: 1,
+            kind: 0,
+            sound: true,
+            scores: [[0; 5]; 6],
+        }
+    }
+}
+impl SnakeData {
+    pub fn valid(&self) -> bool {
+        (1..=8).contains(&self.level)
+            && self.kind < 6
+            && self
+                .scores
+                .iter()
+                .all(|rows| rows.windows(2).all(|r| r[0] >= r[1]))
+    }
+    pub fn record(&mut self, kind: usize, score: u32) {
+        let rows = &mut self.scores[kind.min(5)];
+        let score = score.min(u16::MAX as u32) as u16;
+        if let Some(i) = rows.iter().position(|&old| score > old) {
+            rows.copy_within(i..4, i + 1);
+            rows[i] = score;
+        }
+    }
+}
+pub const GAME_TYPES: [&str; 6] = ["经典", "盒子", "隧道", "磨坊", "铁轨", "公寓"];
 impl Phone {
     pub fn snake_items(&self) -> Vec<String> {
         match self.snake_view {
             SnakeView::Menu => {
                 let mut v = vec![];
-                if !self.snake.body.is_empty() && !self.snake.over {
+                if self.snake_can_resume() {
                     v.push("继续".into());
                 }
-                v.extend(["新游戏", "游戏类型", "等级", "退出"].map(str::to_owned));
+                v.extend(["新游戏", "关卡", "游戏类型", "最高得分", "声音"].map(str::to_owned));
                 v
             }
             SnakeView::Types => GAME_TYPES.map(str::to_owned).to_vec(),
+            SnakeView::Sound => ["关", "开"].map(str::to_owned).to_vec(),
             _ => vec![],
         }
     }
+    fn snake_can_resume(&self) -> bool {
+        !self.snake.body.is_empty() && !self.snake.over
+    }
+    fn snake_menu(&mut self, row: usize) {
+        self.snake_view = SnakeView::Menu;
+        self.index = row + usize::from(self.snake_can_resume());
+    }
     pub(super) fn snake_key(&mut self, key: Key) {
-        if self.snake_view == SnakeView::Game {
-            match key {
-                Key::SoftRight => {
+        match self.snake_view {
+            SnakeView::Game => {
+                if key == Key::SoftRight {
                     self.snake.running = false;
                     self.snake_view = SnakeView::Menu;
                     self.index = 0;
+                } else {
+                    self.snake.key(key);
                 }
-                _ => self.snake.key(key),
+                return;
             }
-            return;
-        }
-        if self.snake_view == SnakeView::Level {
-            match key {
-                Key::Left => self.snake.level = self.snake.level.saturating_sub(1),
-                Key::Right => self.snake.level = (self.snake.level + 1).min(9),
-                Key::Center | Key::SoftRight => {
-                    self.snake_view = SnakeView::Menu;
-                    self.index = 0;
+            SnakeView::Level => {
+                match key {
+                    Key::Left => {
+                        self.snake_level_preview = self.snake_level_preview.saturating_sub(1).max(1)
+                    }
+                    Key::Right => self.snake_level_preview = (self.snake_level_preview + 1).min(8),
+                    Key::Center => {
+                        self.snake.level = self.snake_level_preview;
+                        self.snake_data.level = self.snake.level;
+                        self.snake_dirty = true;
+                        self.snake.discard();
+                        self.snake_menu(0);
+                    }
+                    Key::SoftRight => self.snake_menu(1),
+                    _ => {}
                 }
-                _ => {}
+                return;
             }
-            return;
+            SnakeView::Scores => {
+                if key == Key::SoftRight {
+                    self.snake_menu(3);
+                }
+                return;
+            }
+            _ => {}
         }
         let n = self.snake_items().len();
         match key {
             Key::Up => self.index = (self.index + n - 1) % n,
             Key::Down => self.index = (self.index + 1) % n,
-            Key::SoftRight => {
-                if self.snake_view == SnakeView::Menu {
-                    self.leave_app();
-                } else {
-                    self.snake_view = SnakeView::Menu;
-                    self.index = 0;
-                }
-            }
-            Key::Center => {
-                if self.snake_view == SnakeView::Types {
+            Key::SoftRight => match self.snake_view {
+                SnakeView::Menu => self.leave_app(),
+                SnakeView::Types => self.snake_menu(2),
+                SnakeView::Sound => self.snake_menu(4),
+                _ => {}
+            },
+            Key::Center => match self.snake_view {
+                SnakeView::Types => {
                     self.snake.kind = self.index;
-                    self.snake.running = false;
-                    self.snake.body.clear();
-                    self.snake_view = SnakeView::Menu;
-                    self.index = 0;
-                } else {
-                    let resume = !self.snake.body.is_empty() && !self.snake.over;
+                    self.snake_data.kind = self.index;
+                    self.snake_dirty = true;
+                    self.snake.discard();
+                    self.snake_menu(0);
+                }
+                SnakeView::Sound => {
+                    self.snake_data.sound = self.index == 1;
+                    self.snake_dirty = true;
+                    self.snake_menu(4);
+                }
+                SnakeView::Menu => {
+                    let resume = self.snake_can_resume();
                     if resume && self.index == 0 {
                         self.snake.running = true;
                         self.snake_view = SnakeView::Game;
@@ -78,15 +143,24 @@ impl Phone {
                                 self.snake_view = SnakeView::Game;
                             }
                             1 => {
+                                self.snake_level_preview = self.snake.level;
+                                self.snake_view = SnakeView::Level;
+                            }
+                            2 => {
                                 self.snake_view = SnakeView::Types;
                                 self.index = self.snake.kind;
                             }
-                            2 => self.snake_view = SnakeView::Level,
-                            _ => self.leave_app(),
+                            3 => self.snake_view = SnakeView::Scores,
+                            4 => {
+                                self.snake_view = SnakeView::Sound;
+                                self.index = usize::from(self.snake_data.sound);
+                            }
+                            _ => {}
                         }
                     }
                 }
-            }
+                _ => {}
+            },
             _ => {}
         }
     }

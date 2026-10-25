@@ -70,6 +70,7 @@ impl Phone {
                                 self.browser_view = BrowserView::Page;
                                 self.pending_url = Some(url);
                             }
+                            TextTarget::FileName(new) => self.file_name(new, editor.text()),
                             TextTarget::Tool(i) => self.tool_text(i, editor.text()),
                             TextTarget::Organizer(i) => self.organizer_text(i, editor.text()),
                             TextTarget::Field(i) => {
@@ -196,6 +197,7 @@ impl Phone {
             | MenuKind::BrowserSave => self.browser_menu_action(kind, index),
             MenuKind::Music => self.music_action(index),
             MenuKind::MusicLibrary => {
+                self.music_refresh = true;
                 self.music_view = MusicView::Root;
                 self.index = 0;
             }

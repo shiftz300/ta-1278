@@ -1,0 +1,4 @@
+[package]
+name = "phone-vfs"
+version.workspace = true
+edition.workspace = true

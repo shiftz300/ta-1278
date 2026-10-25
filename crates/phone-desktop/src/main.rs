@@ -1,10 +1,14 @@
+mod audio;
 mod candidate_view;
 mod canvas;
+mod config;
 mod gpu;
 mod host_input;
+mod media;
 mod menu;
 mod phone;
 mod smoke;
+mod snake_art;
 mod storage;
 mod theme;
 mod views;
@@ -30,6 +34,7 @@ struct App {
     phone: phone::Phone,
     input: Input,
     web: web::Web,
+    media: Option<media::Media>,
     modifiers: ModifiersState,
     ime: bool,
     ime_allowed: bool,
@@ -72,6 +77,15 @@ impl App {
         }
     }
     fn flush(&mut self) {
+        if self.phone.snake_dirty && Instant::now() >= self.save_retry_at {
+            match storage::save_json(&self.data_dir, "snake.json", &self.phone.snake_data, 4096) {
+                Ok(()) => self.phone.snake_dirty = false,
+                Err(e) => {
+                    self.save_retry_at = Instant::now() + Duration::from_secs(5);
+                    self.phone.status = format!("游戏保存失败：{e}");
+                }
+            }
+        }
         if self.phone.local_dirty && Instant::now() >= self.save_retry_at {
             match storage::save_json(
                 &self.data_dir,
@@ -122,6 +136,14 @@ impl App {
         }
     }
     fn quit(&mut self, event_loop: &ActiveEventLoop) {
+        if self.phone.mail_ui.pending.is_some() {
+            self.save_retry_at = Instant::now();
+            self.flush();
+            // Failed queue writes roll back and leave the original editor open.
+            if self.phone.screen == phone::Screen::Compose {
+                return;
+            }
+        }
         if self.phone.screen == phone::Screen::Compose {
             if !self.phone.compose.body.accept_prediction()
                 || !self.phone.compose.to.accept_prediction()
@@ -143,9 +165,16 @@ impl App {
             || self.phone.preferences_dirty
             || self.phone.browser_dirty
             || self.phone.local_dirty
+            || self.phone.snake_dirty
         {
             self.phone
                 .notice("Save failed. Window stays open so you can keep your text.");
+            return;
+        }
+        if let Some(media) = &mut self.media
+            && let Err(e) = media.save(&self.data_dir, &self.phone, true)
+        {
+            self.phone.notice(format!("音乐设置保存失败：{e}"));
             return;
         }
         event_loop.exit();
@@ -328,6 +357,15 @@ impl ApplicationHandler for App {
             self.dispatch(e);
         }
         self.phone.tick(self.now(), dt);
+        if let Some(media) = &mut self.media {
+            media.tick(&mut self.phone);
+            if Instant::now() >= self.save_retry_at
+                && let Err(e) = media.save(&self.data_dir, &self.phone, false)
+            {
+                self.save_retry_at = Instant::now() + Duration::from_secs(5);
+                self.phone.notice(format!("音乐设置保存失败：{e}"));
+            }
+        }
         if let Some(url) = self.phone.pending_url.take() {
             self.phone.requested_url = url.clone();
             let id = self.phone.browser.start();
@@ -383,10 +421,26 @@ impl ApplicationHandler for App {
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut data_dir = storage::default_dir();
     let mut smoke = None;
+    let mut features = config::Features::default();
+    let mut card = None;
+    let mut no_card = false;
+    let mut read_only = false;
     let mut args = std::env::args().skip(1);
     while let Some(arg) = args.next() {
         match arg.as_str() {
             "--data-dir" => data_dir = PathBuf::from(args.next().ok_or("--data-dir needs a path")?),
+            "--mount-card" => {
+                card = Some(PathBuf::from(
+                    args.next().ok_or("--mount-card needs a directory")?,
+                ))
+            }
+            "--no-card" => no_card = true,
+            "--read-only-storage" => read_only = true,
+            "--disable" => features.disable(
+                &args
+                    .next()
+                    .ok_or("--disable needs a comma-separated list")?,
+            )?,
             "--smoke-test" => {
                 let dir = PathBuf::from(
                     args.next()
@@ -398,21 +452,57 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             }
             "--help" => {
                 println!(
-                    "cargo run -p phone-desktop -- [--data-dir PATH] [--smoke-test OUTPUT]\nArrows: navigate; Enter: center; F1/F2: softkeys; F3: call; Home: end/home; Tab: recipient/body; F4: input mode. Mouse left/right/middle = left/right/center key."
+                    "cargo run -p phone-desktop -- [--data-dir PATH] [--mount-card DIRECTORY | --no-card] [--read-only-storage] [--disable music,files,network] [--smoke-test OUTPUT]\nArrows: navigate; Enter: center; F1/F2: softkeys; F3: call; Home: end/home; Tab: recipient/body; F4: input mode. Mouse left/right/middle = left/right/center key."
                 );
                 return Ok(());
             }
             _ => return Err(format!("Unknown option: {arg}").into()),
         }
     }
+    if no_card && card.is_some() {
+        return Err("--no-card conflicts with --mount-card".into());
+    }
     let mailbox = storage::load(&data_dir)?;
     let mut phone = phone::Phone::new(mailbox);
+    phone.features = features;
     phone.apply_preferences(storage::load_preferences(&data_dir)?);
     phone.browser_data = storage::load_browser(&data_dir)?;
     phone.local_data = storage::load_organizer(&data_dir)?;
+    phone.snake_data = storage::load_snake(&data_dir)?;
+    phone.snake.level = phone.snake_data.level;
+    phone.snake.kind = phone.snake_data.kind;
     if smoke.is_some() {
         phone.accent = 4;
     }
+    let media = if smoke.is_none() {
+        let mut vfs = phone_vfs::Vfs::default();
+        let phone_root = data_dir.join("files");
+        std::fs::create_dir_all(&phone_root)?;
+        vfs.mount(
+            "phone",
+            "手机存储",
+            Box::new(phone_vfs::Directory::new(phone_root)?),
+            read_only,
+        )?;
+        if !no_card {
+            let card_root = if let Some(path) = card {
+                path
+            } else {
+                let path = data_dir.join("card");
+                std::fs::create_dir_all(&path)?;
+                path
+            };
+            vfs.mount(
+                "card",
+                "存储卡",
+                Box::new(phone_vfs::Directory::new(card_root)?),
+                read_only,
+            )?;
+        }
+        Some(media::Media::new(vfs, &data_dir, &mut phone)?)
+    } else {
+        None
+    };
     let now = Instant::now();
     let mut app = App {
         window: None,
@@ -420,7 +510,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         canvas: canvas::Canvas::new()?,
         phone,
         input: Input::default(),
-        web: web::Web::new(),
+        web: web::Web::new(features.network),
+        media,
         modifiers: ModifiersState::empty(),
         ime: false,
         ime_allowed: false,

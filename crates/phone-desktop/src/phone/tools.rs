@@ -17,7 +17,6 @@ pub enum ToolPage {
     Recorder,
     Recordings,
     Files,
-    FileDetails,
     Counter,
     Video,
     Gallery,
@@ -79,7 +78,6 @@ impl Phone {
             Recorder => "录音",
             Recordings => "录音列表",
             Files => "文件",
-            FileDetails => "详情",
             Counter => "计数器",
             Video => "视频",
             Gallery => "多媒体资料",
@@ -129,7 +127,6 @@ impl Phone {
                 .enumerate()
                 .map(|(i, t)| format!("录音 {}  {}", i + 1, phone_core::utilities::clock(*t)))
                 .collect(),
-            Files => vec!["手机存储".into()],
             _ => vec![],
         }
     }
@@ -174,6 +171,10 @@ impl Phone {
     pub(super) fn tools_key(&mut self, key: Key) {
         use ToolPage::*;
         match self.tools.page {
+            Files => {
+                self.files_key(key);
+                return;
+            }
             Calculator => {
                 let c = &mut self.tools.calculator;
                 match key {
@@ -332,10 +333,6 @@ impl Phone {
                     self.tools.page = Recorder;
                     self.index = 0;
                 }
-                FileDetails => {
-                    self.tools.page = Files;
-                    self.index = 0;
-                }
                 _ => self.leave_app(),
             },
             Key::SoftLeft if self.tools.page == Timer => {
@@ -393,10 +390,6 @@ impl Phone {
                     self.tools.frequency = self.tools.stations[self.index];
                     self.tools.radio_on = true;
                     self.tools.page = Radio;
-                }
-                Files => {
-                    self.tools.page = FileDetails;
-                    self.index = 0;
                 }
                 Recordings => self.notice("仅保存了计时记录，没有采集音频。"),
                 _ => {}

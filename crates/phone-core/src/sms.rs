@@ -9,6 +9,13 @@ pub struct Mailbox {
     pub drafts: Vec<Message>,
     pub outbox: Vec<Message>,
 }
+/// Minimal undo information while the host is writing messages.json.
+/// Not serialized; the UI must block concurrent mailbox mutations until completion.
+pub struct QueueChange {
+    pub index: usize,
+    queued: Message,
+    removed_draft: Option<(usize, Message)>,
+}
 impl Mailbox {
     pub fn save(&mut self, index: Option<usize>, message: Message) -> usize {
         if let Some(i) = index.filter(|i| *i < self.drafts.len()) {
@@ -21,6 +28,13 @@ impl Mailbox {
     }
     /// Local queue only. It deliberately cannot report delivery or invoke a modem.
     pub fn queue(&mut self, index: Option<usize>, message: Message) -> Result<(), &'static str> {
+        self.stage_queue(index, message).map(|_| ())
+    }
+    pub fn stage_queue(
+        &mut self,
+        index: Option<usize>,
+        message: Message,
+    ) -> Result<QueueChange, &'static str> {
         if message.to.is_empty()
             || !message
                 .to
@@ -34,9 +48,30 @@ impl Mailbox {
         if message.body.is_empty() {
             return Err("Message is empty");
         }
+        let change = QueueChange {
+            index: self.outbox.len(),
+            queued: message.clone(),
+            removed_draft: index
+                .filter(|i| *i < self.drafts.len())
+                .map(|i| (i, self.drafts.remove(i))),
+        };
         self.outbox.push(message);
-        if let Some(i) = index.filter(|i| *i < self.drafts.len()) {
-            self.drafts.remove(i);
+        Ok(change)
+    }
+    pub fn rollback_queue(&mut self, change: QueueChange) -> Result<(), &'static str> {
+        // Refuse to undo a different/newer message; a receipt is not a blanket deletion.
+        if self.outbox.len() != change.index + 1
+            || self.outbox.get(change.index) != Some(&change.queued)
+            || change
+                .removed_draft
+                .as_ref()
+                .is_some_and(|(i, _)| *i > self.drafts.len())
+        {
+            return Err("Mailbox changed during save; in-memory data retained");
+        }
+        self.outbox.pop();
+        if let Some((i, message)) = change.removed_draft {
+            self.drafts.insert(i, message);
         }
         Ok(())
     }
@@ -159,5 +194,44 @@ mod tests {
         assert!(m.drafts.is_empty());
         assert_eq!(m.outbox[0].body, "b");
         assert!(m.queue(None, Message::default()).is_err());
+    }
+}
+
+#[cfg(test)]
+mod transaction_tests {
+    use super::*;
+    #[test]
+    fn rollback_restores_middle_draft_and_refuses_a_changed_queue() {
+        let mut m = Mailbox::default();
+        for body in ["first", "middle", "last"] {
+            m.save(
+                None,
+                Message {
+                    to: "123".into(),
+                    body: body.into(),
+                },
+            );
+        }
+        let before = m.drafts.clone();
+        let change = m
+            .stage_queue(
+                Some(1),
+                Message {
+                    to: "123".into(),
+                    body: "edited middle".into(),
+                },
+            )
+            .unwrap();
+        m.rollback_queue(change).unwrap();
+        assert_eq!(m.drafts, before);
+        assert!(m.outbox.is_empty());
+        let change = m.stage_queue(Some(1), before[1].clone()).unwrap();
+        m.outbox.push(Message {
+            to: "456".into(),
+            body: "newer".into(),
+        });
+        assert!(m.rollback_queue(change).is_err());
+        assert_eq!(m.outbox.len(), 2);
+        assert_eq!(m.drafts.len(), 2);
     }
 }

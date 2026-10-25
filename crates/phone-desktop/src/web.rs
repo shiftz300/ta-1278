@@ -292,10 +292,11 @@ pub fn submit(page: &Page, form: usize, values: Vec<(String, String)>) -> Result
 }
 pub struct Web {
     jobs: mpsc::SyncSender<(u64, String)>,
+    network: bool,
     pub results: mpsc::Receiver<(u64, Result<Page, String>)>,
 }
 impl Web {
-    pub fn new() -> Self {
+    pub fn new(network: bool) -> Self {
         let (tx, rx) = mpsc::sync_channel::<(u64, String)>(2);
         let (rt, rr) = mpsc::channel();
         thread::spawn(move || {
@@ -311,11 +312,15 @@ impl Web {
             }
         });
         Self {
+            network,
             jobs: tx,
             results: rr,
         }
     }
     pub fn load(&self, id: u64, url: String) -> Result<(), String> {
+        if !self.network && !url.starts_with("about:") {
+            return Err("网络功能已停用。".into());
+        }
         self.jobs
             .try_send((id, url))
             .map_err(|_| "Browser is busy; stop and try again shortly".into())
@@ -449,5 +454,19 @@ mod label_tests {
         assert!(matches!(&p.elements[0],Element::Field{label,..} if label=="Customer name:"));
         assert!(matches!(&p.elements[1],Element::Check{label,..} if label=="Medium"));
         assert!(matches!(&p.elements[2],Element::Field{label,..} if label=="Note"));
+    }
+}
+
+#[cfg(test)]
+mod capability_tests {
+    use super::*;
+    #[test]
+    fn disabled_network_rejects_requests_but_keeps_local_browser() {
+        let web = Web::new(false);
+        assert!(web.load(1, "https://example.com".into()).is_err());
+        web.load(2, "about:demo".into()).unwrap();
+        let (id, result) = web.results.recv_timeout(Duration::from_secs(3)).unwrap();
+        assert_eq!(id, 2);
+        assert!(result.is_ok());
     }
 }

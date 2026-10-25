@@ -133,6 +133,18 @@ SAMPLES = [
     (309, 'clear-options', 'browser-clear-picker'),
     (310, 'clear-options-cancel', 'browser-clear-cancel'),
     (311, 'settings-final-row', 'browser-restore-focus'),
+    (318, 'level-open', 'snake-level-eight'),
+    (319, 'level-preview-left', 'snake-level-seven'),
+    (321, 'level-reopen', 'snake-level-cancel-restored'),
+    (323, 'scores-open', 'snake-high-scores'),
+    (327, 'sound-open', 'snake-sound'),
+    (336, 'alarm-new-form', 'alarm-inline-form'),
+    (346, 'repeat-open', 'alarm-repeat-days'),
+    (347, 'monday-selected', 'alarm-monday-checked'),
+    (352, 'snooze-focus', 'alarm-snooze-focus'),
+    (353, 'snooze-picker', 'alarm-snooze-picker'),
+    (354, 'snooze-preview', 'alarm-snooze-preview'),
+    (355, 'snooze-cancel', 'alarm-snooze-restored'),
 ]
 
 

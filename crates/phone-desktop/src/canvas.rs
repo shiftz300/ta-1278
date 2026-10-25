@@ -17,6 +17,8 @@ pub struct Canvas {
     fonts: Vec<Font>,
     glyphs: HashMap<(char, u16), (Metrics, Vec<u8>)>,
     pub icons: Vec<image::RgbaImage>,
+    sprites: Vec<image::RgbaImage>,
+    softkey_icons: [image::RgbaImage; 4],
     pub theme: crate::theme::Theme,
     pub accent: usize,
     pub caret: Option<(i32, i32, i32)>,
@@ -147,6 +149,29 @@ impl Canvas {
             fonts,
             glyphs: HashMap::new(),
             icons,
+            softkey_icons: [
+                image::load_from_memory(include_bytes!(
+                    "../../../nokia-ta1278-research/analysis/extracted/png/00397-icon-00052900.png"
+                ))
+                .map_err(|e| e.to_string())?
+                .to_rgba8(),
+                image::load_from_memory(include_bytes!(
+                    "../../../nokia-ta1278-research/analysis/extracted/png/00398-icon-00052abc.png"
+                ))
+                .map_err(|e| e.to_string())?
+                .to_rgba8(),
+                image::load_from_memory(include_bytes!(
+                    "../../../nokia-ta1278-research/analysis/extracted/png/01160-icon-000d0620.png"
+                ))
+                .map_err(|e| e.to_string())?
+                .to_rgba8(),
+                image::load_from_memory(include_bytes!(
+                    "../../../nokia-ta1278-research/analysis/extracted/png/01151-icon-000cfe9c.png"
+                ))
+                .map_err(|e| e.to_string())?
+                .to_rgba8(),
+            ],
+            sprites: crate::snake_art::load()?,
         })
     }
     fn glyph(&mut self, ch: char, size: u16) -> &(Metrics, Vec<u8>) {
@@ -173,26 +198,27 @@ impl Canvas {
             }
         }
     }
-    fn blend(&mut self, x: i32, y: i32, c: Color, alpha: u8) {
+    fn blend_into(pixels: &mut [u8], x: i32, y: i32, c: Color, alpha: u8) {
         if x < 0 || y < 0 || x >= W as i32 || y >= H as i32 {
             return;
         }
         let i = ((y * W as i32 + x) * 4) as usize;
         let a = alpha as u32 * c[3] as u32 / 255;
         for (j, channel) in c.iter().enumerate().take(3) {
-            self.pixels[i + j] =
-                ((self.pixels[i + j] as u32 * (255 - a) + *channel as u32 * a) / 255) as u8;
+            pixels[i + j] = ((pixels[i + j] as u32 * (255 - a) + *channel as u32 * a) / 255) as u8;
         }
-        self.pixels[i + 3] = 255;
+        pixels[i + 3] = 255;
     }
     pub fn text(&mut self, x: i32, y: i32, text: &str, size: u16, c: Color) {
         let mut cursor = x as f32;
         for ch in text.chars() {
-            let (m, bitmap) = self.glyph(ch, size).clone();
+            self.glyph(ch, size);
+            let (m, bitmap) = &self.glyphs[&(ch, size)];
             let top = y + size as i32 - m.height as i32 - m.ymin;
             for yy in 0..m.height {
                 for xx in 0..m.width {
-                    self.blend(
+                    Self::blend_into(
+                        &mut self.pixels,
                         cursor.round() as i32 + m.xmin + xx as i32,
                         top + yy as i32,
                         c,
@@ -253,14 +279,59 @@ impl Canvas {
         out
     }
     pub fn icon(&mut self, index: usize, x: i32, y: i32, size: u32) {
-        let img = image::imageops::resize(
-            &self.icons[index],
-            size,
-            size,
-            image::imageops::FilterType::Nearest,
-        );
-        for (ox, oy, p) in img.enumerate_pixels() {
-            self.blend(x + ox as i32, y + oy as i32, [p[0], p[1], p[2], 255], p[3]);
+        if size == 0 {
+            return;
+        }
+        let img = &self.icons[index];
+        let x_ratio = img.width() as f32 / size as f32;
+        let y_ratio = img.height() as f32 / size as f32;
+        for oy in 0..size {
+            for ox in 0..size {
+                let sx = (((ox as f32 + 0.5) * x_ratio) as u32).min(img.width() - 1);
+                let sy = (((oy as f32 + 0.5) * y_ratio) as u32).min(img.height() - 1);
+                let p = img.get_pixel(sx, sy);
+                Self::blend_into(&mut self.pixels, x + ox as i32, y + oy as i32, p.0, 255);
+            }
+        }
+    }
+    /// Copy a source rectangle at native pixels; no resize or allocation.
+    /// The two observed Home actions use their original 26px resources.
+    /// Other assignments reuse menu artwork until their Home glyphs are verified.
+    pub fn home_shortcut(&mut self, shortcut: usize, x: i32, y: i32) {
+        if shortcut == 0 {
+            return;
+        }
+        if matches!(shortcut, 12 | 3) {
+            self.softkey_image(usize::from(shortcut == 3), x, y);
+        } else {
+            let icons = [0, 4, 3, 0, 2, 7, 11, 9, 12, 21, 6, 15, 1, 14, 5, 16, 17, 18];
+            if let Some(icon) = icons.get(shortcut) {
+                self.icon(*icon, x, y, 26);
+            }
+        }
+    }
+    pub fn softkey_symbol(&mut self, back: bool, x: i32, y: i32) {
+        self.softkey_image(if back { 3 } else { 2 }, x, y);
+    }
+    fn softkey_image(&mut self, index: usize, x: i32, y: i32) {
+        for (ox, oy, pixel) in self.softkey_icons[index].enumerate_pixels() {
+            Self::blend_into(
+                &mut self.pixels,
+                x + ox as i32,
+                y + oy as i32,
+                pixel.0,
+                pixel[3],
+            );
+        }
+    }
+    pub fn sprite(&mut self, kind: crate::snake_art::Sprite, x: i32, y: i32, src: [u32; 4]) {
+        let img = &self.sprites[kind as usize];
+        let [sx, sy, width, height] = src;
+        for oy in 0..height.min(img.height().saturating_sub(sy)) {
+            for ox in 0..width.min(img.width().saturating_sub(sx)) {
+                let p = img.get_pixel(sx + ox, sy + oy);
+                Self::blend_into(&mut self.pixels, x + ox as i32, y + oy as i32, p.0, 255);
+            }
         }
     }
     pub fn accent(&self, shade: usize) -> Color {

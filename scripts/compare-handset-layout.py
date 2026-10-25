@@ -8,6 +8,7 @@ from PIL import Image, ImageDraw
 
 ROOT = Path(__file__).resolve().parents[1]
 PAIRS = [
+    ('music-root-empty-selection', 'music-root'),
     ('browser-live-form', 'browser-native-form'),
     ('browser-links', 'browser-native-links'),
     ('browser-root-overlay', 'browser-root-popup'),
@@ -19,6 +20,16 @@ PAIRS = [
     ('browser-exit-resampled', 'browser-exit'),
     ('sms-new', 'sms-empty-recipient'),
     ('sms-body-focus', 'sms-empty'),
+    ('sms-recipient-focus', 'sms-forward'),
+    ('snake-game', 'snake-native-matched'),
+    ('snake-start', 'snake-menu'),
+    ('snake-level-seven', 'snake-level'),
+    ('snake-sound', 'snake-sound'),
+    ('alarm-inline-form', 'alarm-form'),
+    ('alarm-repeat-days', 'alarm-days'),
+    ('alarm-monday-checked', 'alarm-days-selected'),
+    ('alarm-snooze-picker', 'alarm-snooze-picker'),
+    ('alarm-snooze-preview', 'alarm-snooze-preview'),
 ]
 
 def main():

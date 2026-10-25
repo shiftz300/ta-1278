@@ -1,5 +1,20 @@
 //! Local SMS lifecycle and folder actions. No modem access.
 use super::*;
+impl Compose {
+    pub(super) fn from_message(message: &Message, draft: Option<usize>) -> Self {
+        let mut to = Editor::new(&message.to, 40.max(message.to.encode_utf16().count()));
+        to.numeric = true;
+        let mut body = Editor::new(&message.body, 4096.max(message.body.encode_utf16().count()));
+        body.prediction
+            .set_language(Some(phone_core::predict::Language::Chinese));
+        Self {
+            to,
+            body,
+            draft,
+            recipient: false,
+        }
+    }
+}
 impl Phone {
     pub fn message(&self) -> Message {
         Message {
@@ -8,14 +23,28 @@ impl Phone {
         }
     }
     pub(super) fn queue_message(&mut self) {
+        if self.mail_ui.pending.is_some() {
+            return;
+        }
         let m = self.message();
-        match self.mailbox.queue(self.compose.draft, m) {
-            Ok(()) => {
+        if m.to.is_empty() {
+            self.notice(mail::operation_label(4).unwrap());
+            return;
+        }
+        match self.mailbox.stage_queue(self.compose.draft, m) {
+            Ok(change) => {
+                self.mail_ui.pending = Some(mail::PendingQueue {
+                    change,
+                    was_dirty: self.dirty,
+                });
+                self.pending_compose_close = false;
                 self.dirty = true;
-                self.go(Screen::Messages);
-                self.notice("Queued locally. No SMS service: message was NOT sent.");
             }
-            Err(e) => self.notice(e),
+            Err(e) => self.notice(if e == "Message is empty" {
+                "请输入信息内容"
+            } else {
+                "请输入有效的电话号码"
+            }),
         }
     }
     pub(super) fn save_and_close(&mut self) {
@@ -30,6 +59,13 @@ impl Phone {
     }
     pub fn storage_saved(&mut self) {
         self.dirty = false;
+        if let Some(pending) = self.mail_ui.pending.take() {
+            self.mail_ui.item = pending.change.index;
+            self.mail_ui.folder = Screen::Outbox;
+            self.compose.draft = None;
+            self.go(Screen::Mail(mail::MailPage::Result));
+            return;
+        }
         if self.pending_compose_close {
             self.pending_compose_close = false;
             self.go(Screen::Messages);
@@ -38,6 +74,15 @@ impl Phone {
     pub fn storage_failed(&mut self) {
         // A later background retry must not close an editor the user has resumed editing.
         self.pending_compose_close = false;
+        if let Some(pending) = self.mail_ui.pending.take() {
+            match self.mailbox.rollback_queue(pending.change) {
+                Ok(()) => self.dirty = pending.was_dirty,
+                Err(e) => {
+                    self.dirty = true;
+                    self.notice(e);
+                }
+            }
+        }
     }
     pub(super) fn save_draft(&mut self) {
         let message = self.message();
@@ -70,29 +115,22 @@ impl Phone {
         match key {
             Key::Up => self.index = self.index.saturating_sub(1),
             Key::Down => self.index = (self.index + 1).min(count.saturating_sub(1)),
-            Key::SoftRight => self.go(Screen::Messages),
+            Key::SoftRight => {
+                self.go(Screen::Messages);
+                self.index = if drafts { 1 } else { 2 };
+            }
             Key::Delete if count > 0 => {
-                if drafts {
-                    self.mailbox.drafts.remove(self.index);
-                } else {
-                    self.mailbox.outbox.remove(self.index);
-                }
-                self.index = self.index.min(count.saturating_sub(2));
-                self.dirty = true;
+                self.mail_ui.item = self.index;
+                self.mail_ui.folder = self.screen;
+                self.mail_delete_prompt();
             }
             Key::Center | Key::SoftLeft if count > 0 => {
                 if drafts {
                     let m = &self.mailbox.drafts[self.index];
-                    let mut c = Compose::default();
-                    c.to.insert(&m.to);
-                    c.body.insert(&m.body);
-                    c.draft = Some(self.index);
-                    c.recipient = false;
-                    self.compose = c;
+                    self.compose = Compose::from_message(m, Some(self.index));
                     self.go(Screen::Compose);
                 } else {
-                    let m = &self.mailbox.outbox[self.index];
-                    self.notice(format!("NOT SENT\nTo: {}\n{}", m.to, m.body));
+                    self.mail_open(mail::MailPage::Read);
                 }
             }
             _ => {}

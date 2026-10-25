@@ -1,0 +1,42 @@
+{
+  "firmware": "17.00.17.02",
+  "native_sessions": {
+    "range": "330..357;338 rejected before device operations",
+    "version_gates": 27,
+    "captures": 83,
+    "key_acknowledgments": 28,
+    "completed_plans": 26,
+    "capture_only": 1,
+    "reviewed_public_added": 7,
+    "public_total": 172
+  },
+  "host_checks": {
+    "cargo_test_locked_workspace": {
+      "core": 27,
+      "desktop": 41,
+      "failed": 0
+    },
+    "clippy_all_targets_deny_warnings": "pass",
+    "rustfmt": "pass",
+    "handset_protocol_unittests": 14,
+    "resource_hashes": "pass",
+    "codesign_verify_deep_strict": "pass",
+    "window": {
+      "backend": "Metal",
+      "adapter": "Apple M5 Pro",
+      "saved_scenes": 60,
+      "presented_frames": 61,
+      "command": "target/TA1278.app/Contents/MacOS/phone-desktop --smoke-test OUTPUT"
+    }
+  },
+  "sources": {
+    "native": "docs/handset-samples/20261025/index.json",
+    "replica": "docs/images/SHA256.json",
+    "comparisons": "docs/comparisons/index.json",
+    "code": "docs/evidence/alarm-recovery.json",
+    "build": "docs/evidence/build-size.json"
+  },
+  "git_head": "a1efd515a86f893aa3d86de5740f4627d1cb87cf",
+  "worktree": "Uncommitted continuation of the checkpoint; see git diff and untracked source files.",
+  "limits": "Not complete handset acceptance. Local scheduling, alert presentation and untraced time-edit branches are host policy."
+}

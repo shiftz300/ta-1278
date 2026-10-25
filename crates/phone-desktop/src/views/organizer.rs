@@ -1,7 +1,11 @@
 use super::*;
 use crate::phone::organizer::OrganizerPage;
-pub(super) fn render(c: &mut Canvas, p: &Phone) {
+pub(super) fn render(c: &mut Canvas, p: &mut Phone) {
     use OrganizerPage::*;
+    if crate::phone::alarm::is_alarm(p.organizer.page) {
+        super::alarm::render(c, p);
+        return;
+    }
     let page = p.organizer.page;
     c.text(6, 1, p.organizer_title(), 14, WHITE);
     let mut left = "";

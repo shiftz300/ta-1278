@@ -334,3 +334,24 @@ Local validation: 51 Rust tests; strict Clippy; resource hashes; all ten multi-t
 Continued actual runtime USB screenshots and guarded keys, sessions 284–312. Expanded public native samples from 142 to 160. Browser settings revealed one home type, two font sizes, inline image toggle, history/cache clear popup and a separate restore section. Image preference was temporarily toggled then restored OFF. No clear/reset was activated. Exit LSOFT did nothing; Center exited. Raw samples were archived outside Git with SHA-256 verification.
 
 Implementation now preserves inline HTML flow and shares painting/focus bounds; native chrome, settings/pickers, editor underline, softkey geometry and SMS inactive-body layout were corrected. Original T9, full browser engine and full UI parity are not claimed. See `../../docs/browser-layout.md` and `../../docs/evidence/browser-layout-20261025.json` for metrics, commands, tests and unresolved behavior.
+
+### 2026-10-25 — Alarm handlers and runtime controls
+
+Read immutable `user.bin`; `scripts/recover-alarm.py --disassemble` verifies its SHA-256, records bounded Thumb ranges and extracts weekday/snooze tables. No firmware binary was executed. Runtime sessions 330–357 (338 rejected locally before sending) used version and screenshot preconditions: 27 connections, 83 captures, 28 acknowledged keys. One Center action on a new inline-time form saved a test alarm; sessions 339–343 removed only this new third record. The second draft was canceled in 356 and 357 exited the app. The two original records remained unchanged. No calls/SMS were sent.
+
+Raw/private captures were copied with SHA-256 verification into the external `ta-1278-source/handset-sessions/20261025` archive. Seven non-private form/picker images were allowlisted. `docs/alarm-recovery.md` lists exact code addresses, observed behavior and unresolved branches. Desktop scheduling is explicitly a host implementation; ringtone output and native wake behavior remain incomplete.
+
+Validation: `cargo test --locked --workspace` (68 tests), Clippy with warnings denied, resource hashes, 14 host-protocol tests and a signed release winit/wgpu run (60 screenshots, 61 presented frames). The initial legacy-notice assertion was replaced after the alert-queue change; subsequent tests pass. A preliminary static lookup treated a string ID as a ROM offset and raised `struct.error`; no file or device was modified.
+
+### 2026-10-25 — Offline SMS lifecycle verification
+
+Ran `scripts/recover-sms-lifecycle.py`: source SHA-256 and three reviewed code ranges matched. A fresh LLVM Thumb listing and the bounded integer-tree evaluator checked all 65,536 network reason values, recovering 19 allowed causes. Seven UI operation label pointers/adjustments matched separately. This is static branch analysis, not firmware execution or a complete SMS service. No phone command or private message read occurred.
+
+The desktop local queue now commits only after a successful file write and rolls back its own staged record/draft removal on failure. Added reader/retry/copy/forward/delete flows and long-draft preservation. Their UI/storage policy is explicitly separate from native conversation behavior. Code candidates for future conversation tracing are recorded in `docs/sms-lifecycle.md`.
+
+
+## 2026-10-25 — VFS/audio adapter and Home softkeys
+
+No handset access or new firmware reading. The owner replaced the media-import proposal with an in-process VFS. Implemented a separate volume interface/directory backend, shared file manager/music access, read-only volumes and runtime music/files/network flags. Real MP3/PCM-WAV playback passed explicit CoreAudio clock/pause/seek/EOF tests on generated silent fixtures; 84 default tests and a 68-frame Metal run passed. Details and limits: `docs/storage.md`, `docs/evidence/storage-audio-validation.json`.
+
+Owner's Home footer screenshot exposed a remaining text/icon error. Compared archived native session 283 `shortcut-return-4.png` with extracted 26×26 resources 00397 (Opera, TRES 0x4000018e) and 00398 (Messages, TRES 0x4000018f). Their 24px ink matches the side actions at x=6..29 and 209..232, y=288..311. Replaced Home side text and aligned the center label. Other configurable shortcut glyph assignments remain unverified fallback artwork. Evidence: `docs/evidence/home-softkeys.json`; no new native capture was made.

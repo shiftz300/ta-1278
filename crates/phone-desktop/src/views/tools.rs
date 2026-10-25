@@ -3,6 +3,10 @@ use crate::phone::tools::ToolPage;
 use phone_core::utilities::clock;
 pub(super) fn render(c: &mut Canvas, p: &Phone) {
     use ToolPage::*;
+    if p.tools.page == Files {
+        super::files::render(c, p);
+        return;
+    }
     c.text(6, 1, p.tools_title(), 14, WHITE);
     let t = &p.tools;
     let mut left = "";
@@ -121,11 +125,6 @@ pub(super) fn render(c: &mut Canvas, p: &Phone) {
             c.text(20, 166, &clock(t.record_ms), 32, WHITE);
             left = "列表";
             center = if t.recording { "停止" } else { "录音" };
-        }
-        FileDetails => {
-            c.text(8, 65, "手机存储", 20, WHITE);
-            c.text(8, 110, "没有导入文件", 18, MUTED);
-            center = "";
         }
         Counter | Video | Gallery | Calls => {
             c.text(8, 120, "这里没有可显示的内容。", 17, WHITE);

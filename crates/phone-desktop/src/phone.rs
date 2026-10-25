@@ -1,5 +1,8 @@
+pub mod alarm;
 mod browser;
 pub mod browser_data;
+pub mod files;
+pub mod mail;
 mod music;
 pub mod organizer;
 mod overlays;
@@ -25,6 +28,7 @@ pub enum Screen {
     Messages,
     Drafts,
     Outbox,
+    Mail(mail::MailPage),
     Compose,
     Browser,
     Music,
@@ -59,6 +63,7 @@ pub enum TextTarget {
     Tool(usize),
     Organizer(usize),
     BrowserHome,
+    FileName(bool),
 }
 #[derive(Clone, Debug)]
 pub enum Overlay {
@@ -102,15 +107,24 @@ impl Default for Compose {
     }
 }
 pub struct Phone {
+    pub features: crate::config::Features,
+    pub files: files::Files,
+    pub music_refresh: bool,
+    pub music_loading: bool,
+    pub music_return_file: bool,
     pub screen: Screen,
     pub index: usize,
     pub overlay: Option<Overlay>,
     pub mailbox: Mailbox,
     pub compose: Compose,
+    pub mail_ui: mail::MailUi,
     pub browser: Browser,
     pub music: Music,
     pub snake: phone_core::snake::Snake,
     pub snake_view: snake::SnakeView,
+    pub snake_level_preview: u8,
+    pub snake_data: snake::SnakeData,
+    pub snake_dirty: bool,
     pub tools: tools::Tools,
     pub organizer: organizer::Organizer,
     pub local_data: organizer::LocalData,
@@ -144,11 +158,17 @@ impl Phone {
         let mut dial = Editor::new("", 40);
         dial.numeric = true;
         Self {
+            features: Default::default(),
+            files: Default::default(),
+            music_refresh: false,
+            music_loading: false,
+            music_return_file: false,
             screen: Screen::Home,
             index: 0,
             overlay: None,
             mailbox,
             compose: Compose::default(),
+            mail_ui: mail::MailUi::default(),
             browser: Browser::new(phone_core::browser::Page {
                 flow: vec![],
                 url: String::new(),
@@ -159,6 +179,9 @@ impl Phone {
             music: Music::default(),
             snake: Default::default(),
             snake_view: Default::default(),
+            snake_level_preview: 1,
+            snake_data: Default::default(),
+            snake_dirty: false,
             tools: Default::default(),
             organizer: Default::default(),
             local_data: Default::default(),
@@ -191,6 +214,15 @@ impl Phone {
         }
     }
     pub fn go(&mut self, s: Screen) {
+        if (s == Screen::Music && !self.features.music)
+            || (s == Screen::Tools(tools::ToolPage::Files) && !self.features.files)
+        {
+            self.notice("此功能已停用。");
+            return;
+        }
+        if s != Screen::Tools(tools::ToolPage::Files) {
+            self.files.pending = None;
+        }
         self.music.event(Event {
             key: Key::End,
             phase: Phase::Cancel,
@@ -214,6 +246,9 @@ impl Phone {
         self.overlay = None;
     }
     pub fn launch(&mut self, screen: Screen) {
+        if screen == Screen::Music {
+            self.music_return_file = false;
+        }
         self.app_origin = if self.screen == Screen::Menu {
             Screen::Menu
         } else {
@@ -232,6 +267,15 @@ impl Phone {
             self.settings_page = SettingsPage::Root;
         }
         self.go(screen);
+        if screen == Screen::Tools(tools::ToolPage::Files) && self.features.files {
+            self.files = Default::default();
+            self.files.pending = Some(files::FileRequest::List("/".into()));
+        }
+        if screen == Screen::Organizer(organizer::OrganizerPage::Alarms)
+            && !self.local_data.alarms.is_empty()
+        {
+            self.index = 1;
+        }
     }
     pub fn leave_app(&mut self) {
         self.go(self.app_origin);
@@ -317,6 +361,9 @@ impl Phone {
         }
     }
     pub fn editor(&self) -> Option<&Editor> {
+        if !self.organizer.alarm.alerts.is_empty() || self.mail_ui.pending.is_some() {
+            return None;
+        }
         match &self.overlay {
             Some(Overlay::Text { editor, .. }) => Some(editor),
             Some(_) => None,
@@ -327,11 +374,17 @@ impl Phone {
                     &self.compose.body
                 }),
                 Screen::Dial => Some(&self.dial),
+                Screen::Organizer(_) if self.alarm_name_active() => {
+                    Some(&self.organizer.alarm.name)
+                }
                 _ => None,
             },
         }
     }
     pub fn editor_mut(&mut self) -> Option<&mut Editor> {
+        if !self.organizer.alarm.alerts.is_empty() || self.mail_ui.pending.is_some() {
+            return None;
+        }
         match &mut self.overlay {
             Some(Overlay::Text { editor, .. }) => Some(editor),
             Some(_) => None,
@@ -342,6 +395,12 @@ impl Phone {
                     &mut self.compose.body
                 }),
                 Screen::Dial => Some(&mut self.dial),
+                Screen::Organizer(_)
+                    if self.organizer.page == organizer::OrganizerPage::AlarmForm
+                        && self.index == 2 =>
+                {
+                    Some(&mut self.organizer.alarm.name)
+                }
                 _ => None,
             },
         }
@@ -354,6 +413,9 @@ impl Phone {
         }
     }
     pub fn tab(&mut self) {
+        if !self.organizer.alarm.alerts.is_empty() || self.mail_ui.pending.is_some() {
+            return;
+        }
         if self.screen == Screen::Compose && self.overlay.is_none() {
             if !self.compose.to.accept_prediction() || !self.compose.body.accept_prediction() {
                 self.status = "Text limit reached".into();
@@ -413,6 +475,8 @@ impl Phone {
         );
         self.snake.tick(elapsed);
         if self.snake.over && self.snake_view == snake::SnakeView::Game {
+            self.snake_data.record(self.snake.kind, self.snake.score);
+            self.snake_dirty = true;
             self.snake_view = snake::SnakeView::Menu;
             self.index = 0;
             self.notice(format!("游戏结束\n得分 {}", self.snake.score));
@@ -443,6 +507,15 @@ impl Phone {
     }
     pub fn handle(&mut self, event: Event, now: u64) {
         let Event { key, phase } = event;
+        if !self.organizer.alarm.alerts.is_empty() {
+            if phase == Phase::Down {
+                self.alarm_alert_key(key);
+            }
+            return;
+        }
+        if self.mail_ui.pending.is_some() {
+            return;
+        }
         if phase == Phase::Cancel {
             self.music.event(event);
             if let Some(e) = self.editor_mut() {
@@ -452,6 +525,7 @@ impl Phone {
         }
         if self.screen == Screen::Music
             && self.music_view == MusicView::Player
+            && !self.music_loading
             && self.overlay.is_none()
         {
             self.music.event(event);
@@ -514,7 +588,10 @@ impl Phone {
                 return;
             }
         }
-        if self.editor().is_some() && self.edit_key(key, now) {
+        if self.editor().is_some()
+            && !(self.alarm_name_active() && matches!(key, Key::Up | Key::Down))
+            && self.edit_key(key, now)
+        {
             return;
         }
         match self.screen {
@@ -567,6 +644,7 @@ impl Phone {
                 _ => {}
             },
             Screen::Drafts | Screen::Outbox => self.mail_list_key(key),
+            Screen::Mail(page) => self.mail_key(page, key),
             Screen::Compose => match key {
                 Key::Center if self.compose.recipient => self.compose.recipient = false,
                 Key::Center => self.queue_message(),

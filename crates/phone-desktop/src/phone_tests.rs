@@ -46,7 +46,10 @@ fn compose_save_reopen_and_queue_is_local() {
     press(&mut p, Key::Center);
     assert_eq!(p.mailbox.outbox.len(), 1);
     assert!(p.mailbox.drafts.is_empty());
-    assert!(matches!(&p.overlay,Some(Overlay::Notice(s)) if s.contains("NOT sent")));
+    assert_eq!(p.screen, Screen::Compose);
+    assert!(p.mail_ui.pending.is_some());
+    p.storage_saved();
+    assert_eq!(p.screen, Screen::Mail(mail::MailPage::Result));
 }
 #[test]
 fn browser_field_cancel_and_multi_select_back() {
@@ -585,10 +588,10 @@ fn local_alarm_once_disables_and_does_not_repeat_same_minute() {
     assert!(p.overlay.is_none());
     p.check_alarms(date, 420);
     assert!(!p.local_data.alarms[0].enabled);
-    assert!(matches!(p.overlay, Some(Overlay::Notice(_))));
-    p.overlay = None;
+    assert_eq!(p.organizer.alarm.alerts.len(), 1);
+    press(&mut p, Key::Center);
     p.check_alarms(date, 420);
-    assert!(p.overlay.is_none());
+    assert!(p.organizer.alarm.alerts.is_empty());
 }
 
 #[test]
@@ -657,4 +660,489 @@ fn native_browser_exit_uses_center_not_left_softkey() {
     press(&mut p, Key::Center);
     assert_ne!(p.screen, Screen::Browser);
     assert!(p.overlay.is_none());
+}
+
+#[test]
+fn snake_native_menu_preview_cancel_pause_and_settings_commit() {
+    use snake::SnakeView;
+    let mut p = phone();
+    p.launch(Screen::Snake);
+    assert_eq!(
+        p.snake_items(),
+        ["新游戏", "关卡", "游戏类型", "最高得分", "声音"]
+    );
+    p.snake.level = 8;
+    p.index = 1;
+    press(&mut p, Key::Center);
+    press(&mut p, Key::Left);
+    assert_eq!(p.snake_level_preview, 7);
+    press(&mut p, Key::SoftRight);
+    assert_eq!(p.snake.level, 8);
+    assert_eq!(p.index, 1);
+    assert!(!p.snake_dirty);
+    press(&mut p, Key::Center);
+    assert_eq!(p.snake_level_preview, 8);
+    for _ in 0..12 {
+        press(&mut p, Key::Left);
+    }
+    assert_eq!(p.snake_level_preview, 1);
+    press(&mut p, Key::Center);
+    assert_eq!(p.snake_data.level, 1);
+    assert!(p.snake_dirty);
+    press(&mut p, Key::Center);
+    assert!(p.snake.running);
+    press(&mut p, Key::SoftRight);
+    assert!(!p.snake.running);
+    assert_eq!(p.snake_items()[0], "继续");
+    let body = p.snake.body.clone();
+    press(&mut p, Key::Center);
+    assert_eq!(p.snake.body, body);
+    press(&mut p, Key::SoftRight);
+    p.index = 3;
+    press(&mut p, Key::Center);
+    assert_eq!(p.snake_view, SnakeView::Types);
+    p.index = 4;
+    press(&mut p, Key::Center);
+    assert_eq!(p.snake.kind, 4);
+    assert!(p.snake.body.is_empty());
+    assert_eq!(p.snake_items()[0], "新游戏");
+    p.index = 4;
+    press(&mut p, Key::Center);
+    assert_eq!(p.snake_items(), ["关", "开"]);
+    press(&mut p, Key::Up);
+    press(&mut p, Key::SoftRight);
+    assert!(p.snake_data.sound);
+    press(&mut p, Key::Center);
+    press(&mut p, Key::Up);
+    press(&mut p, Key::Center);
+    assert!(!p.snake_data.sound);
+}
+
+#[test]
+fn snake_scores_persist_per_map_and_invalid_settings_preserve_file() {
+    let dir = std::env::temp_dir().join(format!("ta1278-snake-{}", std::process::id()));
+    let mut data = snake::SnakeData::default();
+    for score in [5, 42, 2, 42, 10, 1, 80] {
+        data.record(2, score);
+    }
+    assert_eq!(data.scores[2], [80, 42, 42, 10, 5]);
+    assert_eq!(data.scores[0], [0; 5]);
+    data.kind = 2;
+    data.level = 8;
+    data.sound = false;
+    crate::storage::save_json(&dir, "snake.json", &data, 4096).unwrap();
+    let loaded = crate::storage::load_snake(&dir).unwrap();
+    assert_eq!(loaded.scores, data.scores);
+    assert_eq!((loaded.level, loaded.kind, loaded.sound), (8, 2, false));
+    data.level = 0;
+    crate::storage::save_json(&dir, "snake.json", &data, 4096).unwrap();
+    let raw = std::fs::read(dir.join("snake.json")).unwrap();
+    assert!(crate::storage::load_snake(&dir).is_err());
+    assert_eq!(std::fs::read(dir.join("snake.json")).unwrap(), raw);
+    std::fs::remove_dir_all(dir).unwrap();
+}
+
+#[test]
+fn alarm_native_form_root_toggle_edit_and_cancel_are_distinct() {
+    use organizer::OrganizerPage::*;
+    let mut p = phone();
+    p.launch(Screen::Organizer(Alarms));
+    press(&mut p, Key::Center);
+    assert_eq!(p.organizer.page, AlarmForm);
+    assert_eq!(p.organizer.draft[0], "09:00");
+    press(&mut p, Key::Digit(1));
+    press(&mut p, Key::Digit(8));
+    assert_eq!(p.organizer.draft[0], "18:00");
+    press(&mut p, Key::Center); // Save, not an edit dialog.
+    assert_eq!((p.organizer.page, p.index), (Alarms, 1));
+    assert!(p.local_data.alarms[0].enabled);
+    press(&mut p, Key::Center);
+    assert!(!p.local_data.alarms[0].enabled);
+    press(&mut p, Key::SoftLeft);
+    press(&mut p, Key::Center); // Edit from options.
+    press(&mut p, Key::Digit(0));
+    press(&mut p, Key::SoftRight);
+    assert_eq!(p.local_data.alarms[0].fields[0], "18:00");
+    assert!(!p.local_data.alarms[0].enabled);
+    press(&mut p, Key::SoftLeft);
+    press(&mut p, Key::Down);
+    press(&mut p, Key::Center); // Single delete has no confirmation.
+    assert!(p.local_data.alarms.is_empty());
+    assert_eq!((p.organizer.page, p.index), (Alarms, 0));
+}
+
+#[test]
+fn alarm_day_back_applies_to_draft_snooze_back_cancels_and_form_back_discards() {
+    use organizer::OrganizerPage::*;
+    let mut p = phone();
+    p.launch(Screen::Organizer(Alarms));
+    press(&mut p, Key::Center);
+    press(&mut p, Key::Down);
+    press(&mut p, Key::Center);
+    assert_eq!(p.organizer.page, AlarmDays);
+    press(&mut p, Key::Center); // Monday
+    press(&mut p, Key::Down);
+    press(&mut p, Key::Down);
+    press(&mut p, Key::Center); // Wednesday
+    press(&mut p, Key::SoftRight);
+    assert_eq!(alarm::repeat_mask(&p.organizer.draft[1]), 2 | 8);
+    for _ in 0..3 {
+        press(&mut p, Key::Down);
+    }
+    press(&mut p, Key::Center);
+    assert_eq!((p.organizer.page, p.index), (AlarmSnooze, 2));
+    press(&mut p, Key::Down);
+    press(&mut p, Key::SoftRight);
+    assert_eq!(p.organizer.draft[4], "10分钟");
+    press(&mut p, Key::Center);
+    press(&mut p, Key::Down);
+    press(&mut p, Key::Center);
+    assert_eq!(p.organizer.draft[4], "15分钟");
+    press(&mut p, Key::SoftRight);
+    assert!(p.local_data.alarms.is_empty());
+    press(&mut p, Key::Center);
+    assert_eq!(p.organizer.draft[1], "不必重复");
+    assert_eq!(p.organizer.draft[4], "10分钟");
+}
+
+#[test]
+fn alarm_inline_name_utf16_limit_and_save_from_options_persist() {
+    use organizer::OrganizerPage::*;
+    let mut p = phone();
+    p.launch(Screen::Organizer(Alarms));
+    press(&mut p, Key::Center);
+    press(&mut p, Key::Down);
+    press(&mut p, Key::Down);
+    assert!(p.alarm_name_active());
+    p.organizer.alarm.name.clear();
+    p.text("012345678901234567😀");
+    assert_eq!(p.organizer.alarm.name.units.len(), 20);
+    p.text("x");
+    assert_eq!(p.organizer.alarm.name.units.len(), 20);
+    press(&mut p, Key::SoftRight); // Delete one scalar, not leave form.
+    assert_eq!(p.organizer.alarm.name.text(), "012345678901234567");
+    press(&mut p, Key::Down); // Form navigation, not multiline editor movement.
+    assert_eq!(p.index, 3);
+    press(&mut p, Key::SoftLeft);
+    assert_eq!(p.organizer.page, AlarmFormMenu);
+    press(&mut p, Key::Center);
+    assert_eq!(p.local_data.alarms[0].fields[2], "012345678901234567");
+    let json = serde_json::to_string(&p.local_data).unwrap();
+    let restored: organizer::LocalData = serde_json::from_str(&json).unwrap();
+    assert_eq!(restored.alarms[0].fields, p.local_data.alarms[0].fields);
+}
+
+#[test]
+fn alarm_weekdays_sunday_bit_and_multiple_same_minute_alerts() {
+    let mut p = phone();
+    for (name, repeat) in [("Monday", "星期一"), ("Sunday", "星期日"), ("Both", "周末")] {
+        p.local_data.alarms.push(organizer::Alarm {
+            enabled: true,
+            fields: ["09:00", repeat, name, "Clock1", "5分钟"]
+                .map(str::to_owned)
+                .to_vec(),
+        });
+    }
+    let sunday = phone_core::calendar::Date::new(2026, 10, 25).unwrap();
+    p.check_alarms(sunday, 540);
+    assert_eq!(
+        p.organizer
+            .alarm
+            .alerts
+            .iter()
+            .map(|a| a.name.as_str())
+            .collect::<Vec<_>>(),
+        ["Sunday", "Both"]
+    );
+    press(&mut p, Key::Center);
+    press(&mut p, Key::Center);
+    p.check_alarms(sunday, 540);
+    assert!(p.organizer.alarm.alerts.is_empty());
+    p.check_alarms(sunday.next(1), 540);
+    assert_eq!(p.organizer.alarm.alerts.front().unwrap().name, "Monday");
+    assert!(p.local_data.alarms.iter().all(|a| a.enabled));
+    for mask in 0..=127 {
+        assert_eq!(alarm::repeat_mask(&alarm::repeat_label(mask)), mask);
+    }
+}
+
+#[test]
+fn alarm_snooze_crosses_midnight_without_mutating_interrupted_editor() {
+    let mut p = phone();
+    p.go(Screen::Compose);
+    p.compose.recipient = false;
+    p.compose.body.insert("unsaved text");
+    p.overlay = Some(Overlay::Menu {
+        kind: MenuKind::Sms,
+        index: 4,
+    });
+    p.local_data.alarms.push(organizer::Alarm {
+        enabled: true,
+        fields: ["23:58", "一次", "Night", "Clock1", "5 分钟"]
+            .map(str::to_owned)
+            .to_vec(),
+    });
+    let date = phone_core::calendar::Date::new(2026, 12, 31).unwrap();
+    p.check_alarms(date, 1438);
+    p.text("must not leak");
+    p.handle(
+        Event {
+            key: Key::Digit(7),
+            phase: Phase::Long,
+        },
+        1000,
+    );
+    assert_eq!(p.compose.body.text(), "unsaved text");
+    press(&mut p, Key::SoftLeft);
+    assert!(p.organizer.alarm.alerts.is_empty());
+    assert!(matches!(p.overlay, Some(Overlay::Menu { index: 4, .. })));
+    p.check_alarms(date.next(1), 2);
+    assert!(p.organizer.alarm.alerts.is_empty());
+    p.check_alarms(date.next(1), 3);
+    assert_eq!(p.organizer.alarm.alerts.front().unwrap().time, "00:03");
+    press(&mut p, Key::End);
+    assert_eq!(p.screen, Screen::Compose);
+    assert_eq!(p.compose.body.text(), "unsaved text");
+    assert!(!p.local_data.alarms[0].enabled);
+}
+
+#[test]
+fn alarm_capacity_and_delete_all_cancel_preserve_records() {
+    use organizer::OrganizerPage::*;
+    let mut p = phone();
+    for _ in 0..5 {
+        p.local_data.alarms.push(organizer::Alarm {
+            enabled: false,
+            fields: ["09:00", "不必重复", "Test", "Clock1", "10分钟"]
+                .map(str::to_owned)
+                .to_vec(),
+        });
+    }
+    p.launch(Screen::Organizer(Alarms));
+    assert_eq!(p.index, 1);
+    press(&mut p, Key::Up);
+    press(&mut p, Key::Center);
+    assert_eq!(p.organizer.page, Alarms);
+    assert!(matches!(p.overlay, Some(Overlay::Notice(_))));
+    press(&mut p, Key::SoftRight);
+    press(&mut p, Key::Down);
+    press(&mut p, Key::SoftLeft);
+    press(&mut p, Key::Down);
+    press(&mut p, Key::Down);
+    press(&mut p, Key::Center);
+    assert_eq!(p.organizer.page, DeleteAllAlarms);
+    press(&mut p, Key::SoftRight);
+    assert_eq!(p.local_data.alarms.len(), 5);
+    press(&mut p, Key::Center);
+    press(&mut p, Key::Center);
+    assert!(p.local_data.alarms.is_empty());
+    assert_eq!(p.index, 0);
+}
+
+#[test]
+fn alarm_time_accepts_intermediate_digits_but_rejects_invalid_save() {
+    use organizer::OrganizerPage::*;
+    let mut p = phone();
+    p.launch(Screen::Organizer(Alarms));
+    press(&mut p, Key::Center);
+    press(&mut p, Key::Digit(2)); // 09 -> 29, transiently invalid.
+    press(&mut p, Key::Center);
+    assert!(p.local_data.alarms.is_empty());
+    assert_eq!(p.organizer.page, AlarmForm);
+    assert!(matches!(p.overlay, Some(Overlay::Notice(_))));
+    press(&mut p, Key::SoftRight);
+    for d in [3, 5, 9] {
+        press(&mut p, Key::Digit(d));
+    }
+    press(&mut p, Key::Center);
+    assert_eq!(p.local_data.alarms[0].fields[0], "23:59");
+}
+
+#[test]
+fn sms_queue_disk_failure_rolls_back_and_success_waits_for_persistence() {
+    let dir = std::env::temp_dir().join(format!("ta1278-queue-{}", std::process::id()));
+    std::fs::create_dir_all(&dir).unwrap();
+    let mut p = phone();
+    let original = Message {
+        to: "12345".into(),
+        body: "old draft".into(),
+    };
+    p.mailbox.save(None, original.clone());
+    crate::storage::save(&dir, &p.mailbox).unwrap();
+    p.go(Screen::Drafts);
+    press(&mut p, Key::Center);
+    p.text(" changed");
+    let edited = p.message();
+    press(&mut p, Key::Center);
+    assert_eq!(p.screen, Screen::Compose);
+    assert!(p.mail_ui.pending.is_some());
+    for key in [Key::Center, Key::End, Key::SoftRight, Key::Digit(1)] {
+        press(&mut p, key);
+    }
+    p.text("blocked while writing");
+    assert_eq!(p.message(), edited);
+    assert_eq!(p.mailbox.outbox.len(), 1);
+    // Force a real filesystem error without permissions tricks or changing user data.
+    std::fs::create_dir(dir.join("messages.json.tmp")).unwrap();
+    assert!(crate::storage::save(&dir, &p.mailbox).is_err());
+    p.storage_failed();
+    assert_eq!(p.screen, Screen::Compose);
+    assert_eq!(p.message(), edited);
+    assert_eq!(p.mailbox.drafts, std::slice::from_ref(&original));
+    assert!(p.mailbox.outbox.is_empty());
+    assert!(!p.dirty);
+    assert_eq!(crate::storage::load(&dir).unwrap().drafts, [original]);
+    std::fs::remove_dir(dir.join("messages.json.tmp")).unwrap();
+    press(&mut p, Key::Center);
+    crate::storage::save(&dir, &p.mailbox).unwrap();
+    p.storage_saved();
+    assert_eq!(p.screen, Screen::Mail(mail::MailPage::Result));
+    for _ in 0..5 {
+        press(&mut p, Key::SoftLeft);
+    }
+    assert_eq!(p.mailbox.outbox, std::slice::from_ref(&edited));
+    assert!(!p.dirty);
+    let restored = crate::storage::load(&dir).unwrap();
+    assert_eq!(restored.outbox, [edited]);
+    assert!(restored.drafts.is_empty());
+    std::fs::remove_dir_all(dir).unwrap();
+}
+
+#[test]
+fn sms_reader_retry_forward_edit_copy_and_delete_cancel() {
+    use mail::MailPage::*;
+    let mut p = phone();
+    let message = Message {
+        to: "12345".into(),
+        body: "第一行\n第二行\n测试正文".into(),
+    };
+    p.mailbox.outbox.push(message.clone());
+    p.go(Screen::Outbox);
+    press(&mut p, Key::Center);
+    assert_eq!(p.screen, Screen::Mail(Read));
+    press(&mut p, Key::SoftLeft);
+    press(&mut p, Key::Center);
+    assert_eq!(p.screen, Screen::Mail(Result));
+    assert_eq!(p.mailbox.outbox, std::slice::from_ref(&message));
+    press(&mut p, Key::Center);
+    press(&mut p, Key::SoftLeft);
+    press(&mut p, Key::Down);
+    press(&mut p, Key::Center);
+    assert_eq!(p.screen, Screen::Compose);
+    assert_eq!(p.message(), message);
+    assert!(p.compose.draft.is_none()); // Explicit edit-as-new never overwrites the queued record.
+    p.go(Screen::Outbox);
+    press(&mut p, Key::Center);
+    press(&mut p, Key::SoftLeft);
+    press(&mut p, Key::Down);
+    press(&mut p, Key::Down);
+    press(&mut p, Key::Center);
+    assert_eq!(p.compose.to.text(), "");
+    assert_eq!(p.compose.body.text(), message.body);
+    assert!(p.compose.recipient);
+    p.go(Screen::Outbox);
+    press(&mut p, Key::Delete);
+    assert_eq!(p.screen, Screen::Mail(Delete));
+    press(&mut p, Key::SoftRight);
+    assert_eq!(p.screen, Screen::Outbox);
+    assert_eq!(p.mailbox.outbox, [message]);
+    press(&mut p, Key::Center);
+    press(&mut p, Key::SoftLeft);
+    for _ in 0..3 {
+        press(&mut p, Key::Down);
+    }
+    press(&mut p, Key::Center);
+    press(&mut p, Key::SoftRight);
+    assert_eq!((p.screen, p.index), (Screen::Mail(Options), 3));
+    press(&mut p, Key::Center);
+    press(&mut p, Key::Center);
+    assert_eq!((p.screen, p.index), (Screen::Outbox, 0));
+    assert!(p.mailbox.outbox.is_empty());
+}
+
+#[test]
+fn sms_reader_scroll_clamps_and_returns_to_same_folder_row() {
+    let mut p = phone();
+    for i in 0..3 {
+        p.mailbox.outbox.push(Message {
+            to: format!("1234{i}"),
+            body: (0..18).map(|i| format!("测试第{i}行\n")).collect(),
+        });
+    }
+    p.go(Screen::Outbox);
+    p.index = 2;
+    press(&mut p, Key::Center);
+    let mut canvas = crate::canvas::Canvas::new().unwrap();
+    crate::views::render(&mut canvas, &mut p);
+    for _ in 0..100 {
+        press(&mut p, Key::Down);
+    }
+    assert_eq!(p.mail_ui.scroll, p.mail_ui.lines - 7);
+    press(&mut p, Key::SoftLeft);
+    press(&mut p, Key::SoftRight);
+    assert_eq!(p.mail_ui.scroll, p.mail_ui.lines - 7);
+    press(&mut p, Key::SoftRight);
+    assert_eq!((p.screen, p.index), (Screen::Outbox, 2));
+    press(&mut p, Key::SoftRight);
+    assert_eq!((p.screen, p.index), (Screen::Messages, 2));
+}
+
+#[test]
+fn sms_missing_recipient_uses_verified_label_and_never_queues() {
+    let mut p = phone();
+    p.go(Screen::Compose);
+    p.compose.recipient = false;
+    p.text("test");
+    press(&mut p, Key::Center);
+    assert!(matches!(&p.overlay,Some(Overlay::Notice(s)) if s=="电话号码为空"));
+    assert!(p.mailbox.outbox.is_empty());
+    assert!(p.mail_ui.pending.is_none());
+    assert_eq!(mail::operation_label(0), Some("正在发送…"));
+    assert_eq!(mail::operation_label(5), None); // Log-only native branch is not invented UI.
+}
+
+#[test]
+fn reopening_an_older_long_draft_does_not_silently_drop_the_body() {
+    let mut p = phone();
+    let message = Message {
+        to: "1".repeat(41),
+        body: "中".repeat(5000),
+    };
+    p.mailbox.drafts.push(message.clone());
+    p.go(Screen::Drafts);
+    press(&mut p, Key::Center);
+    assert_eq!(p.message(), message);
+    assert_eq!(p.compose.draft, Some(0));
+    p.save_draft();
+    assert_eq!(p.mailbox.drafts[0], message);
+}
+
+#[test]
+fn long_sms_recipient_focus_keeps_header_visible_and_only_recipient_caret() {
+    let mut p = phone();
+    p.go(Screen::Compose);
+    p.compose.to.insert("12345");
+    let mut c = crate::canvas::Canvas::new().unwrap();
+    crate::views::render(&mut c, &mut p);
+    let header = c.pixels[24 * 240 * 4..91 * 240 * 4].to_vec();
+    let recipient_caret = c.caret;
+    p.compose
+        .body
+        .insert(&"这是一段很长的转发正文。\n".repeat(20));
+    crate::views::render(&mut c, &mut p);
+    assert_eq!(&c.pixels[24 * 240 * 4..91 * 240 * 4], header);
+    assert_eq!(c.caret, recipient_caret);
+    assert_eq!(
+        &c.pixels[(91 * 240) * 4..(91 * 240) * 4 + 4],
+        &[48, 48, 48, 255]
+    );
+    assert!(
+        p.editor_lines
+            .iter()
+            .flat_map(|r| &r.stops)
+            .all(|(offset, _)| *offset <= 5)
+    );
+    p.compose.to.clear();
+    crate::views::render(&mut c, &mut p);
+    assert_eq!(c.caret.map(|v| v.0), Some(6));
 }

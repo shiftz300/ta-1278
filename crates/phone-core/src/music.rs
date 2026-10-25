@@ -13,6 +13,9 @@ pub struct Music {
     pub repeat: Repeat,
     pub shuffle: bool,
     pub tracks: Vec<(String, f32)>,
+    pub external_clock: bool,
+    pub generation: u64,
+    pub seek_revision: u64,
     held: Option<(Key, bool)>,
     seed: u32,
 }
@@ -30,6 +33,9 @@ impl Default for Music {
                 ("Demo track 2".into(), 120.),
                 ("Demo track 3".into(), 75.),
             ],
+            external_clock: false,
+            generation: 0,
+            seek_revision: 0,
             held: None,
             seed: 1278,
         }
@@ -39,7 +45,20 @@ impl Music {
     pub fn duration(&self) -> f32 {
         self.tracks.get(self.index).map_or(0., |t| t.1)
     }
+    pub fn play(&mut self, index: usize) {
+        if index >= self.tracks.len() {
+            return;
+        }
+        self.index = index;
+        self.position = 0.;
+        self.playing = true;
+        self.generation = self.generation.wrapping_add(1);
+    }
+    pub fn ended(&mut self) {
+        self.step(1, true);
+    }
     fn step(&mut self, delta: i32, natural: bool) {
+        self.generation = self.generation.wrapping_add(1);
         let n = self.tracks.len();
         if n == 0 {
             self.playing = false;
@@ -68,6 +87,7 @@ impl Music {
                 if !self.tracks.is_empty() {
                     if self.position >= self.duration() {
                         self.position = 0.;
+                        self.generation = self.generation.wrapping_add(1);
                     }
                     self.playing = !self.playing;
                 }
@@ -80,6 +100,7 @@ impl Music {
                     self.held = Some((e.key, true));
                     let d = if e.key == Key::Left { -5. } else { 5. };
                     self.position = (self.position + d).clamp(0., self.duration());
+                    self.seek_revision = self.seek_revision.wrapping_add(1);
                 }
             }
             (Key::Left | Key::Right, Phase::Up) => {
@@ -93,7 +114,7 @@ impl Music {
         }
     }
     pub fn tick(&mut self, seconds: f32) {
-        if self.playing && self.held.is_none() {
+        if !self.external_clock && self.playing && self.held.is_none() {
             self.position += seconds;
             if self.position >= self.duration() {
                 self.step(1, true);

@@ -139,3 +139,15 @@ Firmware 17.00.17.02 was verified in all 29 sessions. There were 107 decoded cap
 - In the browser-exit prompt, LSOFT left the image unchanged (302/303), then CENTER exited (304). A later settings/exit path completed in 312. The final menu wallpaper remains private and was not exported.
 
 The public allowlist now contains 160 screenshots. Original responses through 312 are in the external `ta-1278-source/handset-sessions/20261025` archive; 8,185 numbered-session files were verified, with 8,220 total archive files. No call, SMS, form submission, flash, APN edit, reset or browser-data clear was performed in this follow-up. Native checkbox commit, restore, complete HTML layout and network error paths remain open.
+
+## Snake code and cancel checks: sessions 313–329
+
+Sessions 318/319/321 verify level 8 → preview 7 → Back/reopen 8; content ROI is byte-identical after cancel. Session 323 shows five high scores; session 327 shows sound OFF then ON. Idle wake presses returned ACK without changing the screen; only a separately inspected next step was issued. Sound and level were not committed. Phone left at the game menu.
+
+Five reviewed screens were added (165 total). All raw sessions through 329 are in the external archive, with 8,366 files in its current manifest. No original score values were imported into host storage. Static code recovered maps, timing arguments, movement/score rules and artwork; see [Snake code evidence](snake-recovery.md).
+
+## Alarm control follow-up, sessions 330–357
+
+27 connections, 83 captures and 28 guarded key actions checked inline time/name, weekday checkboxes and snooze cancel. A first Center press on the new time field saved one default test alarm; only that new third record was deleted in sessions 339–343. The original two records were unchanged. The second form was canceled in 356; 357 returned to the menu. Session 338 was rejected before device actions because a later plan key lacked its own observed precondition.
+
+Seven public form/picker images bring the reviewed total to 172. Original alarm entries and wallpaper remain private in the external archive. See [code, UI evidence and implementation limits](alarm-recovery.md).

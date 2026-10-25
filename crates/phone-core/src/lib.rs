@@ -6,6 +6,7 @@ pub mod input;
 pub mod music;
 pub mod predict;
 pub mod sms;
+pub mod sms_retry;
 pub mod snake;
 pub mod utilities;
 pub mod web_flow;

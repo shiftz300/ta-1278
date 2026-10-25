@@ -1925,7 +1925,151 @@
       "png_sha256": "ba6310cacf8eba53b0d7baaabbb3c221233e0661c469616644c5c9e86fd41368",
       "pixel_sha256": "0705c06b3cbfc285588a92a8e5305fea9f7c39808d712494d888511368a9d5d1",
       "device_firmware": "17.00.17.02"
+    },
+    {
+      "name": "snake-level-eight",
+      "source_session": "ta1278-native-318",
+      "source_frame": "level-open",
+      "source_file": "ta1278-native-318/level-open.raw-image.bin",
+      "source_sha256": "68f3b4b3f79b7c06b088d03e188936453fae4764a476f36f766bf874527b9aab",
+      "header_repair": "replace_damaged_20_byte_prefix_with_SOI",
+      "png": "snake-level-eight.png",
+      "png_sha256": "44cf86988e8dc94358c739eff86dfb3c88397113b6edfd6b364719b090ff11ed",
+      "pixel_sha256": "03004f04c0a533ee569976bc4153ffee6e7ab6a308bbb1b48d221204c53055e2",
+      "device_firmware": "17.00.17.02"
+    },
+    {
+      "name": "snake-level-seven",
+      "source_session": "ta1278-native-319",
+      "source_frame": "level-preview-left",
+      "source_file": "ta1278-native-319/level-preview-left.jpg",
+      "source_sha256": "cf64ffcc4283cef2d7cd8b0d2689c65eff94dca5781dd50a6a9d448d41016485",
+      "header_repair": null,
+      "png": "snake-level-seven.png",
+      "png_sha256": "48ad66800ad4ebbc240d496d423c39281a0e3f39e382704ed224e0a0eb97a053",
+      "pixel_sha256": "c7c77de2c56038a90bca59e6c57b1f58238dd8b109013541fbac6f7278cbcfd7",
+      "device_firmware": "17.00.17.02"
+    },
+    {
+      "name": "snake-level-cancel-restored",
+      "source_session": "ta1278-native-321",
+      "source_frame": "level-reopen",
+      "source_file": "ta1278-native-321/level-reopen.jpg",
+      "source_sha256": "c8472a5dacfb978b4731a35b7ee16dcd5b1705617a7e25452e94aa8b9b4f6afc",
+      "header_repair": null,
+      "png": "snake-level-cancel-restored.png",
+      "png_sha256": "0630b5d0ad4b0439e342b13259fd7725cf2055d1b2e7dd9f5e7e87a00a19a74b",
+      "pixel_sha256": "c4faa92d3743d982b1f26917e719b1cdf0b90516bbe93e7497e9d768a58fcd8b",
+      "device_firmware": "17.00.17.02"
+    },
+    {
+      "name": "snake-high-scores",
+      "source_session": "ta1278-native-323",
+      "source_frame": "scores-open",
+      "source_file": "ta1278-native-323/scores-open.jpg",
+      "source_sha256": "77497ea09b8870af5091e7cd139d13dc82e18e838f12b7808352b27950e0468d",
+      "header_repair": null,
+      "png": "snake-high-scores.png",
+      "png_sha256": "bdbc37379bdef21dbcfe151f706129bd9553b108c1e51b4cd6f0b9cf966ef2fb",
+      "pixel_sha256": "65394a655143661f9bb2588112549003c4137cab955acc98f14483390e370919",
+      "device_firmware": "17.00.17.02"
+    },
+    {
+      "name": "snake-sound",
+      "source_session": "ta1278-native-327",
+      "source_frame": "sound-open",
+      "source_file": "ta1278-native-327/sound-open.jpg",
+      "source_sha256": "1e99672842236a7c30d010a481904453d74b16d1e8ecb6358829482b9bb5df28",
+      "header_repair": null,
+      "png": "snake-sound.png",
+      "png_sha256": "4f1b7af6f23182d49456f60ffba54ae76968708bfb3b518af6366a5463c0e5b4",
+      "pixel_sha256": "7c2445493b3d00ce71865f51714a56711e1350475e830dc3f6b7bd59d33a2757",
+      "device_firmware": "17.00.17.02"
+    },
+    {
+      "name": "alarm-inline-form",
+      "source_session": "ta1278-native-336",
+      "source_frame": "alarm-new-form",
+      "source_file": "ta1278-native-336/alarm-new-form.raw-image.bin",
+      "source_sha256": "ad861ec296c41553c096a4b83ae82b4b1145850f77bd4cd6a3e9fb7fad4fd21d",
+      "header_repair": "replace_damaged_20_byte_prefix_with_SOI",
+      "png": "alarm-inline-form.png",
+      "png_sha256": "09ea9b9201b9e4eeaa048664b19649a9d9221edd639330b02589241b7a91cff1",
+      "pixel_sha256": "a1b147789e6de67e694d29050b1f0bbd710136537d3236fdc4794be7c3a6f1ed",
+      "device_firmware": "17.00.17.02"
+    },
+    {
+      "name": "alarm-repeat-days",
+      "source_session": "ta1278-native-346",
+      "source_frame": "repeat-open",
+      "source_file": "ta1278-native-346/repeat-open.jpg",
+      "source_sha256": "d62762abff6f3d789064b546c76223e00c50f7feffaae2bee46d14705d42e226",
+      "header_repair": null,
+      "png": "alarm-repeat-days.png",
+      "png_sha256": "57dfd83da0f36b47ef7088aa211ccec195117c8d63f6b99b453d8bee771904cb",
+      "pixel_sha256": "1c9ca2516314dcd7c260e880667dfcc142fd40ddff15a0473e9ea3fbda78477c",
+      "device_firmware": "17.00.17.02"
+    },
+    {
+      "name": "alarm-monday-checked",
+      "source_session": "ta1278-native-347",
+      "source_frame": "monday-selected",
+      "source_file": "ta1278-native-347/monday-selected.jpg",
+      "source_sha256": "6178d3c8226c48003346fcd680a742bbf76621e1357cdf43511aff7986357cfe",
+      "header_repair": null,
+      "png": "alarm-monday-checked.png",
+      "png_sha256": "5e8c47fe9862a264be8cb17b86360760183687379c0ffa5406f9032eb79033df",
+      "pixel_sha256": "df2a4fd92f2259e85e63692a096aafd837d3042abf79f505baa94429d1c4f3aa",
+      "device_firmware": "17.00.17.02"
+    },
+    {
+      "name": "alarm-snooze-focus",
+      "source_session": "ta1278-native-352",
+      "source_frame": "snooze-focus",
+      "source_file": "ta1278-native-352/snooze-focus.jpg",
+      "source_sha256": "e5477770a0e077c161a91f3830ee0eccde040f147ccb8d8536c4529f66f6b5bb",
+      "header_repair": null,
+      "png": "alarm-snooze-focus.png",
+      "png_sha256": "3c31d486f253e9a52a77654f1b5c94539b97ecd912a402b9a4d76b098283426c",
+      "pixel_sha256": "fe1ee3492aa138a403994e597e8d772fcb69a0a4bdd4b5ec7538969bd152945b",
+      "device_firmware": "17.00.17.02"
+    },
+    {
+      "name": "alarm-snooze-picker",
+      "source_session": "ta1278-native-353",
+      "source_frame": "snooze-picker",
+      "source_file": "ta1278-native-353/snooze-picker.jpg",
+      "source_sha256": "273b09d0fe14a08ca912103c256efb5ea3d0d05c92c885e8e8016ec41c87fad5",
+      "header_repair": null,
+      "png": "alarm-snooze-picker.png",
+      "png_sha256": "1dde8864becd3b40cd8664c7d08435147710424a6ac0b8a25855d12812fa95bb",
+      "pixel_sha256": "8aa559e44dbc5100b990843c76b212efb254c5c8fcc0ea5c05ec80f31ddec0be",
+      "device_firmware": "17.00.17.02"
+    },
+    {
+      "name": "alarm-snooze-preview",
+      "source_session": "ta1278-native-354",
+      "source_frame": "snooze-preview",
+      "source_file": "ta1278-native-354/snooze-preview.jpg",
+      "source_sha256": "d303dfbb225eb86df5df12c87305f146105c08f8ff7474dd214be182f05b5336",
+      "header_repair": null,
+      "png": "alarm-snooze-preview.png",
+      "png_sha256": "400cc16564916614fbb49a8a2f7e255c1695dff6847b857fd44b510281778ad4",
+      "pixel_sha256": "2731452aba585abb8b54747d71b11070e2aaa60781c3cc1c824492658c2bfc9f",
+      "device_firmware": "17.00.17.02"
+    },
+    {
+      "name": "alarm-snooze-restored",
+      "source_session": "ta1278-native-355",
+      "source_frame": "snooze-cancel",
+      "source_file": "ta1278-native-355/snooze-cancel.jpg",
+      "source_sha256": "b9596c92663ce27db6750470f62868f5d972c6427d472bf62d73d892cc580261",
+      "header_repair": null,
+      "png": "alarm-snooze-restored.png",
+      "png_sha256": "85f50b22f05c4ceee88a962bb7723b2d99c19092807f6079fe72b6ec5b4377b5",
+      "pixel_sha256": "c1e18da14ac537385d4d1bd5b23f28d82af0e21cf28ef57bc7d572f00962dff7",
+      "device_firmware": "17.00.17.02"
     }
   ],
-  "contact_sheet_sha256": "be50e443313c843965e51131dd8dce09b1736911110ababa5f0f438d42e36e1e"
+  "contact_sheet_sha256": "a38dc40d8b473431173df18c2f39f076f400ad0e0bb63f6b2da4ce7bcb377c87"
 }

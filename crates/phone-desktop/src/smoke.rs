@@ -53,6 +53,30 @@ impl App {
             40 => "browser-exit",
             41 => "browser-clear-picker",
             42 => "browser-settings-tail",
+            43 => "snake-menu",
+            44 => "snake-level",
+            45 => "snake-types",
+            46 => "snake-scores",
+            47 => "snake-sound",
+            48 => "snake-native-initial",
+            49 => "snake-map-box",
+            50 => "snake-native-matched",
+            51 => "alarm-days",
+            52 => "alarm-days-selected",
+            53 => "alarm-snooze-picker",
+            54 => "alarm-snooze-preview",
+            55 => "alarm-snooze-field",
+            56 => "alarm-name",
+            57 => "alarm-root",
+            58 => "alarm-options",
+            59 => "alarm-alert",
+            60 => "sms-send-unavailable",
+            61 => "sms-read",
+            62 => "sms-read-scrolled",
+            63 => "sms-read-options",
+            64 => "sms-forward",
+            65 => "sms-outbox",
+            66 => "sms-delete-confirm",
             _ => {
                 eprintln!(
                     "SMOKE PASS: {} presented frames",
@@ -382,6 +406,152 @@ impl App {
                 self.phone.browser_view = phone::BrowserView::Settings;
                 self.phone.index = 7;
             }
+            42 => {
+                self.phone.launch(Screen::Snake);
+                self.phone.snake.discard();
+                self.phone.snake_view = phone::snake::SnakeView::Menu;
+                self.phone.index = 0;
+            }
+            43 => {
+                self.phone.snake_view = phone::snake::SnakeView::Level;
+                self.phone.snake_level_preview = 7;
+            }
+            44 => {
+                self.phone.snake_view = phone::snake::SnakeView::Types;
+                self.phone.index = 4;
+            }
+            45 => {
+                self.phone.snake_view = phone::snake::SnakeView::Scores;
+                self.phone.snake_data.scores[0] = [42, 30, 20, 10, 1];
+                self.phone.snake.kind = 0;
+            }
+            46 => {
+                self.phone.snake_view = phone::snake::SnakeView::Sound;
+                self.phone.snake_data.sound = false;
+                self.phone.index = 0;
+            }
+            47 => {
+                self.phone.snake.start();
+                self.phone.snake.running = false;
+                self.phone.snake.food = (3, 8);
+                self.phone.snake_view = phone::snake::SnakeView::Game;
+            }
+            48 => {
+                self.phone.snake.kind = 1;
+                self.phone.snake.score = 123;
+            }
+            49 => {
+                // Match native session149 positions for visual comparison only;
+                // food RNG is deliberately not claimed to be the original.
+                self.phone.snake.kind = 0;
+                self.phone.snake.start();
+                self.phone.snake.food = (1, 3);
+                self.phone.snake.tick(self.phone.snake.tick_ms());
+                self.phone.snake.running = false;
+            }
+            50 => {
+                self.phone
+                    .launch(Screen::Organizer(phone::organizer::OrganizerPage::Alarms));
+                self.phone
+                    .organizer_form(phone::organizer::OrganizerPage::AlarmForm, None);
+                for key in [Key::Down, Key::Center] {
+                    self.dispatch(Event {
+                        key,
+                        phase: Phase::Down,
+                    });
+                }
+            }
+            51 => self.dispatch(Event {
+                key: Key::Center,
+                phase: Phase::Down,
+            }),
+            52 => {
+                for key in [Key::SoftRight, Key::Down, Key::Down, Key::Down, Key::Center] {
+                    self.dispatch(Event {
+                        key,
+                        phase: Phase::Down,
+                    });
+                }
+            }
+            53 => self.dispatch(Event {
+                key: Key::Down,
+                phase: Phase::Down,
+            }),
+            54 => self.dispatch(Event {
+                key: Key::SoftRight,
+                phase: Phase::Down,
+            }),
+            55 => {
+                for key in [Key::Up, Key::Up] {
+                    self.dispatch(Event {
+                        key,
+                        phase: Phase::Down,
+                    });
+                }
+            }
+            56 => {
+                for key in [Key::Up, Key::Up, Key::Center] {
+                    self.dispatch(Event {
+                        key,
+                        phase: Phase::Down,
+                    });
+                }
+            }
+            57 => self.dispatch(Event {
+                key: Key::SoftLeft,
+                phase: Phase::Down,
+            }),
+            58 => {
+                // Local alert illustration, not a captured native interruption.
+                self.phone.local_data.alarms[0].fields[1] = "不必重复".into();
+                self.phone
+                    .check_alarms(phone_core::calendar::Date::default(), 540);
+            }
+            59 => {
+                self.dispatch(Event {
+                    key: Key::Center,
+                    phase: Phase::Down,
+                });
+                self.phone.compose = Compose::default();
+                self.phone.compose.to.insert("12345");
+                self.phone.compose.body.insert("本地测试信息。\n这条信息不会发送。\n\n第一段正文\n第二段正文\n第三段正文\n第四段正文\n第五段正文\n第六段正文\n最后一行。");
+                self.phone.compose.recipient = false;
+                self.phone.go(Screen::Compose);
+                self.dispatch(Event {
+                    key: Key::Center,
+                    phase: Phase::Down,
+                });
+                self.flush();
+            }
+            60 => self.dispatch(Event {
+                key: Key::Center,
+                phase: Phase::Down,
+            }),
+            61 => {
+                for _ in 0..6 {
+                    self.dispatch(Event {
+                        key: Key::Down,
+                        phase: Phase::Down,
+                    });
+                }
+            }
+            62 => self.dispatch(Event {
+                key: Key::SoftLeft,
+                phase: Phase::Down,
+            }),
+            63 => {
+                for key in [Key::Down, Key::Down, Key::Center] {
+                    self.dispatch(Event {
+                        key,
+                        phase: Phase::Down,
+                    });
+                }
+            }
+            64 => self.phone.go(Screen::Outbox),
+            65 => self.dispatch(Event {
+                key: Key::Delete,
+                phase: Phase::Down,
+            }),
             _ => {}
         }
         self.smoke_stage += 1;

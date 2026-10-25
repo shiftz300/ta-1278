@@ -14,7 +14,7 @@ impl Phone {
     pub fn music_items(&self) -> Vec<String> {
         match self.music_view {
             MusicView::Root => {
-                let mut labels = vec!["播放全部".into(), "歌曲".into(), "播放列表".into()];
+                let mut labels = vec!["全部播放".into(), "歌曲".into(), "播放列表".into()];
                 if self.music_started {
                     labels.push(
                         self.music
@@ -42,6 +42,12 @@ impl Phone {
                         kind: MenuKind::Music,
                         index: 0,
                     })
+                }
+                Key::SoftRight if self.music_return_file => {
+                    let index = self.files.selected;
+                    self.go(Screen::Tools(tools::ToolPage::Files));
+                    self.index = index;
+                    self.music_return_file = false;
                 }
                 Key::SoftRight => {
                     self.music_view = MusicView::Root;
@@ -78,7 +84,9 @@ impl Phone {
             }
             Key::Center if n > 0 => match self.music_view {
                 MusicView::Root => match self.index {
+                    0 if self.music_loading => self.notice("正在刷新曲库，请稍候。"),
                     0 if !self.music.tracks.is_empty() => self.play_track(0),
+                    0 => self.notice("没有可播放的音乐。"),
                     1 => {
                         self.music_view = MusicView::Songs;
                         self.index = 0;
@@ -104,10 +112,19 @@ impl Phone {
             _ => {}
         }
     }
-    fn play_track(&mut self, index: usize) {
-        self.music.index = index;
-        self.music.position = 0.;
-        self.music.playing = true;
+    pub fn play_track(&mut self, index: usize) {
+        if !self.features.music {
+            self.notice("此功能已停用。");
+            return;
+        }
+        if self.music_loading {
+            self.notice("正在刷新曲库，请稍候。");
+            return;
+        }
+        if index >= self.music.tracks.len() {
+            return;
+        }
+        self.music.play(index);
         self.music_started = true;
         self.music_view = MusicView::Player;
     }

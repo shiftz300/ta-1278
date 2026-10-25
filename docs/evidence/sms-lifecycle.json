@@ -1,0 +1,57 @@
+{
+  "source": "nokia-ta1278-research/firmware/original/system-20261025T054301+0800/user.bin",
+  "source_sha256": "8f0db2dc82f9e763cb700c2e5781b7ca7125a4d250f4c075dbec793eb549c1ca",
+  "verified_ranges": [
+    {
+      "start": "0x883c5e68",
+      "end_exclusive": "0x883c5ecc",
+      "file_offset": "0x3c5e68",
+      "sha256": "7107eaa1e639b4eaae42b6a921280b10721403fc50026ddb77baeb8ab5ccf8d4"
+    },
+    {
+      "start": "0x883c407e",
+      "end_exclusive": "0x883c40e0",
+      "file_offset": "0x3c407e",
+      "sha256": "a4f11990283e5df28d10ce28674d95c6a6432f7620732fb59342ba4cb13261e5"
+    },
+    {
+      "start": "0x883c421a",
+      "end_exclusive": "0x883c4242",
+      "file_offset": "0x3c421a",
+      "sha256": "c461770cdf3fac5ecc394c775a2d232b9599c1c4c16f5a1f1a4c65fe7d9ce033"
+    }
+  ],
+  "comparison_inputs": 65536,
+  "accepted_rl_causes": [
+    11,
+    17,
+    21,
+    22,
+    27,
+    36,
+    38,
+    41,
+    42,
+    47,
+    61,
+    81,
+    95,
+    96,
+    97,
+    98,
+    99,
+    111,
+    255
+  ],
+  "outputs": {
+    "assets/ui/sms-retry-causes.bin": "67182ef06c635a9dc007860753ecd2330c6071d99a4a896a0ec7c76997dc8aa6",
+    "assets/ui/sms-operation-labels.json": "12baf26d9ef84146433229283ebb888679d2e125664c76b35dbd5987ca09702e",
+    "docs/evidence/sms-lifecycle-thumb.txt": "c3aac33ef82bb52fb7c863f7d9ba115e49c4737c7dc9bbe1fb9057241e26ae55"
+  },
+  "method": "Fresh LLVM Thumb listing; bounded integer comparison evaluation stops at BX. No calls, stores, device access or mutable RAM.",
+  "limits": [
+    "Error decision ordering is a reviewed bounded code translation, not a complete SMS sender.",
+    "UI operation codes and modem error causes are separate namespaces.",
+    "No-service UI, local folders/read/retry/delete and disk transactions are replica policy; no native conversation layout claim."
+  ]
+}

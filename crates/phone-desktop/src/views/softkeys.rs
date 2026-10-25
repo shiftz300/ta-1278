@@ -1,5 +1,15 @@
 //! Soft-key geometry measured from native 240 x 320 captures.
 use super::*;
+/// Native session 283: icon ink x=6..29 / 209..232, y=288..311.
+/// Original resources have one transparent pixel around their 24px ink.
+pub(super) fn home(c: &mut Canvas, left: usize, right: usize) {
+    c.rect(0, 284, 240, 36, [0, 0, 0, 255]);
+    c.home_shortcut(left, 5, 287);
+    c.home_shortcut(right, 208, 287);
+    let x = (240 - c.width("功能表", 20)) / 2;
+    c.text(x, 288, "功能表", 20, WHITE);
+}
+
 pub(super) fn browser(c: &mut Canvas, menu: bool, center: &str, close: bool) {
     icons(c, menu, close);
 
@@ -8,9 +18,7 @@ pub(super) fn browser(c: &mut Canvas, menu: bool, center: &str, close: bool) {
 }
 pub(super) fn icons(c: &mut Canvas, menu: bool, close: bool) {
     if menu {
-        for y in [292, 298, 304] {
-            c.rect(8, y, 20, 2, WHITE);
-        }
+        c.softkey_symbol(false, 5, 287);
     }
     if close {
         for d in 0..14 {
@@ -18,11 +26,7 @@ pub(super) fn icons(c: &mut Canvas, menu: bool, close: bool) {
             c.rect(228 - d, 291 + d, 2, 2, WHITE);
         }
     } else {
-        c.rect(212, 298, 20, 2, WHITE);
-        for d in 0..10 {
-            c.rect(212 + d, 298 - d, 2, 2, WHITE);
-            c.rect(212 + d, 298 + d, 2, 2, WHITE);
-        }
+        c.softkey_symbol(true, 208, 287);
     }
 }
 
@@ -41,4 +45,9 @@ pub(super) fn contacts(c: &mut Canvas) {
             c.rect(x - half, y + 5 + row, half * 2 + 1, 1, WHITE);
         }
     }
+}
+
+pub(super) fn center(c: &mut Canvas, label: &str) {
+    let x = (240 - c.width(label, 20)) / 2;
+    c.text(x, 288, label, 20, WHITE);
 }

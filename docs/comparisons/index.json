@@ -2,60 +2,68 @@
   "note": "Original pixels. Different radio/status, input values and host fixture URLs are intentional. This is a visual review aid, not an equivalence score.",
   "pairs": [
     {
+      "file": "music-root-comparison.png",
+      "handset": "music-root-empty-selection.png",
+      "replica": "music-root.png",
+      "handset_sha256": "4848c46eac75a4ef207adef055dfbee397128b23f1af49bd1fbbbcc82d62083e",
+      "replica_sha256": "572afee80c05b75a9d95ca4e22052fef53361e6a8dca45b887297d8847512eeb",
+      "sha256": "8ec4b8bc85ddf3839764896e05506e5fb0a222dbcbd02a6fb75ac27f0642b56a"
+    },
+    {
       "file": "browser-native-form-comparison.png",
       "handset": "browser-live-form.png",
       "replica": "browser-native-form.png",
       "handset_sha256": "b35b2bbd93faea1298ea7c0a5cad7225d52d60579bfaea023ff1d6707ac05245",
-      "replica_sha256": "341a89215f67248f065b2698f92d0e063227e3a12fcba8a04fb2083a7d14d615",
-      "sha256": "e81ba39540a5f3959afb22adc69efaf803407d15f82614fb3f1865667fc7af5c"
+      "replica_sha256": "640b03524a19a18adb8e133afd142385e0e50db33f2f66a589919e37b2ae8dfd",
+      "sha256": "45365b78f2c62d4eb3f1edb07fb65db8bff001b661586765f2d7c876da19ec90"
     },
     {
       "file": "browser-native-links-comparison.png",
       "handset": "browser-links.png",
       "replica": "browser-native-links.png",
       "handset_sha256": "f21d91752fc161886f954769e0440a05878d841dfc7e69b83cfaf112593a27cc",
-      "replica_sha256": "62a04c12b6303f18a847bae7402699dd3c71b3fa9e81e5e00b58fea1a0bcc6b6",
-      "sha256": "a7c41ca9ebc16dd49778eeb23b16376af547bfa257e9fbe7bced67d88cc9d806"
+      "replica_sha256": "089ac263b0af9d1ae351708a801c32fb37ad845c46b3f964f248553763d24556",
+      "sha256": "20540d13af9cb898c9fbb957865ce97fc1b2b402172411e3921e778858330ffc"
     },
     {
       "file": "browser-root-popup-comparison.png",
       "handset": "browser-root-overlay.png",
       "replica": "browser-root-popup.png",
       "handset_sha256": "cc6bd7b3aaadf69f635af87d1caf47fe1854c00b67c6bba47351af3e7b137cbb",
-      "replica_sha256": "c611784517abaa04855d9cfcdf3902639c8c1c40af3911adf06a856c358216c4",
-      "sha256": "fa6a007a5fcd0f72a20b61eff9a015d4eb7e1cff45588e0e6beb0237835b8bea"
+      "replica_sha256": "de2fefafb24af35f46aadccb2972f45dbebc530a740417da81c99ec869d1335f",
+      "sha256": "7a47114bd1e5a86c8991c2691b7af632de3888941434fc2b2a1f48d4f22ebed1"
     },
     {
       "file": "browser-page-popup-comparison.png",
       "handset": "browser-page-options.png",
       "replica": "browser-page-popup.png",
       "handset_sha256": "c39fcf6b2028612bad5a8686d2b880209c48e0431a6f7c0bfb18f4b8698efa0a",
-      "replica_sha256": "9bfc6c1ce168f58b59b387c583ffbc47a7cef51f4b7f756dc998751dd52955dc",
-      "sha256": "a88abcb0b59ba473c8f2c67169f42551107f02c7c03802027bf6e9edf226b5da"
+      "replica_sha256": "ec09cf0906f2d33f29d131f10550c3aef4dc5cf751f62c8b14f1e5824f5c8835",
+      "sha256": "bd49d6ca01caeb286460050d3cf1760c1d7954af21982e9f81cb07e86dbf4437"
     },
     {
       "file": "browser-font-picker-comparison.png",
       "handset": "browser-font-size-picker.png",
       "replica": "browser-font-picker.png",
       "handset_sha256": "d457ab998621af15814ad0e1adafa7dfefffe3efa07a36f50fa2c4d68d4cc3d0",
-      "replica_sha256": "dcf7f7f6507105f71e2b6fcc90c52808327bfc406df4ac3fed27b0ff70e1267e",
-      "sha256": "50e59a60b9485c234ae8a2af1fe19d3d6bedab5608ac69dc93099b65938398a9"
+      "replica_sha256": "8680d6c80a2e76041fa5013d5d15af9e5f3ed6df66a328c31c09c6cfa95846cb",
+      "sha256": "2cecd60b5fa5e7d91c86249c34151945cdaa8d4c33600bcf92f98eb05b3bcd0c"
     },
     {
       "file": "browser-clear-picker-comparison.png",
       "handset": "browser-clear-picker.png",
       "replica": "browser-clear-picker.png",
       "handset_sha256": "338076d944a3be13dd0dc374df7858b47e509cb1f3a09346615e053d584e0b56",
-      "replica_sha256": "d0e2f03de33a9530f6703e1eeae6665af308a6a69dd424cce8d6d41904031690",
-      "sha256": "049d102eb9478459d28402c7cec784a1f2ebca26add643d7bcc8f4fcb58ddb2e"
+      "replica_sha256": "8432d5074f9196a6c97000712c5d1ff00bcefff108d1b39e48bf5dc98d76ee2c",
+      "sha256": "d9d1d7eda4a23f228036fd1be78f5bda9149df3c9aa371bb071d8581988d4965"
     },
     {
       "file": "browser-settings-tail-comparison.png",
       "handset": "browser-restore-focus.png",
       "replica": "browser-settings-tail.png",
       "handset_sha256": "ba6310cacf8eba53b0d7baaabbb3c221233e0661c469616644c5c9e86fd41368",
-      "replica_sha256": "e493f23b6c073b52954ff288aedc147e68f9d441781b19664314d645e4f8b82a",
-      "sha256": "a99f2da4a3cd41b111a2974e4c80845824b10bbdc48786e89df465216fafebc1"
+      "replica_sha256": "a01173ec5d13e2ea5f0a74876f985fa72b6320a89453e597ad1bea4cce439352",
+      "sha256": "12beb47f47f64244af875a15903ee837f141f68cc45bddeda2a63b481ef84aee"
     },
     {
       "file": "browser-url-input-comparison.png",
@@ -78,16 +86,96 @@
       "handset": "sms-new.png",
       "replica": "sms-empty-recipient.png",
       "handset_sha256": "d4f41f34f1b3b1db59f10ce82e1daaab2dc3b5175655cd0efaab9e69268873d5",
-      "replica_sha256": "9b9574d94e3e4baaca51082e962f4c3ea0c3c69a2651f4609acd2f418a248720",
-      "sha256": "105e3405e0e0d7362e099f6dd03e341b1e574a4b863baa2f1d1caf44ab97e899"
+      "replica_sha256": "0123315219f5813f19e326f95b17eb10d0350ed2711cde8dc52ee0418465ba9d",
+      "sha256": "26af669774610285e007eb5791aee0cae2178bad883f74d4e099ed7a9dd32541"
     },
     {
       "file": "sms-empty-comparison.png",
       "handset": "sms-body-focus.png",
       "replica": "sms-empty.png",
       "handset_sha256": "8cd12aa93b688732ddd086c8be10f16bbb88910dab168feb86a59499e9cd61db",
-      "replica_sha256": "0592584bddc1e33cc2da0930e144acca04e9a07ef6444e7dc6ac8a8385c80e4f",
-      "sha256": "8d99e0b31b3b5236820d68e24a103515525fd3f229448be0cef27d973c7c3830"
+      "replica_sha256": "e4eb6f22c240bca262e88e4b2aebc75f2eb958e032e3750c48fa4cb70a5880a7",
+      "sha256": "1aafe5828e1183f73a293665d2ba22b0afe88076458316e3dada442a78d7fc90"
+    },
+    {
+      "file": "sms-forward-comparison.png",
+      "handset": "sms-recipient-focus.png",
+      "replica": "sms-forward.png",
+      "handset_sha256": "8948aff985a8f1b56fbf6d990ae341db1553996e0e70d6a711ade19bcd630912",
+      "replica_sha256": "9e8a07320eee05edd230a994771f72d037ff8b473f55f33ed8bf9f909ed6085d",
+      "sha256": "e14db3b886492abc1694d711b768c0cd20b4e3002f54a0db3580acc81f42e365"
+    },
+    {
+      "file": "snake-native-matched-comparison.png",
+      "handset": "snake-game.png",
+      "replica": "snake-native-matched.png",
+      "handset_sha256": "d48223249fd946d879ca764ef079565b1795f8ec6cef2574688ae3f4db975c1f",
+      "replica_sha256": "ecd0e004e6c7e418fbec4d00a3c434c82787a8a20a49bc5efc7f289390d95ff9",
+      "sha256": "d6004830f76887974d83b39f9a13394dc9d5cef5499191a1d8352ca4899beefc"
+    },
+    {
+      "file": "snake-menu-comparison.png",
+      "handset": "snake-start.png",
+      "replica": "snake-menu.png",
+      "handset_sha256": "4c1d8fdae6a32986ca8b851d5f42880faa3d48423d4b63d58bf1c76ee2901943",
+      "replica_sha256": "448c4598c896e88c38027cf833cc03807168700a524a8c5b673b01356ccd65ca",
+      "sha256": "4467aa46a3b4a44f145fdac268b661dd78a051fce03af0d9b0cb08eeb8ecb442"
+    },
+    {
+      "file": "snake-level-comparison.png",
+      "handset": "snake-level-seven.png",
+      "replica": "snake-level.png",
+      "handset_sha256": "48ad66800ad4ebbc240d496d423c39281a0e3f39e382704ed224e0a0eb97a053",
+      "replica_sha256": "e41e52acfa123bf06ed5ffab097a0371f04fbbc049f005284974f2e9ada3c9b6",
+      "sha256": "c6468bf9c16117928db7062a1df90a5a12355cfdf0367865629b3f1684ca97de"
+    },
+    {
+      "file": "snake-sound-comparison.png",
+      "handset": "snake-sound.png",
+      "replica": "snake-sound.png",
+      "handset_sha256": "4f1b7af6f23182d49456f60ffba54ae76968708bfb3b518af6366a5463c0e5b4",
+      "replica_sha256": "14b770f9b322ce5e139e64bafc45e5948a16e692db5a50b57d8f207f7c11b0b8",
+      "sha256": "dff7c41e0e03a60910f285e80904b3fd0f5c48fd58a44c355354d41850037925"
+    },
+    {
+      "file": "alarm-form-comparison.png",
+      "handset": "alarm-inline-form.png",
+      "replica": "alarm-form.png",
+      "handset_sha256": "09ea9b9201b9e4eeaa048664b19649a9d9221edd639330b02589241b7a91cff1",
+      "replica_sha256": "5d918ee7c6a113c9fc1224130539c1c49f201705fb90696518fbfd277d67cd23",
+      "sha256": "1fb49581e2e976c603b4ce38a2f5507dae725712763491f87da32b43e25b9ef2"
+    },
+    {
+      "file": "alarm-days-comparison.png",
+      "handset": "alarm-repeat-days.png",
+      "replica": "alarm-days.png",
+      "handset_sha256": "57dfd83da0f36b47ef7088aa211ccec195117c8d63f6b99b453d8bee771904cb",
+      "replica_sha256": "aa177529a4824b8ca333203cd8ac68a8c10652e706ab8d4b43d6ca61e772d8cd",
+      "sha256": "7c6e7853f9d7f293b01342dc1685595164abd4692701d89df43348d950d195b5"
+    },
+    {
+      "file": "alarm-days-selected-comparison.png",
+      "handset": "alarm-monday-checked.png",
+      "replica": "alarm-days-selected.png",
+      "handset_sha256": "5e8c47fe9862a264be8cb17b86360760183687379c0ffa5406f9032eb79033df",
+      "replica_sha256": "574d92891bc96e88c0cb468af48acccab5602b7522f62be17ca2391dac88a780",
+      "sha256": "0466e6d79f875bd1c684714a88b48cef97d89827fdb8d5e47ff681c924a134ca"
+    },
+    {
+      "file": "alarm-snooze-picker-comparison.png",
+      "handset": "alarm-snooze-picker.png",
+      "replica": "alarm-snooze-picker.png",
+      "handset_sha256": "1dde8864becd3b40cd8664c7d08435147710424a6ac0b8a25855d12812fa95bb",
+      "replica_sha256": "1a0ade8dd9137f35e3c8064d0a396d9eabd06ef2166b0f0ddc3733c63a6756eb",
+      "sha256": "87d2ee6fcf294026730c5bf86dd24fb6791cb3b78a34a7eaed9d66dbef104b79"
+    },
+    {
+      "file": "alarm-snooze-preview-comparison.png",
+      "handset": "alarm-snooze-preview.png",
+      "replica": "alarm-snooze-preview.png",
+      "handset_sha256": "400cc16564916614fbb49a8a2f7e255c1695dff6847b857fd44b510281778ad4",
+      "replica_sha256": "efb02e87a29163864ad6672c1c716309d7e758e9774cd458d13f8e31c3adfb7d",
+      "sha256": "18f852677f210ae492c8478627c15a34e8d79561553f086f7981f18830ae0263"
     }
   ]
 }

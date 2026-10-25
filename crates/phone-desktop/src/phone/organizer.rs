@@ -26,6 +26,11 @@ pub enum OrganizerPage {
     EventForm,
     Alarms,
     AlarmForm,
+    AlarmDays,
+    AlarmSnooze,
+    AlarmMenu,
+    AlarmFormMenu,
+    DeleteAllAlarms,
     Contacts,
     ContactForm,
     ContactDetail,
@@ -37,6 +42,7 @@ pub enum OrganizerPage {
 }
 pub struct Organizer {
     pub page: OrganizerPage,
+    pub alarm: super::alarm::AlarmUi,
     pub date: Date,
     pub draft: Vec<String>,
     pub editing: Option<usize>,
@@ -48,6 +54,7 @@ impl Default for Organizer {
     fn default() -> Self {
         Self {
             page: OrganizerPage::Calendar,
+            alarm: super::alarm::AlarmUi::default(),
             date: Date::default(),
             draft: vec![],
             editing: None,
@@ -69,44 +76,7 @@ pub const CONTACT_FIELDS: [&str; 9] = [
     "群组",
 ];
 pub const EVENT_FIELDS: [&str; 7] = ["标题", "时间", "提醒", "位置", "铃声", "重复", "备注"];
-pub const ALARM_FIELDS: [&str; 5] = ["时间", "重复", "名称", "铃声", "贪睡"];
 impl Phone {
-    pub fn check_alarms(&mut self, date: Date, minute: u64) {
-        if self.organizer.last_alarm_minute == Some((date, minute)) {
-            return;
-        }
-        self.organizer.last_alarm_minute = Some((date, minute));
-        let time = format!("{:02}:{:02}", minute / 60, minute % 60);
-        let mut due = Vec::new();
-        for a in &mut self.local_data.alarms {
-            if !a.enabled || a.fields.first() != Some(&time) {
-                continue;
-            }
-            let repeat = a.fields.get(1).map_or("一次", String::as_str);
-            let active = match repeat {
-                "一次" | "每天" => true,
-                "工作日" => date.weekday() < 5,
-                "周末" => date.weekday() >= 5,
-                _ => false,
-            };
-            if active {
-                due.push(
-                    a.fields
-                        .get(2)
-                        .filter(|s| !s.is_empty())
-                        .cloned()
-                        .unwrap_or_else(|| "闹钟".into()),
-                );
-                if repeat == "一次" {
-                    a.enabled = false;
-                    self.local_dirty = true;
-                }
-            }
-        }
-        if !due.is_empty() {
-            self.notice(format!("{}\n{}", time, due.join("\n")));
-        }
-    }
     pub fn organizer_title(&self) -> &'static str {
         use OrganizerPage::*;
         match self.organizer.page {
@@ -116,6 +86,10 @@ impl Phone {
             EventForm => "添加事件",
             Alarms => "闹钟",
             AlarmForm => "闹钟",
+            AlarmDays => "重复，每周",
+            AlarmSnooze => "重响时间",
+            AlarmMenu | AlarmFormMenu => "选项",
+            DeleteAllAlarms => "确认",
             Contacts => "通讯录",
             ContactForm => "添加联系人",
             ContactDetail => "详情",
@@ -135,19 +109,6 @@ impl Phone {
                 .map(|c| contact_name(c))
                 .collect(),
             ContactMenu => ["发送信息", "编辑", "删除"].map(str::to_owned).to_vec(),
-            Alarms => self
-                .local_data
-                .alarms
-                .iter()
-                .map(|a| {
-                    format!(
-                        "{}  {}  {}",
-                        a.fields.first().map_or("", String::as_str),
-                        if a.enabled { "开" } else { "关" },
-                        a.fields.get(2).map_or("", String::as_str)
-                    )
-                })
-                .collect(),
             Events => self
                 .local_data
                 .events
@@ -155,10 +116,9 @@ impl Phone {
                 .filter(|e| e.date == self.organizer.date)
                 .map(|e| e.fields.first().cloned().unwrap_or_default())
                 .collect(),
-            EventForm | AlarmForm | ContactForm => {
+            EventForm | ContactForm => {
                 let names: &[&str] = match self.organizer.page {
                     EventForm => &EVENT_FIELDS,
-                    AlarmForm => &ALARM_FIELDS,
                     _ => &CONTACT_FIELDS,
                 };
                 names
@@ -200,7 +160,7 @@ impl Phone {
             AlarmForm => editing
                 .and_then(|i| self.local_data.alarms.get(i).map(|a| a.fields.clone()))
                 .unwrap_or_else(|| {
-                    ["07:00", "一次", "", "默认", "10 分钟"]
+                    ["09:00", "不必重复", "闹钟", "Clock1", "10分钟"]
                         .map(str::to_owned)
                         .to_vec()
                 }),
@@ -213,6 +173,10 @@ impl Phone {
                 }),
             _ => vec![],
         };
+        if page == AlarmForm {
+            self.organizer.alarm.name = Editor::new(&self.organizer.draft[2], 20);
+            self.organizer.alarm.digit = 0;
+        }
     }
     fn organizer_save(&mut self) {
         use OrganizerPage::*;
@@ -247,21 +211,6 @@ impl Phone {
                 }
                 self.organizer.page = Calendar;
             }
-            AlarmForm => {
-                if !valid_time(&fields[0]) {
-                    self.notice("请输入有效时间（HH:MM）。");
-                    return;
-                }
-                if let Some(i) = editing {
-                    self.local_data.alarms[i].fields = fields;
-                } else {
-                    self.local_data.alarms.push(Alarm {
-                        enabled: true,
-                        fields,
-                    });
-                }
-                self.organizer.page = Alarms;
-            }
             _ => return,
         }
         self.local_dirty = true;
@@ -270,6 +219,9 @@ impl Phone {
     pub(super) fn organizer_key(&mut self, key: Key) {
         use OrganizerPage::*;
         let page = self.organizer.page;
+        if self.alarm_key(key) {
+            return;
+        }
         if page == Calendar {
             match key {
                 Key::Left => self.organizer.date = self.organizer.date.next(-1),
@@ -298,7 +250,7 @@ impl Phone {
             Key::SoftRight => {
                 self.organizer.page = match page {
                     CalendarMenu | Events | EventForm | DeletePast => Calendar,
-                    AlarmForm | DeleteAlarm => Alarms,
+                    DeleteAlarm => Alarms,
                     ContactForm | ContactDetail => Contacts,
                     ContactMenu | DeleteContact => ContactDetail,
                     DeleteEvent => Events,
@@ -314,20 +266,12 @@ impl Phone {
                 };
                 self.index = 0;
             }
-            Key::SoftLeft if matches!(page, EventForm | AlarmForm | ContactForm) => {
-                self.organizer_save()
-            }
+            Key::SoftLeft if matches!(page, EventForm | ContactForm) => self.organizer_save(),
             Key::SoftLeft if page == Contacts => self.organizer_form(ContactForm, None),
-            Key::SoftLeft if page == Alarms => self.organizer_form(AlarmForm, None),
             Key::SoftLeft if page == Events => self.organizer_form(EventForm, None),
             Key::SoftLeft if page == ContactDetail => {
                 self.organizer.page = ContactMenu;
                 self.index = 0;
-            }
-            Key::Star if page == Alarms && n > 0 => {
-                self.local_data.alarms[self.index].enabled =
-                    !self.local_data.alarms[self.index].enabled;
-                self.local_dirty = true;
             }
             Key::Delete if n > 0 && matches!(page, Contacts | Alarms | Events) => {
                 self.organizer.selected = self.index;
@@ -379,7 +323,7 @@ impl Phone {
                     ),
                     _ => self.organizer.page = DeletePast,
                 },
-                EventForm | AlarmForm | ContactForm => self.open_local_text(
+                EventForm | ContactForm => self.open_local_text(
                     TextTarget::Organizer(self.index),
                     self.organizer.draft[self.index].clone(),
                     page == ContactForm && (3..=5).contains(&self.index),
@@ -404,7 +348,6 @@ impl Phone {
                     1 => self.organizer_form(ContactForm, Some(self.organizer.selected)),
                     _ => self.organizer.page = DeleteContact,
                 },
-                Alarms => self.organizer_form(AlarmForm, Some(self.index)),
                 Events => {
                     let id = self.day_events()[self.index];
                     self.organizer_form(EventForm, Some(id));
@@ -465,7 +408,18 @@ pub fn contact_name(c: &[String]) -> String {
         name
     }
 }
-fn valid_time(s: &str) -> bool {
+pub(super) fn valid_time(s: &str) -> bool {
+    if s.len() != 5
+        || !s.bytes().enumerate().all(|(i, b)| {
+            if i == 2 {
+                b == b':'
+            } else {
+                b.is_ascii_digit()
+            }
+        })
+    {
+        return false;
+    }
     let Some((h, m)) = s.split_once(':') else {
         return false;
     };

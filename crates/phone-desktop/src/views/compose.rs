@@ -18,11 +18,16 @@ pub(super) fn render(c: &mut Canvas, p: &mut Phone) {
         },
     );
     if p.compose.recipient {
-        p.editor_lines = editor(c, &p.compose.to, 72, 27, 162, 26);
+        // Empty native recipient field uses its placeholder at x=6, with caret before it.
+        let x = if p.compose.to.units.is_empty() { 6 } else { 72 };
+        p.editor_lines = editor(c, &p.compose.to, x, 27, 234 - x, 26);
     }
     let (preview, _) = p.compose.body.preview();
-    let lines = c.wrap(&String::from_utf16_lossy(&preview), 20, 184).len();
-    let height = (lines as i32 * 26 + 8).clamp(34, 230);
+    let body_rows = c.wrap(&String::from_utf16_lossy(&preview), 20, 184);
+    let lines = body_rows.len();
+    // Native recipient-focus capture: body begins no higher than y=91.
+    let max_height = if p.compose.recipient { 163 } else { 230 };
+    let height = (lines as i32 * 26 + 8).clamp(34, max_height);
     let y = 254 - height;
     let bubble = if p.compose.recipient {
         [48, 48, 48, 255]
@@ -50,10 +55,15 @@ pub(super) fn render(c: &mut Canvas, p: &mut Phone) {
     } else if !p.compose.recipient {
         p.editor_lines = editor_sized(c, &p.compose.body, 6, y + 4, 184, height - 8, 20, 26);
     } else {
-        // Rendering the inactive body must not replace the recipient's caret.
-        let caret = c.caret;
-        editor_sized(c, &p.compose.body, 6, y + 4, 184, height - 8, 20, 26);
-        c.caret = caret;
+        // The inactive body has no caret/selection and never changes recipient metrics.
+        let row = body_rows
+            .partition_point(|r| r.start <= p.compose.body.cursor)
+            .saturating_sub(1);
+        let visible = ((height - 4) / 26).max(1) as usize;
+        let start = row.saturating_sub(visible.saturating_sub(1));
+        for (i, line) in body_rows.iter().skip(start).take(visible).enumerate() {
+            c.text(6, y + 4 + i as i32 * 26, &line.text, 20, WHITE);
+        }
     }
     let count = sms::count(&String::from_utf16_lossy(&preview));
     c.text(

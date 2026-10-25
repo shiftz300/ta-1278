@@ -18,16 +18,44 @@ pub(super) fn render(c: &mut Canvas, p: &Phone) {
         if labels.is_empty() {
             c.text(12, 120, "这里没有可显示的内容。", 17, WHITE);
         }
-        let start = p.index.saturating_sub(5);
+        let root = p.music_view == MusicView::Root;
+        let start = if root { 0 } else { p.index.saturating_sub(5) };
         for (i, label) in labels.iter().enumerate().skip(start).take(6) {
-            let y = 24 + (i - start) as i32 * 42;
+            let y = if root && i > 0 {
+                108 + (i - 1) as i32 * 42
+            } else {
+                24 + (i - start) as i32 * 42
+            };
+            let height = if root && i == 0 { 84 } else { 42 };
             if i == p.index {
-                c.rect(0, y, 240, 42, c.accent(3));
+                c.rect(0, y, 240, height, c.accent(3));
             }
-            c.fit(6, y + 10, label, 20, WHITE, 228);
+            let text_y = if root && i == 0 { 54 } else { y + 10 };
+            c.fit(
+                6,
+                text_y,
+                label,
+                20,
+                WHITE,
+                if root && i == 0 { 196 } else { 228 },
+            );
+            if root && i == 0 {
+                // Triangle measured in the native empty-library Home capture.
+                for row in 0_i32..22 {
+                    let width = 19 * (11 - (row - 10).abs()) / 11;
+                    c.rect(214, 55 + row, width.max(1), 1, WHITE);
+                }
+            }
         }
         footer(c, "≡", "←");
-        c.text(98, 296, "选择", 20, WHITE);
+        softkeys::center(
+            c,
+            if root && p.index == 0 {
+                "播放"
+            } else {
+                "选择"
+            },
+        );
         return;
     }
 

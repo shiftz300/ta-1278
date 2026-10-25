@@ -1,5 +1,5 @@
 [workspace]
-members = ["crates/phone-core", "crates/phone-desktop"]
+members = ["crates/phone-core", "crates/phone-desktop", "crates/phone-vfs"]
 resolver = "2"
 
 [workspace.package]
@@ -9,3 +9,12 @@ version = "0.1.0"
 [workspace.dependencies]
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
+
+# Shipping build: keep font coverage while dropping debug information and
+# optimizing across crate boundaries. Dev builds keep normal debug behavior.
+[profile.release]
+opt-level = 2
+lto = "thin"
+codegen-units = 1
+strip = "symbols"
+panic = "abort"

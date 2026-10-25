@@ -1,0 +1,128 @@
+
+<user.bin ELF wrapper>:	file format elf32-littlearm
+
+Disassembly of section .text:
+
+88000000 <.text>:
+883c5e68: 0001         	movs	r1, r0
+883c5e6a: f04f 0000    	mov.w	r0, #0x0
+883c5e6e: d02c         	beq	0x883c5eca <.text+0x3c5eca> @ imm = #0x58
+883c5e70: 292f         	cmp	r1, #0x2f
+883c5e72: d029         	beq	0x883c5ec8 <.text+0x3c5ec8> @ imm = #0x52
+883c5e74: dc14         	bgt	0x883c5ea0 <.text+0x3c5ea0> @ imm = #0x28
+883c5e76: 291b         	cmp	r1, #0x1b
+883c5e78: d026         	beq	0x883c5ec8 <.text+0x3c5ec8> @ imm = #0x4c
+883c5e7a: dc08         	bgt	0x883c5e8e <.text+0x3c5e8e> @ imm = #0x10
+883c5e7c: 290b         	cmp	r1, #0xb
+883c5e7e: d023         	beq	0x883c5ec8 <.text+0x3c5ec8> @ imm = #0x46
+883c5e80: 2911         	cmp	r1, #0x11
+883c5e82: d021         	beq	0x883c5ec8 <.text+0x3c5ec8> @ imm = #0x42
+883c5e84: 2915         	cmp	r1, #0x15
+883c5e86: d01f         	beq	0x883c5ec8 <.text+0x3c5ec8> @ imm = #0x3e
+883c5e88: 2916         	cmp	r1, #0x16
+883c5e8a: d11e         	bne	0x883c5eca <.text+0x3c5eca> @ imm = #0x3c
+883c5e8c: e01c         	b	0x883c5ec8 <.text+0x3c5ec8> @ imm = #0x38
+883c5e8e: 2924         	cmp	r1, #0x24
+883c5e90: d01a         	beq	0x883c5ec8 <.text+0x3c5ec8> @ imm = #0x34
+883c5e92: 2926         	cmp	r1, #0x26
+883c5e94: d018         	beq	0x883c5ec8 <.text+0x3c5ec8> @ imm = #0x30
+883c5e96: 2929         	cmp	r1, #0x29
+883c5e98: d016         	beq	0x883c5ec8 <.text+0x3c5ec8> @ imm = #0x2c
+883c5e9a: 292a         	cmp	r1, #0x2a
+883c5e9c: d115         	bne	0x883c5eca <.text+0x3c5eca> @ imm = #0x2a
+883c5e9e: e013         	b	0x883c5ec8 <.text+0x3c5ec8> @ imm = #0x26
+883c5ea0: 2961         	cmp	r1, #0x61
+883c5ea2: d011         	beq	0x883c5ec8 <.text+0x3c5ec8> @ imm = #0x22
+883c5ea4: dc08         	bgt	0x883c5eb8 <.text+0x3c5eb8> @ imm = #0x10
+883c5ea6: 293d         	cmp	r1, #0x3d
+883c5ea8: d00e         	beq	0x883c5ec8 <.text+0x3c5ec8> @ imm = #0x1c
+883c5eaa: 2951         	cmp	r1, #0x51
+883c5eac: d00c         	beq	0x883c5ec8 <.text+0x3c5ec8> @ imm = #0x18
+883c5eae: 295f         	cmp	r1, #0x5f
+883c5eb0: d00a         	beq	0x883c5ec8 <.text+0x3c5ec8> @ imm = #0x14
+883c5eb2: 2960         	cmp	r1, #0x60
+883c5eb4: d109         	bne	0x883c5eca <.text+0x3c5eca> @ imm = #0x12
+883c5eb6: e007         	b	0x883c5ec8 <.text+0x3c5ec8> @ imm = #0xe
+883c5eb8: 2962         	cmp	r1, #0x62
+883c5eba: d005         	beq	0x883c5ec8 <.text+0x3c5ec8> @ imm = #0xa
+883c5ebc: 2963         	cmp	r1, #0x63
+883c5ebe: d003         	beq	0x883c5ec8 <.text+0x3c5ec8> @ imm = #0x6
+883c5ec0: 296f         	cmp	r1, #0x6f
+883c5ec2: d001         	beq	0x883c5ec8 <.text+0x3c5ec8> @ imm = #0x2
+883c5ec4: 29ff         	cmp	r1, #0xff
+883c5ec6: d100         	bne	0x883c5eca <.text+0x3c5eca> @ imm = #0x0
+883c5ec8: 2001         	movs	r0, #0x1
+883c5eca: 4770         	bx	lr
+
+
+<user.bin ELF wrapper>:	file format elf32-littlearm
+
+Disassembly of section .text:
+
+88000000 <.text>:
+883c407e: e92d 41f0    	push.w	{r4, r5, r6, r7, r8, lr}
+883c4082: 4617         	mov	r7, r2
+883c4084: 460d         	mov	r5, r1
+883c4086: 4680         	mov	r8, r0
+883c4088: 2003         	movs	r0, #0x3
+883c408a: f7fd ffbf    	bl	0x883c200c <.text+0x3c200c> @ imm = #-0x2082
+883c408e: 0004         	movs	r4, r0
+883c4090: d021         	beq	0x883c40d6 <.text+0x3c40d6> @ imm = #0x42
+883c4092: 2d00         	cmp	r5, #0x0
+883c4094: d021         	beq	0x883c40da <.text+0x3c40da> @ imm = #0x42
+883c4096: 2602         	movs	r6, #0x2
+883c4098: 2d04         	cmp	r5, #0x4
+883c409a: d01f         	beq	0x883c40dc <.text+0x3c40dc> @ imm = #0x3e
+883c409c: 2d09         	cmp	r5, #0x9
+883c409e: d01d         	beq	0x883c40dc <.text+0x3c40dc> @ imm = #0x3a
+883c40a0: a04d         	adr	r0, #308 <.text+0x3c40f1>
+883c40a2: 4639         	mov	r1, r7
+883c40a4: f53c ecda    	blx	0x88100a5c <.text+0x100a5c> @ imm = #-0x2c364c
+883c40a8: 7863         	ldrb	r3, [r4, #0x1]
+883c40aa: f2af 4228    	adr.w	r2, #-1064
+883c40ae: 2010         	movs	r0, #0x10
+883c40b0: a14f         	adr	r1, #316 <.text+0x3c4103>
+883c40b2: f53c ece4    	blx	0x88100a7c <.text+0x100a7c> @ imm = #-0x2c3638
+883c40b6: 7860         	ldrb	r0, [r4, #0x1]
+883c40b8: 2800         	cmp	r0, #0x0
+883c40ba: d010         	beq	0x883c40de <.text+0x3c40de> @ imm = #0x20
+883c40bc: 4638         	mov	r0, r7
+883c40be: f001 fed3    	bl	0x883c5e68 <.text+0x3c5e68> @ imm = #0x1da6
+883c40c2: 2800         	cmp	r0, #0x0
+883c40c4: d00b         	beq	0x883c40de <.text+0x3c40de> @ imm = #0x16
+883c40c6: 7860         	ldrb	r0, [r4, #0x1]
+883c40c8: 1e40         	subs	r0, r0, #0x1
+883c40ca: 7060         	strb	r0, [r4, #0x1]
+883c40cc: 60e6         	str	r6, [r4, #0xc]
+883c40ce: 6126         	str	r6, [r4, #0x10]
+883c40d0: e8bd 41f0    	pop.w	{r4, r5, r6, r7, r8, lr}
+883c40d4: e7ac         	b	0x883c4030 <.text+0x3c4030> @ imm = #-0xa8
+883c40d6: a21b         	adr	r2, #108 <.text+0x3c40f5>
+883c40d8: e0a0         	b	0x883c421c <.text+0x3c421c> @ imm = #0x140
+883c40da: e0a1         	b	0x883c4220 <.text+0x3c4220> @ imm = #0x142
+883c40dc: e0a7         	b	0x883c422e <.text+0x3c422e> @ imm = #0x14e
+883c40de: e0a9         	b	0x883c4234 <.text+0x3c4234> @ imm = #0x152
+
+
+<user.bin ELF wrapper>:	file format elf32-littlearm
+
+Disassembly of section .text:
+
+88000000 <.text>:
+883c421a: 0000         	movs	r0, r0
+883c421c: a1e7         	adr	r1, #924 <.text+0x3c4307>
+883c421e: e001         	b	0x883c4224 <.text+0x3c4224> @ imm = #0x2
+883c4220: a2f3         	adr	r2, #972 <.text+0x3c4317>
+883c4222: a1f4         	adr	r1, #976 <.text+0x3c431a>
+883c4224: e8bd 41f0    	pop.w	{r4, r5, r6, r7, r8, lr}
+883c4228: 2010         	movs	r0, #0x10
+883c422a: f53b b957    	b.w	0x880ff4dc <.text+0xff4dc> @ imm = #-0x2c4d52
+883c422e: 2200         	movs	r2, #0x0
+883c4230: 60c6         	str	r6, [r0, #0xc]
+883c4232: e001         	b	0x883c4238 <.text+0x3c4238> @ imm = #0x2
+883c4234: 2201         	movs	r2, #0x1
+883c4236: 60e6         	str	r6, [r4, #0xc]
+883c4238: 4629         	mov	r1, r5
+883c423a: 4640         	mov	r0, r8
+883c423c: e8bd 41f0    	pop.w	{r4, r5, r6, r7, r8, lr}
+883c4240: e564         	b	0x883c3d0c <.text+0x3c3d0c> @ imm = #-0x538

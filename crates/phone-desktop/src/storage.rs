@@ -153,6 +153,13 @@ pub fn load_organizer(dir: &Path) -> Result<crate::phone::organizer::LocalData, 
     }
     Ok(data)
 }
+pub fn load_snake(dir: &Path) -> Result<crate::phone::snake::SnakeData, String> {
+    let data: crate::phone::snake::SnakeData = load_json(dir, "snake.json", 4096)?;
+    if !data.valid() {
+        return Err("Invalid Snake records; original retained".into());
+    }
+    Ok(data)
+}
 #[cfg(test)]
 mod tests {
     use super::*;

@@ -2,10 +2,10 @@
 # Build a local, ad-hoc signed app bundle. No installation or device access.
 set -eu
 cd "$(dirname "$0")/.."
-cargo build --locked -p phone-desktop
+cargo build --release --locked -p phone-desktop
 bundle="target/TA1278.app"
 mkdir -p "$bundle/Contents/MacOS"
-cp target/debug/phone-desktop "$bundle/Contents/MacOS/phone-desktop.new"
+cp target/release/phone-desktop "$bundle/Contents/MacOS/phone-desktop.new"
 mv -f "$bundle/Contents/MacOS/phone-desktop.new" "$bundle/Contents/MacOS/phone-desktop"
 cat > "$bundle/Contents/Info.plist" <<'PLIST'
 <?xml version="1.0" encoding="UTF-8"?>
@@ -22,8 +22,9 @@ cat > "$bundle/Contents/Info.plist" <<'PLIST'
 </dict></plist>
 PLIST
 notices="$bundle/Contents/Resources/Notices"
-mkdir -p "$notices/fonts" "$notices/input"
+mkdir -p "$notices/fonts" "$notices/input" "$notices/audio"
 cp THIRD_PARTY_NOTICES.md "$notices/"
+cp third-party-licenses/audio/*.txt "$notices/audio/"
 cp assets/README.md assets/sources.json "$notices/"
 cp assets/fonts/*.txt "$notices/fonts/"
 cp assets/input/*LICENSE* assets/input/*AUTHORS* assets/input/CC-BY-SA-4.0.txt assets/input/FrequencyWords-README.md "$notices/input/"

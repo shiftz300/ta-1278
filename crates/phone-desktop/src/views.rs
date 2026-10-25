@@ -1,7 +1,10 @@
+mod alarm;
 mod browser;
 mod browser_chrome;
 mod browser_layout;
 mod compose;
+mod files;
+mod mail;
 mod music;
 mod organizer;
 mod pickers;
@@ -45,24 +48,7 @@ pub fn render(c: &mut Canvas, p: &mut Phone) {
             );
             let w = c.width(&s, 18);
             c.text((240 - w) / 2, 153, &s, 18, WHITE);
-            let shortcuts = crate::phone::settings::SHORTCUTS;
-            c.fit(
-                6,
-                296,
-                shortcuts[p.preferences.left_shortcut],
-                16,
-                WHITE,
-                67,
-            );
-            c.fit(
-                166,
-                296,
-                shortcuts[p.preferences.right_shortcut],
-                16,
-                WHITE,
-                68,
-            );
-            c.text(90, 296, "功能表", 20, WHITE);
+            softkeys::home(c, p.preferences.left_shortcut, p.preferences.right_shortcut);
         }
         Screen::Menu => {
             let entries = &crate::menu::ENTRIES;
@@ -98,38 +84,8 @@ pub fn render(c: &mut Canvas, p: &mut Phone) {
             footer(c, "", "←");
             c.text(98, 296, "确认", 20, WHITE);
         }
-        Screen::Drafts | Screen::Outbox => {
-            let drafts = p.screen == Screen::Drafts;
-            title(
-                c,
-                if drafts {
-                    "草稿"
-                } else {
-                    "发件箱 · 未发送"
-                },
-            );
-            let items: Vec<_> = if drafts {
-                &p.mailbox.drafts
-            } else {
-                &p.mailbox.outbox
-            }
-            .iter()
-            .map(|m| {
-                format!(
-                    "{}  {}",
-                    if m.to.is_empty() {
-                        "无收件人"
-                    } else {
-                        &m.to
-                    },
-                    m.body.replace('\n', " ")
-                )
-            })
-            .collect();
-            list(c, &items, p.index, 54, 210);
-            c.text(8, 273, "删除键：删除这条信息", 12, MUTED);
-            footer(c, "打开", "返回");
-        }
+        Screen::Drafts | Screen::Outbox => mail::folder(c, p),
+        Screen::Mail(page) => mail::render(c, p, page),
         Screen::Compose => compose::render(c, p),
         Screen::Browser => browser::render(c, p),
         Screen::Music => music::render(c, p),
@@ -288,6 +244,7 @@ pub fn render(c: &mut Canvas, p: &mut Phone) {
     if let Some(e) = p.editor() {
         crate::candidate_view::render(c, e);
     }
+    alarm::alert(c, p);
 }
 fn status(c: &mut Canvas) {
     c.text(184, 1, "离线", 12, WHITE);
@@ -302,33 +259,16 @@ fn title(c: &mut Canvas, s: &str) {
     c.fit(6, 23, s, 18, WHITE, 228);
 }
 fn footer(c: &mut Canvas, left: &str, right: &str) {
-    c.text(6, 294, left, 20, WHITE);
-    let width = c.width(right, 20);
-    c.text(234 - width, 294, right, 20, WHITE);
-}
-fn list(c: &mut Canvas, labels: &[String], index: usize, y: i32, height: i32) {
-    if labels.is_empty() {
-        c.text(12, y + 20, "空", 16, MUTED);
-        return;
+    match left {
+        "≡" => c.softkey_symbol(false, 5, 287),
+        "←" => c.softkey_symbol(true, 5, 287),
+        _ => c.text(6, 294, left, 20, WHITE),
     }
-    let visible = (height / 32) as usize;
-    let start = index.saturating_sub(visible.saturating_sub(1));
-    for (i, s) in labels.iter().enumerate().skip(start).take(visible) {
-        let yy = y + (i - start) as i32 * 32;
-        if i == index {
-            c.rect(7, yy, 226, 30, c.accent(3));
-        }
-        c.fit(13, yy + 5, s, 16, WHITE, 214);
-    }
-    if labels.len() > visible {
-        c.rect(236, y, 2, height, [44, 60, 78, 255]);
-        c.rect(
-            236,
-            y + (height - 10) * index as i32 / (labels.len() - 1) as i32,
-            2,
-            10,
-            WHITE,
-        );
+    if right == "←" {
+        c.softkey_symbol(true, 208, 287);
+    } else {
+        let width = c.width(right, 20);
+        c.text(234 - width, 294, right, 20, WHITE);
     }
 }
 fn editor(c: &mut Canvas, e: &Editor, x: i32, y: i32, width: i32, height: i32) -> Vec<VisualRow> {

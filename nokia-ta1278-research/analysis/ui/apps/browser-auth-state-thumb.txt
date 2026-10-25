@@ -1,0 +1,112 @@
+
+PROJECT_ROOT/analysis/ui/user.analysis-only.elf:	file format elf32-littlearm
+
+Disassembly of section .text:
+
+88000000 <.text>:
+8835c250: b570         	push	{r4, r5, r6, lr}
+8835c252: 4cfe         	ldr	r4, [pc, #0x3f8]        @ 0x8835c64c <.text+0x35c64c>
+8835c254: 2500         	movs	r5, #0x0
+8835c256: 69a0         	ldr	r0, [r4, #0x18]
+8835c258: b130         	cbz	r0, 0x8835c268 <.text+0x35c268> @ imm = #0xc
+8835c25a: f240 3272    	movw	r2, #0x372
+8835c25e: f2af 01bc    	adr.w	r1, #-188
+8835c262: f5a4 ec10    	blx	0x88100a84 <.text+0x100a84> @ imm = #-0x25b7e0
+8835c266: 61a5         	str	r5, [r4, #0x18]
+8835c268: 7225         	strb	r5, [r4, #0x8]
+8835c26a: bd70         	pop	{r4, r5, r6, pc}
+8835c26c: e92d 41f0    	push.w	{r4, r5, r6, r7, r8, lr}
+8835c270: ea5f 0800    	movs.w	r8, r0
+8835c274: f04f 0400    	mov.w	r4, #0x0
+8835c278: d020         	beq	0x8835c2bc <.text+0x35c2bc> @ imm = #0x40
+8835c27a: f7ff ffe9    	bl	0x8835c250 <.text+0x35c250> @ imm = #-0x2e
+8835c27e: 4640         	mov	r0, r8
+8835c280: f049 fa84    	bl	0x883a578c <.text+0x3a578c> @ imm = #0x49508
+8835c284: b286         	uxth	r6, r0
+8835c286: f240 3220    	movw	r2, #0x320
+8835c28a: eb06 0546    	add.w	r5, r6, r6, lsl #1
+8835c28e: f2af 01ec    	adr.w	r1, #-236
+8835c292: 1c6d         	adds	r5, r5, #0x1
+8835c294: 4628         	mov	r0, r5
+8835c296: f5a4 ebee    	blx	0x88100a74 <.text+0x100a74> @ imm = #-0x25b824
+8835c29a: 4fec         	ldr	r7, [pc, #0x3b0]        @ 0x8835c64c <.text+0x35c64c>
+8835c29c: 61b8         	str	r0, [r7, #0x18]
+8835c29e: b178         	cbz	r0, 0x8835c2c0 <.text+0x35c2c0> @ imm = #0x1e
+8835c2a0: b115         	cbz	r5, 0x8835c2a8 <.text+0x35c2a8> @ imm = #0x4
+8835c2a2: 4629         	mov	r1, r5
+8835c2a4: f5a4 ebf6    	blx	0x88100a94 <.text+0x100a94> @ imm = #-0x25b814
+8835c2a8: 69b8         	ldr	r0, [r7, #0x18]
+8835c2aa: 4633         	mov	r3, r6
+8835c2ac: 4642         	mov	r2, r8
+8835c2ae: 4629         	mov	r1, r5
+8835c2b0: f083 fd4e    	bl	0x883dfd50 <.text+0x3dfd50> @ imm = #0x83a9c
+8835c2b4: 2001         	movs	r0, #0x1
+8835c2b6: 7238         	strb	r0, [r7, #0x8]
+8835c2b8: 4620         	mov	r0, r4
+8835c2ba: e69f         	b	0x8835bffc <.text+0x35bffc> @ imm = #-0x2c2
+8835c2bc: 2401         	movs	r4, #0x1
+8835c2be: e7fb         	b	0x8835c2b8 <.text+0x35c2b8> @ imm = #-0xa
+8835c2c0: 4633         	mov	r3, r6
+8835c2c2: f2af 129c    	adr.w	r2, #-412
+8835c2c6: 2010         	movs	r0, #0x10
+8835c2c8: a1e1         	adr	r1, #900 <.text+0x35c3ad>
+8835c2ca: f5a4 ebd8    	blx	0x88100a7c <.text+0x100a7c> @ imm = #-0x25b850
+8835c2ce: e7f5         	b	0x8835c2bc <.text+0x35c2bc> @ imm = #-0x16
+8835c2d0: b570         	push	{r4, r5, r6, lr}
+8835c2d2: 4cde         	ldr	r4, [pc, #0x378]        @ 0x8835c64c <.text+0x35c64c>
+8835c2d4: 2500         	movs	r5, #0x0
+8835c2d6: 69e0         	ldr	r0, [r4, #0x1c]
+8835c2d8: b130         	cbz	r0, 0x8835c2e8 <.text+0x35c2e8> @ imm = #0xc
+8835c2da: f240 3282    	movw	r2, #0x382
+8835c2de: f2af 113c    	adr.w	r1, #-316
+8835c2e2: f5a4 ebd0    	blx	0x88100a84 <.text+0x100a84> @ imm = #-0x25b860
+8835c2e6: 61e5         	str	r5, [r4, #0x1c]
+8835c2e8: 7265         	strb	r5, [r4, #0x9]
+8835c2ea: bd70         	pop	{r4, r5, r6, pc}
+8835c2ec: e92d 41f0    	push.w	{r4, r5, r6, r7, r8, lr}
+8835c2f0: 0007         	movs	r7, r0
+8835c2f2: f04f 0500    	mov.w	r5, #0x0
+8835c2f6: d01a         	beq	0x8835c32e <.text+0x35c32e> @ imm = #0x34
+8835c2f8: f7ff ffea    	bl	0x8835c2d0 <.text+0x35c2d0> @ imm = #-0x2c
+8835c2fc: 4638         	mov	r0, r7
+8835c2fe: f049 fa45    	bl	0x883a578c <.text+0x3a578c> @ imm = #0x4948a
+8835c302: b284         	uxth	r4, r0
+8835c304: f240 3248    	movw	r2, #0x348
+8835c308: f2af 1168    	adr.w	r1, #-360
+8835c30c: 1c60         	adds	r0, r4, #0x1
+8835c30e: f5a4 ebb2    	blx	0x88100a74 <.text+0x100a74> @ imm = #-0x25b89c
+8835c312: 4ece         	ldr	r6, [pc, #0x338]        @ 0x8835c64c <.text+0x35c64c>
+8835c314: 61f0         	str	r0, [r6, #0x1c]
+8835c316: b160         	cbz	r0, 0x8835c332 <.text+0x35c332> @ imm = #0x18
+8835c318: 1c61         	adds	r1, r4, #0x1
+8835c31a: f5a4 ebbc    	blx	0x88100a94 <.text+0x100a94> @ imm = #-0x25b888
+8835c31e: 69f1         	ldr	r1, [r6, #0x1c]
+8835c320: 4638         	mov	r0, r7
+8835c322: f048 ff0c    	bl	0x883a513e <.text+0x3a513e> @ imm = #0x48e18
+8835c326: 2001         	movs	r0, #0x1
+8835c328: 7270         	strb	r0, [r6, #0x9]
+8835c32a: 4628         	mov	r0, r5
+8835c32c: e666         	b	0x8835bffc <.text+0x35bffc> @ imm = #-0x334
+8835c32e: 2501         	movs	r5, #0x1
+8835c330: e7fb         	b	0x8835c32a <.text+0x35c32a> @ imm = #-0xa
+8835c332: 2010         	movs	r0, #0x10
+8835c334: 4623         	mov	r3, r4
+8835c336: a2d2         	adr	r2, #840 <.text+0x35c40c>
+8835c338: a1d2         	adr	r1, #840 <.text+0x35c40e>
+8835c33a: f5a4 eba0    	blx	0x88100a7c <.text+0x100a7c> @ imm = #-0x25b8c0
+8835c33e: e7f6         	b	0x8835c32e <.text+0x35c32e> @ imm = #-0x14
+8835c340: 48c2         	ldr	r0, [pc, #0x308]        @ 0x8835c64c <.text+0x35c64c>
+8835c342: 7a40         	ldrb	r0, [r0, #0x9]
+8835c344: 4770         	bx	lr
+8835c346: 48c1         	ldr	r0, [pc, #0x304]        @ 0x8835c64c <.text+0x35c64c>
+8835c348: 7a00         	ldrb	r0, [r0, #0x8]
+8835c34a: 4770         	bx	lr
+8835c34c: 48bf         	ldr	r0, [pc, #0x2fc]        @ 0x8835c64c <.text+0x35c64c>
+8835c34e: 6940         	ldr	r0, [r0, #0x14]
+8835c350: 4770         	bx	lr
+8835c352: 48be         	ldr	r0, [pc, #0x2f8]        @ 0x8835c64c <.text+0x35c64c>
+8835c354: 6980         	ldr	r0, [r0, #0x18]
+8835c356: 4770         	bx	lr
+8835c358: 48bc         	ldr	r0, [pc, #0x2f0]        @ 0x8835c64c <.text+0x35c64c>
+8835c35a: 69c0         	ldr	r0, [r0, #0x1c]
+8835c35c: 4770         	bx	lr

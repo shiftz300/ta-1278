@@ -1,0 +1,35 @@
+
+PROJECT_ROOT/analysis/ui/user.analysis-only.elf:	file format elf32-littlearm
+
+Disassembly of section .text:
+
+88000000 <.text>:
+88b65986: b510         	push	{r4, lr}
+88b65988: 2400         	movs	r4, #0x0
+88b6598a: b108         	cbz	r0, 0x88b65990 <.text+0xb65990> @ imm = #0x2
+88b6598c: 6804         	ldr	r4, [r0]
+88b6598e: e004         	b	0x88b6599a <.text+0xb6599a> @ imm = #0x8
+88b65990: 4a61         	ldr	r2, [pc, #0x184]        @ 0x88b65b18 <.text+0xb65b18>
+88b65992: 2010         	movs	r0, #0x10
+88b65994: a179         	adr	r1, #484 <.text+0xb65a11>
+88b65996: f59b c872    	blx	0x88100a7c <.text+0x100a7c> @ imm = #-0xa64f1c
+88b6599a: 4620         	mov	r0, r4
+88b6599c: f7f6 dd03    	bl	0x8835c3a6 <.text+0x35c3a6> @ imm = #-0x8095fa
+88b659a0: 2000         	movs	r0, #0x0
+88b659a2: f7f6 dac4    	bl	0x8835bf2e <.text+0x35bf2e> @ imm = #-0x809a78
+88b659a6: 2000         	movs	r0, #0x0
+88b659a8: f7f6 daba    	bl	0x8835bf20 <.text+0x35bf20> @ imm = #-0x809a8c
+88b659ac: f7f6 dacf    	bl	0x8835bf4e <.text+0x35bf4e> @ imm = #-0x809a62
+88b659b0: 2000         	movs	r0, #0x0
+88b659b2: f7f6 dcf0    	bl	0x8835c396 <.text+0x35c396> @ imm = #-0x809620
+88b659b6: 2000         	movs	r0, #0x0
+88b659b8: f7f6 dac1    	bl	0x8835bf3e <.text+0x35bf3e> @ imm = #-0x809a7e
+88b659bc: b924         	cbnz	r4, 0x88b659c8 <.text+0xb659c8> @ imm = #0x8
+88b659be: 2000         	movs	r0, #0x0
+88b659c0: f7f6 dcf9    	bl	0x8835c3b6 <.text+0x35c3b6> @ imm = #-0x80960e
+88b659c4: f7fb f873    	bl	0x88b60aae <.text+0xb60aae> @ imm = #-0x4f1a
+88b659c8: a077         	adr	r0, #476 <.text+0xb65a43>
+88b659ca: 4621         	mov	r1, r4
+88b659cc: f59b c846    	blx	0x88100a5c <.text+0x100a5c> @ imm = #-0xa64f74
+88b659d0: 2001         	movs	r0, #0x1
+88b659d2: bd10         	pop	{r4, pc}

@@ -57,7 +57,7 @@ def main():
  b=(R/'analysis/work/system-20261025T054301+0800/user.bin').read_bytes();known,_=defines(['caf.h','mmk_msg.h','mmi_appmsg.h']);names=collections.defaultdict(list)
  for k,v in known.items():
   if k.startswith(('MSG_','MMI_')):names[v].append(k)
- specs=[('browser-page',0x88b62014,'r9'),('music-player',0x88acf318,'r7'),('sms-options',0x8839bf94,'r6')]
+ specs=[('browser-page',0x88b62014,'r9'),('music-player',0x88acf318,'r7'),('sms-options',0x8839bf94,'r6'),('music-view-callback',0x8868ac56,'r4')]
  output=[]
  for name,start,reg in specs:
   ins=parse(O/(name+'-thumb.txt'));groups=collections.defaultdict(list)
@@ -70,7 +70,9 @@ def main():
     _,_,trace=run(ins,b,start,reg,ev)
     rows.append({'event':hex(ev),'framework_names':sorted(names[ev]),'boundary_pc':hex(stop),'boundary_instruction':ins[stop][3] if stop in ins else None,'reason':reason,'comparison_path':[hex(x) for x in trace]})
   assert all(x['reason']!='step bound' for x in rows)
-  output.append({'name':name,'entry':hex(start),'event_register':reg,'assumptions':'Music routing applies only when earlier child/view handler returns not handled. No state-dependent body evaluated.','default_boundary':hex(dominant[0]),'default_event_count':len(groups[dominant]),'nondefault_routes':sorted(rows,key=lambda x:int(x['event'],16))})
+  scope={'music-player':'Applies only when earlier child/view handler returns not handled.',
+         'music-view-callback':'Applies to the callback installed by 0x8868ace4; main handler invokes it first.'}.get(name,'Application comparison tree only.')
+  output.append({'name':name,'entry':hex(start),'event_register':reg,'assumptions':scope+' No state-dependent body evaluated.','default_boundary':hex(dominant[0]),'default_event_count':len(groups[dominant]),'nondefault_routes':sorted(rows,key=lambda x:int(x['event'],16))})
  (O/'event-routes.json').write_text(json.dumps({'method':'Exhaustive evaluation of 65536 unsigned event IDs in bounded comparison trees, no firmware calls or effects. Boundary is first non-allowlisted instruction, not necessarily start of handler body. Names are cross-version.','source_sha256':hashlib.sha256(b).hexdigest(),'applications':output},indent=2)+'\n')
  for x in output:print(x['name'],len(x['nondefault_routes']),'non-default IDs')
 if __name__=='__main__':main()

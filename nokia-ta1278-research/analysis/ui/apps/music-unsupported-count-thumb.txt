@@ -1,0 +1,18 @@
+
+PROJECT_ROOT/analysis/ui/user.analysis-only.elf:	file format elf32-littlearm
+
+Disassembly of section .text:
+
+88000000 <.text>:
+886010b6: 486f         	ldr	r0, [pc, #0x1bc]        @ 0x88601274 <.text+0x601274>
+886010b8: b510         	push	{r4, lr}
+886010ba: 6841         	ldr	r1, [r0, #0x4]
+886010bc: 2000         	movs	r0, #0x0
+886010be: 2900         	cmp	r1, #0x0
+886010c0: d006         	beq	0x886010d0 <.text+0x6010d0> @ imm = #0xc
+886010c2: f8b1 4048    	ldrh.w	r4, [r1, #0x48]
+886010c6: a0f1         	adr	r0, #964 <.text+0x6011bb>
+886010c8: 4621         	mov	r1, r4
+886010ca: f6ff e4c8    	blx	0x88100a5c <.text+0x100a5c> @ imm = #-0x500670
+886010ce: 4620         	mov	r0, r4
+886010d0: bd10         	pop	{r4, pc}

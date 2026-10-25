@@ -108,3 +108,15 @@
 - 新取回的音乐设置/菜单/头文件、浏览器 ID/导出头、短信菜单和 ID 头见 [新增路径清单](analysis/ui/app-reference-requests.json)，每份固定 URL、原始编码、保存字节数和 SHA 见 [provenance](tools/upstream-reference/mmi-framework/provenance.json)。未将参考文本重新发布到 Git。
 
 可信度：本机原始字节及可复核跳转为 A；公开不同版本源码只为 B。完整应用文档在 [apps](analysis/ui/apps/README.md) 中明确标出复刻策略 P，不能作为原机逆向证据。
+
+## 2026-10-25 应用算法继续逆向
+
+新增 10 份固定版本参考文本，合计 **59 份**。逐文件路径、URL、UTF-8/LF 保存哈希和原始编码均在 [provenance.json](tools/upstream-reference/mmi-framework/provenance.json)。这 10 份为 brw_export.h、brw_core_adapter.h、brw_core_api.h、brw_control_api.h、mmisms_edit.c、mmisms_send.c、mmisms_sendpromptwin.c、mmisms_appcontrol.c、mmisms_app.h、mmitheme_edit.c。只下载文本用于关联，未安装、编译或执行，参考全文继续排除在 Git 外。
+
+- [浏览器控制消息定义](https://github.com/obaidi2005/ZW217_W19_V4.1_yisai/blob/d48d55e028c13b6f50c291cbb7ea29201c3c8432/MS_MMI_Main/source/mmi_app/app/browser/control/inc/brw_control_api.h)：用于给本机 22 项 TBB 表关联消息名。索引/目标由本机字节产生，名称为跨版本 B。
+- [短信发送](https://github.com/obaidi2005/ZW217_W19_V4.1_yisai/blob/d48d55e028c13b6f50c291cbb7ea29201c3c8432/MS_MMI_Main/source/mmi_app/app/sms/c/mmisms_send.c) 与 [正文编码](https://github.com/obaidi2005/ZW217_W19_V4.1_yisai/blob/d48d55e028c13b6f50c291cbb7ea29201c3c8432/MS_MMI_Main/source/mmi_app/app/sms/c/mmisms_edit.c)：仅辅助字段/函数名称。重试计时、取消原因、编码配置均存在条件编译或版本差异，不能照搬。
+- 本机直接证据：`88b50d34` 容量分支、`883c5e68` 重试比较树、`88b65c54 → 883a51dc → 883b4724` 地址处理、`88b62b56` 异步表、`8868ace4` 音乐回调安装。完整地址、范围哈希、核验脚本见 [本机算法](analysis/ui/apps/native-algorithms.md)。可信度 A，但只证明该版本编译路径，未验证全部运行时开关。
+
+没有取回新的固件包，没有上传固件或设备数据。本轮网络仅用于上述公开参考文本。
+
+2026-10-25 增补：同一固定提交新增 ctrltextedit.c、ctrlbaseflex.c、ctrlbaseflex_display.c 和 brw_input.c，合计 63 份。brw_input.c 仅提供输入历史线索，未拿它当表单处理证据。所有 URL、编码和本地 SHA 在 provenance.json；仅下载/阅读，无执行、无重新发布源码。

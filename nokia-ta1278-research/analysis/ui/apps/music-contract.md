@@ -18,7 +18,7 @@
 
 M1 的 helper `88aceea6/88acee74` 与公共播放器源码的上一首/下一首调用形状关联为 B；短按/长按/释放分离本身是 A。重复行文本偏移和三语言值见 music-repeat-settings.json。标签存在只证明配置项，不能单凭它证明全部队列边界处理。
 
-中心键 Play/Pause 的确切子视图实现未追到闭合。本轮参考模型提供 toggle 作为 P-MUSIC-TRANSPORT，而不是虚构一个已找到的原生 fa1b 分支。
+中心键路径已补全：视图安装器 `8868ace4` 写入回调 `8868ac45`，`fa1b → 88acec7a → 启用检查 → 883f125a → 883f120c`，按主状态/音频子状态选择延迟播放、Pause 或 Resume。见 [本机算法](native-algorithms.md#音乐中心键补全) 和 music-center-route.json。高级模型的 toggle 仍为 P-MUSIC-TRANSPORT；低层数值状态规则已独立恢复，物理键转换和全部服务回调未验收。
 
 ## 状态数据与流程
 
@@ -27,14 +27,14 @@ M1 的 helper `88aceea6/88acee74` 与公共播放器源码的上一首/下一首
 | 输入/条件 | 复刻动作 | 等级 |
 |---|---|---|
 | 选择一首 | 建立队列，打开播放页；适配器准备音频 | P-MUSIC-QUEUE |
-| 中心确认 | playing↔paused；stopped→playing | P-MUSIC-TRANSPORT，中心子视图未闭合 |
+| 中心确认 | playing↔paused；stopped→playing | P-MUSIC-TRANSPORT；低层中心回调已闭合 |
 | 左/右按下 | 记录方向，不立即跳歌 | M1 |
 | 左/右普通释放 | 根据方向上一首/下一首，清按住 | M1 A/B |
 | 左/右长按 | 符合传输状态才开始 seek | M2；精确可 seek 状态为 P |
 | seek tick | 改变位置并限制在 0…duration | P：每 tick 5 秒是参考配置，不是原机参数 |
 | 长按释放/失焦 | 停止 seek，释放不得附加跳歌 | M3 + P 的统一失焦处理 |
 | 上/下 | 音量增/减，边界饱和 | M4 + P：模型 0…10、初始 5 未宣称原机值 |
-| 返回 | 回曲目库，继续原传输状态 | P-MUSIC-BACKGROUND；M7 说明原机不是单纯停止，但完整后台条件未知 |
+| 返回 | 回曲目库，继续原传输状态 | P-MUSIC-BACKGROUND；M7 数值条件已解，review helper 的媒体副作用仍未知 |
 | 文件结束/重复 Off | 下一首；队尾停止 | P-MUSIC-QUEUE |
 | 文件结束/Repeat all | 下一首；队尾回第一首 | P-MUSIC-QUEUE |
 | 文件结束/Repeat one | 当前首位置归零 | P-MUSIC-QUEUE |
@@ -43,6 +43,8 @@ M1 的 helper `88aceea6/88acee74` 与公共播放器源码的上一首/下一首
 
 重复值为 A：0=Off、1=All、2=One；模型使用字符串 off/all/one，适配器负责上述映射。注意文件自然结束和用户按“下一首”应是不同事件：参考策略下 Repeat one 只影响自然结束，用户仍能切歌。
 
+已进一步恢复两种模式转换、`600066` 播放完成回调、`619b68` 索引算术、`61b452` 队尾判断及不支持曲目终止保护，见 [交互内核](interaction-core.md)。这些有独立数值规则；高级队列模型的随机排列、媒体 helper 副作用及回调重入仍不声明原样恢复。
+
 歌词、频谱、后台状态栏图标、音效均有源码/资源线索，但不在本轮已实现模型内。蓝牙/耳机拔出、来电抢占、恢复播放位置、播放列表增删重命名和存储拔出需外部适配器事件；原机精确策略未恢复，不应自动称与 Nokia 相同。
 
 ## 可接入的媒体适配器
@@ -50,3 +52,5 @@ M1 的 helper `88aceea6/88acee74` 与公共播放器源码的上一首/下一首
 `prepare(track_id)`、`play()`、`pause()`、`seek(position)`、`volume(level)`、`stop()`；回传 duration/position/finished/error/interrupted/resumed。模型不调用原始固件二进制，不需要运行 Nokia 编解码器。播放列表保存格式由新系统定义；原机交互素材可直接复用。
 
 验收已有：短按只在释放跳歌、长按 seek 后不跳歌、seek 边界和失焦、三种 repeat 合成行为、shuffle 保持当前曲目并校验排列、音量饱和、空库与错误。没有实际音频播放、耳机/蓝牙或手机 UI 验收。
+
+返回的条件与有序调用见 [交互内核](interaction-core.md)，并提供 `music_back_plan()`。

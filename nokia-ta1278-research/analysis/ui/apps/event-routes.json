@@ -6,7 +6,7 @@
       "name": "browser-page",
       "entry": "0x88b62014",
       "event_register": "r9",
-      "assumptions": "Music routing applies only when earlier child/view handler returns not handled. No state-dependent body evaluated.",
+      "assumptions": "Application comparison tree only. No state-dependent body evaluated.",
       "default_boundary": "0x88b620e4",
       "default_event_count": 65504,
       "nondefault_routes": [
@@ -1024,7 +1024,7 @@
       "name": "music-player",
       "entry": "0x88acf318",
       "event_register": "r7",
-      "assumptions": "Music routing applies only when earlier child/view handler returns not handled. No state-dependent body evaluated.",
+      "assumptions": "Applies only when earlier child/view handler returns not handled. No state-dependent body evaluated.",
       "default_boundary": "0x88acf8c8",
       "default_event_count": 65497,
       "nondefault_routes": [
@@ -2324,7 +2324,7 @@
       "name": "sms-options",
       "entry": "0x8839bf94",
       "event_register": "r6",
-      "assumptions": "Music routing applies only when earlier child/view handler returns not handled. No state-dependent body evaluated.",
+      "assumptions": "Application comparison tree only. No state-dependent body evaluated.",
       "default_boundary": "0x8839bfe4",
       "default_event_count": 65527,
       "nondefault_routes": [
@@ -2548,6 +2548,91 @@
             "0x8839bfdc",
             "0x8839bfde",
             "0x8839bff2"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "music-view-callback",
+      "entry": "0x8868ac56",
+      "event_register": "r4",
+      "assumptions": "Applies to the callback installed by 0x8868ace4; main handler invokes it first. No state-dependent body evaluated.",
+      "default_boundary": "0x8868ac74",
+      "default_event_count": 65532,
+      "nondefault_routes": [
+        {
+          "event": "0xe074",
+          "framework_names": [
+            "MSG_NOTIFY_ANIM_UPDATE_END"
+          ],
+          "boundary_pc": "0x8868accc",
+          "boundary_instruction": "8868accc: f566 fa8d    \tbl\t0x883f11ea <.text+0x3f11ea> @ imm = #-0x299ae6",
+          "reason": "side-effect boundary: bl",
+          "comparison_path": [
+            "0x8868ac56",
+            "0x8868ac5a",
+            "0x8868ac5c",
+            "0x8868acc8",
+            "0x8868acca"
+          ]
+        },
+        {
+          "event": "0xf021",
+          "framework_names": [
+            "MSG_OPEN_WINDOW"
+          ],
+          "boundary_pc": "0x8868ac82",
+          "boundary_instruction": "8868ac82: f774 fb55    \tbl\t0x885ff330 <.text+0x5ff330> @ imm = #-0x8b956",
+          "reason": "side-effect boundary: bl",
+          "comparison_path": [
+            "0x8868ac56",
+            "0x8868ac5a",
+            "0x8868ac5c",
+            "0x8868ac5e",
+            "0x8868ac62",
+            "0x8868ac64"
+          ]
+        },
+        {
+          "event": "0xf026",
+          "framework_names": [
+            "MSG_LCD_SWITCH"
+          ],
+          "boundary_pc": "0x8868acb2",
+          "boundary_instruction": "8868acb2: f044 f02f    \tbl\t0x88aced14 <.text+0xaced14> @ imm = #0x44405e",
+          "reason": "side-effect boundary: bl",
+          "comparison_path": [
+            "0x8868ac56",
+            "0x8868ac5a",
+            "0x8868ac5c",
+            "0x8868ac5e",
+            "0x8868ac62",
+            "0x8868ac64",
+            "0x8868ac66",
+            "0x8868ac68"
+          ]
+        },
+        {
+          "event": "0xfa1b",
+          "framework_names": [
+            "MSG_APP_WEB",
+            "MSG_KEYDOWN_WEB"
+          ],
+          "boundary_pc": "0x8868aca6",
+          "boundary_instruction": "8868aca6: 4632         \tmov\tr2, r6",
+          "reason": "unknown operand: mov",
+          "comparison_path": [
+            "0x8868ac56",
+            "0x8868ac5a",
+            "0x8868ac5c",
+            "0x8868ac5e",
+            "0x8868ac62",
+            "0x8868ac64",
+            "0x8868ac66",
+            "0x8868ac68",
+            "0x8868ac6a",
+            "0x8868ac6e",
+            "0x8868ac70"
           ]
         }
       ]

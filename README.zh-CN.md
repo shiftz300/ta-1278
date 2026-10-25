@@ -9,6 +9,7 @@
 ## 内容
 
 - [应用逻辑与参考模型](nokia-ta1278-research/analysis/ui/apps/README.md)
+- [短信、浏览器和音乐的原生规则](nokia-ta1278-research/analysis/ui/apps/native-algorithms.md)
 - [研究结果与未解决问题](nokia-ta1278-research/analysis/ui/reverse-engineering-status.md)
 - [字体](nokia-ta1278-research/analysis/ui/fonts/font-preview.html)与[素材](nokia-ta1278-research/analysis/ui/catalog.html)：克隆后在本地打开
 - [固件结构](nokia-ta1278-research/analysis/firmware-structure.md)与[来源](nokia-ta1278-research/sources.md)
@@ -28,3 +29,5 @@ python3 tools/prepare_offline_workspace.py
 ```
 
 详见[复现步骤](PUBLICATION.md)与[第三方声明](THIRD_PARTY_NOTICES.md)。离线分析无需连接手机。
+
+- [交互内核规则](nokia-ta1278-research/analysis/ui/apps/interaction-core.md)

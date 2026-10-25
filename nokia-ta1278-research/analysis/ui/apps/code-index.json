@@ -2,6 +2,7689 @@
   "scope": "Linear disassembly includes literal pools. Reference/call candidates are not a complete CFG or proven functions. Semantics require branch tracing.",
   "ranges": [
     {
+      "name": "sms-character-classification",
+      "file": "sms-character-classification-thumb.txt",
+      "start": "0x883a481e",
+      "end_exclusive": "0x883a4b48",
+      "source_range_sha256": "3748290f44567b661618b9afbb3b7c7438df293de5d552787bb762f699871262",
+      "literal_references": [
+        {
+          "at": "0x883a49cc",
+          "value": "0xf834e014"
+        },
+        {
+          "at": "0x883a49f4",
+          "value": "0xd0042e00"
+        },
+        {
+          "at": "0x883a49f6",
+          "value": "0x46982400"
+        },
+        {
+          "at": "0x883a4a04",
+          "value": "0x4669220a"
+        },
+        {
+          "at": "0x883a4a2a",
+          "value": "0xb2a41c64"
+        },
+        {
+          "at": "0x883a4a2c",
+          "value": "0x13f836"
+        }
+      ],
+      "direct_call_candidates": [
+        {
+          "at": "0x883a482a",
+          "target": "0x88aca804"
+        },
+        {
+          "at": "0x883a48e8",
+          "target": "0x883a5dd2"
+        },
+        {
+          "at": "0x883a48f0",
+          "target": "0x883a4856"
+        },
+        {
+          "at": "0x883a48f8",
+          "target": "0x883a483a"
+        },
+        {
+          "at": "0x883a4900",
+          "target": "0x88acb344"
+        },
+        {
+          "at": "0x883a4908",
+          "target": "0x88acb324"
+        },
+        {
+          "at": "0x883a4912",
+          "target": "0x8813bb42"
+        },
+        {
+          "at": "0x883a4918",
+          "target": "0x883c7c1e"
+        },
+        {
+          "at": "0x883a4922",
+          "target": "0x883a5dd2"
+        },
+        {
+          "at": "0x883a494c",
+          "target": "0x883a48dc"
+        },
+        {
+          "at": "0x883a4964",
+          "target": "0x883a4856"
+        },
+        {
+          "at": "0x883a497a",
+          "target": "0x883a483a"
+        },
+        {
+          "at": "0x883a4992",
+          "target": "0x883a481e"
+        },
+        {
+          "at": "0x883a49b4",
+          "target": "0x88100a9c"
+        },
+        {
+          "at": "0x883a4af4",
+          "target": "0x883a4aac"
+        },
+        {
+          "at": "0x883a4b0a",
+          "target": "0x883a4a60"
+        },
+        {
+          "at": "0x883a4b20",
+          "target": "0x883a4a34"
+        },
+        {
+          "at": "0x883a4b42",
+          "target": "0x88100a9c"
+        }
+      ]
+    },
+    {
+      "name": "sms-edit-count-update",
+      "file": "sms-edit-count-update-thumb.txt",
+      "start": "0x880b0f0e",
+      "end_exclusive": "0x880b119a",
+      "source_range_sha256": "cad5daa8c2a9d34b425ab8821ba5f66b04a4d1b9bf8a8259a77f0b1df72a05e4",
+      "literal_references": [
+        {
+          "at": "0x880b1032",
+          "value": "0x8826c9fc",
+          "ascii": "textedit_ctrl_ptr->char_num.default_ext >= add_spchar_num.default_ext && textedit_ctrl_ptr->char_num.r8_2byte >= add_spchar_num.r8_2byte && textedit_ctrl_ptr->char_num.r8_1byte >= add_spchar_num.r8_1byte"
+        },
+        {
+          "at": "0x880b1034",
+          "value": "0x880b1070",
+          "ascii": "ctrltextedit_count.c"
+        },
+        {
+          "at": "0x880b10d4",
+          "value": "0x880b1070",
+          "ascii": "ctrltextedit_count.c"
+        },
+        {
+          "at": "0x880b10d8",
+          "value": "0x8826cac8",
+          "ascii": "textedit_ctrl_ptr->lan_num.tur >= add_langchar_num.tur && textedit_ctrl_ptr->lan_num.esp >= add_langchar_num.esp && textedit_ctrl_ptr->lan_num.por >= add_langchar_num.por && textedit_ctrl_ptr->lan_num.tur_esp >= add_langchar_num.tur_esp && textedit_ctrl_ptr->lan_num.esp_por >= add_langchar_num.esp_p"
+        },
+        {
+          "at": "0x880b1142",
+          "value": "0x880b1070",
+          "ascii": "ctrltextedit_count.c"
+        },
+        {
+          "at": "0x880b1146",
+          "value": "0x8826cbf8",
+          "ascii": "textedit_ctrl_ptr->char_num.default_ext >= add_spchar_num.default_ext"
+        }
+      ],
+      "direct_call_candidates": [
+        {
+          "at": "0x880b0f44",
+          "target": "0x883a492c"
+        },
+        {
+          "at": "0x880b0f54",
+          "target": "0x883a4ade"
+        },
+        {
+          "at": "0x880b103a",
+          "target": "0x88100a3c"
+        },
+        {
+          "at": "0x880b10da",
+          "target": "0x88100a3c"
+        },
+        {
+          "at": "0x880b1148",
+          "target": "0x88100a3c"
+        },
+        {
+          "at": "0x880b1176",
+          "target": "0x880b0898"
+        },
+        {
+          "at": "0x880b118e",
+          "target": "0x880b0ad2"
+        }
+      ]
+    },
+    {
+      "name": "sms-extension-alphabet",
+      "file": "sms-extension-alphabet-thumb.txt",
+      "start": "0x88aca804",
+      "end_exclusive": "0x88aca862",
+      "source_range_sha256": "03ff7d332ff12737ef8cca0fd846fcad0d3c6a87a58962772ae852272a892085",
+      "literal_references": [],
+      "direct_call_candidates": []
+    },
+    {
+      "name": "sms-alphabet-membership",
+      "file": "sms-alphabet-membership-thumb.txt",
+      "start": "0x88acb324",
+      "end_exclusive": "0x88acb364",
+      "source_range_sha256": "5081c9c4e0554d836ff4c29494d3096cfc4130427afe1f525b15f5d7f4893c84",
+      "literal_references": [
+        {
+          "at": "0x88acb326",
+          "value": "0x88c17a7c"
+        },
+        {
+          "at": "0x88acb346",
+          "value": "0x88c1797c"
+        }
+      ],
+      "direct_call_candidates": []
+    },
+    {
+      "name": "sms-transliteration",
+      "file": "sms-transliteration-thumb.txt",
+      "start": "0x8813bb42",
+      "end_exclusive": "0x8813bb96",
+      "source_range_sha256": "f11af560e31c417f8403eb07a3a135291f99e8ab2f999c5cf2b0325b1cc35e85",
+      "literal_references": [
+        {
+          "at": "0x8813bb44",
+          "value": "0x88c172ec"
+        },
+        {
+          "at": "0x8813bb70",
+          "value": "0x88c172ec"
+        },
+        {
+          "at": "0x8813bb82",
+          "value": "0x88c1797c"
+        }
+      ],
+      "direct_call_candidates": [
+        {
+          "at": "0x8813bb6a",
+          "target": "0x883a5dd2"
+        }
+      ]
+    },
+    {
+      "name": "sms-alphabet-management",
+      "file": "sms-alphabet-management-thumb.txt",
+      "start": "0x883c7c1e",
+      "end_exclusive": "0x883c7c36",
+      "source_range_sha256": "0b7c85caed583076ef41240b6c5533c6fca6dbe7169b1ce9009d60851654504e",
+      "literal_references": [
+        {
+          "at": "0x883c7c20",
+          "value": "0x81d14394"
+        },
+        {
+          "at": "0x883c7c24",
+          "value": "0x883c7fa0"
+        },
+        {
+          "at": "0x883c7c26",
+          "value": "0x883c8018",
+          "ascii": "MMISMS: MMISMS_GetAlphabetManagement alpha_management=%d"
+        }
+      ],
+      "direct_call_candidates": [
+        {
+          "at": "0x883c7c2c",
+          "target": "0x88100a7c"
+        }
+      ]
+    },
+    {
+      "name": "browser-input-click",
+      "file": "browser-input-click-thumb.txt",
+      "start": "0x880bed86",
+      "end_exclusive": "0x880bf088",
+      "source_range_sha256": "d75db7f7e7a6f8ad94c4acc9db48c9cc54a7b7de20e143ac9662bc12533be09c",
+      "literal_references": [
+        {
+          "at": "0x880bee48",
+          "value": "0xa0255"
+        },
+        {
+          "at": "0x880bef16",
+          "value": "0xa012f"
+        },
+        {
+          "at": "0x880befae",
+          "value": "0x880bee90"
+        },
+        {
+          "at": "0x880befb6",
+          "value": "0x880bf314",
+          "ascii": "[BRW]XhtmlLayoutInputClickProcess active_ptr error"
+        },
+        {
+          "at": "0x880bf018",
+          "value": "0x880be198",
+          "ascii": "PARSER/source/browser_render/src/brw_xhtml_layout.c"
+        },
+        {
+          "at": "0x880bf028",
+          "value": "0x880be198",
+          "ascii": "PARSER/source/browser_render/src/brw_xhtml_layout.c"
+        }
+      ],
+      "direct_call_candidates": [
+        {
+          "at": "0x880bee00",
+          "target": "0x886290f2"
+        },
+        {
+          "at": "0x880bef2e",
+          "target": "0x88b276a6"
+        },
+        {
+          "at": "0x880bef38",
+          "target": "0x88b27782"
+        },
+        {
+          "at": "0x880bef4c",
+          "target": "0x88368ffa"
+        },
+        {
+          "at": "0x880bef90",
+          "target": "0x886290f2"
+        },
+        {
+          "at": "0x880befe4",
+          "target": "0x880bebc6"
+        },
+        {
+          "at": "0x880bf01c",
+          "target": "0x88b26b94"
+        },
+        {
+          "at": "0x880bf030",
+          "target": "0x88b2501e"
+        },
+        {
+          "at": "0x880bf054",
+          "target": "0x886290f2"
+        },
+        {
+          "at": "0x880bf062",
+          "target": "0x880bea84"
+        }
+      ]
+    },
+    {
+      "name": "browser-form-reset",
+      "file": "browser-form-reset-thumb.txt",
+      "start": "0x880bea84",
+      "end_exclusive": "0x880bebc6",
+      "source_range_sha256": "a10436c6d6ae31c4b9a82529ff485f093d76c5c3849796bff01aa157db16fe0f",
+      "literal_references": [
+        {
+          "at": "0x880beaba",
+          "value": "0x880bee90"
+        },
+        {
+          "at": "0x880beabc",
+          "value": "0x880bee94",
+          "ascii": "[BRW]XhtmlHandleReset active_ptr  error"
+        },
+        {
+          "at": "0x880beada",
+          "value": "0x880bee90"
+        },
+        {
+          "at": "0x880beadc",
+          "value": "0x880beebc",
+          "ascii": "[BRW]XhtmlHandleReset input_ptr  error"
+        },
+        {
+          "at": "0x880beae8",
+          "value": "0x880be198",
+          "ascii": "PARSER/source/browser_render/src/brw_xhtml_layout.c"
+        },
+        {
+          "at": "0x880beb04",
+          "value": "0x880be198",
+          "ascii": "PARSER/source/browser_render/src/brw_xhtml_layout.c"
+        },
+        {
+          "at": "0x880beb44",
+          "value": "0x880bee90"
+        },
+        {
+          "at": "0x880beb46",
+          "value": "0x880beee4",
+          "ascii": "[BRW]XhtmlHandleReset select_ptr  error"
+        }
+      ],
+      "direct_call_candidates": [
+        {
+          "at": "0x880beaec",
+          "target": "0x88b26b94"
+        },
+        {
+          "at": "0x880beaf8",
+          "target": "0x88b26b6c"
+        },
+        {
+          "at": "0x880beb08",
+          "target": "0x88b2501e"
+        },
+        {
+          "at": "0x880beb16",
+          "target": "0x88b2754a"
+        },
+        {
+          "at": "0x880beb1e",
+          "target": "0x88368ffa"
+        },
+        {
+          "at": "0x880beb5a",
+          "target": "0x880be958"
+        },
+        {
+          "at": "0x880beb96",
+          "target": "0x880be958"
+        },
+        {
+          "at": "0x880bebae",
+          "target": "0x880c00a6"
+        },
+        {
+          "at": "0x880bebb6",
+          "target": "0x88368a36"
+        }
+      ]
+    },
+    {
+      "name": "browser-select",
+      "file": "browser-select-thumb.txt",
+      "start": "0x88b482c2",
+      "end_exclusive": "0x88b488b4",
+      "source_range_sha256": "fb2b3d15e9029fd28e953087ff91536a7c4db5f28224747de87ce59e0f659cea",
+      "literal_references": [
+        {
+          "at": "0x88b482dc",
+          "value": "0x88b48578"
+        },
+        {
+          "at": "0x88b482de",
+          "value": "0x88b485bc",
+          "ascii": "WmlHandleSelectedFinish ::PNULL ==select_ptr"
+        },
+        {
+          "at": "0x88b48308",
+          "value": "0x88b48578"
+        },
+        {
+          "at": "0x88b4830a",
+          "value": "0x88b485ec",
+          "ascii": "WmlHandleSelectedFinish ::PNULL ==item_ptr"
+        },
+        {
+          "at": "0x88b48358",
+          "value": "0x60064"
+        },
+        {
+          "at": "0x88b4839e",
+          "value": "0x88b4861c",
+          "ascii": "[BRW]W WmlHandleSelectWinMsg :PNULL==select_win_ptr"
+        },
+        {
+          "at": "0x88b483d0",
+          "value": "0x88b48650",
+          "ascii": "[BRW]W WmlHandleSelectWinMsg :layout_ctrl_ptr error"
+        },
+        {
+          "at": "0x88b48408",
+          "value": "0x88b48578"
+        },
+        {
+          "at": "0x88b4840a",
+          "value": "0x88b48684",
+          "ascii": "WmlHandleSelectWinMsg ::PNULL ==select_ptr"
+        },
+        {
+          "at": "0x88b48412",
+          "value": "0x88b486b0",
+          "ascii": "[BRW]W XhtmlHandleSelectWinMsg :layout_ctrl_ptr error"
+        },
+        {
+          "at": "0x88b4846a",
+          "value": "0x88b48578"
+        },
+        {
+          "at": "0x88b48470",
+          "value": "0x88b486e8",
+          "ascii": "SetupXhtmlListControl ::PNULL ==layout_ptr"
+        },
+        {
+          "at": "0x88b48480",
+          "value": "0x40000001",
+          "resource_text": {
+            "0": "",
+            "1": "",
+            "2": ""
+          }
+        },
+        {
+          "at": "0x88b48484",
+          "value": "0x40000937",
+          "resource_text": {
+            "0": "Back",
+            "1": "返回",
+            "2": "返回"
+          }
+        },
+        {
+          "at": "0x88b484bc",
+          "value": "0x40000ab7",
+          "resource_text": {
+            "0": "OK",
+            "1": "确认",
+            "2": "確認"
+          }
+        },
+        {
+          "at": "0x88b484c4",
+          "value": "0x88b48578"
+        },
+        {
+          "at": "0x88b484c6",
+          "value": "0x88b48714",
+          "ascii": "SetupXhtmlListControl ::PNULL ==option_ptr"
+        },
+        {
+          "at": "0x88b484d6",
+          "value": "0x40000ab7",
+          "resource_text": {
+            "0": "OK",
+            "1": "确认",
+            "2": "確認"
+          }
+        },
+        {
+          "at": "0x88b484f4",
+          "value": "0x88b485b4"
+        },
+        {
+          "at": "0x88b48512",
+          "value": "0x88c8f05c",
+          "ascii": "MS_MMI_NQ2/source/mmi_app/app/browser/control/src/brw_core_adapter.c"
+        },
+        {
+          "at": "0x88b48592",
+          "value": "0x635f7475"
+        },
+        {
+          "at": "0x88b48594",
+          "value": "0x74685870"
+        },
+        {
+          "at": "0x88b485be",
+          "value": "0xb138f7d9"
+        },
+        {
+          "at": "0x88b485d6",
+          "value": "0x74685870"
+        },
+        {
+          "at": "0x88b485d8",
+          "value": "0x3d3d204c"
+        },
+        {
+          "at": "0x88b485ee",
+          "value": "0xf6e0e008"
+        },
+        {
+          "at": "0x88b48606",
+          "value": "0x4658b2a1"
+        },
+        {
+          "at": "0x88b48608",
+          "value": "0x46382101"
+        },
+        {
+          "at": "0x88b48634",
+          "value": "0xd1085f81"
+        },
+        {
+          "at": "0x88b4863a",
+          "value": "0xc97ef5b8"
+        },
+        {
+          "at": "0x88b4863c",
+          "value": "0xb968f7d1"
+        },
+        {
+          "at": "0x88b48668",
+          "value": "0xe7eff58f"
+        },
+        {
+          "at": "0x88b48686",
+          "value": "0xf610f470"
+        },
+        {
+          "at": "0x88b4869c",
+          "value": "0x18084060"
+        },
+        {
+          "at": "0x88b4869e",
+          "value": "0xf5a0e00a"
+        },
+        {
+          "at": "0x88b486ca",
+          "value": "0xd0eb2800"
+        },
+        {
+          "at": "0x88b48700",
+          "value": "0xd1df2800"
+        },
+        {
+          "at": "0x88b48702",
+          "value": "0x1000e9d4"
+        },
+        {
+          "at": "0x88b4872c",
+          "value": "0x6820d010"
+        },
+        {
+          "at": "0x88b4872e",
+          "value": "0xd0eb2800"
+        },
+        {
+          "at": "0x88b48740",
+          "value": "0x88b48578"
+        },
+        {
+          "at": "0x88b48744",
+          "value": "0x88b48b20",
+          "ascii": "XhtmlHandleSelectWinMsg ::PNULL ==select_ptr"
+        },
+        {
+          "at": "0x88b48776",
+          "value": "0x88b48b4c"
+        },
+        {
+          "at": "0x88b48778",
+          "value": "0x88b48b50",
+          "ascii": "XhtmlHandleSelectWinMsg ::PNULL ==item_ptr"
+        },
+        {
+          "at": "0x88b487ce",
+          "value": "0x60064"
+        },
+        {
+          "at": "0x88b48816",
+          "value": "0x88b48b4c"
+        },
+        {
+          "at": "0x88b48818",
+          "value": "0x88b48b80",
+          "ascii": "[BRW]W XhtmlHandleSelectWinMsg ::PNULL==select_win_ptr"
+        },
+        {
+          "at": "0x88b48896",
+          "value": "0x88b48b4c"
+        },
+        {
+          "at": "0x88b48898",
+          "value": "0x88b48b20",
+          "ascii": "XhtmlHandleSelectWinMsg ::PNULL ==select_ptr"
+        },
+        {
+          "at": "0x88b488a2",
+          "value": "0x88b486b0",
+          "ascii": "[BRW]W XhtmlHandleSelectWinMsg :layout_ctrl_ptr error"
+        }
+      ],
+      "direct_call_candidates": [
+        {
+          "at": "0x88b482d4",
+          "target": "0x886296ea"
+        },
+        {
+          "at": "0x88b482e6",
+          "target": "0x883b3156"
+        },
+        {
+          "at": "0x88b482f2",
+          "target": "0x88afdb40"
+        },
+        {
+          "at": "0x88b482fe",
+          "target": "0x883b31ce"
+        },
+        {
+          "at": "0x88b4830e",
+          "target": "0x88100a7c"
+        },
+        {
+          "at": "0x88b4831c",
+          "target": "0x8862970c"
+        },
+        {
+          "at": "0x88b48328",
+          "target": "0x886296fa"
+        },
+        {
+          "at": "0x88b48330",
+          "target": "0x883b13ee"
+        },
+        {
+          "at": "0x88b48338",
+          "target": "0x88afdb40"
+        },
+        {
+          "at": "0x88b4833e",
+          "target": "0x88affaee"
+        },
+        {
+          "at": "0x88b4834a",
+          "target": "0x88affb92"
+        },
+        {
+          "at": "0x88b48398",
+          "target": "0x8838d894"
+        },
+        {
+          "at": "0x88b483a0",
+          "target": "0x88100a5c"
+        },
+        {
+          "at": "0x88b483a8",
+          "target": "0x885fe344"
+        },
+        {
+          "at": "0x88b483b0",
+          "target": "0x8838d894"
+        },
+        {
+          "at": "0x88b483be",
+          "target": "0x883b945c"
+        },
+        {
+          "at": "0x88b483c6",
+          "target": "0x886296fa"
+        },
+        {
+          "at": "0x88b483d6",
+          "target": "0x88b3700a"
+        },
+        {
+          "at": "0x88b483de",
+          "target": "0x8838d894"
+        },
+        {
+          "at": "0x88b483ec",
+          "target": "0x883b945c"
+        },
+        {
+          "at": "0x88b483f4",
+          "target": "0x886296fa"
+        },
+        {
+          "at": "0x88b48400",
+          "target": "0x88b482c2"
+        },
+        {
+          "at": "0x88b4840c",
+          "target": "0x88100a7c"
+        },
+        {
+          "at": "0x88b48414",
+          "target": "0x88100a5c"
+        },
+        {
+          "at": "0x88b4841c",
+          "target": "0x8838d8a8"
+        },
+        {
+          "at": "0x88b48434",
+          "target": "0x88629714"
+        },
+        {
+          "at": "0x88b4843c",
+          "target": "0x88629714"
+        },
+        {
+          "at": "0x88b48446",
+          "target": "0x883b0ea0"
+        },
+        {
+          "at": "0x88b4844c",
+          "target": "0x88629738"
+        },
+        {
+          "at": "0x88b48458",
+          "target": "0x883b1402"
+        },
+        {
+          "at": "0x88b48460",
+          "target": "0x883b0eba"
+        },
+        {
+          "at": "0x88b4847a",
+          "target": "0x883b1402"
+        },
+        {
+          "at": "0x88b48492",
+          "target": "0x88100aac"
+        },
+        {
+          "at": "0x88b4849a",
+          "target": "0x88100aac"
+        },
+        {
+          "at": "0x88b484a2",
+          "target": "0x880be958"
+        },
+        {
+          "at": "0x88b484b0",
+          "target": "0x88629738"
+        },
+        {
+          "at": "0x88b484c8",
+          "target": "0x88100a7c"
+        },
+        {
+          "at": "0x88b484e2",
+          "target": "0x88629750"
+        },
+        {
+          "at": "0x88b484e8",
+          "target": "0x88b26b6c"
+        },
+        {
+          "at": "0x88b48502",
+          "target": "0x8862972e"
+        },
+        {
+          "at": "0x88b4850e",
+          "target": "0x883b30d8"
+        },
+        {
+          "at": "0x88b4851a",
+          "target": "0x88b26b94"
+        },
+        {
+          "at": "0x88b4854a",
+          "target": "0x88629714"
+        },
+        {
+          "at": "0x88b4874c",
+          "target": "0x883b3156"
+        },
+        {
+          "at": "0x88b48758",
+          "target": "0x880be958"
+        },
+        {
+          "at": "0x88b48764",
+          "target": "0x883b31ce"
+        },
+        {
+          "at": "0x88b4876e",
+          "target": "0x88629724"
+        },
+        {
+          "at": "0x88b4877c",
+          "target": "0x88100a7c"
+        },
+        {
+          "at": "0x88b4878c",
+          "target": "0x88629742"
+        },
+        {
+          "at": "0x88b48792",
+          "target": "0x88629738"
+        },
+        {
+          "at": "0x88b4879c",
+          "target": "0x8862971c"
+        },
+        {
+          "at": "0x88b487a2",
+          "target": "0x88629724"
+        },
+        {
+          "at": "0x88b487b0",
+          "target": "0x88629742"
+        },
+        {
+          "at": "0x88b487bc",
+          "target": "0x8862974c"
+        },
+        {
+          "at": "0x88b4880e",
+          "target": "0x8838d894"
+        },
+        {
+          "at": "0x88b4881a",
+          "target": "0x88100a7c"
+        },
+        {
+          "at": "0x88b48822",
+          "target": "0x885fe344"
+        },
+        {
+          "at": "0x88b4882a",
+          "target": "0x8838d894"
+        },
+        {
+          "at": "0x88b48838",
+          "target": "0x883b945c"
+        },
+        {
+          "at": "0x88b48840",
+          "target": "0x88629738"
+        },
+        {
+          "at": "0x88b4884e",
+          "target": "0x88b48534"
+        },
+        {
+          "at": "0x88b4885c",
+          "target": "0x88629878"
+        },
+        {
+          "at": "0x88b48862",
+          "target": "0x88b3700a"
+        },
+        {
+          "at": "0x88b4886a",
+          "target": "0x8838d894"
+        },
+        {
+          "at": "0x88b48878",
+          "target": "0x883b945c"
+        },
+        {
+          "at": "0x88b48880",
+          "target": "0x88629738"
+        },
+        {
+          "at": "0x88b4888e",
+          "target": "0x88b48534"
+        },
+        {
+          "at": "0x88b4889a",
+          "target": "0x88100a7c"
+        },
+        {
+          "at": "0x88b488a6",
+          "target": "0x88100a5c"
+        },
+        {
+          "at": "0x88b488ae",
+          "target": "0x8838d8a8"
+        }
+      ]
+    },
+    {
+      "name": "browser-select-model",
+      "file": "browser-select-model-thumb.txt",
+      "start": "0x886296ea",
+      "end_exclusive": "0x88629754",
+      "source_range_sha256": "acdc7e095b1abffec49c4a83e54442badb45d8af16aede50ea11917fbf0d9150",
+      "literal_references": [],
+      "direct_call_candidates": []
+    },
+    {
+      "name": "browser-select-change",
+      "file": "browser-select-change-thumb.txt",
+      "start": "0x88629878",
+      "end_exclusive": "0x88629898",
+      "source_range_sha256": "40d35c5a161376247c77f40cdd801ab5975ab5e7f369492cedee276166e098c5",
+      "literal_references": [],
+      "direct_call_candidates": [
+        {
+          "at": "0x88629892",
+          "target": "0x886290f2"
+        }
+      ]
+    },
+    {
+      "name": "music-play-mode",
+      "file": "music-play-mode-thumb.txt",
+      "start": "0x8868629c",
+      "end_exclusive": "0x8868630a",
+      "source_range_sha256": "475fb690dbded5023559a95a9bbc4443b97869a7bbb43b1df3d59bbdc755948e",
+      "literal_references": [],
+      "direct_call_candidates": [
+        {
+          "at": "0x886862a0",
+          "target": "0x88686230"
+        },
+        {
+          "at": "0x886862a6",
+          "target": "0x886861f8"
+        },
+        {
+          "at": "0x886862d8",
+          "target": "0x88686230"
+        },
+        {
+          "at": "0x886862de",
+          "target": "0x886861f8"
+        }
+      ]
+    },
+    {
+      "name": "music-play-end",
+      "file": "music-play-end-thumb.txt",
+      "start": "0x88600036",
+      "end_exclusive": "0x886002fa",
+      "source_range_sha256": "0defdf858e774784689ee30e3fdbf2d6e1b2391e9fe77161c04c346da1935ffe",
+      "literal_references": [
+        {
+          "at": "0x88600088",
+          "value": "0x885ffc1c"
+        },
+        {
+          "at": "0x88600092",
+          "value": "0x88c86ff8",
+          "ascii": "[MMIMP3] MMIAPIMP3_PlayMp3CallBack cur_play_mode = %d,review_state = %d,PlayerState = %d"
+        },
+        {
+          "at": "0x88600100",
+          "value": "0xe41cf700"
+        },
+        {
+          "at": "0x88600102",
+          "value": "0x65736165"
+        },
+        {
+          "at": "0x8860010e",
+          "value": "0x6e61486f"
+        },
+        {
+          "at": "0x88600112",
+          "value": "0x64253d"
+        },
+        {
+          "at": "0x88600124",
+          "value": "0xaf2cf43f"
+        },
+        {
+          "at": "0x88600126",
+          "value": "0xfeebf7ff"
+        },
+        {
+          "at": "0x88600132",
+          "value": "0xf8f5f01b"
+        },
+        {
+          "at": "0x88600136",
+          "value": "0x20656c64"
+        },
+        {
+          "at": "0x8860014c",
+          "value": "0x600f242"
+        },
+        {
+          "at": "0x8860014e",
+          "value": "0xd0022802"
+        },
+        {
+          "at": "0x88600154",
+          "value": "0x69647541"
+        },
+        {
+          "at": "0x88600156",
+          "value": "0xf7fefbcc"
+        },
+        {
+          "at": "0x8860018c",
+          "value": "0xb08641f0"
+        },
+        {
+          "at": "0x8860018e",
+          "value": "0xaa082003"
+        },
+        {
+          "at": "0x88600194",
+          "value": "0xa8082118"
+        },
+        {
+          "at": "0x88600198",
+          "value": "0xf6c0aa08"
+        },
+        {
+          "at": "0x886001a8",
+          "value": "0xf242e3a2"
+        },
+        {
+          "at": "0x886001c0",
+          "value": "0x4603ffb5"
+        },
+        {
+          "at": "0x886001c2",
+          "value": "0xe92dbd70"
+        },
+        {
+          "at": "0x886001c8",
+          "value": "0xf0194604"
+        },
+        {
+          "at": "0x886001cc",
+          "value": "0xf019d071"
+        },
+        {
+          "at": "0x886001dc",
+          "value": "0xd0142801"
+        },
+        {
+          "at": "0x886001f4",
+          "value": "0xf7004668"
+        },
+        {
+          "at": "0x886001f6",
+          "value": "0xf0854606"
+        },
+        {
+          "at": "0x886001fc",
+          "value": "0x3290f6af"
+        },
+        {
+          "at": "0x88600200",
+          "value": "0x2001b38d"
+        },
+        {
+          "at": "0x88600210",
+          "value": "0x2802d002"
+        },
+        {
+          "at": "0x88600224",
+          "value": "0xf7fef54b"
+        },
+        {
+          "at": "0x88600226",
+          "value": "0xf01b4620"
+        },
+        {
+          "at": "0x8860022c",
+          "value": "0xf7004668"
+        },
+        {
+          "at": "0x88600230",
+          "value": "0x94052102"
+        },
+        {
+          "at": "0x88600240",
+          "value": "0x2801fd79"
+        }
+      ],
+      "direct_call_candidates": [
+        {
+          "at": "0x8860003a",
+          "target": "0x886862d4"
+        },
+        {
+          "at": "0x88600040",
+          "target": "0x88619a70"
+        },
+        {
+          "at": "0x88600046",
+          "target": "0x886010b6"
+        },
+        {
+          "at": "0x8860006e",
+          "target": "0x88100aac"
+        },
+        {
+          "at": "0x88600078",
+          "target": "0x885fed66"
+        },
+        {
+          "at": "0x8860007c",
+          "target": "0x885fef04"
+        },
+        {
+          "at": "0x88600082",
+          "target": "0x8868629c"
+        },
+        {
+          "at": "0x88600096",
+          "target": "0x88100a7c"
+        },
+        {
+          "at": "0x8860009a",
+          "target": "0x885fef04"
+        },
+        {
+          "at": "0x886000a2",
+          "target": "0x885fef04"
+        },
+        {
+          "at": "0x886000ac",
+          "target": "0x885feea0"
+        },
+        {
+          "at": "0x886000b2",
+          "target": "0x883f300a"
+        },
+        {
+          "at": "0x886000b8",
+          "target": "0x883f303e"
+        },
+        {
+          "at": "0x886000bc",
+          "target": "0x885ff952"
+        },
+        {
+          "at": "0x886000c2",
+          "target": "0x88acf8ec"
+        },
+        {
+          "at": "0x886000ca",
+          "target": "0x885ffede"
+        },
+        {
+          "at": "0x886000ce",
+          "target": "0x886862d4"
+        },
+        {
+          "at": "0x886000e2",
+          "target": "0x885fef04"
+        },
+        {
+          "at": "0x886000ea",
+          "target": "0x88600036"
+        },
+        {
+          "at": "0x886000f2",
+          "target": "0x885ff8d8"
+        },
+        {
+          "at": "0x88600254",
+          "target": "0x885fff3a"
+        },
+        {
+          "at": "0x8860025c",
+          "target": "0x88600036"
+        },
+        {
+          "at": "0x88600264",
+          "target": "0x8861b452"
+        },
+        {
+          "at": "0x88600270",
+          "target": "0x88100aac"
+        },
+        {
+          "at": "0x88600280",
+          "target": "0x880c0e2c"
+        },
+        {
+          "at": "0x8860028a",
+          "target": "0x88416a26"
+        },
+        {
+          "at": "0x8860028e",
+          "target": "0x885fef04"
+        },
+        {
+          "at": "0x8860029e",
+          "target": "0x8838d1ac"
+        },
+        {
+          "at": "0x886002ae",
+          "target": "0x88b37dde"
+        },
+        {
+          "at": "0x886002b6",
+          "target": "0x88100aac"
+        },
+        {
+          "at": "0x886002c8",
+          "target": "0x880c0e2c"
+        },
+        {
+          "at": "0x886002d0",
+          "target": "0x88100aac"
+        },
+        {
+          "at": "0x886002de",
+          "target": "0x880c0e2c"
+        },
+        {
+          "at": "0x886002f2",
+          "target": "0x885fffb2"
+        }
+      ]
+    },
+    {
+      "name": "music-manual-skip",
+      "file": "music-manual-skip-thumb.txt",
+      "start": "0x886002fa",
+      "end_exclusive": "0x88600424",
+      "source_range_sha256": "ad0b79f1fab2434404b718dd0b124ff73eeeb51435c94244c12b44c89ab2cc33",
+      "literal_references": [
+        {
+          "at": "0x88600334",
+          "value": "0x885ff7a8"
+        },
+        {
+          "at": "0x8860033c",
+          "value": "0x88c87054",
+          "ascii": "[MMIMP3] MMIAPIMP3_GoToPreOrNextMp3 cur_play_mode = %d,review_state = %d, player_state = %d,audio_state = %d"
+        },
+        {
+          "at": "0x886003ae",
+          "value": "0x886001f0"
+        },
+        {
+          "at": "0x886003b6",
+          "value": "0x88600738",
+          "ascii": "[MMIMP3] MMIAPIMP3_GoToPreOrNextMp3 Total_num = %d"
+        }
+      ],
+      "direct_call_candidates": [
+        {
+          "at": "0x88600302",
+          "target": "0x88619a70"
+        },
+        {
+          "at": "0x88600308",
+          "target": "0x88619b96"
+        },
+        {
+          "at": "0x88600312",
+          "target": "0x88619bd8"
+        },
+        {
+          "at": "0x8860031c",
+          "target": "0x885feef4"
+        },
+        {
+          "at": "0x88600322",
+          "target": "0x885fef04"
+        },
+        {
+          "at": "0x88600328",
+          "target": "0x885ff952"
+        },
+        {
+          "at": "0x8860032e",
+          "target": "0x8868629c"
+        },
+        {
+          "at": "0x88600340",
+          "target": "0x88100a7c"
+        },
+        {
+          "at": "0x88600348",
+          "target": "0x883f300a"
+        },
+        {
+          "at": "0x8860034e",
+          "target": "0x883f303e"
+        },
+        {
+          "at": "0x88600354",
+          "target": "0x883f3214"
+        },
+        {
+          "at": "0x88600358",
+          "target": "0x883f2696"
+        },
+        {
+          "at": "0x8860035e",
+          "target": "0x8861b3c0"
+        },
+        {
+          "at": "0x88600366",
+          "target": "0x88100aac"
+        },
+        {
+          "at": "0x8860037a",
+          "target": "0x880c0e2c"
+        },
+        {
+          "at": "0x88600382",
+          "target": "0x88100aac"
+        },
+        {
+          "at": "0x88600392",
+          "target": "0x880c0e2c"
+        },
+        {
+          "at": "0x88600396",
+          "target": "0x885fef04"
+        },
+        {
+          "at": "0x886003c0",
+          "target": "0x885ff220"
+        },
+        {
+          "at": "0x886003c4",
+          "target": "0x885ffede"
+        },
+        {
+          "at": "0x886003ca",
+          "target": "0x885feef4"
+        },
+        {
+          "at": "0x886003d8",
+          "target": "0x885ff220"
+        },
+        {
+          "at": "0x886003dc",
+          "target": "0x8860157e"
+        },
+        {
+          "at": "0x886003e2",
+          "target": "0x885ff838"
+        },
+        {
+          "at": "0x886003e8",
+          "target": "0x885ff220"
+        },
+        {
+          "at": "0x886003ec",
+          "target": "0x8860157e"
+        },
+        {
+          "at": "0x886003f0",
+          "target": "0x885ffe66"
+        },
+        {
+          "at": "0x886003fa",
+          "target": "0x885ff8d8"
+        },
+        {
+          "at": "0x886003fe",
+          "target": "0x885feef4"
+        },
+        {
+          "at": "0x8860040a",
+          "target": "0x88100aac"
+        },
+        {
+          "at": "0x8860041a",
+          "target": "0x880c0e2c"
+        }
+      ]
+    },
+    {
+      "name": "music-index-step",
+      "file": "music-index-step-thumb.txt",
+      "start": "0x88619b68",
+      "end_exclusive": "0x88619c10",
+      "source_range_sha256": "36ef490722279b09b2ab2703805299ae6d74bd80c0b8191bc071fe561c3047da",
+      "literal_references": [
+        {
+          "at": "0x88619b98",
+          "value": "0x82078b78"
+        },
+        {
+          "at": "0x88619bc0",
+          "value": "0x81c48ad8"
+        },
+        {
+          "at": "0x88619bda",
+          "value": "0x82078b78"
+        }
+      ],
+      "direct_call_candidates": [
+        {
+          "at": "0x88619ba8",
+          "target": "0x88bc4688"
+        },
+        {
+          "at": "0x88619bb2",
+          "target": "0x88619b68"
+        },
+        {
+          "at": "0x88619bc4",
+          "target": "0x88182314"
+        },
+        {
+          "at": "0x88619bea",
+          "target": "0x88bc4688"
+        },
+        {
+          "at": "0x88619bf4",
+          "target": "0x88619b68"
+        }
+      ]
+    },
+    {
+      "name": "music-queue-step",
+      "file": "music-queue-step-thumb.txt",
+      "start": "0x8861b3c0",
+      "end_exclusive": "0x8861b55c",
+      "source_range_sha256": "cdc1759ab838a9fdec2d9066a9b5a628e034a908ccd32b3f0fd11c460fab22a3",
+      "literal_references": [
+        {
+          "at": "0x8861b3c2",
+          "value": "0x82078b78"
+        },
+        {
+          "at": "0x8861b3dc",
+          "value": "0x8861b51c",
+          "ascii": "[APLIST] MMIMP3_SetCurPlayFileIndex "
+        },
+        {
+          "at": "0x8861b454",
+          "value": "0x82078b78"
+        },
+        {
+          "at": "0x8861b462",
+          "value": "0x8861b51c",
+          "ascii": "[APLIST] MMIMP3_SetCurPlayFileIndex "
+        },
+        {
+          "at": "0x8861b4ce",
+          "value": "0x46299000"
+        },
+        {
+          "at": "0x8861b4de",
+          "value": "0xbd1060a0"
+        },
+        {
+          "at": "0x8861b4f2",
+          "value": "0xf6e5a0cc"
+        },
+        {
+          "at": "0x8861b4f8",
+          "value": "0x8f104"
+        },
+        {
+          "at": "0x8861b4fa",
+          "value": "0x4601ff1f"
+        },
+        {
+          "at": "0x8861b51e",
+          "value": "0xf7ed52d7"
+        },
+        {
+          "at": "0x8861b524",
+          "value": "0x4623aa04"
+        },
+        {
+          "at": "0x8861b526",
+          "value": "0xf6400008"
+        },
+        {
+          "at": "0x8861b550",
+          "value": "0x8861b904",
+          "ascii": "[APLIST] MMIMP3_SetCurPlayFileIndex result=%d"
+        }
+      ],
+      "direct_call_candidates": [
+        {
+          "at": "0x8861b3de",
+          "target": "0x88100a5c"
+        },
+        {
+          "at": "0x8861b3ee",
+          "target": "0x88bc4688"
+        },
+        {
+          "at": "0x8861b3f8",
+          "target": "0x88619b68"
+        },
+        {
+          "at": "0x8861b408",
+          "target": "0x88bc4548"
+        },
+        {
+          "at": "0x8861b414",
+          "target": "0x88619d0a"
+        },
+        {
+          "at": "0x8861b428",
+          "target": "0x8861b360"
+        },
+        {
+          "at": "0x8861b43c",
+          "target": "0x88619852"
+        },
+        {
+          "at": "0x8861b44a",
+          "target": "0x88619a78"
+        },
+        {
+          "at": "0x8861b464",
+          "target": "0x88100a5c"
+        },
+        {
+          "at": "0x8861b46e",
+          "target": "0x88bc4688"
+        },
+        {
+          "at": "0x8861b47e",
+          "target": "0x88619b68"
+        },
+        {
+          "at": "0x8861b4a2",
+          "target": "0x88bc4548"
+        },
+        {
+          "at": "0x8861b4ae",
+          "target": "0x88619d0a"
+        },
+        {
+          "at": "0x8861b54c",
+          "target": "0x88619a78"
+        },
+        {
+          "at": "0x8861b554",
+          "target": "0x88100a5c"
+        }
+      ]
+    },
+    {
+      "name": "music-unsupported-count",
+      "file": "music-unsupported-count-thumb.txt",
+      "start": "0x886010b6",
+      "end_exclusive": "0x886010d2",
+      "source_range_sha256": "ee3d45d1d195db005070dcfeb51322dc3630e715be6ea73a8315e408dd472981",
+      "literal_references": [
+        {
+          "at": "0x886010b6",
+          "value": "0x81c3bcd8"
+        },
+        {
+          "at": "0x886010c6",
+          "value": "0x8860148c",
+          "ascii": "GetNoSupportNumber num=%d"
+        }
+      ],
+      "direct_call_candidates": [
+        {
+          "at": "0x886010ca",
+          "target": "0x88100a5c"
+        }
+      ]
+    },
+    {
+      "name": "sms-ui-count",
+      "file": "sms-ui-count-thumb.txt",
+      "start": "0x88351b12",
+      "end_exclusive": "0x88351c0c",
+      "source_range_sha256": "faf9ddbba09a83726748b623aaeb83f6566d42d411e0c685843961c6790113af",
+      "literal_references": [],
+      "direct_call_candidates": [
+        {
+          "at": "0x88351b22",
+          "target": "0x880b0754"
+        },
+        {
+          "at": "0x88351bac",
+          "target": "0x88352296"
+        },
+        {
+          "at": "0x88351bc0",
+          "target": "0x883a4c5a"
+        },
+        {
+          "at": "0x88351be8",
+          "target": "0x88351b8e"
+        },
+        {
+          "at": "0x88351c02",
+          "target": "0x88352232"
+        }
+      ]
+    },
+    {
+      "name": "sms-ui-format",
+      "file": "sms-ui-format-thumb.txt",
+      "start": "0x88352232",
+      "end_exclusive": "0x88352330",
+      "source_range_sha256": "dc1ed5140f1da6687df0b8b1c3801d4b6c1d1a5f45a73780729f9c7b158ba310",
+      "literal_references": [
+        {
+          "at": "0x88352256",
+          "value": "0x88352308",
+          "ascii": "%d/%d"
+        },
+        {
+          "at": "0x88352264",
+          "value": "0x88352310"
+        },
+        {
+          "at": "0x88352276",
+          "value": "0x88352314",
+          "ascii": "ctrltextedit.c"
+        },
+        {
+          "at": "0x8835227c",
+          "value": "0x88352324",
+          "ascii": "*str_len_ptr < GUIEDIT_NUM_INFO_MAX_LEN"
+        }
+      ],
+      "direct_call_candidates": [
+        {
+          "at": "0x88352246",
+          "target": "0x88100aac"
+        },
+        {
+          "at": "0x88352252",
+          "target": "0x88351b12"
+        },
+        {
+          "at": "0x8835225e",
+          "target": "0x881009ec"
+        },
+        {
+          "at": "0x8835226a",
+          "target": "0x881009ec"
+        },
+        {
+          "at": "0x8835227e",
+          "target": "0x88100a3c"
+        },
+        {
+          "at": "0x8835228e",
+          "target": "0x883a5162"
+        },
+        {
+          "at": "0x883522a6",
+          "target": "0x880b0754"
+        }
+      ]
+    },
+    {
+      "name": "sms-ui-config",
+      "file": "sms-ui-config-thumb.txt",
+      "start": "0x886240c8",
+      "end_exclusive": "0x88624216",
+      "source_range_sha256": "65007c8f4cd1414618ad08b9b6258dd9f84f8f9e294774b9d963733e67006f5c",
+      "literal_references": [
+        {
+          "at": "0x88624170",
+          "value": "0x90003aca"
+        },
+        {
+          "at": "0x88624176",
+          "value": "0xf5683872"
+        }
+      ],
+      "direct_call_candidates": [
+        {
+          "at": "0x886240ee",
+          "target": "0x883c7c1e"
+        },
+        {
+          "at": "0x88624120",
+          "target": "0x88351c24"
+        },
+        {
+          "at": "0x88624134",
+          "target": "0x88b50d34"
+        },
+        {
+          "at": "0x88624140",
+          "target": "0x88b50d34"
+        },
+        {
+          "at": "0x886241de",
+          "target": "0x88351d0e"
+        }
+      ]
+    },
+    {
+      "name": "sms-ui-convert",
+      "file": "sms-ui-convert-thumb.txt",
+      "start": "0x880b0754",
+      "end_exclusive": "0x880b0784",
+      "source_range_sha256": "638a51cd07e5ebf41f4f379e420a1b5a28b23f0b08c6939ee689c4df3b8a5071",
+      "literal_references": [],
+      "direct_call_candidates": []
+    },
+    {
+      "name": "browser-field-input",
+      "file": "browser-field-input-thumb.txt",
+      "start": "0x88b488b4",
+      "end_exclusive": "0x88b48fb8",
+      "source_range_sha256": "fe251773d10abfb0f3520c13ce6be89bd8a910243e84f2e7c106165ec8077376",
+      "literal_references": [
+        {
+          "at": "0x88b488d2",
+          "value": "0x88b48b4c"
+        },
+        {
+          "at": "0x88b488d4",
+          "value": "0x88b48bb8",
+          "ascii": "ReadInputFormat ::PNULL ==method ||PNULL == input_mode_ptr"
+        },
+        {
+          "at": "0x88b48972",
+          "value": "0x60064"
+        },
+        {
+          "at": "0x88b489e8",
+          "value": "0x40000ab9",
+          "resource_text": {
+            "0": "Delete",
+            "1": "删除",
+            "2": "刪除"
+          }
+        },
+        {
+          "at": "0x88b489ec",
+          "value": "0x40000ab9",
+          "resource_text": {
+            "0": "Delete",
+            "1": "删除",
+            "2": "刪除"
+          }
+        },
+        {
+          "at": "0x88b48a0e",
+          "value": "0x88b46aa4",
+          "ascii": "HandleWmlInputBoxWinMsg ::PNULL ==input_ptr"
+        },
+        {
+          "at": "0x88b48a12",
+          "value": "0x88b48b4c"
+        },
+        {
+          "at": "0x88b48a1a",
+          "value": "0x400000b9",
+          "resource_text": {
+            "0": "Edit",
+            "1": "编辑",
+            "2": "編輯"
+          }
+        },
+        {
+          "at": "0x88b48a5a",
+          "value": "0x88b48b4c"
+        },
+        {
+          "at": "0x88b48a5c",
+          "value": "0x88b48c00",
+          "ascii": "HandleWmlInputBoxWinMsg :MSG_CTL_OK:PNULL ==input_ptr"
+        },
+        {
+          "at": "0x88b48a64",
+          "value": "0x88b48c38",
+          "ascii": "[BRW]W HandleWmlInputBoxWinMsg :layout_ctrl_ptr error"
+        },
+        {
+          "at": "0x88b48a7a",
+          "value": "0x60064"
+        },
+        {
+          "at": "0x88b48ac8",
+          "value": "0x88b48b4c"
+        },
+        {
+          "at": "0x88b48aca",
+          "value": "0x88b48c70",
+          "ascii": "[BRW]W HandleXhtmlInputBoxWinMsg ::PNULL ==input_win_ptr"
+        },
+        {
+          "at": "0x88b48ad8",
+          "value": "0x400000b9",
+          "resource_text": {
+            "0": "Edit",
+            "1": "编辑",
+            "2": "編輯"
+          }
+        },
+        {
+          "at": "0x88b48b14",
+          "value": "0x88b48b4c"
+        },
+        {
+          "at": "0x88b48b24",
+          "value": "0x68204606"
+        },
+        {
+          "at": "0x88b48b3a",
+          "value": "0x74685865"
+        },
+        {
+          "at": "0x88b48b3c",
+          "value": "0x4c4c554e"
+        },
+        {
+          "at": "0x88b48b54",
+          "value": "0xf04f"
+        },
+        {
+          "at": "0x88b48b6a",
+          "value": "0xa1f12010"
+        },
+        {
+          "at": "0x88b48b6c",
+          "value": "0x4669b988"
+        },
+        {
+          "at": "0x88b48b9a",
+          "value": "0xf4434621"
+        },
+        {
+          "at": "0x88b48ba4",
+          "value": "0x68204606"
+        },
+        {
+          "at": "0x88b48bca",
+          "value": "0xf88d460d"
+        },
+        {
+          "at": "0x88b48bcc",
+          "value": "0x4cdb8"
+        },
+        {
+          "at": "0x88b48bde",
+          "value": "0xf88d0000"
+        },
+        {
+          "at": "0x88b48c08",
+          "value": "0xf10dfdbc"
+        },
+        {
+          "at": "0x88b48c18",
+          "value": "0x83e4f8df"
+        },
+        {
+          "at": "0x88b48c1e",
+          "value": "0x46384604"
+        },
+        {
+          "at": "0x88b48c20",
+          "value": "0xf5b7a1d9"
+        },
+        {
+          "at": "0x88b48c24",
+          "value": "0x4669aa1d"
+        },
+        {
+          "at": "0x88b48c26",
+          "value": "0xf50cf6e0"
+        },
+        {
+          "at": "0x88b48c3e",
+          "value": "0xf77af6e0"
+        },
+        {
+          "at": "0x88b48c52",
+          "value": "0x2074f89d"
+        },
+        {
+          "at": "0x88b48c76",
+          "value": "0xe92de6de"
+        },
+        {
+          "at": "0x88b48c8c",
+          "value": "0x41f0e92d"
+        },
+        {
+          "at": "0x88b48c96",
+          "value": "0xe8880808"
+        },
+        {
+          "at": "0x88b48cae",
+          "value": "0x88b49074",
+          "ascii": "HandleXhtmlInputBoxWinMsg :MSG_CTL_OK:PNULL ==input_win_ptr"
+        },
+        {
+          "at": "0x88b48cb6",
+          "value": "0x88b490b0",
+          "ascii": "[BRW]W HandleXhtmlInputBoxWinMsg :layout_ctrl_ptr error"
+        },
+        {
+          "at": "0x88b48d00",
+          "value": "0x60065"
+        },
+        {
+          "at": "0x88b48d04",
+          "value": "0x60015"
+        },
+        {
+          "at": "0x88b48d20",
+          "value": "0x88b490f0",
+          "ascii": "brw_core_adapter.c"
+        },
+        {
+          "at": "0x88b48d38",
+          "value": "0x884c3ed4"
+        },
+        {
+          "at": "0x88b48d9a",
+          "value": "0x88b48b4c"
+        },
+        {
+          "at": "0x88b48da0",
+          "value": "0x88b49108",
+          "ascii": "WmlLayoutCreateEditWindow ::PNULL ==input_ptr"
+        },
+        {
+          "at": "0x88b48daa",
+          "value": "0x88b49138",
+          "ascii": "WmlLayoutCreateEditWindow ::input_win_ptr ALLOC FAIL"
+        },
+        {
+          "at": "0x88b48e4e",
+          "value": "0x60065"
+        },
+        {
+          "at": "0x88b48e52",
+          "value": "0x60015"
+        },
+        {
+          "at": "0x88b48e6e",
+          "value": "0x88b490f0",
+          "ascii": "brw_core_adapter.c"
+        },
+        {
+          "at": "0x88b48e8e",
+          "value": "0x88b47fb0"
+        },
+        {
+          "at": "0x88b48e94",
+          "value": "0x88b49170",
+          "ascii": "[BRW]W XhtmlLayoutCreateEditWindow:param error, layout_ptr=0x%x"
+        },
+        {
+          "at": "0x88b48e9e",
+          "value": "0x88b4916c"
+        },
+        {
+          "at": "0x88b48ea0",
+          "value": "0x88b491b0",
+          "ascii": "[BRW]W XhtmlLayoutCreateEditWindow ::input_win_ptr ALLOC FAIL"
+        },
+        {
+          "at": "0x88b48ea8",
+          "value": "0x884c3ed4"
+        },
+        {
+          "at": "0x88b48f0c",
+          "value": "0x88b4916c"
+        },
+        {
+          "at": "0x88b48f0e",
+          "value": "0x88b491f0",
+          "ascii": "[BRW]W XhtmlLayoutCreateEditWindow:handle error"
+        },
+        {
+          "at": "0x88b48f1a",
+          "value": "0x88b490f0",
+          "ascii": "brw_core_adapter.c"
+        }
+      ],
+      "direct_call_candidates": [
+        {
+          "at": "0x88b488d6",
+          "target": "0x88100a7c"
+        },
+        {
+          "at": "0x88b489be",
+          "target": "0x8838d894"
+        },
+        {
+          "at": "0x88b489ca",
+          "target": "0x88629754"
+        },
+        {
+          "at": "0x88b489ce",
+          "target": "0x88b26b6c"
+        },
+        {
+          "at": "0x88b489d8",
+          "target": "0x88629754"
+        },
+        {
+          "at": "0x88b489e4",
+          "target": "0x88b28322"
+        },
+        {
+          "at": "0x88b489f8",
+          "target": "0x88b43d60"
+        },
+        {
+          "at": "0x88b48a00",
+          "target": "0x88b43e14"
+        },
+        {
+          "at": "0x88b48a08",
+          "target": "0x885fe344"
+        },
+        {
+          "at": "0x88b48a14",
+          "target": "0x88100a7c"
+        },
+        {
+          "at": "0x88b48a20",
+          "target": "0x88b28370"
+        },
+        {
+          "at": "0x88b48a2c",
+          "target": "0x8838d894"
+        },
+        {
+          "at": "0x88b48a3a",
+          "target": "0x883b945c"
+        },
+        {
+          "at": "0x88b48a44",
+          "target": "0x88b437d4"
+        },
+        {
+          "at": "0x88b48a4c",
+          "target": "0x88629764"
+        },
+        {
+          "at": "0x88b48a52",
+          "target": "0x88b3700a"
+        },
+        {
+          "at": "0x88b48a5e",
+          "target": "0x88100a7c"
+        },
+        {
+          "at": "0x88b48a66",
+          "target": "0x88100a5c"
+        },
+        {
+          "at": "0x88b48a70",
+          "target": "0x8838d8a8"
+        },
+        {
+          "at": "0x88b48ac0",
+          "target": "0x8838d894"
+        },
+        {
+          "at": "0x88b48acc",
+          "target": "0x88100a7c"
+        },
+        {
+          "at": "0x88b48ad4",
+          "target": "0x88b43e14"
+        },
+        {
+          "at": "0x88b48ade",
+          "target": "0x88b28370"
+        },
+        {
+          "at": "0x88b48ae6",
+          "target": "0x885fe344"
+        },
+        {
+          "at": "0x88b48af4",
+          "target": "0x8838d894"
+        },
+        {
+          "at": "0x88b48b02",
+          "target": "0x883b945c"
+        },
+        {
+          "at": "0x88b48b0a",
+          "target": "0x88629bae"
+        },
+        {
+          "at": "0x88b48cb0",
+          "target": "0x88100a7c"
+        },
+        {
+          "at": "0x88b48cb8",
+          "target": "0x88100a5c"
+        },
+        {
+          "at": "0x88b48cc0",
+          "target": "0x88629bb8"
+        },
+        {
+          "at": "0x88b48cca",
+          "target": "0x88b437d4"
+        },
+        {
+          "at": "0x88b48cd2",
+          "target": "0x88629848"
+        },
+        {
+          "at": "0x88b48cdc",
+          "target": "0x886297c0"
+        },
+        {
+          "at": "0x88b48ce6",
+          "target": "0x88629858"
+        },
+        {
+          "at": "0x88b48cec",
+          "target": "0x88b3700a"
+        },
+        {
+          "at": "0x88b48cf4",
+          "target": "0x8838d8a8"
+        },
+        {
+          "at": "0x88b48d22",
+          "target": "0x88100894"
+        },
+        {
+          "at": "0x88b48d30",
+          "target": "0x8838d1ac"
+        },
+        {
+          "at": "0x88b48d3e",
+          "target": "0x88100aa4"
+        },
+        {
+          "at": "0x88b48d46",
+          "target": "0x88100aac"
+        },
+        {
+          "at": "0x88b48d4e",
+          "target": "0x88100aac"
+        },
+        {
+          "at": "0x88b48d56",
+          "target": "0x8838c474"
+        },
+        {
+          "at": "0x88b48d64",
+          "target": "0x886297b8"
+        },
+        {
+          "at": "0x88b48d6c",
+          "target": "0x88b488b4"
+        },
+        {
+          "at": "0x88b48d74",
+          "target": "0x88629798"
+        },
+        {
+          "at": "0x88b48d7c",
+          "target": "0x88629798"
+        },
+        {
+          "at": "0x88b48d8e",
+          "target": "0x886297a0"
+        },
+        {
+          "at": "0x88b48da2",
+          "target": "0x88100a7c"
+        },
+        {
+          "at": "0x88b48dac",
+          "target": "0x88100a5c"
+        },
+        {
+          "at": "0x88b48dba",
+          "target": "0x88b21936"
+        },
+        {
+          "at": "0x88b48de2",
+          "target": "0x885fda90"
+        },
+        {
+          "at": "0x88b48df2",
+          "target": "0x88b3700a"
+        },
+        {
+          "at": "0x88b48dfa",
+          "target": "0x886297b8"
+        },
+        {
+          "at": "0x88b48e16",
+          "target": "0x88aa05a2"
+        },
+        {
+          "at": "0x88b48e1e",
+          "target": "0x883a7d22"
+        },
+        {
+          "at": "0x88b48e24",
+          "target": "0x8862975c"
+        },
+        {
+          "at": "0x88b48e28",
+          "target": "0x88b26b6c"
+        },
+        {
+          "at": "0x88b48e38",
+          "target": "0x8862975c"
+        },
+        {
+          "at": "0x88b48e42",
+          "target": "0x88b4382e"
+        },
+        {
+          "at": "0x88b48e70",
+          "target": "0x88100894"
+        },
+        {
+          "at": "0x88b48e7e",
+          "target": "0x8838d1ac"
+        },
+        {
+          "at": "0x88b48e96",
+          "target": "0x88100a7c"
+        },
+        {
+          "at": "0x88b48ea2",
+          "target": "0x88100a7c"
+        },
+        {
+          "at": "0x88b48eb0",
+          "target": "0x88100aa4"
+        },
+        {
+          "at": "0x88b48eb8",
+          "target": "0x88100aac"
+        },
+        {
+          "at": "0x88b48ec0",
+          "target": "0x88100aac"
+        },
+        {
+          "at": "0x88b48ec8",
+          "target": "0x8838c474"
+        },
+        {
+          "at": "0x88b48ed6",
+          "target": "0x88629bc2"
+        },
+        {
+          "at": "0x88b48ede",
+          "target": "0x88b488b4"
+        },
+        {
+          "at": "0x88b48ee6",
+          "target": "0x88629bc6"
+        },
+        {
+          "at": "0x88b48eee",
+          "target": "0x88629bc6"
+        },
+        {
+          "at": "0x88b48f00",
+          "target": "0x88629bce"
+        },
+        {
+          "at": "0x88b48f10",
+          "target": "0x88100a7c"
+        },
+        {
+          "at": "0x88b48f1c",
+          "target": "0x88100a84"
+        },
+        {
+          "at": "0x88b48f2a",
+          "target": "0x88b21936"
+        },
+        {
+          "at": "0x88b48f52",
+          "target": "0x885fda90"
+        },
+        {
+          "at": "0x88b48f62",
+          "target": "0x88b3700a"
+        },
+        {
+          "at": "0x88b48f6a",
+          "target": "0x88629bc2"
+        },
+        {
+          "at": "0x88b48f86",
+          "target": "0x88aa05a2"
+        },
+        {
+          "at": "0x88b48f8e",
+          "target": "0x883a7d22"
+        },
+        {
+          "at": "0x88b48f94",
+          "target": "0x886297b0"
+        },
+        {
+          "at": "0x88b48f98",
+          "target": "0x88b26b6c"
+        },
+        {
+          "at": "0x88b48fa8",
+          "target": "0x886297b0"
+        },
+        {
+          "at": "0x88b48fb2",
+          "target": "0x88b4382e"
+        }
+      ]
+    },
+    {
+      "name": "browser-field-model",
+      "file": "browser-field-model-thumb.txt",
+      "start": "0x88629754",
+      "end_exclusive": "0x88629be0",
+      "source_range_sha256": "bed6e72b40f12f209bf95d205d4ff785bc4c7ba88f93d2807dd6724f3adf4ce7",
+      "literal_references": [
+        {
+          "at": "0x886297e4",
+          "value": "0x886288ec",
+          "ascii": "PARSER/source/browser_render/src/brw_core_api.c"
+        },
+        {
+          "at": "0x88629822",
+          "value": "0xf640f76f"
+        },
+        {
+          "at": "0x88629a1c",
+          "value": "0x886288ec",
+          "ascii": "PARSER/source/browser_render/src/brw_core_api.c"
+        },
+        {
+          "at": "0x88629a52",
+          "value": "0x886288ec",
+          "ascii": "PARSER/source/browser_render/src/brw_core_api.c"
+        },
+        {
+          "at": "0x88629a82",
+          "value": "0x886288ec",
+          "ascii": "PARSER/source/browser_render/src/brw_core_api.c"
+        },
+        {
+          "at": "0x88629aa0",
+          "value": "0x886288ec",
+          "ascii": "PARSER/source/browser_render/src/brw_core_api.c"
+        },
+        {
+          "at": "0x88629aca",
+          "value": "0x886288ec",
+          "ascii": "PARSER/source/browser_render/src/brw_core_api.c"
+        },
+        {
+          "at": "0x88629b0a",
+          "value": "0x886288ec",
+          "ascii": "PARSER/source/browser_render/src/brw_core_api.c"
+        },
+        {
+          "at": "0x88629b18",
+          "value": "0x886288ec",
+          "ascii": "PARSER/source/browser_render/src/brw_core_api.c"
+        },
+        {
+          "at": "0x88629b34",
+          "value": "0x886288ec",
+          "ascii": "PARSER/source/browser_render/src/brw_core_api.c"
+        }
+      ],
+      "direct_call_candidates": [
+        {
+          "at": "0x88629778",
+          "target": "0x88b25f6a"
+        },
+        {
+          "at": "0x88629784",
+          "target": "0x88afbe96"
+        },
+        {
+          "at": "0x886297ce",
+          "target": "0x88b25f6a"
+        },
+        {
+          "at": "0x886297e8",
+          "target": "0x88b26b94"
+        },
+        {
+          "at": "0x88629850",
+          "target": "0x88b26276"
+        },
+        {
+          "at": "0x88629872",
+          "target": "0x886290f2"
+        },
+        {
+          "at": "0x88629892",
+          "target": "0x886290f2"
+        },
+        {
+          "at": "0x886299be",
+          "target": "0x88b265de"
+        },
+        {
+          "at": "0x886299d0",
+          "target": "0x88b277a2"
+        },
+        {
+          "at": "0x886299e0",
+          "target": "0x88b263c6"
+        },
+        {
+          "at": "0x886299f0",
+          "target": "0x88b268a8"
+        },
+        {
+          "at": "0x886299f8",
+          "target": "0x8864190c"
+        },
+        {
+          "at": "0x88629a06",
+          "target": "0x88b268e8"
+        },
+        {
+          "at": "0x88629a24",
+          "target": "0x88b2501e"
+        },
+        {
+          "at": "0x88629a32",
+          "target": "0x88b2574c"
+        },
+        {
+          "at": "0x88629a40",
+          "target": "0x88b26564"
+        },
+        {
+          "at": "0x88629a4c",
+          "target": "0x8864190c"
+        },
+        {
+          "at": "0x88629a5a",
+          "target": "0x88b26b94"
+        },
+        {
+          "at": "0x88629a68",
+          "target": "0x88b268a8"
+        },
+        {
+          "at": "0x88629a70",
+          "target": "0x8864190c"
+        },
+        {
+          "at": "0x88629a7e",
+          "target": "0x88b268e8"
+        },
+        {
+          "at": "0x88629a8a",
+          "target": "0x88b26b94"
+        },
+        {
+          "at": "0x88629a98",
+          "target": "0x88b263c6"
+        },
+        {
+          "at": "0x88629aa4",
+          "target": "0x88b26b94"
+        },
+        {
+          "at": "0x88629ab4",
+          "target": "0x88b265de"
+        },
+        {
+          "at": "0x88629ad2",
+          "target": "0x88b2501e"
+        },
+        {
+          "at": "0x88629ae2",
+          "target": "0x88b26564"
+        },
+        {
+          "at": "0x88629af2",
+          "target": "0x88b55382"
+        },
+        {
+          "at": "0x88629b06",
+          "target": "0x88b263c6"
+        },
+        {
+          "at": "0x88629b14",
+          "target": "0x8864190c"
+        },
+        {
+          "at": "0x88629b22",
+          "target": "0x88b26b94"
+        },
+        {
+          "at": "0x88629b30",
+          "target": "0x88b263c6"
+        },
+        {
+          "at": "0x88629b3c",
+          "target": "0x88b26b94"
+        },
+        {
+          "at": "0x88629b48",
+          "target": "0x88b265de"
+        },
+        {
+          "at": "0x88629b78",
+          "target": "0x88641820"
+        },
+        {
+          "at": "0x88629b84",
+          "target": "0x8838f166"
+        },
+        {
+          "at": "0x88629b8c",
+          "target": "0x88b276a6"
+        },
+        {
+          "at": "0x88629ba8",
+          "target": "0x88390316"
+        }
+      ]
+    },
+    {
+      "name": "browser-page-received",
+      "file": "browser-page-received-thumb.txt",
+      "start": "0x88b65986",
+      "end_exclusive": "0x88b659d4",
+      "source_range_sha256": "4e5bea807b3f4f054d02191e8defb4bfd8eaf7f35f0b1d79aca86358e212a024",
+      "literal_references": [
+        {
+          "at": "0x88b65990",
+          "value": "0x88b62f24"
+        },
+        {
+          "at": "0x88b65994",
+          "value": "0x88b65b7c",
+          "ascii": "[BRW]W HandleControlPageGetInd:wrong param!"
+        },
+        {
+          "at": "0x88b659c8",
+          "value": "0x88b65ba8",
+          "ascii": "[BRW]HandleControlPageGetInd total_media_num=%d"
+        }
+      ],
+      "direct_call_candidates": [
+        {
+          "at": "0x88b65996",
+          "target": "0x88100a7c"
+        },
+        {
+          "at": "0x88b6599c",
+          "target": "0x8835c3a6"
+        },
+        {
+          "at": "0x88b659a2",
+          "target": "0x8835bf2e"
+        },
+        {
+          "at": "0x88b659a8",
+          "target": "0x8835bf20"
+        },
+        {
+          "at": "0x88b659ac",
+          "target": "0x8835bf4e"
+        },
+        {
+          "at": "0x88b659b2",
+          "target": "0x8835c396"
+        },
+        {
+          "at": "0x88b659b8",
+          "target": "0x8835bf3e"
+        },
+        {
+          "at": "0x88b659c0",
+          "target": "0x8835c3b6"
+        },
+        {
+          "at": "0x88b659c4",
+          "target": "0x88b60aae"
+        },
+        {
+          "at": "0x88b659cc",
+          "target": "0x88100a5c"
+        }
+      ]
+    },
+    {
+      "name": "music-back-state",
+      "file": "music-back-state-thumb.txt",
+      "start": "0x88600ea6",
+      "end_exclusive": "0x88600ec6",
+      "source_range_sha256": "5d984112603336cab55d47382dc0e5776393a9a5356dbfb103ec330e9d610794",
+      "literal_references": [],
+      "direct_call_candidates": [
+        {
+          "at": "0x88600ea8",
+          "target": "0x885fef04"
+        },
+        {
+          "at": "0x88600eb8",
+          "target": "0x88600ea6"
+        }
+      ]
+    },
+    {
+      "name": "music-review-state",
+      "file": "music-review-state-thumb.txt",
+      "start": "0x883f12a0",
+      "end_exclusive": "0x883f12b8",
+      "source_range_sha256": "c2d9c9e921715139bc8adeb6bc023311b3305a1e637d7880b6d8f53504b64677",
+      "literal_references": [
+        {
+          "at": "0x883f12a0",
+          "value": "0x81c3bca8"
+        },
+        {
+          "at": "0x883f12ac",
+          "value": "0x883f154c",
+          "ascii": "[MMIAP] MMIAP_IsReviewOpen is_open=%d"
+        }
+      ],
+      "direct_call_candidates": [
+        {
+          "at": "0x883f12b0",
+          "target": "0x88100a5c"
+        }
+      ]
+    },
+    {
+      "name": "music-review-actions",
+      "file": "music-review-actions-thumb.txt",
+      "start": "0x883f25fc",
+      "end_exclusive": "0x883f2696",
+      "source_range_sha256": "38f1402161e09d8a5005513b3f9cb85e0863d332c7935fb11415a5f8dbfd0c40",
+      "literal_references": [
+        {
+          "at": "0x883f2618",
+          "value": "0xe0002"
+        },
+        {
+          "at": "0x883f2664",
+          "value": "0x883f199c"
+        },
+        {
+          "at": "0x883f266e",
+          "value": "0x883f2818",
+          "ascii": "[MMIMP3] HandleReviewMenu seek not supportted"
+        },
+        {
+          "at": "0x883f267e",
+          "value": "0xe0002"
+        }
+      ],
+      "direct_call_candidates": [
+        {
+          "at": "0x883f25fe",
+          "target": "0x88600e48"
+        },
+        {
+          "at": "0x883f2602",
+          "target": "0x885ff952"
+        },
+        {
+          "at": "0x883f260a",
+          "target": "0x883f25d8"
+        },
+        {
+          "at": "0x883f260e",
+          "target": "0x883f25e8"
+        },
+        {
+          "at": "0x883f2614",
+          "target": "0x883f257e"
+        },
+        {
+          "at": "0x883f261c",
+          "target": "0x8838d772"
+        },
+        {
+          "at": "0x883f262c",
+          "target": "0x883f1378"
+        },
+        {
+          "at": "0x883f263e",
+          "target": "0x883f25fc"
+        },
+        {
+          "at": "0x883f2648",
+          "target": "0x88600956"
+        },
+        {
+          "at": "0x883f264e",
+          "target": "0x883f25e8"
+        },
+        {
+          "at": "0x883f2652",
+          "target": "0x883f12a0"
+        },
+        {
+          "at": "0x883f265a",
+          "target": "0x883f25d8"
+        },
+        {
+          "at": "0x883f265e",
+          "target": "0x88600e1c"
+        },
+        {
+          "at": "0x883f2674",
+          "target": "0x88600eb6"
+        },
+        {
+          "at": "0x883f267a",
+          "target": "0x883f25fc"
+        },
+        {
+          "at": "0x883f2680",
+          "target": "0x8838d772"
+        },
+        {
+          "at": "0x883f268a",
+          "target": "0x883f1590"
+        }
+      ]
+    },
+    {
+      "name": "sms-retry-causes",
+      "file": "sms-retry-causes-thumb.txt",
+      "start": "0x883c5e68",
+      "end_exclusive": "0x883c5ecc",
+      "source_range_sha256": "7107eaa1e639b4eaae42b6a921280b10721403fc50026ddb77baeb8ab5ccf8d4",
+      "literal_references": [],
+      "direct_call_candidates": []
+    },
+    {
+      "name": "browser-url-check",
+      "file": "browser-url-check-thumb.txt",
+      "start": "0x883b4724",
+      "end_exclusive": "0x883b4768",
+      "source_range_sha256": "872da272734761912276f1fa32e143119a8d84246b2427c290f55e8ab65624a7",
+      "literal_references": [
+        {
+          "at": "0x883b4728",
+          "value": "0x883b49d8"
+        }
+      ],
+      "direct_call_candidates": [
+        {
+          "at": "0x883b4734",
+          "target": "0x88b276a6"
+        }
+      ]
+    },
+    {
+      "name": "browser-auth-state",
+      "file": "browser-auth-state-thumb.txt",
+      "start": "0x8835c250",
+      "end_exclusive": "0x8835c35e",
+      "source_range_sha256": "cc5d934eaafa8021c591129c0c57dd6debf5d208bc0f4ad2ec39d5b930e08eea",
+      "literal_references": [
+        {
+          "at": "0x8835c252",
+          "value": "0x82077f0c"
+        },
+        {
+          "at": "0x8835c25e",
+          "value": "0x8835c1a4",
+          "ascii": "mmibrowser_setting.c"
+        },
+        {
+          "at": "0x8835c28e",
+          "value": "0x8835c1a4",
+          "ascii": "mmibrowser_setting.c"
+        },
+        {
+          "at": "0x8835c29a",
+          "value": "0x82077f0c"
+        },
+        {
+          "at": "0x8835c2c2",
+          "value": "0x8835c128"
+        },
+        {
+          "at": "0x8835c2c8",
+          "value": "0x8835c650",
+          "ascii": "[BRW]MMIBROWSER_UpdateUserName ALLOC FAIL len =%d"
+        },
+        {
+          "at": "0x8835c2d2",
+          "value": "0x82077f0c"
+        },
+        {
+          "at": "0x8835c2de",
+          "value": "0x8835c1a4",
+          "ascii": "mmibrowser_setting.c"
+        },
+        {
+          "at": "0x8835c308",
+          "value": "0x8835c1a4",
+          "ascii": "mmibrowser_setting.c"
+        },
+        {
+          "at": "0x8835c312",
+          "value": "0x82077f0c"
+        },
+        {
+          "at": "0x8835c336",
+          "value": "0x8835c680"
+        },
+        {
+          "at": "0x8835c338",
+          "value": "0x8835c684",
+          "ascii": "[BRW]MMIBROWSER_UpdatePassword ALLOC FAIL len =%d"
+        },
+        {
+          "at": "0x8835c340",
+          "value": "0x82077f0c"
+        },
+        {
+          "at": "0x8835c346",
+          "value": "0x82077f0c"
+        },
+        {
+          "at": "0x8835c34c",
+          "value": "0x82077f0c"
+        },
+        {
+          "at": "0x8835c352",
+          "value": "0x82077f0c"
+        },
+        {
+          "at": "0x8835c358",
+          "value": "0x82077f0c"
+        }
+      ],
+      "direct_call_candidates": [
+        {
+          "at": "0x8835c262",
+          "target": "0x88100a84"
+        },
+        {
+          "at": "0x8835c27a",
+          "target": "0x8835c250"
+        },
+        {
+          "at": "0x8835c280",
+          "target": "0x883a578c"
+        },
+        {
+          "at": "0x8835c296",
+          "target": "0x88100a74"
+        },
+        {
+          "at": "0x8835c2a4",
+          "target": "0x88100a94"
+        },
+        {
+          "at": "0x8835c2b0",
+          "target": "0x883dfd50"
+        },
+        {
+          "at": "0x8835c2ca",
+          "target": "0x88100a7c"
+        },
+        {
+          "at": "0x8835c2e2",
+          "target": "0x88100a84"
+        },
+        {
+          "at": "0x8835c2f8",
+          "target": "0x8835c2d0"
+        },
+        {
+          "at": "0x8835c2fe",
+          "target": "0x883a578c"
+        },
+        {
+          "at": "0x8835c30e",
+          "target": "0x88100a74"
+        },
+        {
+          "at": "0x8835c31a",
+          "target": "0x88100a94"
+        },
+        {
+          "at": "0x8835c322",
+          "target": "0x883a513e"
+        },
+        {
+          "at": "0x8835c33a",
+          "target": "0x88100a7c"
+        }
+      ]
+    },
+    {
+      "name": "browser-url-narrow",
+      "file": "browser-url-narrow-thumb.txt",
+      "start": "0x883a51dc",
+      "end_exclusive": "0x883a522c",
+      "source_range_sha256": "1827d59487b70fdef878dd405590396cb0e5823cbf8a472a17eace197392624f",
+      "literal_references": [
+        {
+          "at": "0x883a521e",
+          "value": "0x887615b8",
+          "ascii": "MMI_WSTRNTOSTR: the count is too big!count=%d,src_max_count=%d,dst_max_count=%d"
+        },
+        {
+          "at": "0x883a5222",
+          "value": "0x883a5400"
+        }
+      ],
+      "direct_call_candidates": [
+        {
+          "at": "0x883a5224",
+          "target": "0x88100a7c"
+        }
+      ]
+    },
+    {
+      "name": "music-view-install",
+      "file": "music-view-install-thumb.txt",
+      "start": "0x88ace712",
+      "end_exclusive": "0x88ace7bc",
+      "source_range_sha256": "64495349e3419d9ae45ed62650b522b08e6409bf5f68a744374399c567bcb155",
+      "literal_references": [
+        {
+          "at": "0x88ace714",
+          "value": "0x81c3bc94"
+        },
+        {
+          "at": "0x88ace718",
+          "value": "0xe0038"
+        },
+        {
+          "at": "0x88ace728",
+          "value": "0x887671b4",
+          "ascii": "[MMIAP]WINMAIN MMIAPMAINWIN_Enter error MMIMP3_MAIN_PLAY_WIN_ID already opened"
+        },
+        {
+          "at": "0x88ace73c",
+          "value": "0x88ace003"
+        },
+        {
+          "at": "0x88ace750",
+          "value": "0x88aceac8",
+          "ascii": "[MMIAP] InitWinsInfo ret=%d"
+        },
+        {
+          "at": "0x88ace762",
+          "value": "0x88203268"
+        },
+        {
+          "at": "0x88ace77c",
+          "value": "0x88ace6db"
+        },
+        {
+          "at": "0x88ace794",
+          "value": "0x88ace269"
+        },
+        {
+          "at": "0x88ace7a6",
+          "value": "0x88ace20b"
+        }
+      ],
+      "direct_call_candidates": [
+        {
+          "at": "0x88ace72e",
+          "target": "0x88ad0d7e"
+        },
+        {
+          "at": "0x88ace736",
+          "target": "0x88ad0cfe"
+        },
+        {
+          "at": "0x88ace740",
+          "target": "0x883f329e"
+        },
+        {
+          "at": "0x88ace748",
+          "target": "0x88416df2"
+        },
+        {
+          "at": "0x88ace752",
+          "target": "0x88100a5c"
+        },
+        {
+          "at": "0x88ace75e",
+          "target": "0x8868ace4"
+        },
+        {
+          "at": "0x88ace766",
+          "target": "0x88172f40"
+        },
+        {
+          "at": "0x88ace772",
+          "target": "0x8838d938"
+        },
+        {
+          "at": "0x88ace784",
+          "target": "0x880c0df6"
+        },
+        {
+          "at": "0x88ace78e",
+          "target": "0x88b36e7e"
+        },
+        {
+          "at": "0x88ace79a",
+          "target": "0x880c0df6"
+        },
+        {
+          "at": "0x88ace7ac",
+          "target": "0x880c0df6"
+        },
+        {
+          "at": "0x88ace7ba",
+          "target": "0x88acdfde"
+        }
+      ]
+    },
+    {
+      "name": "music-view-callback",
+      "file": "music-view-callback-thumb.txt",
+      "start": "0x8868ac44",
+      "end_exclusive": "0x8868ad94",
+      "source_range_sha256": "bb562182fb6a05a19f113cf10d59b341294bd0c307bc329a27eb9280d9bae60b",
+      "literal_references": [
+        {
+          "at": "0x8868ac50",
+          "value": "0x8868ad28",
+          "ascii": "[MMIAP] HandlePDADefaultWinMsg msg_id=0x%X"
+        },
+        {
+          "at": "0x8868ac74",
+          "value": "0x8868ad54",
+          "ascii": "[MMIAP] HandlePDADefaultWinMsg result=%d"
+        },
+        {
+          "at": "0x8868ace8",
+          "value": "0x8868acf7"
+        },
+        {
+          "at": "0x8868acec",
+          "value": "0x8868ac45"
+        },
+        {
+          "at": "0x8868acf0",
+          "value": "0x8868acd3"
+        },
+        {
+          "at": "0x8868ad02",
+          "value": "0x88229698"
+        },
+        {
+          "at": "0x8868ad06",
+          "value": "0x882298c4"
+        },
+        {
+          "at": "0x8868ad28",
+          "value": "0xf480f0e2"
+        },
+        {
+          "at": "0x8868ad2a",
+          "value": "0x61b81e40"
+        },
+        {
+          "at": "0x8868ad42",
+          "value": "0xf6aa2000"
+        },
+        {
+          "at": "0x8868ad54",
+          "value": "0x46204c87"
+        },
+        {
+          "at": "0x8868ad56",
+          "value": "0x2001e7cc"
+        },
+        {
+          "at": "0x8868ad6e",
+          "value": "0xf2c8f71f"
+        }
+      ],
+      "direct_call_candidates": [
+        {
+          "at": "0x8868ac52",
+          "target": "0x88100a5c"
+        },
+        {
+          "at": "0x8868ac78",
+          "target": "0x88100a5c"
+        },
+        {
+          "at": "0x8868ac82",
+          "target": "0x885ff330"
+        },
+        {
+          "at": "0x8868ac88",
+          "target": "0x8868ad14"
+        },
+        {
+          "at": "0x8868ac8e",
+          "target": "0x8838d950"
+        },
+        {
+          "at": "0x8868acac",
+          "target": "0x88acec7a"
+        },
+        {
+          "at": "0x8868acb2",
+          "target": "0x88aced14"
+        },
+        {
+          "at": "0x8868acb8",
+          "target": "0x8868acf6"
+        },
+        {
+          "at": "0x8868acbe",
+          "target": "0x8868ad14"
+        },
+        {
+          "at": "0x8868acc2",
+          "target": "0x88aced20"
+        },
+        {
+          "at": "0x8868accc",
+          "target": "0x883f11ea"
+        },
+        {
+          "at": "0x8868acd6",
+          "target": "0x8868acf6"
+        },
+        {
+          "at": "0x8868acfc",
+          "target": "0x88b21efc"
+        },
+        {
+          "at": "0x8868ad16",
+          "target": "0x8868a498"
+        }
+      ]
+    },
+    {
+      "name": "music-center-key",
+      "file": "music-center-key-thumb.txt",
+      "start": "0x88acec7a",
+      "end_exclusive": "0x88acecaa",
+      "source_range_sha256": "688e706c0fffa3c48f34c355aa9d4165901b3d65a71eb8542901dd3236e141bd",
+      "literal_references": [
+        {
+          "at": "0x88acec8a",
+          "value": "0x88acef38"
+        },
+        {
+          "at": "0x88acec8c",
+          "value": "0x88acef3c",
+          "ascii": "[MMI MP3] HandleMp3MainWinWebKey"
+        }
+      ],
+      "direct_call_candidates": [
+        {
+          "at": "0x88acec7e",
+          "target": "0x8838d950"
+        },
+        {
+          "at": "0x88acec84",
+          "target": "0x885ff330"
+        },
+        {
+          "at": "0x88acec8e",
+          "target": "0x88100a7c"
+        },
+        {
+          "at": "0x88acec94",
+          "target": "0x883f0ff4"
+        },
+        {
+          "at": "0x88acec9a",
+          "target": "0x883f125a"
+        },
+        {
+          "at": "0x88aceca2",
+          "target": "0x88ad0dd2"
+        }
+      ]
+    },
+    {
+      "name": "music-toggle",
+      "file": "music-toggle-thumb.txt",
+      "start": "0x883f11ea",
+      "end_exclusive": "0x883f126a",
+      "source_range_sha256": "e1ce4dd2bf0642fcd7f01d0fc858535469fc67d53b9a0fd69ed5c45b9a2409cf",
+      "literal_references": [
+        {
+          "at": "0x883f11ec",
+          "value": "0xe005e"
+        }
+      ],
+      "direct_call_candidates": [
+        {
+          "at": "0x883f11fa",
+          "target": "0x883f113c"
+        },
+        {
+          "at": "0x883f120e",
+          "target": "0x885fef04"
+        },
+        {
+          "at": "0x883f1224",
+          "target": "0x8860105a"
+        },
+        {
+          "at": "0x883f1230",
+          "target": "0x885feef4"
+        },
+        {
+          "at": "0x883f124a",
+          "target": "0x885ff048"
+        },
+        {
+          "at": "0x883f125c",
+          "target": "0x883f120c"
+        }
+      ]
+    },
+    {
+      "name": "music-play-pause-resume",
+      "file": "music-play-pause-resume-thumb.txt",
+      "start": "0x885ff838",
+      "end_exclusive": "0x885ffd30",
+      "source_range_sha256": "b953984387ebfbd8d0a8d9e32684f3f5d420c300dcf5b152eb6d00eac8b692b6",
+      "literal_references": [
+        {
+          "at": "0x885ff88c",
+          "value": "0x88c86ecc",
+          "ascii": "[MMIMP3] MMIAPIMP3_HandleDelayPlayTimer encounter MMIMP3_PLAYER_SWITCH_PAUSED"
+        },
+        {
+          "at": "0x885ff890",
+          "value": "0x885ffbd8"
+        },
+        {
+          "at": "0x885ff8a2",
+          "value": "0x885ffbfc",
+          "ascii": "GetSwitchDelayOffset offset=%d"
+        },
+        {
+          "at": "0x885ff8c6",
+          "value": "0x88c86f1c",
+          "ascii": "[MMIMP3] MMIAPIMP3_HandleDelayPlayTimer result = %d, p_state = %d, a_state = %d!!!"
+        },
+        {
+          "at": "0x885ff8ca",
+          "value": "0x885ffc1c"
+        },
+        {
+          "at": "0x885ff926",
+          "value": "0x885ffc24",
+          "ascii": "MS_MMI_NQ2/source/mmi_app/app/audioplayer/c/mmiap_play.c"
+        },
+        {
+          "at": "0x885ff930",
+          "value": "0x885ff873"
+        },
+        {
+          "at": "0x885ff940",
+          "value": "0x885ff6f0"
+        },
+        {
+          "at": "0x885ff948",
+          "value": "0x885ffc60",
+          "ascii": "[MMIMP3] MMIMP3_DelayPlayMp3 Start Timer = %d, offset = %d"
+        },
+        {
+          "at": "0x885ff97c",
+          "value": "0x885ff6f0"
+        },
+        {
+          "at": "0x885ff980",
+          "value": "0x88c86f70",
+          "ascii": "[MMIMP3] MMIAPIMP3_ResumeMp3 player_state = %d, audio_state = %d"
+        },
+        {
+          "at": "0x885ff9b6",
+          "value": "0x885ffbd8"
+        },
+        {
+          "at": "0x885ff9b8",
+          "value": "0x885ffca0",
+          "ascii": "[MMIMP3]:MMIAPIMP3_ResumeMp3:AUDIO FAILED!"
+        },
+        {
+          "at": "0x885ffac2",
+          "value": "0x88c86fb4",
+          "ascii": "[MMIMP3] MMIAPIMP3_PauseMp3 player_state = %d, audio_state = %d !!!"
+        },
+        {
+          "at": "0x885ffaf6",
+          "value": "0x885ffbd8"
+        },
+        {
+          "at": "0x885ffaf8",
+          "value": "0x885ffcd0",
+          "ascii": "[MMIMP3]:MMIAPIMP3_PauseMp3:AUDIO FAILED!"
+        },
+        {
+          "at": "0x885ffb2e",
+          "value": "0x885ff670"
+        },
+        {
+          "at": "0x885ffb34",
+          "value": "0x885ffcfc",
+          "ascii": "[MMIMP3]:MMIAPIMP3_PauseMp3: result = %d"
+        },
+        {
+          "at": "0x885ffbb4",
+          "value": "0x0"
+        },
+        {
+          "at": "0x885ffbb6",
+          "value": "0x49445541"
+        },
+        {
+          "at": "0x885ffbbc",
+          "value": "0x494d4d3a"
+        },
+        {
+          "at": "0x885ffbbe",
+          "value": "0x44454c49"
+        },
+        {
+          "at": "0x885ffbdc",
+          "value": "0x3b08f006"
+        },
+        {
+          "at": "0x885ffbde",
+          "value": "0x3a33704d"
+        },
+        {
+          "at": "0x885ffc26",
+          "value": "0xf848f7ff"
+        },
+        {
+          "at": "0x885ffc28",
+          "value": "0xd0552800"
+        },
+        {
+          "at": "0x885ffc2a",
+          "value": "0xfe6bf7ff"
+        },
+        {
+          "at": "0x885ffc60",
+          "value": "0x103e9d4"
+        },
+        {
+          "at": "0x885ffc62",
+          "value": "0xf7fff112"
+        },
+        {
+          "at": "0x885ffc68",
+          "value": "0x49445541"
+        },
+        {
+          "at": "0x885ffc6a",
+          "value": "0x2000d036"
+        },
+        {
+          "at": "0x885ffc78",
+          "value": "0xf0012000"
+        },
+        {
+          "at": "0x885ffca0",
+          "value": "0xb53ebd70"
+        },
+        {
+          "at": "0x885ffca2",
+          "value": "0xb97ef7ff"
+        },
+        {
+          "at": "0x885ffca8",
+          "value": "0xf0444621"
+        },
+        {
+          "at": "0x885ffcaa",
+          "value": "0x46082100"
+        },
+        {
+          "at": "0x885ffcae",
+          "value": "0x4070e8bd"
+        },
+        {
+          "at": "0x885ffcb8",
+          "value": "0xf043f940"
+        },
+        {
+          "at": "0x885ffcc0",
+          "value": "0x46284621"
+        },
+        {
+          "at": "0x885ffcc4",
+          "value": "0xba18f7ff"
+        },
+        {
+          "at": "0x885ffcd0",
+          "value": "0x2401b100"
+        },
+        {
+          "at": "0x885ffcd2",
+          "value": "0x4070e8bd"
+        },
+        {
+          "at": "0x885ffcd8",
+          "value": "0x46284621"
+        },
+        {
+          "at": "0x885ffcda",
+          "value": "0xb53ebd70"
+        },
+        {
+          "at": "0x885ffcde",
+          "value": "0xd1032800"
+        },
+        {
+          "at": "0x885ffcee",
+          "value": "0x68a0b8ca"
+        },
+        {
+          "at": "0x885ffcf4",
+          "value": "0xf03cf118"
+        },
+        {
+          "at": "0x885ffcfc",
+          "value": "0x114cf240"
+        },
+        {
+          "at": "0x885ffcfe",
+          "value": "0x48c40004"
+        },
+        {
+          "at": "0x885ffd04",
+          "value": "0xb90cf7ff"
+        },
+        {
+          "at": "0x885ffd06",
+          "value": "0xf53af043"
+        },
+        {
+          "at": "0x885ffd0a",
+          "value": "0xf88d2001"
+        }
+      ],
+      "direct_call_candidates": [
+        {
+          "at": "0x885ff83c",
+          "target": "0x8857b1ec"
+        },
+        {
+          "at": "0x885ff842",
+          "target": "0x88ac9ed2"
+        },
+        {
+          "at": "0x885ff848",
+          "target": "0x885ff43c"
+        },
+        {
+          "at": "0x885ff84e",
+          "target": "0x885fedba"
+        },
+        {
+          "at": "0x885ff854",
+          "target": "0x8857b1a8"
+        },
+        {
+          "at": "0x885ff85e",
+          "target": "0x88b36e7e"
+        },
+        {
+          "at": "0x885ff86a",
+          "target": "0x88b37dde"
+        },
+        {
+          "at": "0x885ff876",
+          "target": "0x885ff41a"
+        },
+        {
+          "at": "0x885ff87a",
+          "target": "0x885fef04"
+        },
+        {
+          "at": "0x885ff882",
+          "target": "0x885fef04"
+        },
+        {
+          "at": "0x885ff892",
+          "target": "0x88100a7c"
+        },
+        {
+          "at": "0x885ff898",
+          "target": "0x88601098"
+        },
+        {
+          "at": "0x885ff8a6",
+          "target": "0x88100a5c"
+        },
+        {
+          "at": "0x885ff8ac",
+          "target": "0x885ff838"
+        },
+        {
+          "at": "0x885ff8b4",
+          "target": "0x885fede4"
+        },
+        {
+          "at": "0x885ff8b8",
+          "target": "0x885feef4"
+        },
+        {
+          "at": "0x885ff8be",
+          "target": "0x885fef04"
+        },
+        {
+          "at": "0x885ff8ce",
+          "target": "0x88100a7c"
+        },
+        {
+          "at": "0x885ff8de",
+          "target": "0x88601142"
+        },
+        {
+          "at": "0x885ff8e4",
+          "target": "0x883a6d28"
+        },
+        {
+          "at": "0x885ff8ea",
+          "target": "0x885fedc8"
+        },
+        {
+          "at": "0x885ff8f0",
+          "target": "0x885fede4"
+        },
+        {
+          "at": "0x885ff8f6",
+          "target": "0x885fee6a"
+        },
+        {
+          "at": "0x885ff8fe",
+          "target": "0x88100aac"
+        },
+        {
+          "at": "0x885ff90e",
+          "target": "0x880c0e2c"
+        },
+        {
+          "at": "0x885ff912",
+          "target": "0x88604774"
+        },
+        {
+          "at": "0x885ff934",
+          "target": "0x883a6bb8"
+        },
+        {
+          "at": "0x885ff93a",
+          "target": "0x885fedc8"
+        },
+        {
+          "at": "0x885ff94a",
+          "target": "0x88100a7c"
+        },
+        {
+          "at": "0x885ff95a",
+          "target": "0x88100aac"
+        },
+        {
+          "at": "0x885ff960",
+          "target": "0x885fed66"
+        },
+        {
+          "at": "0x885ff970",
+          "target": "0x885feef4"
+        },
+        {
+          "at": "0x885ff976",
+          "target": "0x885fef04"
+        },
+        {
+          "at": "0x885ff986",
+          "target": "0x88100a7c"
+        },
+        {
+          "at": "0x885ff98a",
+          "target": "0x885fef04"
+        },
+        {
+          "at": "0x885ff9a0",
+          "target": "0x885feef4"
+        },
+        {
+          "at": "0x885ff9aa",
+          "target": "0x886010d2"
+        },
+        {
+          "at": "0x885ff9ae",
+          "target": "0x88a43a90"
+        },
+        {
+          "at": "0x885ff9ba",
+          "target": "0x88100a7c"
+        },
+        {
+          "at": "0x885ff9c2",
+          "target": "0x88100aac"
+        },
+        {
+          "at": "0x885ff9de",
+          "target": "0x880c0e2c"
+        },
+        {
+          "at": "0x885ff9e4",
+          "target": "0x885fee6a"
+        },
+        {
+          "at": "0x885ff9ec",
+          "target": "0x88abb2ce"
+        },
+        {
+          "at": "0x885ff9f4",
+          "target": "0x885feea0"
+        },
+        {
+          "at": "0x885ff9fc",
+          "target": "0x885ff0aa"
+        },
+        {
+          "at": "0x885ffa02",
+          "target": "0x883f193c"
+        },
+        {
+          "at": "0x885ffa0a",
+          "target": "0x88abb2ce"
+        },
+        {
+          "at": "0x885ffa16",
+          "target": "0x88100aac"
+        },
+        {
+          "at": "0x885ffa1c",
+          "target": "0x885fed66"
+        },
+        {
+          "at": "0x885ffa20",
+          "target": "0x885ff952"
+        },
+        {
+          "at": "0x885ffa2a",
+          "target": "0x885ff8d8"
+        },
+        {
+          "at": "0x885ffa34",
+          "target": "0x88100aac"
+        },
+        {
+          "at": "0x885ffa44",
+          "target": "0x880c0e2c"
+        },
+        {
+          "at": "0x885ffa4c",
+          "target": "0x88100aac"
+        },
+        {
+          "at": "0x885ffa5e",
+          "target": "0x880c0e2c"
+        },
+        {
+          "at": "0x885ffa66",
+          "target": "0x88100aac"
+        },
+        {
+          "at": "0x885ffa78",
+          "target": "0x880c0e2c"
+        },
+        {
+          "at": "0x885ffa86",
+          "target": "0x885fef04"
+        },
+        {
+          "at": "0x885ffa8e",
+          "target": "0x885feef4"
+        },
+        {
+          "at": "0x885ffa9e",
+          "target": "0x88601098"
+        },
+        {
+          "at": "0x885ffab6",
+          "target": "0x885feef4"
+        },
+        {
+          "at": "0x885ffabc",
+          "target": "0x885fef04"
+        },
+        {
+          "at": "0x885ffac6",
+          "target": "0x88100a5c"
+        },
+        {
+          "at": "0x885ffaca",
+          "target": "0x885fef04"
+        },
+        {
+          "at": "0x885ffade",
+          "target": "0x885feef4"
+        },
+        {
+          "at": "0x885ffae8",
+          "target": "0x886010d2"
+        },
+        {
+          "at": "0x885ffaec",
+          "target": "0x88a43a5e"
+        },
+        {
+          "at": "0x885ffafa",
+          "target": "0x88100a7c"
+        },
+        {
+          "at": "0x885ffb02",
+          "target": "0x885feea0"
+        },
+        {
+          "at": "0x885ffb08",
+          "target": "0x883f300a"
+        },
+        {
+          "at": "0x885ffb0e",
+          "target": "0x883f303e"
+        },
+        {
+          "at": "0x885ffb16",
+          "target": "0x88abb2ce"
+        },
+        {
+          "at": "0x885ffb1c",
+          "target": "0x885ff41a"
+        },
+        {
+          "at": "0x885ffb22",
+          "target": "0x885fee6a"
+        },
+        {
+          "at": "0x885ffb28",
+          "target": "0x885ff41a"
+        },
+        {
+          "at": "0x885ffb36",
+          "target": "0x88100a7c"
+        },
+        {
+          "at": "0x885ffb3c",
+          "target": "0x885fee38"
+        },
+        {
+          "at": "0x885ffb44",
+          "target": "0x88b1a036"
+        },
+        {
+          "at": "0x885ffb4c",
+          "target": "0x88100aac"
+        },
+        {
+          "at": "0x885ffb5c",
+          "target": "0x880c0e2c"
+        },
+        {
+          "at": "0x885ffb64",
+          "target": "0x88100aac"
+        },
+        {
+          "at": "0x885ffb76",
+          "target": "0x880c0e2c"
+        },
+        {
+          "at": "0x885ffb7e",
+          "target": "0x88100aac"
+        },
+        {
+          "at": "0x885ffb90",
+          "target": "0x880c0e2c"
+        },
+        {
+          "at": "0x885ffb9e",
+          "target": "0x885fef04"
+        },
+        {
+          "at": "0x885ffba6",
+          "target": "0x885feef4"
+        }
+      ]
+    },
+    {
+      "name": "sms-send-results",
+      "file": "sms-send-results-thumb.txt",
+      "start": "0x883c3900",
+      "end_exclusive": "0x883c47a0",
+      "source_range_sha256": "ac120f5480c68a3f3076e9c3544c8dd001386800524894c72367e55bd7dd55fd",
+      "literal_references": [
+        {
+          "at": "0x883c3940",
+          "value": "0x883c3ac4"
+        },
+        {
+          "at": "0x883c3942",
+          "value": "0x883c3c50",
+          "ascii": "MMISMS:Get_Current_Seq_Num edit_content_ptr = PNULL"
+        },
+        {
+          "at": "0x883c3964",
+          "value": "0x883c3c84"
+        },
+        {
+          "at": "0x883c3966",
+          "value": "0x883c3c88",
+          "ascii": "SMS: Get_Current_Seq_Num =%d"
+        },
+        {
+          "at": "0x883c39b4",
+          "value": "0x883c3ac4"
+        },
+        {
+          "at": "0x883c39ba",
+          "value": "0x883c3ca8",
+          "ascii": "MMISMS:HandleSMSSendSuccessCnf send_message = PNULL"
+        },
+        {
+          "at": "0x883c3a78",
+          "value": "0x883c3cdc"
+        },
+        {
+          "at": "0x883c3a7c",
+          "value": "0x883c3ce0",
+          "ascii": "MMISMS_SetDeliverResendFlag: is_resend = %d"
+        },
+        {
+          "at": "0x883c3a86",
+          "value": "0x81d133c0"
+        },
+        {
+          "at": "0x883c3a90",
+          "value": "0x415f534d"
+        },
+        {
+          "at": "0x883c3a96",
+          "value": "0x3d207274"
+        },
+        {
+          "at": "0x883c3a98",
+          "value": "0x6d53646e"
+        },
+        {
+          "at": "0x883c3a9a",
+          "value": "0x53494d4d"
+        },
+        {
+          "at": "0x883c3ac2",
+          "value": "0x415f534d"
+        },
+        {
+          "at": "0x883c3acc",
+          "value": "0x725f646e"
+        },
+        {
+          "at": "0x883c3ad4",
+          "value": "0x203d2074"
+        },
+        {
+          "at": "0x883c3ada",
+          "value": "0x435f7465"
+        },
+        {
+          "at": "0x883c3ae6",
+          "value": "0x5f746964"
+        },
+        {
+          "at": "0x883c3afc",
+          "value": "0x4c554e50"
+        },
+        {
+          "at": "0x883c3b02",
+          "value": "0x203a534d"
+        },
+        {
+          "at": "0x883c3b04",
+          "value": "0x65732020"
+        },
+        {
+          "at": "0x883c3b06",
+          "value": "0x473a534d"
+        },
+        {
+          "at": "0x883c3b0e",
+          "value": "0x53494d4d"
+        },
+        {
+          "at": "0x883c3b12",
+          "value": "0x6c646e61"
+        },
+        {
+          "at": "0x883c3b2c",
+          "value": "0x535f746e"
+        },
+        {
+          "at": "0x883c3b30",
+          "value": "0x65206d75"
+        },
+        {
+          "at": "0x883c3b36",
+          "value": "0x6c435f53"
+        },
+        {
+          "at": "0x883c3b38",
+          "value": "0x746e6f63"
+        },
+        {
+          "at": "0x883c3b3a",
+          "value": "0x3a534d53"
+        },
+        {
+          "at": "0x883c3b42",
+          "value": "0x46062164"
+        },
+        {
+          "at": "0x883c3b46",
+          "value": "0x535f534d"
+        },
+        {
+          "at": "0x883c3b5c",
+          "value": "0x746e6572"
+        },
+        {
+          "at": "0x883c3b62",
+          "value": "0x81d133c0"
+        },
+        {
+          "at": "0x883c3b64",
+          "value": "0x6d754e5f"
+        },
+        {
+          "at": "0x883c3b66",
+          "value": "0x534d5365"
+        },
+        {
+          "at": "0x883c3b88",
+          "value": "0x63637553"
+        },
+        {
+          "at": "0x883c3b8c",
+          "value": "0xa1daa2d9"
+        },
+        {
+          "at": "0x883c3b90",
+          "value": "0x5f646e65"
+        },
+        {
+          "at": "0x883c3b98",
+          "value": "0x20656761"
+        },
+        {
+          "at": "0x883c3bbc",
+          "value": "0x46646e65"
+        },
+        {
+          "at": "0x883c3bc4",
+          "value": "0x5f736920"
+        },
+        {
+          "at": "0x883c3be8",
+          "value": "0x2003eec6"
+        },
+        {
+          "at": "0x883c3bf0",
+          "value": "0x8080f8ad"
+        },
+        {
+          "at": "0x883c3c14",
+          "value": "0xd0462800"
+        },
+        {
+          "at": "0x883c3c1a",
+          "value": "0x3d20646e"
+        },
+        {
+          "at": "0x883c3c1c",
+          "value": "0xf5048501"
+        },
+        {
+          "at": "0x883c3c1e",
+          "value": "0x901f04f"
+        },
+        {
+          "at": "0x883c3c30",
+          "value": "0xb108f912"
+        },
+        {
+          "at": "0x883c3c34",
+          "value": "0x2800d037"
+        },
+        {
+          "at": "0x883c3c36",
+          "value": "0x23039204"
+        },
+        {
+          "at": "0x883c3c50",
+          "value": "0x9800e9cd"
+        },
+        {
+          "at": "0x883c3c66",
+          "value": "0xee4af53c"
+        },
+        {
+          "at": "0x883c3c7e",
+          "value": "0x7f21fba4"
+        },
+        {
+          "at": "0x883c3c80",
+          "value": "0xb025ee52"
+        },
+        {
+          "at": "0x883c3c88",
+          "value": "0xb025ee52"
+        },
+        {
+          "at": "0x883c3c9c",
+          "value": "0x7508f8c5"
+        },
+        {
+          "at": "0x883c3ca8",
+          "value": "0xa1daa2d9"
+        },
+        {
+          "at": "0x883c3cae",
+          "value": "0xf38d8b22"
+        },
+        {
+          "at": "0x883c3cd6",
+          "value": "0xb108f912"
+        },
+        {
+          "at": "0x883c3cd8",
+          "value": "0x4630f9ff"
+        },
+        {
+          "at": "0x883c3ce0",
+          "value": "0xb108f912"
+        },
+        {
+          "at": "0x883c3d32",
+          "value": "0x883c3ac4"
+        },
+        {
+          "at": "0x883c3d3a",
+          "value": "0x883c40e0",
+          "ascii": "HandleSMSSendCnfErrorNoResend send type"
+        },
+        {
+          "at": "0x883c3dd4",
+          "value": "0x883c4108",
+          "ascii": "MMISMS:HandleSMSSendCnfErrorNoResend PNULL ==  send_info_ptr"
+        },
+        {
+          "at": "0x883c3de0",
+          "value": "0x883c4148"
+        },
+        {
+          "at": "0x883c3de2",
+          "value": "0x883c414c",
+          "ascii": "MMISMS:SendFailCount PNULL ==  send_info_ptr"
+        },
+        {
+          "at": "0x883c3e94",
+          "value": "0x88b5191d"
+        },
+        {
+          "at": "0x883c3e98",
+          "value": "0x400000cb",
+          "resource_text": {
+            "0": "Warning",
+            "1": "Warning",
+            "2": "Warning"
+          }
+        },
+        {
+          "at": "0x883c3e9c",
+          "value": "0x400000cb",
+          "resource_text": {
+            "0": "Warning",
+            "1": "Warning",
+            "2": "Warning"
+          }
+        },
+        {
+          "at": "0x883c3e9e",
+          "value": "0x40000361",
+          "resource_text": {
+            "0": "No space",
+            "1": "无空间",
+            "2": "無空間"
+          }
+        },
+        {
+          "at": "0x883c3ec2",
+          "value": "0x400000cb",
+          "resource_text": {
+            "0": "Warning",
+            "1": "Warning",
+            "2": "Warning"
+          }
+        },
+        {
+          "at": "0x883c3ec4",
+          "value": "0x400000cb",
+          "resource_text": {
+            "0": "Warning",
+            "1": "Warning",
+            "2": "Warning"
+          }
+        },
+        {
+          "at": "0x883c3f5c",
+          "value": "0x400000cb",
+          "resource_text": {
+            "0": "Warning",
+            "1": "Warning",
+            "2": "Warning"
+          }
+        },
+        {
+          "at": "0x883c3f60",
+          "value": "0x88b5191d"
+        },
+        {
+          "at": "0x883c3f62",
+          "value": "0x400000cb",
+          "resource_text": {
+            "0": "Warning",
+            "1": "Warning",
+            "2": "Warning"
+          }
+        },
+        {
+          "at": "0x883c3f72",
+          "value": "0x40000361",
+          "resource_text": {
+            "0": "No space",
+            "1": "无空间",
+            "2": "無空間"
+          }
+        },
+        {
+          "at": "0x883c3f90",
+          "value": "0x883c3c84"
+        },
+        {
+          "at": "0x883c3f96",
+          "value": "0x883c4188",
+          "ascii": "MMISMS: HandleSMSSendCnfErrorNoResend is_finish = %d"
+        },
+        {
+          "at": "0x883c4030",
+          "value": "0x81e92588"
+        },
+        {
+          "at": "0x883c403a",
+          "value": "0x883c41c4",
+          "ascii": "mmisms resend sms"
+        },
+        {
+          "at": "0x883c40a0",
+          "value": "0x883c41d8",
+          "ascii": "mmisms rl_cause = %d"
+        },
+        {
+          "at": "0x883c40aa",
+          "value": "0x883c3c84"
+        },
+        {
+          "at": "0x883c40b0",
+          "value": "0x883c41f0",
+          "ascii": "HandleSMSSendErrorCnf:resend_count is %d"
+        },
+        {
+          "at": "0x883c40d6",
+          "value": "0x883c4144"
+        },
+        {
+          "at": "0x883c40e6",
+          "value": "0x60e62201"
+        },
+        {
+          "at": "0x883c40f4",
+          "value": "0x2003d00d"
+        },
+        {
+          "at": "0x883c4108",
+          "value": "0xb570e564"
+        },
+        {
+          "at": "0x883c410e",
+          "value": "0x6e655353"
+        },
+        {
+          "at": "0x883c4130",
+          "value": "0x70e00a28"
+        },
+        {
+          "at": "0x883c414c",
+          "value": "0x5608e9dd"
+        },
+        {
+          "at": "0x883c4164",
+          "value": "0x4b510"
+        },
+        {
+          "at": "0x883c4188",
+          "value": "0x2003d00d"
+        },
+        {
+          "at": "0x883c4196",
+          "value": "0xa1f9a2c2"
+        },
+        {
+          "at": "0x883c41a4",
+          "value": "0xeb84f53c"
+        },
+        {
+          "at": "0x883c41f6",
+          "value": "0x69a06921"
+        },
+        {
+          "at": "0x883c421c",
+          "value": "0x883c45bc",
+          "ascii": "MMISMS:HandleSMSSendErrorCnf PNULL ==  send_info_ptr"
+        },
+        {
+          "at": "0x883c4220",
+          "value": "0x883c45f0"
+        },
+        {
+          "at": "0x883c4222",
+          "value": "0x883c45f4",
+          "ascii": "MMISMS:HandleSMSSendErrorCnf cause ==  MN_SMS_OPERATE_SUCCESS"
+        },
+        {
+          "at": "0x883c424c",
+          "value": "0x883c3c84"
+        },
+        {
+          "at": "0x883c4252",
+          "value": "0x883c4634",
+          "ascii": "mmivcard:InitUserDataHeadForVcard srcPort=%d"
+        },
+        {
+          "at": "0x883c4278",
+          "value": "0x883c45f0"
+        },
+        {
+          "at": "0x883c427a",
+          "value": "0x883c4664",
+          "ascii": "MMISMS:InitUserDataHeadForJAVA data_head_ptr = PNULL"
+        },
+        {
+          "at": "0x883c42ca",
+          "value": "0x883c3c84"
+        },
+        {
+          "at": "0x883c42d2",
+          "value": "0x883c469c",
+          "ascii": "MMISMS:MMISMS_HandleSendCnf sig_ptr->cause = %d"
+        },
+        {
+          "at": "0x883c42e4",
+          "value": "0x883c45f0"
+        },
+        {
+          "at": "0x883c42e6",
+          "value": "0x883c46cc",
+          "ascii": "MMISMS:MMISMS_HandleSendCnf sig_ptr = PNULL"
+        },
+        {
+          "at": "0x883c4368",
+          "value": "0x883c3c84"
+        },
+        {
+          "at": "0x883c436e",
+          "value": "0x883c46f8",
+          "ascii": " MMISMS_HandleSendCnfWhenWriteCnf: send_status = %d"
+        },
+        {
+          "at": "0x883c43a4",
+          "value": "0x883c45f0"
+        },
+        {
+          "at": "0x883c43aa",
+          "value": "0x883c472c",
+          "ascii": "MMISMS:MMISMS_HandleSendCnfWhenWriteCnf send_info_ptr = PNULL"
+        },
+        {
+          "at": "0x883c444e",
+          "value": "0x400000cb",
+          "resource_text": {
+            "0": "Warning",
+            "1": "Warning",
+            "2": "Warning"
+          }
+        },
+        {
+          "at": "0x883c4454",
+          "value": "0x400000cb",
+          "resource_text": {
+            "0": "Warning",
+            "1": "Warning",
+            "2": "Warning"
+          }
+        },
+        {
+          "at": "0x883c4480",
+          "value": "0x88b5191d"
+        },
+        {
+          "at": "0x883c4484",
+          "value": "0x400000cb",
+          "resource_text": {
+            "0": "Warning",
+            "1": "Warning",
+            "2": "Warning"
+          }
+        },
+        {
+          "at": "0x883c4486",
+          "value": "0x40000361",
+          "resource_text": {
+            "0": "No space",
+            "1": "无空间",
+            "2": "無空間"
+          }
+        },
+        {
+          "at": "0x883c44a0",
+          "value": "0x81d13394"
+        },
+        {
+          "at": "0x883c44aa",
+          "value": "0x81d13394"
+        },
+        {
+          "at": "0x883c44d0",
+          "value": "0x883c3c84"
+        },
+        {
+          "at": "0x883c44d6",
+          "value": "0x883c477c",
+          "ascii": "MMISMS:MMISMS_SetAddressToMessage count = %d"
+        },
+        {
+          "at": "0x883c44e4",
+          "value": "0x883c45f0"
+        },
+        {
+          "at": "0x883c44e6",
+          "value": "0x883c47ac",
+          "ascii": "MMISMS:MMISMS_SetAddressToMessage num_ptr = PNULL"
+        },
+        {
+          "at": "0x883c455e",
+          "value": "0x81d13394"
+        },
+        {
+          "at": "0x883c4564",
+          "value": "0x883c3c84"
+        },
+        {
+          "at": "0x883c456c",
+          "value": "0x883c47e0",
+          "ascii": "MMISMS: MMISMS_GetDestCount count = %d"
+        },
+        {
+          "at": "0x883c4584",
+          "value": "0x81d13394"
+        },
+        {
+          "at": "0x883c45bc",
+          "value": "0x4c4c55"
+        },
+        {
+          "at": "0x883c45c2",
+          "value": "0x656c646e"
+        },
+        {
+          "at": "0x883c45dc",
+          "value": "0x6972576e"
+        },
+        {
+          "at": "0x883c45f4",
+          "value": "0x53494d4d"
+        },
+        {
+          "at": "0x883c45fa",
+          "value": "0x20666e43"
+        },
+        {
+          "at": "0x883c461a",
+          "value": "0x53494d4d"
+        },
+        {
+          "at": "0x883c461e",
+          "value": "0x400000cb",
+          "resource_text": {
+            "0": "Warning",
+            "1": "Warning",
+            "2": "Warning"
+          }
+        },
+        {
+          "at": "0x883c463c",
+          "value": "0x642520"
+        },
+        {
+          "at": "0x883c4648",
+          "value": "0x74705f6d"
+        },
+        {
+          "at": "0x883c4664",
+          "value": "0x6f632065"
+        },
+        {
+          "at": "0x883c466a",
+          "value": "0x646e6573"
+        },
+        {
+          "at": "0x883c4676",
+          "value": "0x6e756f63"
+        },
+        {
+          "at": "0x883c4696",
+          "value": "0x67617373"
+        },
+        {
+          "at": "0x883c469c",
+          "value": "0x203d2072"
+        },
+        {
+          "at": "0x883c46a2",
+          "value": "0x64644174"
+        },
+        {
+          "at": "0x883c46a4",
+          "value": "0x4c"
+        },
+        {
+          "at": "0x883c46a6",
+          "value": "0x6f437473"
+        },
+        {
+          "at": "0x883c46cc",
+          "value": "0x6425"
+        },
+        {
+          "at": "0x883c46d2",
+          "value": "0x64644174"
+        },
+        {
+          "at": "0x883c46d4",
+          "value": "0xa1fd2010"
+        },
+        {
+          "at": "0x883c46d6",
+          "value": "0xf04f4604"
+        },
+        {
+          "at": "0x883c46f2",
+          "value": "0x728f105"
+        },
+        {
+          "at": "0x883c46f4",
+          "value": "0xf53ca1fc"
+        },
+        {
+          "at": "0x883c46f8",
+          "value": "0x53494d4d"
+        },
+        {
+          "at": "0x883c46fa",
+          "value": "0xd0080005"
+        },
+        {
+          "at": "0x883c46fc",
+          "value": "0xf53ca1fc"
+        },
+        {
+          "at": "0x883c472c",
+          "value": "0x2229012d"
+        },
+        {
+          "at": "0x883c4732",
+          "value": "0xbd704610"
+        },
+        {
+          "at": "0x883c4734",
+          "value": "0x1c64e918"
+        },
+        {
+          "at": "0x883c4736",
+          "value": "0xe906f53c"
+        },
+        {
+          "at": "0x883c4764",
+          "value": "0xb5104770"
+        },
+        {
+          "at": "0x883c4766",
+          "value": "0x7820e8e0"
+        },
+        {
+          "at": "0x883c477c",
+          "value": "0x49f04230"
+        },
+        {
+          "at": "0x883c4782",
+          "value": "0x1c64e918"
+        },
+        {
+          "at": "0x883c4784",
+          "value": "0x7820e8e0"
+        },
+        {
+          "at": "0x883c4786",
+          "value": "0x9010f8ad"
+        }
+      ],
+      "direct_call_candidates": [
+        {
+          "at": "0x883c3902",
+          "target": "0x883c200c"
+        },
+        {
+          "at": "0x883c3920",
+          "target": "0x88100aac"
+        },
+        {
+          "at": "0x883c3932",
+          "target": "0x88100724"
+        },
+        {
+          "at": "0x883c3944",
+          "target": "0x88100a7c"
+        },
+        {
+          "at": "0x883c3968",
+          "target": "0x88100a7c"
+        },
+        {
+          "at": "0x883c3970",
+          "target": "0x8810072c"
+        },
+        {
+          "at": "0x883c399a",
+          "target": "0x883c200c"
+        },
+        {
+          "at": "0x883c39a8",
+          "target": "0x883c2078"
+        },
+        {
+          "at": "0x883c39c0",
+          "target": "0x883c203e"
+        },
+        {
+          "at": "0x883c39ee",
+          "target": "0x88b51c90"
+        },
+        {
+          "at": "0x883c39fe",
+          "target": "0x883c2078"
+        },
+        {
+          "at": "0x883c3a06",
+          "target": "0x883c3912"
+        },
+        {
+          "at": "0x883c3a10",
+          "target": "0x883c2a42"
+        },
+        {
+          "at": "0x883c3a1e",
+          "target": "0x883c3296"
+        },
+        {
+          "at": "0x883c3a28",
+          "target": "0x883c388a"
+        },
+        {
+          "at": "0x883c3a2c",
+          "target": "0x883c203e"
+        },
+        {
+          "at": "0x883c3a32",
+          "target": "0x883c251c"
+        },
+        {
+          "at": "0x883c3a3a",
+          "target": "0x883c250a"
+        },
+        {
+          "at": "0x883c3a44",
+          "target": "0x883c37dc"
+        },
+        {
+          "at": "0x883c3a68",
+          "target": "0x88100a8c"
+        },
+        {
+          "at": "0x883c3a70",
+          "target": "0x883c38be"
+        },
+        {
+          "at": "0x883c3a82",
+          "target": "0x88100a7c"
+        },
+        {
+          "at": "0x883c3d1e",
+          "target": "0x88100aac"
+        },
+        {
+          "at": "0x883c3d2c",
+          "target": "0x883c200c"
+        },
+        {
+          "at": "0x883c3d3c",
+          "target": "0x88100a7c"
+        },
+        {
+          "at": "0x883c3d42",
+          "target": "0x883c38be"
+        },
+        {
+          "at": "0x883c3d48",
+          "target": "0x883c200c"
+        },
+        {
+          "at": "0x883c3d9a",
+          "target": "0x88b51c90"
+        },
+        {
+          "at": "0x883c3da8",
+          "target": "0x883c203e"
+        },
+        {
+          "at": "0x883c3db0",
+          "target": "0x883c251c"
+        },
+        {
+          "at": "0x883c3dbe",
+          "target": "0x883c250a"
+        },
+        {
+          "at": "0x883c3dc8",
+          "target": "0x883c37dc"
+        },
+        {
+          "at": "0x883c3dd6",
+          "target": "0x88100a7c"
+        },
+        {
+          "at": "0x883c3de4",
+          "target": "0x88100a7c"
+        },
+        {
+          "at": "0x883c3e0c",
+          "target": "0x88b51c90"
+        },
+        {
+          "at": "0x883c3e16",
+          "target": "0x883c203e"
+        },
+        {
+          "at": "0x883c3e26",
+          "target": "0x883c2078"
+        },
+        {
+          "at": "0x883c3e2e",
+          "target": "0x883c7230"
+        },
+        {
+          "at": "0x883c3e38",
+          "target": "0x883c3912"
+        },
+        {
+          "at": "0x883c3e42",
+          "target": "0x883c2a42"
+        },
+        {
+          "at": "0x883c3e52",
+          "target": "0x88b51936"
+        },
+        {
+          "at": "0x883c3e68",
+          "target": "0x883c203e"
+        },
+        {
+          "at": "0x883c3e70",
+          "target": "0x883c251c"
+        },
+        {
+          "at": "0x883c3e7a",
+          "target": "0x883c250a"
+        },
+        {
+          "at": "0x883c3e84",
+          "target": "0x883c37dc"
+        },
+        {
+          "at": "0x883c3eb0",
+          "target": "0x88636e7c"
+        },
+        {
+          "at": "0x883c3ebc",
+          "target": "0x883c2be2"
+        },
+        {
+          "at": "0x883c3ec8",
+          "target": "0x88624ade"
+        },
+        {
+          "at": "0x883c3ece",
+          "target": "0x883c1db8"
+        },
+        {
+          "at": "0x883c3ede",
+          "target": "0x883c298a"
+        },
+        {
+          "at": "0x883c3ef4",
+          "target": "0x883c203e"
+        },
+        {
+          "at": "0x883c3efa",
+          "target": "0x883c251c"
+        },
+        {
+          "at": "0x883c3f0a",
+          "target": "0x883c2be2"
+        },
+        {
+          "at": "0x883c3f14",
+          "target": "0x883c1db8"
+        },
+        {
+          "at": "0x883c3f1c",
+          "target": "0x883c2b36"
+        },
+        {
+          "at": "0x883c3f24",
+          "target": "0x883c3a76"
+        },
+        {
+          "at": "0x883c3f2c",
+          "target": "0x883c29b8"
+        },
+        {
+          "at": "0x883c3f34",
+          "target": "0x883c7230"
+        },
+        {
+          "at": "0x883c3f40",
+          "target": "0x883c2a42"
+        },
+        {
+          "at": "0x883c3f50",
+          "target": "0x88b51936"
+        },
+        {
+          "at": "0x883c3f7a",
+          "target": "0x88636e7c"
+        },
+        {
+          "at": "0x883c3f8a",
+          "target": "0x883c2be2"
+        },
+        {
+          "at": "0x883c3f98",
+          "target": "0x88100a7c"
+        },
+        {
+          "at": "0x883c3faa",
+          "target": "0x883c298a"
+        },
+        {
+          "at": "0x883c3fc0",
+          "target": "0x883c203e"
+        },
+        {
+          "at": "0x883c3fc6",
+          "target": "0x883c251c"
+        },
+        {
+          "at": "0x883c3fd6",
+          "target": "0x883c1db8"
+        },
+        {
+          "at": "0x883c3fde",
+          "target": "0x883c2b36"
+        },
+        {
+          "at": "0x883c3fe6",
+          "target": "0x883c3a76"
+        },
+        {
+          "at": "0x883c3fee",
+          "target": "0x883c29b8"
+        },
+        {
+          "at": "0x883c3ff2",
+          "target": "0x883c274c"
+        },
+        {
+          "at": "0x883c3ffa",
+          "target": "0x883c7230"
+        },
+        {
+          "at": "0x883c400e",
+          "target": "0x88b51936"
+        },
+        {
+          "at": "0x883c4020",
+          "target": "0x883c1db8"
+        },
+        {
+          "at": "0x883c4028",
+          "target": "0x883c2b36"
+        },
+        {
+          "at": "0x883c403c",
+          "target": "0x88100a5c"
+        },
+        {
+          "at": "0x883c404e",
+          "target": "0x883c242a"
+        },
+        {
+          "at": "0x883c4064",
+          "target": "0x883c2544"
+        },
+        {
+          "at": "0x883c406c",
+          "target": "0x880c8a02"
+        },
+        {
+          "at": "0x883c4070",
+          "target": "0x883c274c"
+        },
+        {
+          "at": "0x883c408a",
+          "target": "0x883c200c"
+        },
+        {
+          "at": "0x883c40a4",
+          "target": "0x88100a5c"
+        },
+        {
+          "at": "0x883c40b2",
+          "target": "0x88100a7c"
+        },
+        {
+          "at": "0x883c40be",
+          "target": "0x883c5e68"
+        },
+        {
+          "at": "0x883c4254",
+          "target": "0x88100a7c"
+        },
+        {
+          "at": "0x883c4290",
+          "target": "0x883c1df0"
+        },
+        {
+          "at": "0x883c429e",
+          "target": "0x883c6f24"
+        },
+        {
+          "at": "0x883c42c4",
+          "target": "0x883c200c"
+        },
+        {
+          "at": "0x883c42d4",
+          "target": "0x88100a7c"
+        },
+        {
+          "at": "0x883c42f8",
+          "target": "0x883c2a42"
+        },
+        {
+          "at": "0x883c4302",
+          "target": "0x883c2a42"
+        },
+        {
+          "at": "0x883c430a",
+          "target": "0x883c2a42"
+        },
+        {
+          "at": "0x883c4312",
+          "target": "0x883c3912"
+        },
+        {
+          "at": "0x883c4370",
+          "target": "0x88100a7c"
+        },
+        {
+          "at": "0x883c4376",
+          "target": "0x883c200c"
+        },
+        {
+          "at": "0x883c43ba",
+          "target": "0x883c2078"
+        },
+        {
+          "at": "0x883c43c2",
+          "target": "0x883c3912"
+        },
+        {
+          "at": "0x883c43cc",
+          "target": "0x883c2a42"
+        },
+        {
+          "at": "0x883c43da",
+          "target": "0x883c3296"
+        },
+        {
+          "at": "0x883c43e4",
+          "target": "0x88100a8c"
+        },
+        {
+          "at": "0x883c43ec",
+          "target": "0x883c38be"
+        },
+        {
+          "at": "0x883c43f0",
+          "target": "0x883c388a"
+        },
+        {
+          "at": "0x883c43f6",
+          "target": "0x883c251c"
+        },
+        {
+          "at": "0x883c43fe",
+          "target": "0x883c250a"
+        },
+        {
+          "at": "0x883c4408",
+          "target": "0x883c37dc"
+        },
+        {
+          "at": "0x883c4418",
+          "target": "0x883c2078"
+        },
+        {
+          "at": "0x883c4420",
+          "target": "0x883c7230"
+        },
+        {
+          "at": "0x883c442e",
+          "target": "0x883c3912"
+        },
+        {
+          "at": "0x883c4438",
+          "target": "0x883c2a42"
+        },
+        {
+          "at": "0x883c4448",
+          "target": "0x88b51936"
+        },
+        {
+          "at": "0x883c4458",
+          "target": "0x88624ade"
+        },
+        {
+          "at": "0x883c445e",
+          "target": "0x883c1db8"
+        },
+        {
+          "at": "0x883c4468",
+          "target": "0x883c203e"
+        },
+        {
+          "at": "0x883c4476",
+          "target": "0x883c2be2"
+        },
+        {
+          "at": "0x883c4494",
+          "target": "0x88636e7c"
+        },
+        {
+          "at": "0x883c44d8",
+          "target": "0x88100a7c"
+        },
+        {
+          "at": "0x883c44fc",
+          "target": "0x88100a8c"
+        },
+        {
+          "at": "0x883c4516",
+          "target": "0x88100a64"
+        },
+        {
+          "at": "0x883c4550",
+          "target": "0x88100a9c"
+        },
+        {
+          "at": "0x883c456e",
+          "target": "0x88100a7c"
+        },
+        {
+          "at": "0x883c459c",
+          "target": "0x88100a8c"
+        },
+        {
+          "at": "0x883c45b0",
+          "target": "0x88100a9c"
+        }
+      ]
+    },
+    {
+      "name": "sms-send-wait",
+      "file": "sms-send-wait-thumb.txt",
+      "start": "0x880c8400",
+      "end_exclusive": "0x880c8c70",
+      "source_range_sha256": "3f7440940b6086163ccb12e98355bf8f921a883515272726c5c41e81a68ce357",
+      "literal_references": [
+        {
+          "at": "0x880c8402",
+          "value": "0x880c7ea8"
+        },
+        {
+          "at": "0x880c8408",
+          "value": "0x880c874c",
+          "ascii": "MMISMS_HandleNewVcalendarMsgWin name_len=%d"
+        },
+        {
+          "at": "0x880c8416",
+          "value": "0x880c82a8",
+          "ascii": "mmisms_commonui.c"
+        },
+        {
+          "at": "0x880c8466",
+          "value": "0x880c82a8",
+          "ascii": "mmisms_commonui.c"
+        },
+        {
+          "at": "0x880c8482",
+          "value": "0x880c82a8",
+          "ascii": "mmisms_commonui.c"
+        },
+        {
+          "at": "0x880c84ba",
+          "value": "0x880c7e4c"
+        },
+        {
+          "at": "0x880c84c0",
+          "value": "0x880c8778",
+          "ascii": "SMS: PlayNewSMSRing vt mode"
+        },
+        {
+          "at": "0x880c84e0",
+          "value": "0x880c7e4c"
+        },
+        {
+          "at": "0x880c84e4",
+          "value": "0x880c7e50",
+          "ascii": "MMISMS: PlayNewSMSRing call MMIAPICC_IsInCallConnected"
+        },
+        {
+          "at": "0x880c852c",
+          "value": "0x40000a1f",
+          "resource_text": {
+            "0": "Select",
+            "1": "选择",
+            "2": "選擇"
+          }
+        },
+        {
+          "at": "0x880c8538",
+          "value": "0x40000480",
+          "resource_text": {
+            "0": "Freedom",
+            "1": "Freedom",
+            "2": "Freedom"
+          }
+        },
+        {
+          "at": "0x880c8564",
+          "value": "0x880c7e4c"
+        },
+        {
+          "at": "0x880c856a",
+          "value": "0x880c879c",
+          "ascii": "MMISMS:AppendListItem string_ptr = PNULL"
+        },
+        {
+          "at": "0x880c85ca",
+          "value": "0x81c3b2ec"
+        },
+        {
+          "at": "0x880c85d0",
+          "value": "0x40000a1f",
+          "resource_text": {
+            "0": "Select",
+            "1": "选择",
+            "2": "選擇"
+          }
+        },
+        {
+          "at": "0x880c85d8",
+          "value": "0x880c8595"
+        },
+        {
+          "at": "0x880c85dc",
+          "value": "0x4000000e",
+          "resource_text": {
+            "0": "Close",
+            "1": "关闭",
+            "2": "關閉"
+          }
+        },
+        {
+          "at": "0x880c85ec",
+          "value": "0x8002c"
+        },
+        {
+          "at": "0x880c8600",
+          "value": "0x81c3b2ec"
+        },
+        {
+          "at": "0x880c8608",
+          "value": "0x8002c"
+        },
+        {
+          "at": "0x880c861a",
+          "value": "0x81c3b2ec"
+        },
+        {
+          "at": "0x880c8632",
+          "value": "0x88623ce9"
+        },
+        {
+          "at": "0x880c86a2",
+          "value": "0x81c3b2dc"
+        },
+        {
+          "at": "0x880c86e8",
+          "value": "0x4000000e",
+          "resource_text": {
+            "0": "Close",
+            "1": "关闭",
+            "2": "關閉"
+          }
+        },
+        {
+          "at": "0x880c86ec",
+          "value": "0x4000000e",
+          "resource_text": {
+            "0": "Close",
+            "1": "关闭",
+            "2": "關閉"
+          }
+        },
+        {
+          "at": "0x880c8718",
+          "value": "0x400008ca",
+          "resource_text": {
+            "0": "Sending…",
+            "1": "正在发送…",
+            "2": "正在傳送"
+          }
+        },
+        {
+          "at": "0x880c874c",
+          "value": "0xf895b1f8"
+        },
+        {
+          "at": "0x880c8752",
+          "value": "0x4629463a"
+        },
+        {
+          "at": "0x880c8758",
+          "value": "0x7838e6f7"
+        },
+        {
+          "at": "0x880c8764",
+          "value": "0x7bc04601"
+        },
+        {
+          "at": "0x880c8778",
+          "value": "0xf2fe463d"
+        },
+        {
+          "at": "0x880c8780",
+          "value": "0x46200148"
+        },
+        {
+          "at": "0x880c8784",
+          "value": "0xf2fa9400"
+        },
+        {
+          "at": "0x880c879c",
+          "value": "0xf2fa9400"
+        },
+        {
+          "at": "0x880c87a8",
+          "value": "0x34101844"
+        },
+        {
+          "at": "0x880c87ac",
+          "value": "0xa845fbf0"
+        },
+        {
+          "at": "0x880c87c2",
+          "value": "0xf2deb110"
+        },
+        {
+          "at": "0x880c87e4",
+          "value": "0x880c87c4"
+        },
+        {
+          "at": "0x880c87ea",
+          "value": "0x880c8bcc",
+          "ascii": "MMISMS:MMISMS_HandleSendWaitWinMsg send_info_ptr = PNULL"
+        },
+        {
+          "at": "0x880c8836",
+          "value": "0x80022"
+        },
+        {
+          "at": "0x880c8868",
+          "value": "0x880c7ea8"
+        },
+        {
+          "at": "0x880c886e",
+          "value": "0x880c8c0c",
+          "ascii": "MMISMS_HandleSendWaitWinMsg:Stop g_sms_retry_timer  %d"
+        },
+        {
+          "at": "0x880c899e",
+          "value": "0x880c8671"
+        },
+        {
+          "at": "0x880c89a6",
+          "value": "0x40000002",
+          "resource_text": {
+            "0": "Reset",
+            "1": "Reset",
+            "2": "Reset"
+          }
+        },
+        {
+          "at": "0x880c89b2",
+          "value": "0x80022"
+        },
+        {
+          "at": "0x880c8a08",
+          "value": "0x880c89c9"
+        },
+        {
+          "at": "0x880c8a34",
+          "value": "0x400008ca",
+          "resource_text": {
+            "0": "Sending…",
+            "1": "正在发送…",
+            "2": "正在傳送"
+          }
+        },
+        {
+          "at": "0x880c8a4e",
+          "value": "0x40080055",
+          "resource_text": {
+            "0": "Go to Settings and enter a message centre number",
+            "1": "转至“设置”并输入信息中心号码",
+            "2": "前往「設定」並輸入訊息中心號碼"
+          }
+        },
+        {
+          "at": "0x880c8a52",
+          "value": "0x40080055",
+          "resource_text": {
+            "0": "Go to Settings and enter a message centre number",
+            "1": "转至“设置”并输入信息中心号码",
+            "2": "前往「設定」並輸入訊息中心號碼"
+          }
+        },
+        {
+          "at": "0x880c8a5a",
+          "value": "0x40000776",
+          "resource_text": {
+            "0": "Can't do this as you're using fixed dialling.",
+            "1": "您正在使用固定拨号，无法执行此操作。",
+            "2": "您正在使用固定撥號，無法執行此操作。"
+          }
+        },
+        {
+          "at": "0x880c8a7a",
+          "value": "0x40000361",
+          "resource_text": {
+            "0": "No space",
+            "1": "无空间",
+            "2": "無空間"
+          }
+        },
+        {
+          "at": "0x880c8a7e",
+          "value": "0x40000002",
+          "resource_text": {
+            "0": "Reset",
+            "1": "Reset",
+            "2": "Reset"
+          }
+        },
+        {
+          "at": "0x880c8a8e",
+          "value": "0x400008ca",
+          "resource_text": {
+            "0": "Sending…",
+            "1": "正在发送…",
+            "2": "正在傳送"
+          }
+        },
+        {
+          "at": "0x880c8a98",
+          "value": "0x880c8c5c",
+          "ascii": "MMISMS: DisplaySendErr oper_err = %d"
+        },
+        {
+          "at": "0x880c8ab8",
+          "value": "0x40000002",
+          "resource_text": {
+            "0": "Reset",
+            "1": "Reset",
+            "2": "Reset"
+          }
+        },
+        {
+          "at": "0x880c8ade",
+          "value": "0x2d0005"
+        },
+        {
+          "at": "0x880c8b02",
+          "value": "0x2d0005"
+        },
+        {
+          "at": "0x880c8b20",
+          "value": "0x80022"
+        },
+        {
+          "at": "0x880c8b76",
+          "value": "0x880c8c88",
+          "ascii": "mmisms del message data is pnull"
+        },
+        {
+          "at": "0x880c8ba0",
+          "value": "0x40000002",
+          "resource_text": {
+            "0": "Reset",
+            "1": "Reset",
+            "2": "Reset"
+          }
+        },
+        {
+          "at": "0x880c8ba4",
+          "value": "0x40000002",
+          "resource_text": {
+            "0": "Reset",
+            "1": "Reset",
+            "2": "Reset"
+          }
+        },
+        {
+          "at": "0x880c8bcc",
+          "value": "0xd2ed2805"
+        },
+        {
+          "at": "0x880c8bd2",
+          "value": "0x28012042"
+        },
+        {
+          "at": "0x880c8bd4",
+          "value": "0x2f390a03"
+        },
+        {
+          "at": "0x880c8bd6",
+          "value": "0x4640b118"
+        },
+        {
+          "at": "0x880c8bea",
+          "value": "0x96014669"
+        },
+        {
+          "at": "0x880c8c02",
+          "value": "0xb120f9a1"
+        },
+        {
+          "at": "0x880c8c0c",
+          "value": "0x96014669"
+        },
+        {
+          "at": "0x880c8c12",
+          "value": "0xf241e7e7"
+        },
+        {
+          "at": "0x880c8c5c",
+          "value": "0xf6af3222"
+        }
+      ],
+      "direct_call_candidates": [
+        {
+          "at": "0x880c840a",
+          "target": "0x88100a7c"
+        },
+        {
+          "at": "0x880c841a",
+          "target": "0x88100894"
+        },
+        {
+          "at": "0x880c8428",
+          "target": "0x88100a9c"
+        },
+        {
+          "at": "0x880c8432",
+          "target": "0x8856332e"
+        },
+        {
+          "at": "0x880c8440",
+          "target": "0x88059fc2"
+        },
+        {
+          "at": "0x880c8446",
+          "target": "0x8856332e"
+        },
+        {
+          "at": "0x880c844e",
+          "target": "0x88b3700a"
+        },
+        {
+          "at": "0x880c845a",
+          "target": "0x88b18f62"
+        },
+        {
+          "at": "0x880c846a",
+          "target": "0x88100a84"
+        },
+        {
+          "at": "0x880c8470",
+          "target": "0x8856332e"
+        },
+        {
+          "at": "0x880c8486",
+          "target": "0x88100a84"
+        },
+        {
+          "at": "0x880c8490",
+          "target": "0x8856332e"
+        },
+        {
+          "at": "0x880c8496",
+          "target": "0x88563342"
+        },
+        {
+          "at": "0x880c84a4",
+          "target": "0x8860c8b4"
+        },
+        {
+          "at": "0x880c84aa",
+          "target": "0x88075c50"
+        },
+        {
+          "at": "0x880c84c2",
+          "target": "0x88100a7c"
+        },
+        {
+          "at": "0x880c84c6",
+          "target": "0x8860b770"
+        },
+        {
+          "at": "0x880c84ea",
+          "target": "0x88100a7c"
+        },
+        {
+          "at": "0x880c84fc",
+          "target": "0x88b18c3e"
+        },
+        {
+          "at": "0x880c8518",
+          "target": "0x88100aac"
+        },
+        {
+          "at": "0x880c8520",
+          "target": "0x88100aac"
+        },
+        {
+          "at": "0x880c855a",
+          "target": "0x883b0ffa"
+        },
+        {
+          "at": "0x880c856c",
+          "target": "0x88100a7c"
+        },
+        {
+          "at": "0x880c8576",
+          "target": "0x883b30d8"
+        },
+        {
+          "at": "0x880c8582",
+          "target": "0x883b312c"
+        },
+        {
+          "at": "0x880c858e",
+          "target": "0x883b3100"
+        },
+        {
+          "at": "0x880c85b0",
+          "target": "0x88637544"
+        },
+        {
+          "at": "0x880c85ba",
+          "target": "0x88b3700a"
+        },
+        {
+          "at": "0x880c85d4",
+          "target": "0x885f24b4"
+        },
+        {
+          "at": "0x880c85f8",
+          "target": "0x886376f8"
+        },
+        {
+          "at": "0x880c860c",
+          "target": "0x8838d1ac"
+        },
+        {
+          "at": "0x880c8616",
+          "target": "0x88b3700a"
+        },
+        {
+          "at": "0x880c862a",
+          "target": "0x8807f688"
+        },
+        {
+          "at": "0x880c8646",
+          "target": "0x886242ba"
+        },
+        {
+          "at": "0x880c8662",
+          "target": "0x88637040"
+        },
+        {
+          "at": "0x880c8684",
+          "target": "0x88100aac"
+        },
+        {
+          "at": "0x880c869a",
+          "target": "0x88100aac"
+        },
+        {
+          "at": "0x880c86dc",
+          "target": "0x88637544"
+        },
+        {
+          "at": "0x880c86f4",
+          "target": "0x88638d58"
+        },
+        {
+          "at": "0x880c86fa",
+          "target": "0x883c44aa"
+        },
+        {
+          "at": "0x880c86fe",
+          "target": "0x88624216"
+        },
+        {
+          "at": "0x880c8704",
+          "target": "0x88b3700a"
+        },
+        {
+          "at": "0x880c870c",
+          "target": "0x883c200c"
+        },
+        {
+          "at": "0x880c871c",
+          "target": "0x885f24b4"
+        },
+        {
+          "at": "0x880c8732",
+          "target": "0x88100a8c"
+        },
+        {
+          "at": "0x880c87dc",
+          "target": "0x880852f2"
+        },
+        {
+          "at": "0x880c87ec",
+          "target": "0x88100a7c"
+        },
+        {
+          "at": "0x880c87f4",
+          "target": "0x88100a8c"
+        },
+        {
+          "at": "0x880c880a",
+          "target": "0x88100a8c"
+        },
+        {
+          "at": "0x880c881c",
+          "target": "0x883a5162"
+        },
+        {
+          "at": "0x880c8820",
+          "target": "0x883c76ee"
+        },
+        {
+          "at": "0x880c8828",
+          "target": "0x88aa604c"
+        },
+        {
+          "at": "0x880c8832",
+          "target": "0x88100aa4"
+        },
+        {
+          "at": "0x880c8852",
+          "target": "0x886379e8"
+        },
+        {
+          "at": "0x880c885e",
+          "target": "0x883c200c"
+        },
+        {
+          "at": "0x880c8870",
+          "target": "0x88100a7c"
+        },
+        {
+          "at": "0x880c8890",
+          "target": "0x8813b6e4"
+        },
+        {
+          "at": "0x880c88a8",
+          "target": "0x8813b6e4"
+        },
+        {
+          "at": "0x880c88b4",
+          "target": "0x883c3912"
+        },
+        {
+          "at": "0x880c88be",
+          "target": "0x883c2a42"
+        },
+        {
+          "at": "0x880c88ca",
+          "target": "0x883c76ee"
+        },
+        {
+          "at": "0x880c88d6",
+          "target": "0x883c3296"
+        },
+        {
+          "at": "0x880c88e4",
+          "target": "0x883c298a"
+        },
+        {
+          "at": "0x880c88f6",
+          "target": "0x883a6d28"
+        },
+        {
+          "at": "0x880c88fc",
+          "target": "0x88115cb4"
+        },
+        {
+          "at": "0x880c8902",
+          "target": "0x883c82be"
+        },
+        {
+          "at": "0x880c8914",
+          "target": "0x88100aac"
+        },
+        {
+          "at": "0x880c8924",
+          "target": "0x88100aac"
+        },
+        {
+          "at": "0x880c892c",
+          "target": "0x883c8278"
+        },
+        {
+          "at": "0x880c8942",
+          "target": "0x88100a8c"
+        },
+        {
+          "at": "0x880c894e",
+          "target": "0x880852f2"
+        },
+        {
+          "at": "0x880c8956",
+          "target": "0x88100a8c"
+        },
+        {
+          "at": "0x880c896c",
+          "target": "0x88100a8c"
+        },
+        {
+          "at": "0x880c897e",
+          "target": "0x883a5162"
+        },
+        {
+          "at": "0x880c8986",
+          "target": "0x88aa604c"
+        },
+        {
+          "at": "0x880c8990",
+          "target": "0x88100aa4"
+        },
+        {
+          "at": "0x880c89c0",
+          "target": "0x886376f8"
+        },
+        {
+          "at": "0x880c89f2",
+          "target": "0x886371cc"
+        },
+        {
+          "at": "0x880c89fc",
+          "target": "0x88b3700a"
+        },
+        {
+          "at": "0x880c8a3c",
+          "target": "0x885f24b4"
+        },
+        {
+          "at": "0x880c8a46",
+          "target": "0x883c65d8"
+        },
+        {
+          "at": "0x880c8a5e",
+          "target": "0x885f24b4"
+        },
+        {
+          "at": "0x880c8a74",
+          "target": "0x8863979e"
+        },
+        {
+          "at": "0x880c8a82",
+          "target": "0x880c865e"
+        },
+        {
+          "at": "0x880c8a88",
+          "target": "0x8858c61c"
+        },
+        {
+          "at": "0x880c8a92",
+          "target": "0x88636f32"
+        },
+        {
+          "at": "0x880c8a9a",
+          "target": "0x88100a5c"
+        },
+        {
+          "at": "0x880c8ab4",
+          "target": "0x885f24b4"
+        },
+        {
+          "at": "0x880c8ace",
+          "target": "0x880c8502"
+        },
+        {
+          "at": "0x880c8ada",
+          "target": "0x8807f9d8"
+        },
+        {
+          "at": "0x880c8ae2",
+          "target": "0x8838d1ac"
+        },
+        {
+          "at": "0x880c8aea",
+          "target": "0x88b3700a"
+        },
+        {
+          "at": "0x880c8af2",
+          "target": "0x88b23452"
+        },
+        {
+          "at": "0x880c8afe",
+          "target": "0x8807f9d8"
+        },
+        {
+          "at": "0x880c8b08",
+          "target": "0x8838d1ac"
+        },
+        {
+          "at": "0x880c8b10",
+          "target": "0x88b3700a"
+        },
+        {
+          "at": "0x880c8b18",
+          "target": "0x88b23452"
+        },
+        {
+          "at": "0x880c8b3e",
+          "target": "0x8838d950"
+        },
+        {
+          "at": "0x880c8b78",
+          "target": "0x88100a5c"
+        },
+        {
+          "at": "0x880c8b94",
+          "target": "0x88637544"
+        },
+        {
+          "at": "0x880c8bb2",
+          "target": "0x88638d58"
+        },
+        {
+          "at": "0x880c8bbe",
+          "target": "0x88b37dde"
+        }
+      ]
+    },
+    {
+      "name": "sms-encoding-content",
+      "file": "sms-encoding-content-thumb.txt",
+      "start": "0x883d92f4",
+      "end_exclusive": "0x883d9700",
+      "source_range_sha256": "08f8c32b170d6fd4f2f979b53dcd1d8745bb2927b30f95edfcd333207c2e0833",
+      "literal_references": [
+        {
+          "at": "0x883d931e",
+          "value": "0x883d9654",
+          "ascii": "mmisms_edit.c"
+        },
+        {
+          "at": "0x883d933a",
+          "value": "0x883d9654",
+          "ascii": "mmisms_edit.c"
+        },
+        {
+          "at": "0x883d9352",
+          "value": "0x883d9114"
+        },
+        {
+          "at": "0x883d9358",
+          "value": "0x883d9664",
+          "ascii": "MMISMSR8: MMISMS_SetMessageContent content_ptr"
+        },
+        {
+          "at": "0x883d9362",
+          "value": "0x883d9114"
+        },
+        {
+          "at": "0x883d9368",
+          "value": "0x883d9694",
+          "ascii": "MMISMS: MMISMS_SetMessageContent No memory!"
+        },
+        {
+          "at": "0x883d9370",
+          "value": "0x883d9654",
+          "ascii": "mmisms_edit.c"
+        },
+        {
+          "at": "0x883d93ca",
+          "value": "0x883d9218"
+        },
+        {
+          "at": "0x883d93d2",
+          "value": "0x883d96c0",
+          "ascii": "MMISMSR8: MMISMS_SetMessageContent language=%d"
+        },
+        {
+          "at": "0x883d9484",
+          "value": "0x88763a50",
+          "ascii": "MMISMS: MMISMS_SetMessageContent length=%d,alphabet=%d,is_need_packet=%d"
+        },
+        {
+          "at": "0x883d9488",
+          "value": "0x883d96f0"
+        },
+        {
+          "at": "0x883d94c4",
+          "value": "0x883d9218"
+        },
+        {
+          "at": "0x883d94ca",
+          "value": "0x883d96f8",
+          "ascii": "MMISMS: MMISMS_SetMessageContent: SCI_MEMCPY length = %d"
+        },
+        {
+          "at": "0x883d94d2",
+          "value": "0x883d9654",
+          "ascii": "mmisms_edit.c"
+        },
+        {
+          "at": "0x883d94ea",
+          "value": "0x883d9654",
+          "ascii": "mmisms_edit.c"
+        },
+        {
+          "at": "0x883d94f8",
+          "value": "0x883d9654",
+          "ascii": "mmisms_edit.c"
+        },
+        {
+          "at": "0x883d951c",
+          "value": "0x883d9654",
+          "ascii": "mmisms_edit.c"
+        },
+        {
+          "at": "0x883d952e",
+          "value": "0x883d9654",
+          "ascii": "mmisms_edit.c"
+        },
+        {
+          "at": "0x883d9538",
+          "value": "0x883d9654",
+          "ascii": "mmisms_edit.c"
+        },
+        {
+          "at": "0x883d954a",
+          "value": "0x883d9654",
+          "ascii": "mmisms_edit.c"
+        },
+        {
+          "at": "0x883d95ac",
+          "value": "0x883d9654",
+          "ascii": "mmisms_edit.c"
+        },
+        {
+          "at": "0x883d95b8",
+          "value": "0x883d9654",
+          "ascii": "mmisms_edit.c"
+        },
+        {
+          "at": "0x883d95f8",
+          "value": "0x81d14394"
+        },
+        {
+          "at": "0x883d9604",
+          "value": "0x81d13394"
+        },
+        {
+          "at": "0x883d9614",
+          "value": "0xe7592101"
+        },
+        {
+          "at": "0x883d961c",
+          "value": "0x5180f501"
+        },
+        {
+          "at": "0x883d9622",
+          "value": "0x61eaf241"
+        },
+        {
+          "at": "0x883d963e",
+          "value": "0xeba10f00"
+        },
+        {
+          "at": "0x883d9640",
+          "value": "0xb2b3460e"
+        },
+        {
+          "at": "0x883d9664",
+          "value": "0x26c8f8d5"
+        },
+        {
+          "at": "0x883d966e",
+          "value": "0xd0112a02"
+        },
+        {
+          "at": "0x883d9694",
+          "value": "0x26b8f8b5"
+        },
+        {
+          "at": "0x883d969c",
+          "value": "0xdc004282"
+        },
+        {
+          "at": "0x883d96b4",
+          "value": "0x20cf2af"
+        },
+        {
+          "at": "0x883d96c0",
+          "value": "0x887639f8",
+          "ascii": "MMISMS:MMISMS_InterceptClass0MsgContent intercpet_len_ptr intercpet_content_ptr = PNULL"
+        },
+        {
+          "at": "0x883d96ca",
+          "value": "0x24004605"
+        },
+        {
+          "at": "0x883d96f8",
+          "value": "0xf930f4de"
+        }
+      ],
+      "direct_call_candidates": [
+        {
+          "at": "0x883d9328",
+          "target": "0x88100894"
+        },
+        {
+          "at": "0x883d933c",
+          "target": "0x88100894"
+        },
+        {
+          "at": "0x883d9344",
+          "target": "0x883c7c1e"
+        },
+        {
+          "at": "0x883d935a",
+          "target": "0x88100a7c"
+        },
+        {
+          "at": "0x883d936a",
+          "target": "0x88100a7c"
+        },
+        {
+          "at": "0x883d938c",
+          "target": "0x883a52e2"
+        },
+        {
+          "at": "0x883d939e",
+          "target": "0x88100aac"
+        },
+        {
+          "at": "0x883d93ae",
+          "target": "0x88acb364"
+        },
+        {
+          "at": "0x883d93c4",
+          "target": "0x8813bab8"
+        },
+        {
+          "at": "0x883d93d4",
+          "target": "0x88100a7c"
+        },
+        {
+          "at": "0x883d93e6",
+          "target": "0x8813b6e4"
+        },
+        {
+          "at": "0x883d9408",
+          "target": "0x8813b95e"
+        },
+        {
+          "at": "0x883d9424",
+          "target": "0x8813bb64"
+        },
+        {
+          "at": "0x883d9438",
+          "target": "0x883a5dd2"
+        },
+        {
+          "at": "0x883d945c",
+          "target": "0x8813b6e4"
+        },
+        {
+          "at": "0x883d946a",
+          "target": "0x88acb364"
+        },
+        {
+          "at": "0x883d948c",
+          "target": "0x88100a7c"
+        },
+        {
+          "at": "0x883d94be",
+          "target": "0x88100a9c"
+        },
+        {
+          "at": "0x883d94cc",
+          "target": "0x88100a7c"
+        },
+        {
+          "at": "0x883d94d8",
+          "target": "0x88100a84"
+        },
+        {
+          "at": "0x883d94ee",
+          "target": "0x88100894"
+        },
+        {
+          "at": "0x883d9500",
+          "target": "0x88100894"
+        },
+        {
+          "at": "0x883d950c",
+          "target": "0x88100a94"
+        },
+        {
+          "at": "0x883d9522",
+          "target": "0x88100a84"
+        },
+        {
+          "at": "0x883d9534",
+          "target": "0x88100a84"
+        },
+        {
+          "at": "0x883d9540",
+          "target": "0x88100a84"
+        },
+        {
+          "at": "0x883d954c",
+          "target": "0x88100a84"
+        },
+        {
+          "at": "0x883d9560",
+          "target": "0x88100a9c"
+        },
+        {
+          "at": "0x883d957e",
+          "target": "0x88acb294"
+        },
+        {
+          "at": "0x883d959c",
+          "target": "0x883a51dc"
+        },
+        {
+          "at": "0x883d95a8",
+          "target": "0x88100a9c"
+        },
+        {
+          "at": "0x883d95b4",
+          "target": "0x88100a84"
+        },
+        {
+          "at": "0x883d95c0",
+          "target": "0x88100a84"
+        },
+        {
+          "at": "0x883d95d6",
+          "target": "0x883a51dc"
+        }
+      ]
+    },
+    {
+      "name": "sms-segment-capacity",
+      "file": "sms-segment-capacity-thumb.txt",
+      "start": "0x88b50d34",
+      "end_exclusive": "0x88b51180",
+      "source_range_sha256": "25303f50408a647910f71d3dfb3c6a21d97dcc985b096001083980656c4c5d34",
+      "literal_references": [
+        {
+          "at": "0x88b50d4e",
+          "value": "0x88b50b48"
+        },
+        {
+          "at": "0x88b50d56",
+          "value": "0x88b510dc",
+          "ascii": "SMS: MMISMS_GetLenByAlpha alpha = %d"
+        },
+        {
+          "at": "0x88b50d60",
+          "value": "0x88b510d8"
+        },
+        {
+          "at": "0x88b50d62",
+          "value": "0x88b51104",
+          "ascii": "MMISMS:MMISMS_GetLenByAlpha split_len_ptr num_ptr = PNULL"
+        },
+        {
+          "at": "0x88b50d80",
+          "value": "0x81d16394"
+        },
+        {
+          "at": "0x88b50de2",
+          "value": "0x8825c9f8",
+          "ascii": "MMISMS:MMISMS_GetUserData sms_content_ptr tpdu_head_ptr user_data_ptr = PNULL"
+        },
+        {
+          "at": "0x88b50de6",
+          "value": "0x88b510d8"
+        },
+        {
+          "at": "0x88b50df0",
+          "value": "0x81d133b4"
+        },
+        {
+          "at": "0x88b50e00",
+          "value": "0x81d16394"
+        },
+        {
+          "at": "0x88b50e9a",
+          "value": "0x88b50b48"
+        },
+        {
+          "at": "0x88b50e9e",
+          "value": "0x88b5114c",
+          "ascii": "SMS: MMISMS_GetUserData sms_index = %d"
+        },
+        {
+          "at": "0x88b50ed4",
+          "value": "0x88b51174"
+        },
+        {
+          "at": "0x88b50ee8",
+          "value": "0x8825ca48",
+          "ascii": "MMISMS: MMISMS_GetUserData: valid data len  is = %d,contect len = %d, msg len =%d = %d"
+        },
+        {
+          "at": "0x88b50ef8",
+          "value": "0x88b50b48"
+        },
+        {
+          "at": "0x88b50efc",
+          "value": "0x88b51180",
+          "ascii": "MMISMS: MMISMS_GetUserData length = %d"
+        },
+        {
+          "at": "0x88b50f5c",
+          "value": "0x88b50b48"
+        },
+        {
+          "at": "0x88b50f60",
+          "value": "0x88b511a8",
+          "ascii": "SMS: MMISMS_GetUserData tpdu_head_ptr->length = %d"
+        },
+        {
+          "at": "0x88b50f7a",
+          "value": "0x88b50b48"
+        },
+        {
+          "at": "0x88b50f80",
+          "value": "0x88b511dc",
+          "ascii": "MMISMS: MMISMS_GetUserData: HEAD LEN is = %d"
+        },
+        {
+          "at": "0x88b50f9e",
+          "value": "0x884ae700"
+        },
+        {
+          "at": "0x88b50fca",
+          "value": "0x81d16394"
+        },
+        {
+          "at": "0x88b50fd8",
+          "value": "0x88b510d8"
+        },
+        {
+          "at": "0x88b50fda",
+          "value": "0x88b51210",
+          "ascii": "MMISMS:MMISMS_GetStoreStorage storage_ptr record_id_ptr = PNULL"
+        },
+        {
+          "at": "0x88b5104a",
+          "value": "0x88b51250"
+        },
+        {
+          "at": "0x88b51050",
+          "value": "0x88b51254",
+          "ascii": "MMISMS: MMISMS_GetStoreStorage storage = %d, record_id = %d"
+        },
+        {
+          "at": "0x88b5107a",
+          "value": "0x88b510d8"
+        },
+        {
+          "at": "0x88b51080",
+          "value": "0x44726573"
+        },
+        {
+          "at": "0x88b510a4",
+          "value": "0x53494d4d"
+        },
+        {
+          "at": "0x88b510c8",
+          "value": "0x20736920"
+        },
+        {
+          "at": "0x88b510ce",
+          "value": "0x4c4c55"
+        },
+        {
+          "at": "0x88b510dc",
+          "value": "0x74732065"
+        },
+        {
+          "at": "0x88b510e0",
+          "value": "0x5f736d73"
+        },
+        {
+          "at": "0x88b510e2",
+          "value": "0x4d53494d"
+        },
+        {
+          "at": "0x88b510e4",
+          "value": "0x74705f65"
+        },
+        {
+          "at": "0x88b510ea",
+          "value": "0xd0034607"
+        },
+        {
+          "at": "0x88b51104",
+          "value": "0x64726f63"
+        },
+        {
+          "at": "0x88b5110a",
+          "value": "0x203a6174"
+        },
+        {
+          "at": "0x88b5110c",
+          "value": "0x20727470"
+        },
+        {
+          "at": "0x88b5110e",
+          "value": "0x53494d4d"
+        },
+        {
+          "at": "0x88b51114",
+          "value": "0xe9cd9600"
+        },
+        {
+          "at": "0x88b51138",
+          "value": "0x2c642520"
+        },
+        {
+          "at": "0x88b5113a",
+          "value": "0xa1e22010"
+        },
+        {
+          "at": "0x88b5114c",
+          "value": "0x88202501"
+        },
+        {
+          "at": "0x88b51150",
+          "value": "0x203d2068"
+        },
+        {
+          "at": "0x88b51152",
+          "value": "0x3d206469"
+        },
+        {
+          "at": "0x88b51154",
+          "value": "0xa1eb0254"
+        }
+      ],
+      "direct_call_candidates": [
+        {
+          "at": "0x88b50de8",
+          "target": "0x88100a7c"
+        },
+        {
+          "at": "0x88b50dfc",
+          "target": "0x8813b6e4"
+        },
+        {
+          "at": "0x88b50e3c",
+          "target": "0x88b50d34"
+        },
+        {
+          "at": "0x88b50e4c",
+          "target": "0x8813b6e4"
+        },
+        {
+          "at": "0x88b50e6c",
+          "target": "0x88100a94"
+        },
+        {
+          "at": "0x88b50e78",
+          "target": "0x883c2a42"
+        },
+        {
+          "at": "0x88b50eea",
+          "target": "0x88100a7c"
+        },
+        {
+          "at": "0x88b50f14",
+          "target": "0x883dffb0"
+        },
+        {
+          "at": "0x88b50f24",
+          "target": "0x88100a9c"
+        },
+        {
+          "at": "0x88b50f32",
+          "target": "0x8813b6e4"
+        },
+        {
+          "at": "0x88b50f3c",
+          "target": "0x8813b6e4"
+        },
+        {
+          "at": "0x88b50f4e",
+          "target": "0x883c5094"
+        },
+        {
+          "at": "0x88b50f64",
+          "target": "0x88100a7c"
+        },
+        {
+          "at": "0x88b50f72",
+          "target": "0x88100a9c"
+        },
+        {
+          "at": "0x88b50f82",
+          "target": "0x88100a7c"
+        },
+        {
+          "at": "0x88b50fc4",
+          "target": "0x883c6f56"
+        },
+        {
+          "at": "0x88b50fdc",
+          "target": "0x88100a7c"
+        },
+        {
+          "at": "0x88b50fe4",
+          "target": "0x883c6620"
+        },
+        {
+          "at": "0x88b5100c",
+          "target": "0x88100804"
+        },
+        {
+          "at": "0x88b5103c",
+          "target": "0x88b215ac"
+        },
+        {
+          "at": "0x88b51058",
+          "target": "0x88100a7c"
+        },
+        {
+          "at": "0x88b51072",
+          "target": "0x88b215ac"
+        }
+      ]
+    },
+    {
+      "name": "browser-url-submit",
+      "file": "browser-url-submit-thumb.txt",
+      "start": "0x88b65c54",
+      "end_exclusive": "0x88b65f30",
+      "source_range_sha256": "cfa4e70f6ae9aa263cf0a018b0a30f021bc7d58545754e2301d6f65fc413ca4d",
+      "literal_references": [
+        {
+          "at": "0x88b65c6c",
+          "value": "0x60099"
+        },
+        {
+          "at": "0x88b65c9c",
+          "value": "0x40000872",
+          "resource_text": {
+            "0": "Something's wrong with this URL.",
+            "1": "此URL出现错误。",
+            "2": "此網址有問題。"
+          }
+        },
+        {
+          "at": "0x88b65cae",
+          "value": "0x60099"
+        },
+        {
+          "at": "0x88b65cd2",
+          "value": "0x40000983",
+          "resource_text": {
+            "0": "Enter your login details:",
+            "1": "输入您的详细登录信息：",
+            "2": "輸入您的登入詳情："
+          }
+        },
+        {
+          "at": "0x88b65cee",
+          "value": "0x4006006f",
+          "resource_text": {
+            "0": "Username",
+            "1": "用户名",
+            "2": "使用者名稱"
+          }
+        },
+        {
+          "at": "0x88b65d08",
+          "value": "0x88b65ecc"
+        },
+        {
+          "at": "0x88b65d30",
+          "value": "0x40000872",
+          "resource_text": {
+            "0": "Something's wrong with this URL.",
+            "1": "此URL出现错误。",
+            "2": "此網址有問題。"
+          }
+        },
+        {
+          "at": "0x88b65d4c",
+          "value": "0x88b65ecc"
+        },
+        {
+          "at": "0x88b65dc4",
+          "value": "0x88b62f90"
+        },
+        {
+          "at": "0x88b65dca",
+          "value": "0x88b65ed4",
+          "ascii": "[BRW]BrwDlGetDefaultFileName is_exit_ext_name = %d"
+        },
+        {
+          "at": "0x88b65e4c",
+          "value": "0x40000489",
+          "resource_text": {
+            "0": "SPM AMERIS",
+            "1": "SPM AMERIS",
+            "2": "SPM AMERIS"
+          }
+        },
+        {
+          "at": "0x88b65e50",
+          "value": "0x40000017",
+          "resource_text": {
+            "0": "Preview",
+            "1": "预览",
+            "2": "預覽"
+          }
+        },
+        {
+          "at": "0x88b65e54",
+          "value": "0x40000489",
+          "resource_text": {
+            "0": "SPM AMERIS",
+            "1": "SPM AMERIS",
+            "2": "SPM AMERIS"
+          }
+        },
+        {
+          "at": "0x88b65eac",
+          "value": "0x817cf8df"
+        }
+      ],
+      "direct_call_candidates": [
+        {
+          "at": "0x88b65c68",
+          "target": "0x88100aac"
+        },
+        {
+          "at": "0x88b65c70",
+          "target": "0x88b437d4"
+        },
+        {
+          "at": "0x88b65c90",
+          "target": "0x883a51dc"
+        },
+        {
+          "at": "0x88b65c96",
+          "target": "0x883b4724"
+        },
+        {
+          "at": "0x88b65c9e",
+          "target": "0x88636f32"
+        },
+        {
+          "at": "0x88b65caa",
+          "target": "0x886b6218"
+        },
+        {
+          "at": "0x88b65cb2",
+          "target": "0x88b3700a"
+        },
+        {
+          "at": "0x88b65cc8",
+          "target": "0x88100aac"
+        },
+        {
+          "at": "0x88b65ce2",
+          "target": "0x8812564c"
+        },
+        {
+          "at": "0x88b65cea",
+          "target": "0x88100aac"
+        },
+        {
+          "at": "0x88b65cfc",
+          "target": "0x8812564c"
+        },
+        {
+          "at": "0x88b65d04",
+          "target": "0x88100aac"
+        },
+        {
+          "at": "0x88b65d24",
+          "target": "0x8812564c"
+        },
+        {
+          "at": "0x88b65d2c",
+          "target": "0x88100aac"
+        },
+        {
+          "at": "0x88b65d40",
+          "target": "0x8812564c"
+        },
+        {
+          "at": "0x88b65d48",
+          "target": "0x88100aac"
+        },
+        {
+          "at": "0x88b65d64",
+          "target": "0x8812564c"
+        },
+        {
+          "at": "0x88b65d80",
+          "target": "0x88100aac"
+        },
+        {
+          "at": "0x88b65d98",
+          "target": "0x883a578c"
+        },
+        {
+          "at": "0x88b65dae",
+          "target": "0x88b1d3ac"
+        },
+        {
+          "at": "0x88b65dcc",
+          "target": "0x88100a7c"
+        },
+        {
+          "at": "0x88b65de6",
+          "target": "0x88142d02"
+        },
+        {
+          "at": "0x88b65df6",
+          "target": "0x883a52e2"
+        },
+        {
+          "at": "0x88b65e0e",
+          "target": "0x88100aac"
+        },
+        {
+          "at": "0x88b65e16",
+          "target": "0x88100aac"
+        },
+        {
+          "at": "0x88b65e20",
+          "target": "0x883b13ee"
+        },
+        {
+          "at": "0x88b65e28",
+          "target": "0x883b14ba"
+        },
+        {
+          "at": "0x88b65e30",
+          "target": "0x883b15da"
+        },
+        {
+          "at": "0x88b65e38",
+          "target": "0x883b0fae"
+        },
+        {
+          "at": "0x88b65e42",
+          "target": "0x883b0ea0"
+        },
+        {
+          "at": "0x88b65e64",
+          "target": "0x883b30d8"
+        },
+        {
+          "at": "0x88b65e78",
+          "target": "0x883b0cee"
+        },
+        {
+          "at": "0x88b65e80",
+          "target": "0x883b1474"
+        },
+        {
+          "at": "0x88b65e88",
+          "target": "0x883abcf2"
+        }
+      ]
+    },
+    {
+      "name": "browser-auth",
+      "file": "browser-auth-thumb.txt",
+      "start": "0x88b62ce0",
+      "end_exclusive": "0x88b6361c",
+      "source_range_sha256": "39c3a0f2cb33b1aba82c8bb0d913943a75868c87e629053616a4130e79393d7c",
+      "literal_references": [
+        {
+          "at": "0x88b62ce4",
+          "value": "0x60099"
+        },
+        {
+          "at": "0x88b62d46",
+          "value": "0x40000480",
+          "resource_text": {
+            "0": "Freedom",
+            "1": "Freedom",
+            "2": "Freedom"
+          }
+        },
+        {
+          "at": "0x88b62d52",
+          "value": "0x40000480",
+          "resource_text": {
+            "0": "Freedom",
+            "1": "Freedom",
+            "2": "Freedom"
+          }
+        },
+        {
+          "at": "0x88b62d90",
+          "value": "0x4006006b",
+          "resource_text": {
+            "0": "Certificate can't be found for this site. Do you wish to continue anyway? ",
+            "1": "找不到此网站的证书。是否仍然继续？",
+            "2": "找不到此網站的憑證。是否仍要繼續？"
+          }
+        },
+        {
+          "at": "0x88b62db4",
+          "value": "0x8873ecc8"
+        },
+        {
+          "at": "0x88b62dd0",
+          "value": "0x88b6181c",
+          "ascii": "mmibrowser_wintable.c"
+        },
+        {
+          "at": "0x88b62e00",
+          "value": "0x646e4965"
+        },
+        {
+          "at": "0x88b62e02",
+          "value": "0x6c646e61"
+        },
+        {
+          "at": "0x88b62e4a",
+          "value": "0x6e6f4365"
+        },
+        {
+          "at": "0x88b62e88",
+          "value": "0x1c8049ed"
+        },
+        {
+          "at": "0x88b62e8a",
+          "value": "0x40000480",
+          "resource_text": {
+            "0": "Freedom",
+            "1": "Freedom",
+            "2": "Freedom"
+          }
+        },
+        {
+          "at": "0x88b62e8c",
+          "value": "0x72746e6f"
+        },
+        {
+          "at": "0x88b62e90",
+          "value": "0x61506c6f"
+        },
+        {
+          "at": "0x88b62e92",
+          "value": "0x463a4633"
+        },
+        {
+          "at": "0x88b62ea2",
+          "value": "0xf7f92000"
+        },
+        {
+          "at": "0x88b62ec2",
+          "value": "0x436c7353"
+        },
+        {
+          "at": "0x88b62ec4",
+          "value": "0x70d0f1"
+        },
+        {
+          "at": "0x88b62ec6",
+          "value": "0x2251f641"
+        },
+        {
+          "at": "0x88b62eca",
+          "value": "0xf59d4630"
+        },
+        {
+          "at": "0x88b62ecc",
+          "value": "0xd998f7f9"
+        },
+        {
+          "at": "0x88b62edc",
+          "value": "0x48cbcd0e"
+        },
+        {
+          "at": "0x88b62f02",
+          "value": "0x61746f74"
+        },
+        {
+          "at": "0x88b62f36",
+          "value": "0x20657461"
+        },
+        {
+          "at": "0x88b62f4a",
+          "value": "0xf8adf337"
+        },
+        {
+          "at": "0x88b62f60",
+          "value": "0x3850421e"
+        },
+        {
+          "at": "0x88b62f78",
+          "value": "0xa992621e"
+        },
+        {
+          "at": "0x88b62f98",
+          "value": "0xa992621e"
+        },
+        {
+          "at": "0x88b62fce",
+          "value": "0x60067"
+        },
+        {
+          "at": "0x88b62fd6",
+          "value": "0x88b6181c",
+          "ascii": "mmibrowser_wintable.c"
+        },
+        {
+          "at": "0x88b62fe4",
+          "value": "0x8873ec90"
+        },
+        {
+          "at": "0x88b63000",
+          "value": "0x88b6181c",
+          "ascii": "mmibrowser_wintable.c"
+        },
+        {
+          "at": "0x88b63022",
+          "value": "0x60067"
+        },
+        {
+          "at": "0x88b6302c",
+          "value": "0x88b6181c",
+          "ascii": "mmibrowser_wintable.c"
+        },
+        {
+          "at": "0x88b63092",
+          "value": "0x400008ee",
+          "resource_text": {
+            "0": "Bookmark name",
+            "1": "书签名称",
+            "2": "書籤名稱"
+          }
+        },
+        {
+          "at": "0x88b630d4",
+          "value": "0x400008ee",
+          "resource_text": {
+            "0": "Bookmark name",
+            "1": "书签名称",
+            "2": "書籤名稱"
+          }
+        },
+        {
+          "at": "0x88b630f0",
+          "value": "0x400008ee",
+          "resource_text": {
+            "0": "Bookmark name",
+            "1": "书签名称",
+            "2": "書籤名稱"
+          }
+        },
+        {
+          "at": "0x88b63164",
+          "value": "0x60067"
+        },
+        {
+          "at": "0x88b63176",
+          "value": "0x40000001",
+          "resource_text": {
+            "0": "",
+            "1": "",
+            "2": ""
+          }
+        },
+        {
+          "at": "0x88b63180",
+          "value": "0x40000480",
+          "resource_text": {
+            "0": "Freedom",
+            "1": "Freedom",
+            "2": "Freedom"
+          }
+        },
+        {
+          "at": "0x88b63198",
+          "value": "0x60067"
+        },
+        {
+          "at": "0x88b63218",
+          "value": "0x88b6181c",
+          "ascii": "mmibrowser_wintable.c"
+        },
+        {
+          "at": "0x88b63254",
+          "value": "0x88b633cc",
+          "ascii": "[BRW] BrwHandleInputFileNameWinMsg file_name_len too long"
+        },
+        {
+          "at": "0x88b6326a",
+          "value": "0x88b6181c",
+          "ascii": "mmibrowser_wintable.c"
+        },
+        {
+          "at": "0x88b63280",
+          "value": "0x40000ab7",
+          "resource_text": {
+            "0": "OK",
+            "1": "确认",
+            "2": "確認"
+          }
+        },
+        {
+          "at": "0x88b63288",
+          "value": "0x40000001",
+          "resource_text": {
+            "0": "",
+            "1": "",
+            "2": ""
+          }
+        },
+        {
+          "at": "0x88b633ac",
+          "value": "0x40000373",
+          "resource_text": {
+            "0": "Something's wrong with this file name.",
+            "1": "此文件名有问题。",
+            "2": "此檔案名稱有問題。"
+          }
+        },
+        {
+          "at": "0x88b633d4",
+          "value": "0x1c641c7f"
+        },
+        {
+          "at": "0x88b633da",
+          "value": "0xf8cd4638"
+        },
+        {
+          "at": "0x88b633ea",
+          "value": "0xb128df13"
+        },
+        {
+          "at": "0x88b63424",
+          "value": "0x88b62eb8"
+        },
+        {
+          "at": "0x88b6342a",
+          "value": "0x88b637f0",
+          "ascii": "BrwHandleInputFileNameWinMsg suffix name len ==0, ERROR"
+        },
+        {
+          "at": "0x88b63436",
+          "value": "0x60072"
+        },
+        {
+          "at": "0x88b63486",
+          "value": "0x60072"
+        },
+        {
+          "at": "0x88b6348a",
+          "value": "0x88b63445"
+        },
+        {
+          "at": "0x88b63490",
+          "value": "0x400000cd",
+          "resource_text": {
+            "0": "Auto power on/off",
+            "1": "Auto power on/off",
+            "2": "Auto power on/off"
+          }
+        },
+        {
+          "at": "0x88b63492",
+          "value": "0x4000087d",
+          "resource_text": {
+            "0": "Do you want to close the browser?",
+            "1": "是否要关闭浏览器？",
+            "2": "是否要關閉瀏覽器？"
+          }
+        },
+        {
+          "at": "0x88b634a0",
+          "value": "0x60072"
+        },
+        {
+          "at": "0x88b634b6",
+          "value": "0x8873e80c"
+        },
+        {
+          "at": "0x88b6350e",
+          "value": "0x8873e80c"
+        },
+        {
+          "at": "0x88b6354a",
+          "value": "0x8873e80c"
+        },
+        {
+          "at": "0x88b635be",
+          "value": "0x8873e80c"
+        }
+      ],
+      "direct_call_candidates": [
+        {
+          "at": "0x88b62d2c",
+          "target": "0x885fe344"
+        },
+        {
+          "at": "0x88b62d34",
+          "target": "0x88125b04"
+        },
+        {
+          "at": "0x88b62d3a",
+          "target": "0x88b65cbe"
+        },
+        {
+          "at": "0x88b62d42",
+          "target": "0x88125c14"
+        },
+        {
+          "at": "0x88b62d4e",
+          "target": "0x88b27de6"
+        },
+        {
+          "at": "0x88b62d5c",
+          "target": "0x88b27de6"
+        },
+        {
+          "at": "0x88b62d62",
+          "target": "0x8835c7ac"
+        },
+        {
+          "at": "0x88b62d68",
+          "target": "0x8835c346"
+        },
+        {
+          "at": "0x88b62d74",
+          "target": "0x8835c358"
+        },
+        {
+          "at": "0x88b62d7a",
+          "target": "0x8835c352"
+        },
+        {
+          "at": "0x88b62d8a",
+          "target": "0x8835c7bc"
+        },
+        {
+          "at": "0x88b62d94",
+          "target": "0x88636f32"
+        },
+        {
+          "at": "0x88b62da4",
+          "target": "0x88125a6a"
+        },
+        {
+          "at": "0x88b62db8",
+          "target": "0x8838c474"
+        },
+        {
+          "at": "0x88b62dbc",
+          "target": "0x8835c358"
+        },
+        {
+          "at": "0x88b62dc4",
+          "target": "0x88100a8c"
+        },
+        {
+          "at": "0x88b62dd8",
+          "target": "0x88100894"
+        },
+        {
+          "at": "0x88b62de8",
+          "target": "0x883a5162"
+        },
+        {
+          "at": "0x88b62dee",
+          "target": "0x883a578c"
+        },
+        {
+          "at": "0x88b62fd2",
+          "target": "0x88b4382e"
+        },
+        {
+          "at": "0x88b62fde",
+          "target": "0x88100a84"
+        },
+        {
+          "at": "0x88b62fe8",
+          "target": "0x8838c474"
+        },
+        {
+          "at": "0x88b62fec",
+          "target": "0x8835c352"
+        },
+        {
+          "at": "0x88b62ff4",
+          "target": "0x88100a8c"
+        },
+        {
+          "at": "0x88b63008",
+          "target": "0x88100894"
+        },
+        {
+          "at": "0x88b63016",
+          "target": "0x883dff72"
+        },
+        {
+          "at": "0x88b6301c",
+          "target": "0x883a578c"
+        },
+        {
+          "at": "0x88b63028",
+          "target": "0x88b4382e"
+        },
+        {
+          "at": "0x88b63036",
+          "target": "0x8835c7ac"
+        },
+        {
+          "at": "0x88b6304c",
+          "target": "0x8835c380"
+        },
+        {
+          "at": "0x88b63050",
+          "target": "0x883b3f28"
+        },
+        {
+          "at": "0x88b63056",
+          "target": "0x8835c3b6"
+        },
+        {
+          "at": "0x88b6305a",
+          "target": "0x88b60aae"
+        },
+        {
+          "at": "0x88b6305e",
+          "target": "0x88b60924"
+        },
+        {
+          "at": "0x88b63064",
+          "target": "0x88b3700a"
+        },
+        {
+          "at": "0x88b6306a",
+          "target": "0x8835c7bc"
+        },
+        {
+          "at": "0x88b6307c",
+          "target": "0x88100aac"
+        },
+        {
+          "at": "0x88b6308e",
+          "target": "0x88100aac"
+        },
+        {
+          "at": "0x88b630a6",
+          "target": "0x8812564c"
+        },
+        {
+          "at": "0x88b630ae",
+          "target": "0x88100aac"
+        },
+        {
+          "at": "0x88b630b2",
+          "target": "0x8835c380"
+        },
+        {
+          "at": "0x88b630bc",
+          "target": "0x883b58c2"
+        },
+        {
+          "at": "0x88b630e4",
+          "target": "0x8812564c"
+        },
+        {
+          "at": "0x88b630ec",
+          "target": "0x88100aac"
+        },
+        {
+          "at": "0x88b63100",
+          "target": "0x8812564c"
+        },
+        {
+          "at": "0x88b63108",
+          "target": "0x88100aac"
+        },
+        {
+          "at": "0x88b63114",
+          "target": "0x886b7056"
+        },
+        {
+          "at": "0x88b6311a",
+          "target": "0x883a578c"
+        },
+        {
+          "at": "0x88b6312c",
+          "target": "0x8812564c"
+        },
+        {
+          "at": "0x88b63134",
+          "target": "0x886b739a"
+        },
+        {
+          "at": "0x88b6316a",
+          "target": "0x885fe344"
+        },
+        {
+          "at": "0x88b63170",
+          "target": "0x88b63070"
+        },
+        {
+          "at": "0x88b6317c",
+          "target": "0x88b27e0e"
+        },
+        {
+          "at": "0x88b63188",
+          "target": "0x88b27de6"
+        },
+        {
+          "at": "0x88b6318e",
+          "target": "0x88b3700a"
+        },
+        {
+          "at": "0x88b631ee",
+          "target": "0x8835c7b0"
+        },
+        {
+          "at": "0x88b631f8",
+          "target": "0x883a578c"
+        },
+        {
+          "at": "0x88b63208",
+          "target": "0x88100aac"
+        },
+        {
+          "at": "0x88b63212",
+          "target": "0x883a578c"
+        },
+        {
+          "at": "0x88b63226",
+          "target": "0x88100a2c"
+        },
+        {
+          "at": "0x88b63234",
+          "target": "0x88100a94"
+        },
+        {
+          "at": "0x88b63248",
+          "target": "0x88b1d3ac"
+        },
+        {
+          "at": "0x88b63256",
+          "target": "0x88100a5c"
+        },
+        {
+          "at": "0x88b63266",
+          "target": "0x88b4382e"
+        },
+        {
+          "at": "0x88b63272",
+          "target": "0x88100a84"
+        },
+        {
+          "at": "0x88b6327c",
+          "target": "0x88b43e14"
+        },
+        {
+          "at": "0x88b6328e",
+          "target": "0x88b43d60"
+        },
+        {
+          "at": "0x88b63296",
+          "target": "0x885fe344"
+        },
+        {
+          "at": "0x88b6329e",
+          "target": "0x88b3700a"
+        },
+        {
+          "at": "0x88b632b2",
+          "target": "0x88100aac"
+        },
+        {
+          "at": "0x88b632c8",
+          "target": "0x88100aac"
+        },
+        {
+          "at": "0x88b632d2",
+          "target": "0x88100aac"
+        },
+        {
+          "at": "0x88b632d6",
+          "target": "0x8835c7b0"
+        },
+        {
+          "at": "0x88b632e2",
+          "target": "0x88b437d4"
+        },
+        {
+          "at": "0x88b632f6",
+          "target": "0x88b2307c"
+        },
+        {
+          "at": "0x88b632fe",
+          "target": "0x883a578c"
+        },
+        {
+          "at": "0x88b63316",
+          "target": "0x88b1d3ac"
+        },
+        {
+          "at": "0x88b63336",
+          "target": "0x883a52b4"
+        },
+        {
+          "at": "0x88b63342",
+          "target": "0x883a5330"
+        },
+        {
+          "at": "0x88b63350",
+          "target": "0x883a5330"
+        },
+        {
+          "at": "0x88b63374",
+          "target": "0x883a52b4"
+        },
+        {
+          "at": "0x88b63382",
+          "target": "0x883a5330"
+        },
+        {
+          "at": "0x88b63392",
+          "target": "0x883a5330"
+        },
+        {
+          "at": "0x88b633a2",
+          "target": "0x883a578c"
+        },
+        {
+          "at": "0x88b633ae",
+          "target": "0x88636f32"
+        },
+        {
+          "at": "0x88b63420",
+          "target": "0x883a52b4"
+        },
+        {
+          "at": "0x88b6342c",
+          "target": "0x88100a7c"
+        },
+        {
+          "at": "0x88b63432",
+          "target": "0x8835c4c4"
+        },
+        {
+          "at": "0x88b6343e",
+          "target": "0x8860225a"
+        },
+        {
+          "at": "0x88b63462",
+          "target": "0x886371cc"
+        },
+        {
+          "at": "0x88b6346c",
+          "target": "0x88b3700a"
+        },
+        {
+          "at": "0x88b63474",
+          "target": "0x8835c3fa"
+        },
+        {
+          "at": "0x88b63478",
+          "target": "0x886b64a6"
+        },
+        {
+          "at": "0x88b6347e",
+          "target": "0x88b3700a"
+        },
+        {
+          "at": "0x88b63494",
+          "target": "0x88b60f4e"
+        },
+        {
+          "at": "0x88b634b2",
+          "target": "0x88100aac"
+        },
+        {
+          "at": "0x88b634ce",
+          "target": "0x885f24b4"
+        },
+        {
+          "at": "0x88b634e0",
+          "target": "0x8861717a"
+        },
+        {
+          "at": "0x88b634e8",
+          "target": "0x8835c3cc"
+        },
+        {
+          "at": "0x88b634ee",
+          "target": "0x8835c380"
+        },
+        {
+          "at": "0x88b634f2",
+          "target": "0x883b4d46"
+        },
+        {
+          "at": "0x88b63500",
+          "target": "0x886172c8"
+        },
+        {
+          "at": "0x88b6352a",
+          "target": "0x885f24b4"
+        },
+        {
+          "at": "0x88b6353c",
+          "target": "0x8861717a"
+        },
+        {
+          "at": "0x88b63566",
+          "target": "0x885f24b4"
+        },
+        {
+          "at": "0x88b63578",
+          "target": "0x8861717a"
+        },
+        {
+          "at": "0x88b6358e",
+          "target": "0x880bda54"
+        },
+        {
+          "at": "0x88b63594",
+          "target": "0x880bda40"
+        },
+        {
+          "at": "0x88b6359a",
+          "target": "0x8835c3cc"
+        },
+        {
+          "at": "0x88b635a2",
+          "target": "0x8835c3cc"
+        },
+        {
+          "at": "0x88b635b0",
+          "target": "0x886172c8"
+        },
+        {
+          "at": "0x88b635da",
+          "target": "0x885f24b4"
+        },
+        {
+          "at": "0x88b635ec",
+          "target": "0x8861717a"
+        },
+        {
+          "at": "0x88b635f8",
+          "target": "0x8835c3cc"
+        },
+        {
+          "at": "0x88b63606",
+          "target": "0x886172c8"
+        }
+      ]
+    },
+    {
+      "name": "browser-credentials",
+      "file": "browser-credentials-thumb.txt",
+      "start": "0x88b639b4",
+      "end_exclusive": "0x88b63b90",
+      "source_range_sha256": "24f9156599d623118f290643b828f280b06fc41f29e6e60993448e8d9501933d",
+      "literal_references": [
+        {
+          "at": "0x88b639b6",
+          "value": "0x600a6"
+        },
+        {
+          "at": "0x88b639f4",
+          "value": "0x40000489",
+          "resource_text": {
+            "0": "SPM AMERIS",
+            "1": "SPM AMERIS",
+            "2": "SPM AMERIS"
+          }
+        },
+        {
+          "at": "0x88b639fe",
+          "value": "0x40000489",
+          "resource_text": {
+            "0": "SPM AMERIS",
+            "1": "SPM AMERIS",
+            "2": "SPM AMERIS"
+          }
+        },
+        {
+          "at": "0x88b63a68",
+          "value": "0x600a6"
+        },
+        {
+          "at": "0x88b63a8c",
+          "value": "0x40060057",
+          "resource_text": {
+            "0": "Wrong username",
+            "1": "用户名错误",
+            "2": "使用者名稱錯誤"
+          }
+        },
+        {
+          "at": "0x88b63a96",
+          "value": "0x600a6"
+        },
+        {
+          "at": "0x88b63b4c",
+          "value": "0x88b63d0c",
+          "ascii": "********************"
+        },
+        {
+          "at": "0x88b63b54",
+          "value": "0x600a6"
+        }
+      ],
+      "direct_call_candidates": [
+        {
+          "at": "0x88b639fa",
+          "target": "0x88b27de6"
+        },
+        {
+          "at": "0x88b63a08",
+          "target": "0x88b27de6"
+        },
+        {
+          "at": "0x88b63a10",
+          "target": "0x88b43e14"
+        },
+        {
+          "at": "0x88b63a18",
+          "target": "0x885fe344"
+        },
+        {
+          "at": "0x88b63a28",
+          "target": "0x88100aac"
+        },
+        {
+          "at": "0x88b63a2c",
+          "target": "0x8835c7ac"
+        },
+        {
+          "at": "0x88b63a34",
+          "target": "0x88b437d4"
+        },
+        {
+          "at": "0x88b63a44",
+          "target": "0x8835c26c"
+        },
+        {
+          "at": "0x88b63a7a",
+          "target": "0x88125850"
+        },
+        {
+          "at": "0x88b63a80",
+          "target": "0x88125926"
+        },
+        {
+          "at": "0x88b63a86",
+          "target": "0x88b3700a"
+        },
+        {
+          "at": "0x88b63a8e",
+          "target": "0x88636f32"
+        },
+        {
+          "at": "0x88b63ad8",
+          "target": "0x88aa05a2"
+        },
+        {
+          "at": "0x88b63ae0",
+          "target": "0x88b43e14"
+        },
+        {
+          "at": "0x88b63ae8",
+          "target": "0x885fe344"
+        },
+        {
+          "at": "0x88b63aee",
+          "target": "0x8835c7ac"
+        },
+        {
+          "at": "0x88b63afe",
+          "target": "0x88100aac"
+        },
+        {
+          "at": "0x88b63b06",
+          "target": "0x88100aac"
+        },
+        {
+          "at": "0x88b63b0e",
+          "target": "0x88b437d4"
+        },
+        {
+          "at": "0x88b63b22",
+          "target": "0x8835c2ec"
+        },
+        {
+          "at": "0x88b63b50",
+          "target": "0x8864b2b4"
+        },
+        {
+          "at": "0x88b63b62",
+          "target": "0x88125850"
+        },
+        {
+          "at": "0x88b63b68",
+          "target": "0x88125926"
+        },
+        {
+          "at": "0x88b63b6e",
+          "target": "0x88b3700a"
+        }
+      ]
+    },
+    {
       "name": "sms-storage-flags",
       "file": "sms-storage-flags-thumb.txt",
       "start": "0x88080100",

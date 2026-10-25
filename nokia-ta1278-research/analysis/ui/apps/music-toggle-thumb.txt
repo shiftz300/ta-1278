@@ -1,0 +1,56 @@
+
+PROJECT_ROOT/analysis/ui/user.analysis-only.elf:	file format elf32-littlearm
+
+Disassembly of section .text:
+
+88000000 <.text>:
+883f11ea: b570         	push	{r4, r5, r6, lr}
+883f11ec: 4cd5         	ldr	r4, [pc, #0x354]        @ 0x883f1544 <.text+0x3f1544>
+883f11ee: 460d         	mov	r5, r1
+883f11f0: 4606         	mov	r6, r0
+883f11f2: 460a         	mov	r2, r1
+883f11f4: 3c5c         	subs	r4, #0x5c
+883f11f6: 2100         	movs	r1, #0x0
+883f11f8: 4623         	mov	r3, r4
+883f11fa: f7ff ff9f    	bl	0x883f113c <.text+0x3f113c> @ imm = #-0xc2
+883f11fe: 4623         	mov	r3, r4
+883f1200: 462a         	mov	r2, r5
+883f1202: 4630         	mov	r0, r6
+883f1204: e8bd 4070    	pop.w	{r4, r5, r6, lr}
+883f1208: 2100         	movs	r1, #0x0
+883f120a: e705         	b	0x883f1018 <.text+0x3f1018> @ imm = #-0x1f6
+883f120c: b510         	push	{r4, lr}
+883f120e: f20d fe79    	bl	0x885fef04 <.text+0x5fef04> @ imm = #0x20dcf2
+883f1212: b130         	cbz	r0, 0x883f1222 <.text+0x3f1222> @ imm = #0xc
+883f1214: 2801         	cmp	r0, #0x1
+883f1216: d00b         	beq	0x883f1230 <.text+0x3f1230> @ imm = #0x16
+883f1218: 2802         	cmp	r0, #0x2
+883f121a: d018         	beq	0x883f124e <.text+0x3f124e> @ imm = #0x30
+883f121c: 2803         	cmp	r0, #0x3
+883f121e: d11b         	bne	0x883f1258 <.text+0x3f1258> @ imm = #0x36
+883f1220: e00c         	b	0x883f123c <.text+0x3f123c> @ imm = #0x18
+883f1222: 2000         	movs	r0, #0x0
+883f1224: f20f ff19    	bl	0x8860105a <.text+0x60105a> @ imm = #0x20fe32
+883f1228: e8bd 4010    	pop.w	{r4, lr}
+883f122c: f20e bb04    	b.w	0x885ff838 <.text+0x5ff838> @ imm = #0x20e608
+883f1230: f20d fe60    	bl	0x885feef4 <.text+0x5feef4> @ imm = #0x20dcc0
+883f1234: 2801         	cmp	r0, #0x1
+883f1236: d006         	beq	0x883f1246 <.text+0x3f1246> @ imm = #0xc
+883f1238: 2802         	cmp	r0, #0x2
+883f123a: d10d         	bne	0x883f1258 <.text+0x3f1258> @ imm = #0x1a
+883f123c: e8bd 4010    	pop.w	{r4, lr}
+883f1240: 2000         	movs	r0, #0x0
+883f1242: f20e bb91    	b.w	0x885ff968 <.text+0x5ff968> @ imm = #0x20e722
+883f1246: 2101         	movs	r1, #0x1
+883f1248: 2000         	movs	r0, #0x0
+883f124a: f20d fefd    	bl	0x885ff048 <.text+0x5ff048> @ imm = #0x20ddfa
+883f124e: e8bd 4010    	pop.w	{r4, lr}
+883f1252: 2000         	movs	r0, #0x0
+883f1254: f20e bc2b    	b.w	0x885ffaae <.text+0x5ffaae> @ imm = #0x20e856
+883f1258: e73b         	b	0x883f10d2 <.text+0x3f10d2> @ imm = #-0x18a
+883f125a: b510         	push	{r4, lr}
+883f125c: f7ff ffd6    	bl	0x883f120c <.text+0x3f120c> @ imm = #-0x54
+883f1260: 2101         	movs	r1, #0x1
+883f1262: e8bd 4010    	pop.w	{r4, lr}
+883f1266: 4608         	mov	r0, r1
+883f1268: e7bf         	b	0x883f11ea <.text+0x3f11ea> @ imm = #-0x82

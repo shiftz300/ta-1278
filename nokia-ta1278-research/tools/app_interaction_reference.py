@@ -6,6 +6,8 @@ and injected; this module has no filesystem, network, SIM, USB or audio I/O.
 """
 from dataclasses import dataclass,field
 from typing import Optional
+from native_app_rules import (sms_ui_count,sms_character_counts,sms_uses_ucs2,browser_field_config,browser_field_confirm,
+ browser_select_event,browser_xhtml_selection)
 
 def units(text):
  b=text.encode('utf-16-le','surrogatepass')
@@ -56,22 +58,12 @@ class Editor:
    self.commit();idx=0;a=min(self.cursor,self.anchor if self.anchor is not None else self.cursor)
   self.replace(candidates[idx]);self.pending=(slot,idx,a,self.cursor)
 
-# Explicit replica policy P-SMS-COUNT: GSM default/extension alphabet, no national
-# shift tables. Capacities correlate with native constants; UI formula is NOT
-# yet reverse-engineered. ESC pair cannot straddle a multipart segment boundary.
-GSM_BASIC=set('@£$¥èéùìòÇ\nØø\rÅåΔ_ΦΓΛΩΠΨΣΘΞÆæßÉ !"#¤%&\'()*+,-./0123456789:;<=>?¡ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÑÜ§¿abcdefghijklmnopqrstuvwxyzäöñüà')
-GSM_EXT=set('\f^{}\\[~]|€')
+# Native SMS classification and widget arithmetic. The replica chooses
+# alphabet_management=1 and sms_encode=0; current handset settings are unknown.
 def sms_counter(text):
- if all(c in GSM_BASIC or c in GSM_EXT for c in text):
-  weights=[2 if c in GSM_EXT else 1 for c in text];encoding='GSM7';single,multi=160,153
- else:weights=[1]*len(units(text));encoding='UTF16';single,multi=70,67
- total=sum(weights)
- if total<=single:return {'encoding':encoding,'units':total,'segments':1,'remaining':single-total,'policy':'P-SMS-COUNT'}
- count=1;used=0
- for weight in weights:
-  if used+weight>multi:count+=1;used=0
-  used+=weight
- return {'encoding':encoding,'units':total,'segments':count,'remaining':multi-used,'policy':'P-SMS-COUNT'}
+ counts=sms_character_counts(text,alphabet_management=1,sms_encode=0)
+ encoding='UTF16' if sms_uses_ucs2(counts['ucs2_count'],counts['language_counts']) else 'GSM7'
+ return {**sms_ui_count(**counts),'encoding':encoding,'policy':'A-classification-and-counter/P-selected-settings'}
 
 @dataclass
 class Message:
@@ -199,7 +191,8 @@ class BrowserApp:
   else:self.history[target]=page;self.index=target
   return True
  def back(self):
-  if self.overlay:self.overlay=None;return 'dismiss-overlay'
+  if self.overlay=='field-select':return self.select_event(0xfa17)
+  if self.overlay:self.overlay=None;self.field=None;return 'dismiss-overlay'
   if self.loading:self.pending=None;self.loading=False;return 'stop'
   if self.index>0:self.navigate(self.history[self.index-1].url,self.index-1);return 'history-back'
   self.overlay='close-current-page';return 'confirm-close'
@@ -225,12 +218,41 @@ class BrowserApp:
   if not node:return None
   kind=node['type']
   if kind=='link':return self.navigate(node['url'])
-  if kind in ('text','password','select'):self.overlay='field-'+kind;self.field=node;return 'edit-field'
+  if kind in ('text','password','select'):
+   self.overlay='field-'+kind;self.field=node
+   if kind=='select':self.selection=[bool(x) for x in node.get('selected',[])]
+   return 'edit-field'
   if kind=='checkbox':node['checked']=not node.get('checked',False)
   if kind=='submit':return {'form':node['form']} # adapter decides method/encoding; no network in this model
  def save_field(self,value):
   if not self.overlay or not self.overlay.startswith('field-'):raise ValueError('no field')
-  self.field['value']=value;self.field=None;self.overlay=None
+  node=self.field
+  if node['type']=='select':
+   if len(value)!=len(self.selection):raise ValueError('option count mismatch')
+   self.selection=list(value)
+   return self.select_event(0xfa1b)
+  else:
+   kind=node.get('markup','xhtml')
+   config=browser_field_config(kind,format_bytes=node.get('format'),maxlength=node.get('maxlength',0),password=node['type']=='password')
+   # The UI should enforce this while editing. Reject invalid adapter input
+   # instead of silently truncating a user's edit on confirmation (P).
+   if len(units(value))>config['limit']:raise ValueError('field exceeds native edit limit')
+   effects=browser_field_confirm(kind,context_valid=node.get('context_valid',True),layout_valid=node.get('layout_valid',True),guard_8f=node.get('guard_8f',False),guard_90=node.get('guard_90',False),changed=value!=node.get('value',''))
+   if any(x in effects for x in ('set-wml-value','set-xhtml-value')):node['value']=value
+  self.field=None;self.overlay=None
+  return effects
+ def select_event(self,event):
+  if self.overlay!='field-select':raise ValueError('no select')
+  node=self.field;kind=node.get('markup','xhtml');multiple=node.get('multiple',False)
+  old=node.get('selected',[])
+  result=browser_xhtml_selection(old,self.selection,multiple,node.get('selected_index',0))
+  effects=browser_select_event(kind,event,multiple,context_valid=node.get('context_valid',True),layout_valid=node.get('layout_valid',True),changed=result['changed'])
+  if 'commit-widget-selection' in effects:
+   node['selected']=list(result['selected'])
+   if kind=='xhtml':node['selected_index']=result['selected_index']
+   # WML task/value refresh and XHTML JS execution belong to the adapter.
+  if 'close-select' in effects:self.field=None;self.overlay=None
+  return effects
  def bookmark(self):
   if self.page:self.bookmarks.append((self.page.title,self.page.url))
  def save_offline(self):

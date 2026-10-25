@@ -29,7 +29,7 @@ python3 tools/analyze_system.py
 
 `prepare_offline_workspace.py` 校验发布清单后复制五个系统文件到既有脚本约定的工作目录；已有不同内容会拒绝覆盖。仅操作本地文件。
 
-框架语义步骤需要 `tools/upstream-reference/mmi-framework/` 中的 49 个参考文本。清单 `provenance.json` 指向固定提交，版权保留。显式运行以下命令会联网下载这些文本并校验，不会编译或执行它们：
+框架语义步骤需要 `tools/upstream-reference/mmi-framework/` 中的 59 个参考文本。清单 `provenance.json` 指向固定提交，版权保留。显式运行以下命令会联网下载这些文本并校验，不会编译或执行它们：
 
 ```sh
 python3 tools/fetch_framework_reference.py
@@ -45,4 +45,6 @@ python3 tools/rebuild_app_analysis.py
 
 首次发布时（35 个参考文本版本），已从暂存文件单独导出临时目录，成功校验/准备六份原件、实际联网取回并验证 35 个固定参考文本，运行 analyze_system.py 和全部 14 步流水线。未借用被排除的工作副本或私人分区。结果见 [publication-validation.json](nokia-ta1278-research/analysis/ui/publication-validation.json)。
 
-本轮新增应用逆向：本地已核验全部 49 个参考文本哈希，5 步应用流水线及 37 项检查通过。具体状态见 `analysis/ui/apps/rebuild-log.json` 和 `contract-validation.json`。历史发布验证记录保持原样，不冒充本轮重新联网下载记录。
+本轮新增应用逆向：本地已核验全部 63 个参考文本哈希，7 步应用流水线及 75 项检查通过；隔离重建的 79 个确定性输出一致。具体状态见 `analysis/ui/apps/rebuild-log.json` 和 `contract-validation.json`。历史发布验证记录保持原样，不冒充本轮重新联网下载记录。
+
+隔离复现：`python3 tools/verify_app_reproduction.py`。它从 Git 可见文件创建临时副本，使用已核验的本地参考文本，准备公开系统原件并重建应用分析；不读取私人 NAND/NV，不联网。结果写入 `analysis/ui/apps/reproduction-validation.json`。

@@ -1,15 +1,51 @@
 {
   "status": "passed",
-  "method": "Isolated export of Git-visible files, original system manifest preparation, synthetic ELF regenerated, application outputs removed and rebuilt. 49 public reference texts copied only after hash verification; no fresh network fetch claimed. No private NAND/NV/work copies imported.",
-  "reference_files": 49,
+  "method": "Isolated export of Git-visible files, original system manifest preparation, synthetic ELF regenerated, application outputs removed and rebuilt. Public reference texts copied only after hash verification (count in reference_files); no fresh network fetch claimed. No private NAND/NV/work copies imported.",
+  "reference_files": 63,
   "native_outputs_identical": [
     {
       "file": "application-resources.json",
       "sha256": "1eded274826de825bfebbc52d659500ad65c23ce344ae85d41ab8af21a298c61"
     },
     {
+      "file": "browser-address-auth.json",
+      "sha256": "a3afa5ed17319216e3e4fffdcf7e2b5740c14184a3551c1e8f0ecc6d2978732b"
+    },
+    {
       "file": "browser-address-thumb.txt",
       "sha256": "9837a100ee6b6835e24b388e810f093c69354ceccb8f2d99d702694bd13a5b75"
+    },
+    {
+      "file": "browser-async-routes.json",
+      "sha256": "e50109a9eb198fa30a82279caf27929a19675722f1a6684c682121dab7f2b55e"
+    },
+    {
+      "file": "browser-auth-state-thumb.txt",
+      "sha256": "262408524d7d046bf91fc4c06fe301b37a0a380989548674bd95eb78f6b8fa22"
+    },
+    {
+      "file": "browser-auth-thumb.txt",
+      "sha256": "92dc4068d209d029e0d07743579daeb40fb9e6132e9b27d1da4fba4c5015fce3"
+    },
+    {
+      "file": "browser-credentials-thumb.txt",
+      "sha256": "c4423d773de7285ca6f700c4fa8a5502a64c54a7ae7e457b3e9cdd54a92e808d"
+    },
+    {
+      "file": "browser-field-input-thumb.txt",
+      "sha256": "c87cd729efb9a1ce19aeda549bf0f509d438bf4f400f0a478212281927f67f6e"
+    },
+    {
+      "file": "browser-field-model-thumb.txt",
+      "sha256": "012c1a9bbbcfe9c0fe32290611f8e602202e04646f7388f6cda6e1ed9a837dc5"
+    },
+    {
+      "file": "browser-form-reset-thumb.txt",
+      "sha256": "88eeff40ce51715f307c93bdba274a86c9385d6e88d863669b99fd774cd60204"
+    },
+    {
+      "file": "browser-input-click-thumb.txt",
+      "sha256": "8e9e65e1470c722cc1319075fdf97333205aabe9ce96b3755c1ad75e3be6d7c3"
     },
     {
       "file": "browser-key-timers-thumb.txt",
@@ -24,8 +60,24 @@
       "sha256": "9672ce33bec0287a642b268949bc99c1e4bec11aabe04301d3ce79340163eedb"
     },
     {
+      "file": "browser-page-received-thumb.txt",
+      "sha256": "d72dd617118ef6ab0bec05958fe8ad1433c3adf40806b0646231a3b8c98c4f00"
+    },
+    {
       "file": "browser-page-thumb.txt",
       "sha256": "7a3ae8631f2387f14173a32e723e415b93b2b7ae49871a2a7e712734d9875ac8"
+    },
+    {
+      "file": "browser-select-change-thumb.txt",
+      "sha256": "6863d5b28b8d818366d8a51d3259b0edd548ee047297bb7addb19e9e74c1703c"
+    },
+    {
+      "file": "browser-select-model-thumb.txt",
+      "sha256": "ac2fee698846f0e52549e28cd1fc14f431abdb730222a4010518aff505e1646c"
+    },
+    {
+      "file": "browser-select-thumb.txt",
+      "sha256": "d2445d95931dc3e951683b75c26a589ce55e44306fa8ef96b54b3589b6b9d720"
     },
     {
       "file": "browser-start-options-thumb.txt",
@@ -36,16 +88,68 @@
       "sha256": "ede7d11a9c94726c27e393e8f6b4e10cf6dea350e684d9e6f95a9eda91ed4fe1"
     },
     {
+      "file": "browser-url-check-thumb.txt",
+      "sha256": "caf7a6331b25274b4963ccb2c562a866f421c2092955a2d868f963d73216db06"
+    },
+    {
+      "file": "browser-url-narrow-thumb.txt",
+      "sha256": "83321f374dc29de006b601f667e3cfaeab9f7d66162810d264d941295b2637b8"
+    },
+    {
+      "file": "browser-url-submit-thumb.txt",
+      "sha256": "e0bac7fa00e50cefc1e34e3bd94c672d9aec94aee2dd49e992c4f0579ba75781"
+    },
+    {
       "file": "code-index.json",
-      "sha256": "0065e4e9e5b92167a655b8b2cd9c94c9ffb461322f34c1ff1490fb680736bf19"
+      "sha256": "a7376b1a7480cd981699579e4207ef8a0df8f9e004c83be1c6a385207a3ca8e0"
     },
     {
       "file": "event-routes.json",
-      "sha256": "77f5b02adf9f6315674317f6c4f0d339e08f066e5594526236747f5fe97824dd"
+      "sha256": "1358fc2d1c244502c9291adf958d203eb61f90b37fb2d03e7613e134ea34aa95"
+    },
+    {
+      "file": "interaction-core-rules.json",
+      "sha256": "2a2e5ebc50598b7d4deeb1d4067b4e629eb0e474630608d8ae33ceaa1b5aec65"
+    },
+    {
+      "file": "music-back-state-thumb.txt",
+      "sha256": "3b325d02176a8afbddf7004888d20442a88bd8b93aa87cf7524f2c9ff15e48a3"
+    },
+    {
+      "file": "music-center-key-thumb.txt",
+      "sha256": "f2d389942c8603d767c43a5a243fa35d55ccdca8d202221fbe4394fe4ed2429c"
+    },
+    {
+      "file": "music-center-route.json",
+      "sha256": "846199c5df7f612d610db3a87b32e13771cb0e55710881d3f1ee18588200011a"
+    },
+    {
+      "file": "music-index-step-thumb.txt",
+      "sha256": "f4feee2774c48a225b3a67cc6213f459b6674bba0519a827d6062587a136100e"
+    },
+    {
+      "file": "music-manual-skip-thumb.txt",
+      "sha256": "4dfb335f1c570d55eec2f049424f912d71e9cf5e63b307296aed41f2592e1ce2"
+    },
+    {
+      "file": "music-play-end-thumb.txt",
+      "sha256": "df9aa32e0c055dc3c831cab476f0e131df31cd4384c892ce25a16f7214c9b98a"
+    },
+    {
+      "file": "music-play-mode-thumb.txt",
+      "sha256": "af61d74e838fb3b3c59c810d59c24042c1ce2ae2f96e2b7ad8cdb50ae88b5464"
+    },
+    {
+      "file": "music-play-pause-resume-thumb.txt",
+      "sha256": "5f7f878b89b23830d90895fec91d663abdd5c00e908c468ce621c3d6dd786031"
     },
     {
       "file": "music-player-thumb.txt",
       "sha256": "b2a34bbafb9df47051f8625663565a529b07e37a1a99f7617718e169202533cd"
+    },
+    {
+      "file": "music-queue-step-thumb.txt",
+      "sha256": "a29c8be1f4bb889895088bfe9ee37292926eb905a9e820a7b2aef5ea010c47c4"
     },
     {
       "file": "music-repeat-list-thumb.txt",
@@ -60,8 +164,20 @@
       "sha256": "e5d44590ab5c45c74533053fc4d104255e195cd9424d9ff573fe81fb0ebca864"
     },
     {
+      "file": "music-review-actions-thumb.txt",
+      "sha256": "45c61e998e1d733c3836d5fef58b077e86e602df2a8655225958272b9b82a6d3"
+    },
+    {
+      "file": "music-review-state-thumb.txt",
+      "sha256": "59c96d4e325868da4975ac89dd9c7a8d732d071f013e591561f8c1a03159dff5"
+    },
+    {
       "file": "music-settings-thumb.txt",
       "sha256": "7573fb6f8b0dcaccf948814411b67ee06ff969c4f0730dbfdaff1df6d0e2bea6"
+    },
+    {
+      "file": "music-toggle-thumb.txt",
+      "sha256": "aa4668aca77b2319b1e4ee022a3e21f7dac4888763439329c119191b2dfa9b15"
     },
     {
       "file": "music-track-list-thumb.txt",
@@ -72,8 +188,20 @@
       "sha256": "a4d0fb0d5ecb77e43db05c1676c171ba16624bf24463401ae76bdba8e0480851"
     },
     {
+      "file": "music-unsupported-count-thumb.txt",
+      "sha256": "3806230a079003255cd05550403e1c1ad794731b7fbf83631e1583bd7f2279ca"
+    },
+    {
+      "file": "music-view-callback-thumb.txt",
+      "sha256": "b7e2cde69d2ac718d18ecee94690fec785ccdb646e51170026060a7a3525da33"
+    },
+    {
       "file": "music-view-dispatch-thumb.txt",
       "sha256": "3eaf209e412c4cd157430a9ac34ec35c6f4737d804d0cac45b505d31b0b253cc"
+    },
+    {
+      "file": "music-view-install-thumb.txt",
+      "sha256": "243c070d0ee9cf3cf4a4dba5b0cd87fdc775e7e97194e164b886d56d260c24db"
     },
     {
       "file": "native-menus.json",
@@ -82,6 +210,22 @@
     {
       "file": "resources.md",
       "sha256": "3516b281ea666d8345d625212a5b304a7c9a0100eb2becfbaa87882073b57993"
+    },
+    {
+      "file": "sms-alphabet-management-thumb.txt",
+      "sha256": "04037517ecf6d5953f0d631a5d59c47a1aa70e19d1d82bea3404650b8f72027b"
+    },
+    {
+      "file": "sms-alphabet-membership-thumb.txt",
+      "sha256": "dd9a78b2027e691924fd8ae45e7eec6bbd95b10ccaf22c5463c34afdd6253bcc"
+    },
+    {
+      "file": "sms-character-classification-thumb.txt",
+      "sha256": "9b30d8dc47c783c28f6515a35047a4188d5133ded52c1879989e1723ec60ba35"
+    },
+    {
+      "file": "sms-character-tables.json",
+      "sha256": "4ee6e5febefcc5d0889c9f46150643daf63e3d4475a88fe274d774ba918591b9"
     },
     {
       "file": "sms-compose-helpers-thumb.txt",
@@ -94,6 +238,22 @@
     {
       "file": "sms-draft-helpers-thumb.txt",
       "sha256": "be619fd1820454cc8c2dd3bf51b83298b1e2d2081e1bcc611377a08f984bccef"
+    },
+    {
+      "file": "sms-edit-count-update-thumb.txt",
+      "sha256": "de712cd82cd33aff8d4ad7333e4731eaa3a0ae32ff9717f6ea4561f289ea1db7"
+    },
+    {
+      "file": "sms-encoding-content-thumb.txt",
+      "sha256": "d218fa759bcf5496ad3c63d5dd5991a3b46e405014e2991ab9d1ee120256871e"
+    },
+    {
+      "file": "sms-encoding-rules.json",
+      "sha256": "23e246b632b6a28454502e50db51a3f764b5f5a9048c139e510b38e644868c88"
+    },
+    {
+      "file": "sms-extension-alphabet-thumb.txt",
+      "sha256": "4ffc6e640410e1a6c4c99486f1f6527d37774bf2fd9de57a726c25c8d0ac5674"
     },
     {
       "file": "sms-insert-options-thumb.txt",
@@ -112,12 +272,52 @@
       "sha256": "f8214ef09318951e12c6b7ef322e891d875a81b4f5141b4809f612690d93a31a"
     },
     {
+      "file": "sms-retry-causes-thumb.txt",
+      "sha256": "b30c6d2b2039060af7a503ceaf45f6f8457a21ab959fbbbbc87353ea4788a0e6"
+    },
+    {
+      "file": "sms-retry-rules.json",
+      "sha256": "cb037bcfe170a3505fe3b73dc41119f120e6e89bf269fd1828d4a4d36a9edbb7"
+    },
+    {
+      "file": "sms-segment-capacity-thumb.txt",
+      "sha256": "daa3fed125a77b0d1614d803734510d4e4ee5db649315facd3d2f56cfe5323fd"
+    },
+    {
+      "file": "sms-send-results-thumb.txt",
+      "sha256": "aae63cb093d8f8bc643a18a53dbab6a4d8ddce0fcae16bdd480acec69ea5c615"
+    },
+    {
+      "file": "sms-send-wait-thumb.txt",
+      "sha256": "251b62964d09ab632816c505b11407083e8a0a2d2ef5f529fe1f8e0c1ead7f0c"
+    },
+    {
       "file": "sms-storage-flags-thumb.txt",
       "sha256": "707f25c0eac03e6e92751db91b20f02becaaa9e981ca26a12e1213c6a793fe12"
     },
     {
       "file": "sms-text-editor-thumb.txt",
       "sha256": "80d032299e86af48846081347d45a7e74a62c5a79dbdffea649e583b2a63faf6"
+    },
+    {
+      "file": "sms-transliteration-thumb.txt",
+      "sha256": "bb5495b53f56d3e7a3856216615728f48c5c4d512f2ddb46994e1a612b6e1b2f"
+    },
+    {
+      "file": "sms-ui-config-thumb.txt",
+      "sha256": "b2e547d1c3b8268e4f7bed04efd57929d5099fa97eed8ba2dec59d50d5772ebd"
+    },
+    {
+      "file": "sms-ui-convert-thumb.txt",
+      "sha256": "b8a4c75cdb163ff6b890b54a658c18c0d3f1bf7eaa3a746dcf0b569a05b2f040"
+    },
+    {
+      "file": "sms-ui-count-thumb.txt",
+      "sha256": "fb8a0044924f850b72ea9fb4974aa82a29a83c09035ca5c2d35cd4a63949f373"
+    },
+    {
+      "file": "sms-ui-format-thumb.txt",
+      "sha256": "69b0bbecd6daf39c5a5bf56b4789f8d4be508d12691443bf93487a080425809d"
     }
   ],
   "commands": [
@@ -136,9 +336,9 @@
     {
       "script": "rebuild_app_analysis.py",
       "returncode": 0,
-      "stdout": "recover_framework_semantics.py OK\ntrace_app_code.py OK\nrecover_event_routes.py OK\nextract_app_contracts.py OK\ntest_app_contracts.py OK\n",
+      "stdout": "recover_framework_semantics.py OK\ntrace_app_code.py OK\nrecover_event_routes.py OK\nextract_app_contracts.py OK\nrecover_app_algorithms.py OK\nrecover_interaction_core.py OK\ntest_app_contracts.py OK\n",
       "stderr": ""
     }
   ],
-  "contract_tests": 37
+  "contract_tests": 75
 }

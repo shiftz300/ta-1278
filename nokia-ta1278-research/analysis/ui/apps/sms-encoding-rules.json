@@ -1,0 +1,115 @@
+{
+  "source_sha256": "8f0db2dc82f9e763cb700c2e5781b7ca7125a4d250f4c075dbec793eb549c1ca",
+  "evidence": "A numeric branches; B alphabet and national-shift names from content conversion and related framework. No UI counter format claimed.",
+  "capacity_function": {
+    "start": "0x88b50d34",
+    "end_exclusive": "0x88b50db0",
+    "file_offset": "0xb50d34",
+    "sha256": "2dd6d327de55eaf862d38fbe12fcf7172ef374a9f057d3415dc9b3179a333a30"
+  },
+  "immediates": {
+    "0xb50d3e": 133,
+    "0xb50d40": 140,
+    "0xb50d42": 134,
+    "0xb50d6a": 128,
+    "0xb50d78": 146,
+    "0xb50d7c": 154,
+    "0xb50d8c": 155,
+    "0xb50d98": 149,
+    "0xb50d9e": 160,
+    "0xb50da2": 153,
+    "0xb50daa": 127
+  },
+  "capacity_rows": [
+    {
+      "alphabet": 0,
+      "extra_header": false,
+      "language_shift": false,
+      "single_shift": false,
+      "single": 160,
+      "multipart": 153
+    },
+    {
+      "alphabet": 0,
+      "extra_header": false,
+      "language_shift": true,
+      "single_shift": false,
+      "single": 155,
+      "multipart": 149
+    },
+    {
+      "alphabet": 0,
+      "extra_header": false,
+      "language_shift": true,
+      "single_shift": true,
+      "single": 155,
+      "multipart": 146
+    },
+    {
+      "alphabet": 0,
+      "extra_header": true,
+      "language_shift": null,
+      "single_shift": null,
+      "single": 154,
+      "multipart": 146
+    },
+    {
+      "alphabet": 1,
+      "extra_header": false,
+      "language_shift": null,
+      "single_shift": null,
+      "single": 140,
+      "multipart": 134
+    },
+    {
+      "alphabet": 1,
+      "extra_header": true,
+      "language_shift": null,
+      "single_shift": null,
+      "single": 133,
+      "multipart": 127
+    },
+    {
+      "alphabet": 2,
+      "extra_header": false,
+      "language_shift": null,
+      "single_shift": null,
+      "single": 140,
+      "multipart": 134
+    },
+    {
+      "alphabet": 2,
+      "extra_header": true,
+      "language_shift": null,
+      "single_shift": null,
+      "single": 133,
+      "multipart": 128
+    }
+  ],
+  "flag_locations": {
+    "extra_header": "r3, caller send context +0x153a",
+    "language_shift": "[0x81d16394+0x2c]",
+    "single_shift": "[0x81d16394+0x2d]"
+  },
+  "segment_tail_rule": {
+    "range": {
+      "start": "0x88b50ea2",
+      "end_exclusive": "0x88b50ed0",
+      "file_offset": "0xb50ea2",
+      "sha256": "d8c9c56604b4ae9618df3c8f82053703d794a3072ea560a768183a29643065cb"
+    },
+    "alphabets": [
+      0,
+      1
+    ],
+    "last_byte": 27,
+    "action": "decrease chosen encoded segment length by one"
+  },
+  "content_conversion": {
+    "entry": "0x883d92f4",
+    "alphabet_field": "+0x10",
+    "length_field": "+0x0 (u16)",
+    "ucs2_copy_length": "min(input UTF-16 units * 2, 804)",
+    "caveat": "Byte capacity is not the screen character count. Extra-header UCS2 single capacity 133 is odd; do not silently replace it with a generic SMS formula."
+  }
+}

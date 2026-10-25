@@ -1,0 +1,24 @@
+
+PROJECT_ROOT/analysis/ui/user.analysis-only.elf:	file format elf32-littlearm
+
+Disassembly of section .text:
+
+88000000 <.text>:
+88acec7a: b570         	push	{r4, r5, r6, lr}
+88acec7c: 2401         	movs	r4, #0x1
+88acec7e: f4be f667    	bl	0x8838d950 <.text+0x38d950> @ imm = #-0x741332
+88acec82: 4605         	mov	r5, r0
+88acec84: f730 f354    	bl	0x885ff330 <.text+0x5ff330> @ imm = #-0x4cf958
+88acec88: 2010         	movs	r0, #0x10
+88acec8a: a2ab         	adr	r2, #684 <.text+0xaced39>
+88acec8c: a1ab         	adr	r1, #684 <.text+0xaced3b>
+88acec8e: f631 cef6    	blx	0x88100a7c <.text+0x100a7c> @ imm = #-0x9ce214
+88acec92: 2005         	movs	r0, #0x5
+88acec94: f522 f1ae    	bl	0x883f0ff4 <.text+0x3f0ff4> @ imm = #-0x6ddca4
+88acec98: b108         	cbz	r0, 0x88acec9e <.text+0xacec9e> @ imm = #0x2
+88acec9a: f522 f2de    	bl	0x883f125a <.text+0x3f125a> @ imm = #-0x6dda44
+88acec9e: 2101         	movs	r1, #0x1
+88aceca0: 4628         	mov	r0, r5
+88aceca2: f002 f896    	bl	0x88ad0dd2 <.text+0xad0dd2> @ imm = #0x212c
+88aceca6: 4620         	mov	r0, r4
+88aceca8: bd70         	pop	{r4, r5, r6, pc}

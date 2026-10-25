@@ -1,0 +1,43 @@
+
+PROJECT_ROOT/analysis/ui/user.analysis-only.elf:	file format elf32-littlearm
+
+Disassembly of section .text:
+
+88000000 <.text>:
+8813bb42: 2300         	movs	r3, #0x0
+8813bb44: 4a17         	ldr	r2, [pc, #0x5c]         @ 0x8813bba4 <.text+0x13bba4>
+8813bb46: b530         	push	{r4, r5, lr}
+8813bb48: 24d9         	movs	r4, #0xd9
+8813bb4a: 4619         	mov	r1, r3
+8813bb4c: eb02 0581    	add.w	r5, r2, r1, lsl #2
+8813bb50: 886d         	ldrh	r5, [r5, #0x2]
+8813bb52: 4285         	cmp	r5, r0
+8813bb54: d101         	bne	0x8813bb5a <.text+0x13bb5a> @ imm = #0x2
+8813bb56: 2301         	movs	r3, #0x1
+8813bb58: e002         	b	0x8813bb60 <.text+0x13bb60> @ imm = #0x4
+8813bb5a: 1c49         	adds	r1, r1, #0x1
+8813bb5c: 42a1         	cmp	r1, r4
+8813bb5e: dbf5         	blt	0x8813bb4c <.text+0x13bb4c> @ imm = #-0x16
+8813bb60: 4618         	mov	r0, r3
+8813bb62: bd30         	pop	{r4, r5, pc}
+8813bb64: b570         	push	{r4, r5, r6, lr}
+8813bb66: 2400         	movs	r4, #0x0
+8813bb68: 4605         	mov	r5, r0
+8813bb6a: f26a f932    	bl	0x883a5dd2 <.text+0x3a5dd2> @ imm = #0x26a264
+8813bb6e: b180         	cbz	r0, 0x8813bb92 <.text+0x13bb92> @ imm = #0x20
+8813bb70: 490c         	ldr	r1, [pc, #0x30]         @ 0x8813bba4 <.text+0x13bba4>
+8813bb72: 22d9         	movs	r2, #0xd9
+8813bb74: eb01 0084    	add.w	r0, r1, r4, lsl #2
+8813bb78: 8843         	ldrh	r3, [r0, #0x2]
+8813bb7a: 42ab         	cmp	r3, r5
+8813bb7c: d105         	bne	0x8813bb8a <.text+0x13bb8a> @ imm = #0xa
+8813bb7e: f831 0024    	ldrh.w	r0, [r1, r4, lsl #2]
+8813bb82: 4909         	ldr	r1, [pc, #0x24]         @ 0x8813bba8 <.text+0x13bba8>
+8813bb84: f831 5010    	ldrh.w	r5, [r1, r0, lsl #1]
+8813bb88: e003         	b	0x8813bb92 <.text+0x13bb92> @ imm = #0x6
+8813bb8a: 1c64         	adds	r4, r4, #0x1
+8813bb8c: b2e4         	uxtb	r4, r4
+8813bb8e: 4294         	cmp	r4, r2
+8813bb90: d3f0         	blo	0x8813bb74 <.text+0x13bb74> @ imm = #-0x20
+8813bb92: 4628         	mov	r0, r5
+8813bb94: bd70         	pop	{r4, r5, r6, pc}

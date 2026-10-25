@@ -1,0 +1,1462 @@
+{
+  "source_sha256": "8f0db2dc82f9e763cb700c2e5781b7ca7125a4d250f4c075dbec793eb549c1ca",
+  "predicates": {
+    "r8_one": {
+      "entry": "0x883a483a",
+      "true_branch": "0x883a4850",
+      "codepoints": [
+        96,
+        170,
+        186,
+        8734
+      ]
+    },
+    "r8_two": {
+      "entry": "0x883a4856",
+      "true_branch": "0x883a48d6",
+      "codepoints": [
+        27,
+        192,
+        193,
+        194,
+        195,
+        202,
+        205,
+        211,
+        212,
+        213,
+        218,
+        225,
+        226,
+        227,
+        231,
+        234,
+        237,
+        243,
+        244,
+        245,
+        250,
+        286,
+        287,
+        304,
+        305,
+        350,
+        351
+      ]
+    },
+    "language_0": {
+      "entry": "0x883a4aac",
+      "true_branch": "0x883a4ad8",
+      "codepoints": [
+        286,
+        287,
+        304,
+        305,
+        350,
+        351
+      ]
+    },
+    "language_2": {
+      "entry": "0x883a4a60",
+      "true_branch": "0x883a4aa2",
+      "codepoints": [
+        96,
+        170,
+        186,
+        192,
+        194,
+        195,
+        202,
+        212,
+        213,
+        226,
+        227,
+        234,
+        244,
+        245,
+        8734
+      ]
+    },
+    "language_4": {
+      "entry": "0x883a4a34",
+      "true_branch": "0x883a4a56",
+      "codepoints": [
+        193,
+        205,
+        211,
+        218,
+        225,
+        237,
+        243,
+        250
+      ]
+    }
+  },
+  "tables": {
+    "default": {
+      "offset": "0xc1797c",
+      "sha256": "adb5d932dec725d1f172c8021ffe81b0326ee7eaa91c6d3db06ab2b7970e6713",
+      "codepoints": [
+        64,
+        163,
+        36,
+        165,
+        232,
+        233,
+        249,
+        236,
+        242,
+        199,
+        10,
+        216,
+        248,
+        13,
+        197,
+        229,
+        916,
+        95,
+        934,
+        915,
+        923,
+        937,
+        928,
+        936,
+        931,
+        920,
+        926,
+        27,
+        198,
+        230,
+        223,
+        201,
+        32,
+        33,
+        34,
+        35,
+        164,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63,
+        161,
+        65,
+        66,
+        67,
+        68,
+        69,
+        70,
+        71,
+        72,
+        73,
+        74,
+        75,
+        76,
+        77,
+        78,
+        79,
+        80,
+        81,
+        82,
+        83,
+        84,
+        85,
+        86,
+        87,
+        88,
+        89,
+        90,
+        196,
+        214,
+        209,
+        220,
+        167,
+        191,
+        97,
+        98,
+        99,
+        100,
+        101,
+        102,
+        103,
+        104,
+        105,
+        106,
+        107,
+        108,
+        109,
+        110,
+        111,
+        112,
+        113,
+        114,
+        115,
+        116,
+        117,
+        118,
+        119,
+        120,
+        121,
+        122,
+        228,
+        246,
+        241,
+        252,
+        224
+      ]
+    },
+    "extension": {
+      "offset": "0xc17a7c",
+      "sha256": "83b62580f7b1a94fe4eb3c68f2a02cf4d64cae57661e78b82505ba8d48d3554f",
+      "codepoints": [
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        94,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        123,
+        125,
+        32,
+        32,
+        32,
+        32,
+        32,
+        92,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        91,
+        126,
+        93,
+        32,
+        124,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        8364,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32
+      ]
+    }
+  },
+  "conversion": {
+    "offset": "0xc172ec",
+    "sha256": "8ac2d43242ef2fabc965197753ed7dfefef04ed4c55613e5e83ca227c5992844",
+    "entries": [
+      {
+        "unicode": 948,
+        "default_index": 16,
+        "replacement": 916
+      },
+      {
+        "unicode": 95,
+        "default_index": 17,
+        "replacement": 95
+      },
+      {
+        "unicode": 966,
+        "default_index": 18,
+        "replacement": 934
+      },
+      {
+        "unicode": 947,
+        "default_index": 19,
+        "replacement": 915
+      },
+      {
+        "unicode": 955,
+        "default_index": 20,
+        "replacement": 923
+      },
+      {
+        "unicode": 911,
+        "default_index": 21,
+        "replacement": 937
+      },
+      {
+        "unicode": 969,
+        "default_index": 21,
+        "replacement": 937
+      },
+      {
+        "unicode": 974,
+        "default_index": 21,
+        "replacement": 937
+      },
+      {
+        "unicode": 960,
+        "default_index": 22,
+        "replacement": 928
+      },
+      {
+        "unicode": 968,
+        "default_index": 23,
+        "replacement": 936
+      },
+      {
+        "unicode": 962,
+        "default_index": 24,
+        "replacement": 931
+      },
+      {
+        "unicode": 963,
+        "default_index": 24,
+        "replacement": 931
+      },
+      {
+        "unicode": 952,
+        "default_index": 25,
+        "replacement": 920
+      },
+      {
+        "unicode": 958,
+        "default_index": 26,
+        "replacement": 926
+      },
+      {
+        "unicode": 215,
+        "default_index": 42,
+        "replacement": 42
+      },
+      {
+        "unicode": 192,
+        "default_index": 65,
+        "replacement": 65
+      },
+      {
+        "unicode": 193,
+        "default_index": 65,
+        "replacement": 65
+      },
+      {
+        "unicode": 194,
+        "default_index": 65,
+        "replacement": 65
+      },
+      {
+        "unicode": 195,
+        "default_index": 65,
+        "replacement": 65
+      },
+      {
+        "unicode": 256,
+        "default_index": 65,
+        "replacement": 65
+      },
+      {
+        "unicode": 258,
+        "default_index": 65,
+        "replacement": 65
+      },
+      {
+        "unicode": 260,
+        "default_index": 65,
+        "replacement": 65
+      },
+      {
+        "unicode": 902,
+        "default_index": 65,
+        "replacement": 65
+      },
+      {
+        "unicode": 913,
+        "default_index": 65,
+        "replacement": 65
+      },
+      {
+        "unicode": 940,
+        "default_index": 65,
+        "replacement": 65
+      },
+      {
+        "unicode": 945,
+        "default_index": 65,
+        "replacement": 65
+      },
+      {
+        "unicode": 914,
+        "default_index": 66,
+        "replacement": 66
+      },
+      {
+        "unicode": 946,
+        "default_index": 66,
+        "replacement": 66
+      },
+      {
+        "unicode": 262,
+        "default_index": 67,
+        "replacement": 67
+      },
+      {
+        "unicode": 264,
+        "default_index": 67,
+        "replacement": 67
+      },
+      {
+        "unicode": 266,
+        "default_index": 67,
+        "replacement": 67
+      },
+      {
+        "unicode": 268,
+        "default_index": 67,
+        "replacement": 67
+      },
+      {
+        "unicode": 270,
+        "default_index": 68,
+        "replacement": 68
+      },
+      {
+        "unicode": 272,
+        "default_index": 68,
+        "replacement": 68
+      },
+      {
+        "unicode": 208,
+        "default_index": 68,
+        "replacement": 68
+      },
+      {
+        "unicode": 200,
+        "default_index": 69,
+        "replacement": 69
+      },
+      {
+        "unicode": 202,
+        "default_index": 69,
+        "replacement": 69
+      },
+      {
+        "unicode": 203,
+        "default_index": 69,
+        "replacement": 69
+      },
+      {
+        "unicode": 274,
+        "default_index": 69,
+        "replacement": 69
+      },
+      {
+        "unicode": 276,
+        "default_index": 69,
+        "replacement": 69
+      },
+      {
+        "unicode": 278,
+        "default_index": 69,
+        "replacement": 69
+      },
+      {
+        "unicode": 280,
+        "default_index": 69,
+        "replacement": 69
+      },
+      {
+        "unicode": 282,
+        "default_index": 69,
+        "replacement": 69
+      },
+      {
+        "unicode": 904,
+        "default_index": 69,
+        "replacement": 69
+      },
+      {
+        "unicode": 917,
+        "default_index": 69,
+        "replacement": 69
+      },
+      {
+        "unicode": 941,
+        "default_index": 69,
+        "replacement": 69
+      },
+      {
+        "unicode": 949,
+        "default_index": 69,
+        "replacement": 69
+      },
+      {
+        "unicode": 284,
+        "default_index": 71,
+        "replacement": 71
+      },
+      {
+        "unicode": 286,
+        "default_index": 71,
+        "replacement": 71
+      },
+      {
+        "unicode": 288,
+        "default_index": 71,
+        "replacement": 71
+      },
+      {
+        "unicode": 290,
+        "default_index": 71,
+        "replacement": 71
+      },
+      {
+        "unicode": 292,
+        "default_index": 72,
+        "replacement": 72
+      },
+      {
+        "unicode": 294,
+        "default_index": 72,
+        "replacement": 72
+      },
+      {
+        "unicode": 905,
+        "default_index": 72,
+        "replacement": 72
+      },
+      {
+        "unicode": 919,
+        "default_index": 72,
+        "replacement": 72
+      },
+      {
+        "unicode": 942,
+        "default_index": 72,
+        "replacement": 72
+      },
+      {
+        "unicode": 951,
+        "default_index": 72,
+        "replacement": 72
+      },
+      {
+        "unicode": 204,
+        "default_index": 73,
+        "replacement": 73
+      },
+      {
+        "unicode": 205,
+        "default_index": 73,
+        "replacement": 73
+      },
+      {
+        "unicode": 206,
+        "default_index": 73,
+        "replacement": 73
+      },
+      {
+        "unicode": 207,
+        "default_index": 73,
+        "replacement": 73
+      },
+      {
+        "unicode": 296,
+        "default_index": 73,
+        "replacement": 73
+      },
+      {
+        "unicode": 298,
+        "default_index": 73,
+        "replacement": 73
+      },
+      {
+        "unicode": 300,
+        "default_index": 73,
+        "replacement": 73
+      },
+      {
+        "unicode": 302,
+        "default_index": 73,
+        "replacement": 73
+      },
+      {
+        "unicode": 304,
+        "default_index": 73,
+        "replacement": 73
+      },
+      {
+        "unicode": 906,
+        "default_index": 73,
+        "replacement": 73
+      },
+      {
+        "unicode": 912,
+        "default_index": 73,
+        "replacement": 73
+      },
+      {
+        "unicode": 921,
+        "default_index": 73,
+        "replacement": 73
+      },
+      {
+        "unicode": 938,
+        "default_index": 73,
+        "replacement": 73
+      },
+      {
+        "unicode": 943,
+        "default_index": 73,
+        "replacement": 73
+      },
+      {
+        "unicode": 953,
+        "default_index": 73,
+        "replacement": 73
+      },
+      {
+        "unicode": 970,
+        "default_index": 73,
+        "replacement": 73
+      },
+      {
+        "unicode": 308,
+        "default_index": 74,
+        "replacement": 74
+      },
+      {
+        "unicode": 75,
+        "default_index": 75,
+        "replacement": 75
+      },
+      {
+        "unicode": 310,
+        "default_index": 75,
+        "replacement": 75
+      },
+      {
+        "unicode": 922,
+        "default_index": 75,
+        "replacement": 75
+      },
+      {
+        "unicode": 954,
+        "default_index": 75,
+        "replacement": 75
+      },
+      {
+        "unicode": 313,
+        "default_index": 76,
+        "replacement": 76
+      },
+      {
+        "unicode": 315,
+        "default_index": 76,
+        "replacement": 76
+      },
+      {
+        "unicode": 317,
+        "default_index": 76,
+        "replacement": 76
+      },
+      {
+        "unicode": 319,
+        "default_index": 76,
+        "replacement": 76
+      },
+      {
+        "unicode": 321,
+        "default_index": 76,
+        "replacement": 76
+      },
+      {
+        "unicode": 924,
+        "default_index": 77,
+        "replacement": 77
+      },
+      {
+        "unicode": 956,
+        "default_index": 77,
+        "replacement": 77
+      },
+      {
+        "unicode": 323,
+        "default_index": 78,
+        "replacement": 78
+      },
+      {
+        "unicode": 325,
+        "default_index": 78,
+        "replacement": 78
+      },
+      {
+        "unicode": 327,
+        "default_index": 78,
+        "replacement": 78
+      },
+      {
+        "unicode": 925,
+        "default_index": 78,
+        "replacement": 78
+      },
+      {
+        "unicode": 957,
+        "default_index": 78,
+        "replacement": 78
+      },
+      {
+        "unicode": 210,
+        "default_index": 79,
+        "replacement": 79
+      },
+      {
+        "unicode": 211,
+        "default_index": 79,
+        "replacement": 79
+      },
+      {
+        "unicode": 212,
+        "default_index": 79,
+        "replacement": 79
+      },
+      {
+        "unicode": 213,
+        "default_index": 79,
+        "replacement": 79
+      },
+      {
+        "unicode": 332,
+        "default_index": 79,
+        "replacement": 79
+      },
+      {
+        "unicode": 334,
+        "default_index": 79,
+        "replacement": 79
+      },
+      {
+        "unicode": 336,
+        "default_index": 79,
+        "replacement": 79
+      },
+      {
+        "unicode": 908,
+        "default_index": 79,
+        "replacement": 79
+      },
+      {
+        "unicode": 927,
+        "default_index": 79,
+        "replacement": 79
+      },
+      {
+        "unicode": 959,
+        "default_index": 79,
+        "replacement": 79
+      },
+      {
+        "unicode": 972,
+        "default_index": 79,
+        "replacement": 79
+      },
+      {
+        "unicode": 929,
+        "default_index": 80,
+        "replacement": 80
+      },
+      {
+        "unicode": 961,
+        "default_index": 80,
+        "replacement": 80
+      },
+      {
+        "unicode": 340,
+        "default_index": 82,
+        "replacement": 82
+      },
+      {
+        "unicode": 342,
+        "default_index": 82,
+        "replacement": 82
+      },
+      {
+        "unicode": 344,
+        "default_index": 82,
+        "replacement": 82
+      },
+      {
+        "unicode": 346,
+        "default_index": 83,
+        "replacement": 83
+      },
+      {
+        "unicode": 348,
+        "default_index": 83,
+        "replacement": 83
+      },
+      {
+        "unicode": 350,
+        "default_index": 83,
+        "replacement": 83
+      },
+      {
+        "unicode": 352,
+        "default_index": 83,
+        "replacement": 83
+      },
+      {
+        "unicode": 222,
+        "default_index": 84,
+        "replacement": 84
+      },
+      {
+        "unicode": 354,
+        "default_index": 84,
+        "replacement": 84
+      },
+      {
+        "unicode": 356,
+        "default_index": 84,
+        "replacement": 84
+      },
+      {
+        "unicode": 358,
+        "default_index": 84,
+        "replacement": 84
+      },
+      {
+        "unicode": 932,
+        "default_index": 84,
+        "replacement": 84
+      },
+      {
+        "unicode": 964,
+        "default_index": 84,
+        "replacement": 84
+      },
+      {
+        "unicode": 217,
+        "default_index": 85,
+        "replacement": 85
+      },
+      {
+        "unicode": 218,
+        "default_index": 85,
+        "replacement": 85
+      },
+      {
+        "unicode": 219,
+        "default_index": 85,
+        "replacement": 85
+      },
+      {
+        "unicode": 360,
+        "default_index": 85,
+        "replacement": 85
+      },
+      {
+        "unicode": 362,
+        "default_index": 85,
+        "replacement": 85
+      },
+      {
+        "unicode": 364,
+        "default_index": 85,
+        "replacement": 85
+      },
+      {
+        "unicode": 366,
+        "default_index": 85,
+        "replacement": 85
+      },
+      {
+        "unicode": 368,
+        "default_index": 85,
+        "replacement": 85
+      },
+      {
+        "unicode": 370,
+        "default_index": 85,
+        "replacement": 85
+      },
+      {
+        "unicode": 935,
+        "default_index": 88,
+        "replacement": 88
+      },
+      {
+        "unicode": 967,
+        "default_index": 88,
+        "replacement": 88
+      },
+      {
+        "unicode": 221,
+        "default_index": 89,
+        "replacement": 89
+      },
+      {
+        "unicode": 910,
+        "default_index": 89,
+        "replacement": 89
+      },
+      {
+        "unicode": 933,
+        "default_index": 89,
+        "replacement": 89
+      },
+      {
+        "unicode": 939,
+        "default_index": 89,
+        "replacement": 89
+      },
+      {
+        "unicode": 944,
+        "default_index": 89,
+        "replacement": 89
+      },
+      {
+        "unicode": 965,
+        "default_index": 89,
+        "replacement": 89
+      },
+      {
+        "unicode": 971,
+        "default_index": 89,
+        "replacement": 89
+      },
+      {
+        "unicode": 973,
+        "default_index": 89,
+        "replacement": 89
+      },
+      {
+        "unicode": 377,
+        "default_index": 90,
+        "replacement": 90
+      },
+      {
+        "unicode": 379,
+        "default_index": 90,
+        "replacement": 90
+      },
+      {
+        "unicode": 381,
+        "default_index": 90,
+        "replacement": 90
+      },
+      {
+        "unicode": 918,
+        "default_index": 90,
+        "replacement": 90
+      },
+      {
+        "unicode": 950,
+        "default_index": 90,
+        "replacement": 90
+      },
+      {
+        "unicode": 225,
+        "default_index": 97,
+        "replacement": 97
+      },
+      {
+        "unicode": 226,
+        "default_index": 97,
+        "replacement": 97
+      },
+      {
+        "unicode": 227,
+        "default_index": 97,
+        "replacement": 97
+      },
+      {
+        "unicode": 257,
+        "default_index": 97,
+        "replacement": 97
+      },
+      {
+        "unicode": 259,
+        "default_index": 97,
+        "replacement": 97
+      },
+      {
+        "unicode": 261,
+        "default_index": 97,
+        "replacement": 97
+      },
+      {
+        "unicode": 231,
+        "default_index": 99,
+        "replacement": 99
+      },
+      {
+        "unicode": 263,
+        "default_index": 99,
+        "replacement": 99
+      },
+      {
+        "unicode": 265,
+        "default_index": 99,
+        "replacement": 99
+      },
+      {
+        "unicode": 267,
+        "default_index": 99,
+        "replacement": 99
+      },
+      {
+        "unicode": 269,
+        "default_index": 99,
+        "replacement": 99
+      },
+      {
+        "unicode": 271,
+        "default_index": 100,
+        "replacement": 100
+      },
+      {
+        "unicode": 273,
+        "default_index": 100,
+        "replacement": 100
+      },
+      {
+        "unicode": 240,
+        "default_index": 100,
+        "replacement": 100
+      },
+      {
+        "unicode": 234,
+        "default_index": 101,
+        "replacement": 101
+      },
+      {
+        "unicode": 235,
+        "default_index": 101,
+        "replacement": 101
+      },
+      {
+        "unicode": 275,
+        "default_index": 101,
+        "replacement": 101
+      },
+      {
+        "unicode": 277,
+        "default_index": 101,
+        "replacement": 101
+      },
+      {
+        "unicode": 279,
+        "default_index": 101,
+        "replacement": 101
+      },
+      {
+        "unicode": 281,
+        "default_index": 101,
+        "replacement": 101
+      },
+      {
+        "unicode": 283,
+        "default_index": 101,
+        "replacement": 101
+      },
+      {
+        "unicode": 285,
+        "default_index": 103,
+        "replacement": 103
+      },
+      {
+        "unicode": 287,
+        "default_index": 103,
+        "replacement": 103
+      },
+      {
+        "unicode": 289,
+        "default_index": 103,
+        "replacement": 103
+      },
+      {
+        "unicode": 291,
+        "default_index": 103,
+        "replacement": 103
+      },
+      {
+        "unicode": 293,
+        "default_index": 104,
+        "replacement": 104
+      },
+      {
+        "unicode": 295,
+        "default_index": 104,
+        "replacement": 104
+      },
+      {
+        "unicode": 237,
+        "default_index": 105,
+        "replacement": 105
+      },
+      {
+        "unicode": 238,
+        "default_index": 105,
+        "replacement": 105
+      },
+      {
+        "unicode": 239,
+        "default_index": 105,
+        "replacement": 105
+      },
+      {
+        "unicode": 297,
+        "default_index": 105,
+        "replacement": 105
+      },
+      {
+        "unicode": 299,
+        "default_index": 105,
+        "replacement": 105
+      },
+      {
+        "unicode": 301,
+        "default_index": 105,
+        "replacement": 105
+      },
+      {
+        "unicode": 303,
+        "default_index": 105,
+        "replacement": 105
+      },
+      {
+        "unicode": 305,
+        "default_index": 105,
+        "replacement": 105
+      },
+      {
+        "unicode": 309,
+        "default_index": 106,
+        "replacement": 106
+      },
+      {
+        "unicode": 311,
+        "default_index": 107,
+        "replacement": 107
+      },
+      {
+        "unicode": 314,
+        "default_index": 108,
+        "replacement": 108
+      },
+      {
+        "unicode": 316,
+        "default_index": 108,
+        "replacement": 108
+      },
+      {
+        "unicode": 318,
+        "default_index": 108,
+        "replacement": 108
+      },
+      {
+        "unicode": 320,
+        "default_index": 108,
+        "replacement": 108
+      },
+      {
+        "unicode": 322,
+        "default_index": 108,
+        "replacement": 108
+      },
+      {
+        "unicode": 324,
+        "default_index": 110,
+        "replacement": 110
+      },
+      {
+        "unicode": 326,
+        "default_index": 110,
+        "replacement": 110
+      },
+      {
+        "unicode": 328,
+        "default_index": 110,
+        "replacement": 110
+      },
+      {
+        "unicode": 243,
+        "default_index": 111,
+        "replacement": 111
+      },
+      {
+        "unicode": 244,
+        "default_index": 111,
+        "replacement": 111
+      },
+      {
+        "unicode": 245,
+        "default_index": 111,
+        "replacement": 111
+      },
+      {
+        "unicode": 247,
+        "default_index": 111,
+        "replacement": 111
+      },
+      {
+        "unicode": 333,
+        "default_index": 111,
+        "replacement": 111
+      },
+      {
+        "unicode": 335,
+        "default_index": 111,
+        "replacement": 111
+      },
+      {
+        "unicode": 337,
+        "default_index": 111,
+        "replacement": 111
+      },
+      {
+        "unicode": 114,
+        "default_index": 114,
+        "replacement": 114
+      },
+      {
+        "unicode": 341,
+        "default_index": 114,
+        "replacement": 114
+      },
+      {
+        "unicode": 343,
+        "default_index": 114,
+        "replacement": 114
+      },
+      {
+        "unicode": 345,
+        "default_index": 114,
+        "replacement": 114
+      },
+      {
+        "unicode": 347,
+        "default_index": 115,
+        "replacement": 115
+      },
+      {
+        "unicode": 349,
+        "default_index": 115,
+        "replacement": 115
+      },
+      {
+        "unicode": 351,
+        "default_index": 115,
+        "replacement": 115
+      },
+      {
+        "unicode": 353,
+        "default_index": 115,
+        "replacement": 115
+      },
+      {
+        "unicode": 254,
+        "default_index": 116,
+        "replacement": 116
+      },
+      {
+        "unicode": 355,
+        "default_index": 116,
+        "replacement": 116
+      },
+      {
+        "unicode": 357,
+        "default_index": 116,
+        "replacement": 116
+      },
+      {
+        "unicode": 359,
+        "default_index": 116,
+        "replacement": 116
+      },
+      {
+        "unicode": 250,
+        "default_index": 117,
+        "replacement": 117
+      },
+      {
+        "unicode": 251,
+        "default_index": 117,
+        "replacement": 117
+      },
+      {
+        "unicode": 361,
+        "default_index": 117,
+        "replacement": 117
+      },
+      {
+        "unicode": 363,
+        "default_index": 117,
+        "replacement": 117
+      },
+      {
+        "unicode": 365,
+        "default_index": 117,
+        "replacement": 117
+      },
+      {
+        "unicode": 367,
+        "default_index": 117,
+        "replacement": 117
+      },
+      {
+        "unicode": 369,
+        "default_index": 117,
+        "replacement": 117
+      },
+      {
+        "unicode": 371,
+        "default_index": 117,
+        "replacement": 117
+      },
+      {
+        "unicode": 253,
+        "default_index": 121,
+        "replacement": 121
+      },
+      {
+        "unicode": 255,
+        "default_index": 121,
+        "replacement": 121
+      },
+      {
+        "unicode": 378,
+        "default_index": 122,
+        "replacement": 122
+      },
+      {
+        "unicode": 380,
+        "default_index": 122,
+        "replacement": 122
+      },
+      {
+        "unicode": 382,
+        "default_index": 122,
+        "replacement": 122
+      }
+    ]
+  },
+  "count_entry": "0x883a492c",
+  "language_count_entry": "0x883a4ade",
+  "editor_update_entry": "0x880b0f0e",
+  "method": "Original tables plus exhaustive bounded comparison-tree evaluation for each of 65536 UTF16 units, independently checked against manually transcribed sets. No firmware execution.",
+  "rules": "SMS UCS2 predicate: code>127 and absent from R8 one/two, default and extension tables; if member of 217-entry conversion table and alphabet_management==0, clear UCS2. Priority UCS2 > R8 two > R8 one > default extension (unless sms_encode==2). Language counters 0/2/4 classify independently; 1/3 remain zero in this build.",
+  "limits": "Current alphabet_management (global+0xc60) and editor sms_encode (+0x244) are not read from private data. Conversion table describes available replacement, not proof every send path applies it. Full wire packing, text edits and settings changes remain separate."
+}

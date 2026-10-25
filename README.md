@@ -9,6 +9,7 @@ The goal is to recreate its interface, mainly messaging, the browser, and music 
 ## Contents
 
 - [App behavior and reference models](nokia-ta1278-research/analysis/ui/apps/README.md)
+- [SMS, browser, and music rules](nokia-ta1278-research/analysis/ui/apps/native-algorithms.md)
 - [Findings and open questions](nokia-ta1278-research/analysis/ui/reverse-engineering-status.md)
 - [Fonts](nokia-ta1278-research/analysis/ui/fonts/font-preview.html) and [assets](nokia-ta1278-research/analysis/ui/catalog.html) — open locally after cloning
 - [Firmware structure](nokia-ta1278-research/analysis/firmware-structure.md) and [sources](nokia-ta1278-research/sources.md)
@@ -30,3 +31,5 @@ python3 tools/prepare_offline_workspace.py
 ```
 
 See [rebuild steps](PUBLICATION.md) and [third-party notices](THIRD_PARTY_NOTICES.md). No phone connection is needed for offline analysis.
+
+- [More UI rules](nokia-ta1278-research/analysis/ui/apps/interaction-core.md)

@@ -3,7 +3,7 @@
 from pathlib import Path
 import subprocess,sys,json
 R=Path(__file__).resolve().parents[1];O=R/'analysis/ui/apps';O.mkdir(exist_ok=True)
-scripts=['recover_framework_semantics.py','trace_app_code.py','recover_event_routes.py','extract_app_contracts.py','test_app_contracts.py'];rows=[]
+scripts=['recover_framework_semantics.py','trace_app_code.py','recover_event_routes.py','extract_app_contracts.py','recover_app_algorithms.py','recover_interaction_core.py','test_app_contracts.py'];rows=[]
 for name in scripts:
  p=subprocess.run([sys.executable,str(R/'tools'/name)],cwd=R,capture_output=True,text=True)
  rows.append({'script':name,'returncode':p.returncode,'stdout':p.stdout,'stderr':p.stderr})

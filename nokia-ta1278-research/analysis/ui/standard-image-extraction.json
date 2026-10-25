@@ -1,0 +1,178 @@
+[
+  {
+    "source": "00189-icon-00026270.bin",
+    "file": "native-images/00189-icon-00026270.bmp",
+    "sha256": "feb01b4655c847ed5bd68ec4eace7f37c9e47e61a222b789b7416efe1ad5b43c",
+    "frames": 1,
+    "width": 240,
+    "height": 16
+  },
+  {
+    "source": "00280-icon-00038854.bin",
+    "file": "native-images/00280-icon-00038854.gif",
+    "sha256": "b0e3deed13ef92e0f76e69c207702520ae952de8f46bd65e7c03c8c71e31b1d6",
+    "frames": 7,
+    "width": 240,
+    "height": 320
+  },
+  {
+    "source": "00283-icon-00046ec8.bin",
+    "file": "native-images/00283-icon-00046ec8.gif",
+    "sha256": "05a4f7638e609e9c2895990021bc722731469a914071d90a4b86a20ecd24670d",
+    "frames": 4,
+    "width": 200,
+    "height": 200
+  },
+  {
+    "source": "00284-icon-00047b58.bin",
+    "file": "native-images/00284-icon-00047b58.gif",
+    "sha256": "655b7a67d0baf46f0cd97aefd1ec9662975443ec2036fe6f1b4ae9e868aa58fb",
+    "frames": 10,
+    "width": 240,
+    "height": 60
+  },
+  {
+    "source": "00508-icon-0007c9a8.bin",
+    "file": "native-images/00508-icon-0007c9a8.gif",
+    "sha256": "f28fceeca482b0d4ab3a8bd187d902937c34577e5bdb8d4d027033f67b7fe40e",
+    "frames": 1,
+    "width": 240,
+    "height": 320
+  },
+  {
+    "source": "00509-icon-0007ce4c.bin",
+    "file": "native-images/00509-icon-0007ce4c.gif",
+    "sha256": "70c7dd8e052d98b40690c1a6d9518aef0d78cac621346bb389a59653178937aa",
+    "frames": 86,
+    "width": 40,
+    "height": 40
+  },
+  {
+    "source": "00510-icon-0007f104.bin",
+    "file": "native-images/00510-icon-0007f104.gif",
+    "sha256": "4e0a96427a8aa80c550888deee0b7db8d66f2e738710112dc3daf089fae6cea0",
+    "frames": 22,
+    "width": 240,
+    "height": 320
+  },
+  {
+    "source": "01343-icon-000dec38.bin",
+    "file": "native-images/01343-icon-000dec38.gif",
+    "sha256": "70c7dd8e052d98b40690c1a6d9518aef0d78cac621346bb389a59653178937aa",
+    "frames": 86,
+    "width": 40,
+    "height": 40
+  },
+  {
+    "source": "01344-icon-000e0ef0.bin",
+    "file": "native-images/01344-icon-000e0ef0.gif",
+    "sha256": "0c7f70cb7559fdc51368dd1f3260c56c6df0bcae15d1b4d083b9893d153a9872",
+    "frames": 239,
+    "width": 240,
+    "height": 15
+  },
+  {
+    "source": "01345-icon-000e64f0.bin",
+    "file": "native-images/01345-icon-000e64f0.gif",
+    "sha256": "bda3a702b0920676e55ede8990920ffd73695a8fe13b215b23833160151139fa",
+    "frames": 228,
+    "width": 240,
+    "height": 15
+  },
+  {
+    "source": "01346-icon-000eb9b4.bin",
+    "file": "native-images/01346-icon-000eb9b4.gif",
+    "sha256": "b3623b69377fff2612115b437d2ddf6a7a99c82cbf481cc76a08af5569efffe7",
+    "frames": 239,
+    "width": 240,
+    "height": 15
+  },
+  {
+    "source": "01347-icon-000f0fb8.bin",
+    "file": "native-images/01347-icon-000f0fb8.gif",
+    "sha256": "cd8667d06db7c511ec141269820b5ce806f387e58928c5b102a685b20f1eea86",
+    "frames": 228,
+    "width": 240,
+    "height": 15
+  },
+  {
+    "source": "01348-icon-000f6478.bin",
+    "file": "native-images/01348-icon-000f6478.gif",
+    "sha256": "1d4db55767a1e43a868e7f5d41c4ee16580f43002b6531562e43d27b902c5915",
+    "frames": 239,
+    "width": 240,
+    "height": 15
+  },
+  {
+    "source": "01349-icon-000fba50.bin",
+    "file": "native-images/01349-icon-000fba50.gif",
+    "sha256": "4118b31f7cca87cc81811e48b0ffc9f51adc759c24e38c10177ef9c2e88048bf",
+    "frames": 228,
+    "width": 240,
+    "height": 15
+  },
+  {
+    "source": "01350-icon-00100ee0.bin",
+    "file": "native-images/01350-icon-00100ee0.gif",
+    "sha256": "608169fefa917242de253ef831d1e5d63b07c7eeee833fa74287c759b6d128a9",
+    "frames": 239,
+    "width": 240,
+    "height": 15
+  },
+  {
+    "source": "01351-icon-0010651c.bin",
+    "file": "native-images/01351-icon-0010651c.gif",
+    "sha256": "098f9826d6720c3a91f6875923334ad034b0a9931f82e56013245a6803fc4f8f",
+    "frames": 228,
+    "width": 240,
+    "height": 15
+  },
+  {
+    "source": "01352-icon-0010ba18.bin",
+    "file": "native-images/01352-icon-0010ba18.gif",
+    "sha256": "95f972bb25722d5db51c1a8e0ffdc46edbe7a6e3b469c895a9c7628b26d15ac7",
+    "frames": 239,
+    "width": 240,
+    "height": 15
+  },
+  {
+    "source": "01353-icon-00111078.bin",
+    "file": "native-images/01353-icon-00111078.gif",
+    "sha256": "49167bffc12de90d999da34b7edfe687d9eb215a2d20240b946fdb9e855ae97e",
+    "frames": 228,
+    "width": 240,
+    "height": 15
+  },
+  {
+    "source": "01354-icon-00116550.bin",
+    "file": "native-images/01354-icon-00116550.gif",
+    "sha256": "198a49e80582a68c1ebb3ac119d71535b7ee3cb8b141a99e1b8a3273fd694fbb",
+    "frames": 239,
+    "width": 240,
+    "height": 15
+  },
+  {
+    "source": "01355-icon-0011bba0.bin",
+    "file": "native-images/01355-icon-0011bba0.gif",
+    "sha256": "9f21f28dc8db4bfdfde5a3d744105d98ff10394ccee3e5fac0fc2dd004e2b0e9",
+    "frames": 228,
+    "width": 240,
+    "height": 15
+  },
+  {
+    "source": "02532-icon-00abf15c.bin",
+    "file": "native-images/02532-icon-00abf15c.bmp",
+    "sha256": "048acc3b11f1c1810f50ab1f373eb65341edd1523a41ae295689a2970e96e870",
+    "frames": 1,
+    "width": 14,
+    "height": 14
+  },
+  {
+    "source": "02885-icon-00b28218.bin",
+    "file": "native-images/02885-icon-00b28218.gif",
+    "sha256": "a00ea2a58ff1dff90155fddba3d542bb0bbb79dcaae3aa4ac8d542717a1885f2",
+    "frames": 1,
+    "width": 240,
+    "height": 320
+  }
+]

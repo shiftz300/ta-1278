@@ -1,0 +1,15 @@
+{
+  "status": "passed",
+  "cases": [
+    "same-key replacement",
+    "different-key commit",
+    "explicit timeout commit",
+    "full-table cycle wrap",
+    "space/zero/LF cycle",
+    "empty slot no-op"
+  ],
+  "source_table": "0x21d592",
+  "native_cycle": "0x884816be..0x8848173c",
+  "native_commit": "0x88481588",
+  "scope": "multi-tap reference model only; not end-to-end phone acceptance"
+}

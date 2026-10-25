@@ -1,0 +1,32 @@
+[
+  {
+    "font": "font-0-latn",
+    "glyphs": 1376,
+    "mapped_codepoints": 1313,
+    "otf_sha256": "f463aa88beb81df923f5fa9ba4ce1c0c40bc942d1ed0f636ca811b53a00e5105",
+    "all_outlines_consumed": true,
+    "freetype_rendered": true,
+    "nominal_metrics": true,
+    "native_hinting_recovered": false
+  },
+  {
+    "font": "font-1-hani",
+    "glyphs": 7479,
+    "mapped_codepoints": 7479,
+    "otf_sha256": "a62cb8fc10257ae2041e3bcba7d0c1677c1c8de6cabf35042189853c506a2642",
+    "all_outlines_consumed": true,
+    "freetype_rendered": true,
+    "nominal_metrics": true,
+    "native_hinting_recovered": false
+  },
+  {
+    "font": "font-2-hani",
+    "glyphs": 13494,
+    "mapped_codepoints": 13497,
+    "otf_sha256": "ab92df9ef87d5b0db00411f119a554ddcee5ea5d28e51fb9588dee4b048c327b",
+    "all_outlines_consumed": true,
+    "freetype_rendered": true,
+    "nominal_metrics": true,
+    "native_hinting_recovered": false
+  }
+]

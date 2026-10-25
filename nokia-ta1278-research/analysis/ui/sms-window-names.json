@@ -1,0 +1,621 @@
+{
+  "registration": "0x88ab0718",
+  "lookup": "0x885f237e..0x885f2392: base + (low16(ID)-1)*50",
+  "names": [
+    {
+      "id": "0x80001",
+      "name": "MMISMS_SETTING_MENU_WIN_ID",
+      "offset": "0x21b2a6"
+    },
+    {
+      "id": "0x80002",
+      "name": "MMISMS_SMS_SETTING_MENU_WIN_ID",
+      "offset": "0x21b2d8"
+    },
+    {
+      "id": "0x80003",
+      "name": "MMISMS_VOICEMAIL_SETTING_MENU_WIN_ID",
+      "offset": "0x21b30a"
+    },
+    {
+      "id": "0x80004",
+      "name": "MMISMS_EDIT_WIN_ID",
+      "offset": "0x21b33c"
+    },
+    {
+      "id": "0x80005",
+      "name": "MMISMS_EDITOPTION_WIN_ID",
+      "offset": "0x21b36e"
+    },
+    {
+      "id": "0x80006",
+      "name": "MMISMS_SENDNUMOPTION_WIN_ID",
+      "offset": "0x21b3a0"
+    },
+    {
+      "id": "0x80007",
+      "name": "MMISMS_EDITNUM_WIN_ID",
+      "offset": "0x21b3d2"
+    },
+    {
+      "id": "0x80008",
+      "name": "MMISMS_WORDLIST_WIN_ID",
+      "offset": "0x21b404"
+    },
+    {
+      "id": "0x80009",
+      "name": "MMISMS_WORDLIST_FOR_CC_WIN_ID",
+      "offset": "0x21b436"
+    },
+    {
+      "id": "0x8000a",
+      "name": "MMISMS_PHIZLIST_WIN_ID",
+      "offset": "0x21b468"
+    },
+    {
+      "id": "0x8000b",
+      "name": "MMISMS_SHOWMSG_WIN_ID",
+      "offset": "0x21b49a"
+    },
+    {
+      "id": "0x8000c",
+      "name": "MMISMS_MTBOX_WIN_ID",
+      "offset": "0x21b4cc"
+    },
+    {
+      "id": "0x8000d",
+      "name": "MMISMS_TTS_LIST_WIN_ID",
+      "offset": "0x21b4fe"
+    },
+    {
+      "id": "0x8000e",
+      "name": "MMISMS_CB_LISTOPT_WIN_ID",
+      "offset": "0x21b530"
+    },
+    {
+      "id": "0x8000f",
+      "name": "MMISMS_EXPORT_LIST_WIN_ID",
+      "offset": "0x21b562"
+    },
+    {
+      "id": "0x80010",
+      "name": "MMISMS_SETTINGS_TAB_WIN_ID",
+      "offset": "0x21b594"
+    },
+    {
+      "id": "0x80011",
+      "name": "MMISMS_MSGBOX_MAIN_WIN_ID",
+      "offset": "0x21b5c6"
+    },
+    {
+      "id": "0x80012",
+      "name": "MMISMS_MARK_WIN_ID",
+      "offset": "0x21b5f8"
+    },
+    {
+      "id": "0x80013",
+      "name": "MMISMS_MTBOX_CHILD_WIN_ID",
+      "offset": "0x21b62a"
+    },
+    {
+      "id": "0x80014",
+      "name": "MMISMS_SENDSUCCBOX_CHILD_WIN_ID",
+      "offset": "0x21b65c"
+    },
+    {
+      "id": "0x80015",
+      "name": "MMISMS_SENDFAILBOX_CHILD_WIN_ID",
+      "offset": "0x21b68e"
+    },
+    {
+      "id": "0x80016",
+      "name": "MMISMS_NOSENDBOX_CHILD_WIN_ID",
+      "offset": "0x21b6c0"
+    },
+    {
+      "id": "0x80017",
+      "name": "MMISMS_INPUTSC_WIN_ID",
+      "offset": "0x21b6f2"
+    },
+    {
+      "id": "0x80018",
+      "name": "MMISMS_SELECTVP_WIN_ID",
+      "offset": "0x21b724"
+    },
+    {
+      "id": "0x80019",
+      "name": "MMISMS_SELECTSR_WIN_ID",
+      "offset": "0x21b756"
+    },
+    {
+      "id": "0x8001a",
+      "name": "MMISMS_SELECTSAVEPOS_WIN_ID",
+      "offset": "0x21b788"
+    },
+    {
+      "id": "0x8001b",
+      "name": "MMISMS_PREFERRED_CONNECTION_WIN_ID",
+      "offset": "0x21b7ba"
+    },
+    {
+      "id": "0x8001c",
+      "name": "MMISMS_SEND_PROMPT_OPT_WIN_ID",
+      "offset": "0x21b7ec"
+    },
+    {
+      "id": "0x8001d",
+      "name": "MMISMS_NUMOPT_WIN_ID",
+      "offset": "0x21b81e"
+    },
+    {
+      "id": "0x8001e",
+      "name": "MMISMS_WORDOPT_WIN_ID",
+      "offset": "0x21b850"
+    },
+    {
+      "id": "0x8001f",
+      "name": "MMISMS_SENDSUCCBOX_WIN_ID",
+      "offset": "0x21b882"
+    },
+    {
+      "id": "0x80020",
+      "name": "MMISMS_MOBOX_WIN_ID",
+      "offset": "0x21b8b4"
+    },
+    {
+      "id": "0x80021",
+      "name": "MMISMS_INPUTVM_WIN_ID",
+      "offset": "0x21b8e6"
+    },
+    {
+      "id": "0x80022",
+      "name": "MMISMS_SEND_ANIM_WIN_ID",
+      "offset": "0x21b918"
+    },
+    {
+      "id": "0x80023",
+      "name": "MMISMS_DELETE_ANIM_WIN_ID",
+      "offset": "0x21b94a"
+    },
+    {
+      "id": "0x80024",
+      "name": "MMISMS_UPDATE_LIST_ANIM_WIN_ID",
+      "offset": "0x21b97c"
+    },
+    {
+      "id": "0x80025",
+      "name": "MMISMS_INPUTWORD_WIN_ID",
+      "offset": "0x21b9ae"
+    },
+    {
+      "id": "0x80026",
+      "name": "MMISMS_SAVEMSG_ANIM_WIN_ID",
+      "offset": "0x21b9e0"
+    },
+    {
+      "id": "0x80027",
+      "name": "MMISMS_SELECTWORD_WIN_ID",
+      "offset": "0x21ba12"
+    },
+    {
+      "id": "0x80028",
+      "name": "MMISMS_SHOWCLASS0_WIN_ID",
+      "offset": "0x21ba44"
+    },
+    {
+      "id": "0x80029",
+      "name": "MMISMS_MSGBOX_WIN_ID",
+      "offset": "0x21ba76"
+    },
+    {
+      "id": "0x8002a",
+      "name": "MMISMS_MTSMS_DETAIL_WIN_ID",
+      "offset": "0x21baa8"
+    },
+    {
+      "id": "0x8002b",
+      "name": "MMISMS_MEMORY_STATE_WIN_ID",
+      "offset": "0x21bada"
+    },
+    {
+      "id": "0x8002c",
+      "name": "MMISMS_WAITING_WIN_ID",
+      "offset": "0x21bb0c"
+    },
+    {
+      "id": "0x8002d",
+      "name": "MMISMS_CLASS0_EXTRACT_NUMBER_POP_WIN_ID",
+      "offset": "0x21bb3e"
+    },
+    {
+      "id": "0x8002e",
+      "name": "MMISMS_CLASS0_EXTRACT_URL_POP_WIN_ID",
+      "offset": "0x21bb70"
+    },
+    {
+      "id": "0x8002f",
+      "name": "MMISMS_CLASS0_EXTRACT_EMAIL_POP_WIN_ID",
+      "offset": "0x21bba2"
+    },
+    {
+      "id": "0x80030",
+      "name": "MMISMS_NORMAL_WAIT_WIN_ID",
+      "offset": "0x21bbd4"
+    },
+    {
+      "id": "0x80031",
+      "name": "MMISMS_INPUTNUM_FRO_VCARD_WIN_ID",
+      "offset": "0x21bc06"
+    },
+    {
+      "id": "0x80032",
+      "name": "MMISMS_QUERY_WIN_ID",
+      "offset": "0x21bc38"
+    },
+    {
+      "id": "0x80033",
+      "name": "MMISMS_READSMS_WAIT_WIN_ID",
+      "offset": "0x21bc6a"
+    },
+    {
+      "id": "0x80034",
+      "name": "MMISMS_DELETE_PROGRESS_WIN_ID",
+      "offset": "0x21bc9c"
+    },
+    {
+      "id": "0x80035",
+      "name": "MMISMS_CB_MAIN_MENU_WIN_ID",
+      "offset": "0x21bcce"
+    },
+    {
+      "id": "0x80036",
+      "name": "MMISMS_CB_READ_WIN_ID",
+      "offset": "0x21bd00"
+    },
+    {
+      "id": "0x80037",
+      "name": "MMISMS_CB_CLASS0_READ_WIN_ID",
+      "offset": "0x21bd32"
+    },
+    {
+      "id": "0x80038",
+      "name": "MMISMS_CB_STARTUP_WIN_ID",
+      "offset": "0x21bd64"
+    },
+    {
+      "id": "0x80039",
+      "name": "MMISMS_CB_50_CHANNEL_WIN_ID",
+      "offset": "0x21bd96"
+    },
+    {
+      "id": "0x8003a",
+      "name": "MMISMS_CB_CHANNEL_LIST_WIN_ID",
+      "offset": "0x21bdc8"
+    },
+    {
+      "id": "0x8003b",
+      "name": "MMISMS_CB_LANGUAGE_LIST_WIN_ID",
+      "offset": "0x21bdfa"
+    },
+    {
+      "id": "0x8003c",
+      "name": "MMISMS_CB_ADD_EDIT_CHANNEL_WIN_ID",
+      "offset": "0x21be2c"
+    },
+    {
+      "id": "0x8003d",
+      "name": "MMISMS_CB_ADD_EDIT_CHANNELINDEX_WIN_ID",
+      "offset": "0x21be5e"
+    },
+    {
+      "id": "0x8003e",
+      "name": "MMISMS_CB_ADD_EDIT_CHANNELNAME_WIN_ID",
+      "offset": "0x21be90"
+    },
+    {
+      "id": "0x8003f",
+      "name": "MMISMS_CB_CHECK_CHANNEL_NUM_WIN_ID",
+      "offset": "0x21bec2"
+    },
+    {
+      "id": "0x80040",
+      "name": "MMISMS_CB_CHANNEL_OPT_WIN_ID",
+      "offset": "0x21bef4"
+    },
+    {
+      "id": "0x80041",
+      "name": "MMISMS_CB_MSG_LIST_WIN_ID",
+      "offset": "0x21bf26"
+    },
+    {
+      "id": "0x80042",
+      "name": "MMISMS_SHOW_VMN_WIN_ID",
+      "offset": "0x21bf58"
+    },
+    {
+      "id": "0x80043",
+      "name": "MMISMS_EXTRACT_URLORST_LIST_WIN_ID",
+      "offset": "0x21bf8a"
+    },
+    {
+      "id": "0x80044",
+      "name": "MMISMS_CONNECT_URLORST_MENU_WIN_ID",
+      "offset": "0x21bfbc"
+    },
+    {
+      "id": "0x80045",
+      "name": "MMISMS_CB_SETTING_WIN_ID",
+      "offset": "0x21bfee"
+    },
+    {
+      "id": "0x80046",
+      "name": "MMISMS_COM_SELECT_SIM_WIN_ID",
+      "offset": "0x21c020"
+    },
+    {
+      "id": "0x80047",
+      "name": "MMISMS_NEW_MSG_MENU_WIN_ID",
+      "offset": "0x21c052"
+    },
+    {
+      "id": "0x80048",
+      "name": "MMISMS_MSG_SPACE_MENU_WIN_ID",
+      "offset": "0x21c084"
+    },
+    {
+      "id": "0x80049",
+      "name": "MMISMS_MAINMENU_OPT_MENU_WIN_ID",
+      "offset": "0x21c0b6"
+    },
+    {
+      "id": "0x8004a",
+      "name": "MMISMS_SETURL_WIN_ID",
+      "offset": "0x21c0e8"
+    },
+    {
+      "id": "0x8004b",
+      "name": "MMISMS_BROWSER_SETTING_MENUWIN_ID",
+      "offset": "0x21c11a"
+    },
+    {
+      "id": "0x8004c",
+      "name": "MMISMS_SERVICE_LOADING_OPERATION_SETTING_WIN_ID",
+      "offset": "0x21c14c"
+    },
+    {
+      "id": "0x8004d",
+      "name": "MMISMS_SMS_PUSH_MESSAGES_WIN_ID",
+      "offset": "0x21c17e"
+    },
+    {
+      "id": "0x8004e",
+      "name": "MMISMS_OTHERS_SETTING_MENUWIN_ID",
+      "offset": "0x21c1b0"
+    },
+    {
+      "id": "0x8004f",
+      "name": "MMISMS_EXTRACT_NUMBER_POP_WIN_ID",
+      "offset": "0x21c1e2"
+    },
+    {
+      "id": "0x80050",
+      "name": "MMISMS_EXTRACT_URL_POP_WIN_ID",
+      "offset": "0x21c214"
+    },
+    {
+      "id": "0x80051",
+      "name": "MMISMS_EXTRACT_EMAIL_POP_WIN_ID",
+      "offset": "0x21c246"
+    },
+    {
+      "id": "0x80052",
+      "name": "MMISMS_VM_EDIT_WIN_ID",
+      "offset": "0x21c278"
+    },
+    {
+      "id": "0x80053",
+      "name": "MMISMS_CLASS0_OPTION_POP_WIN_ID",
+      "offset": "0x21c2aa"
+    },
+    {
+      "id": "0x80054",
+      "name": "MMISMS_STATUSREPORT_WIN_ID",
+      "offset": "0x21c2dc"
+    },
+    {
+      "id": "0x80055",
+      "name": "MMISMS_SECURITYBOX_CHILD_WIN_ID",
+      "offset": "0x21c30e"
+    },
+    {
+      "id": "0x80056",
+      "name": "MMISMS_SECURITYBOX_WIN_ID",
+      "offset": "0x21c340"
+    },
+    {
+      "id": "0x80057",
+      "name": "MMISMS_SET_SECURITY_NEW_PWD_WIN_ID",
+      "offset": "0x21c372"
+    },
+    {
+      "id": "0x80058",
+      "name": "MMISMS_SET_SECURITY_NEW_PWD_CNF_WIN_ID",
+      "offset": "0x21c3a4"
+    },
+    {
+      "id": "0x80059",
+      "name": "MMISMS_SECURITYBOX_PWD_WIN_ID",
+      "offset": "0x21c3d6"
+    },
+    {
+      "id": "0x8005a",
+      "name": "MMISMS_SETTING_EXPORT_WIN_ID",
+      "offset": "0x21c408"
+    },
+    {
+      "id": "0x8005b",
+      "name": "MMISMS_SETTING_EXPORT_LOC_WIN_ID",
+      "offset": "0x21c43a"
+    },
+    {
+      "id": "0x8005c",
+      "name": "MMISMS_EXPORT_ANIM_WIN_ID",
+      "offset": "0x21c46c"
+    },
+    {
+      "id": "0x8005d",
+      "name": "MMISMS_EDIT_SMS_WIN_ID",
+      "offset": "0x21c49e"
+    },
+    {
+      "id": "0x8005e",
+      "name": "MMISMS_CB_CHILD_SET_CARD1_WIN_ID",
+      "offset": "0x21c4d0"
+    },
+    {
+      "id": "0x8005f",
+      "name": "MMISMS_CB_CHILD_SET_CARD2_WIN_ID",
+      "offset": "0x21c502"
+    },
+    {
+      "id": "0x80060",
+      "name": "MMISMS_CB_CHILD_SET_CARD3_WIN_ID",
+      "offset": "0x21c534"
+    },
+    {
+      "id": "0x80061",
+      "name": "MMISMS_CB_CHILD_SET_CARD4_WIN_ID",
+      "offset": "0x21c566"
+    },
+    {
+      "id": "0x80062",
+      "name": "MMISMS_CB_EXTRACT_NUMBER_POP_WIN_ID",
+      "offset": "0x21c598"
+    },
+    {
+      "id": "0x80063",
+      "name": "MMISMS_CHATBOX_CHILD_WIN_ID",
+      "offset": "0x21c5ca"
+    },
+    {
+      "id": "0x80064",
+      "name": "MMISMS_CHATBOX_CHILD_OPT_WIN_ID",
+      "offset": "0x21c5fc"
+    },
+    {
+      "id": "0x80065",
+      "name": "MMISMS_SHOW_CHAT_SMS_WIN_ID",
+      "offset": "0x21c62e"
+    },
+    {
+      "id": "0x80066",
+      "name": "MMISMS_SHOW_CHAT_SMS_OPT_WIN_ID",
+      "offset": "0x21c660"
+    },
+    {
+      "id": "0x80067",
+      "name": "MMISMS_SHOW_CHAT_INSERT_OPT_WIN_ID",
+      "offset": "0x21c692"
+    },
+    {
+      "id": "0x80068",
+      "name": "MMISMS_INSERT_PIC_QUERY_WIN_ID",
+      "offset": "0x21c6c4"
+    },
+    {
+      "id": "0x80069",
+      "name": "MMISMS_TIMERMSG_WAIT_WIN_ID",
+      "offset": "0x21c6f6"
+    },
+    {
+      "id": "0x8006a",
+      "name": "MMISMS_SETTING_STATUS_WIN_ID",
+      "offset": "0x21c728"
+    },
+    {
+      "id": "0x8006b",
+      "name": "MMISMS_SETTING_REPLY_PATH_FLAG_WIN_ID",
+      "offset": "0x21c75a"
+    },
+    {
+      "id": "0x8006c",
+      "name": "MMISMS_ALPHABET_MANAGEMENT_WIN_ID",
+      "offset": "0x21c78c"
+    },
+    {
+      "id": "0x8006d",
+      "name": "MMISMS_PUSH_MESSAGE_WIN_ID",
+      "offset": "0x21c7be"
+    },
+    {
+      "id": "0x8006e",
+      "name": "MMISMS_PUSHMSG_MENUKEY_WIN_ID",
+      "offset": "0x21c7f0"
+    },
+    {
+      "id": "0x8006f",
+      "name": "MMISMS_PUSHMSG_ITEM_OPT_WIN_ID",
+      "offset": "0x21c822"
+    },
+    {
+      "id": "0x80070",
+      "name": "MMISMS_WRITE_SMS_PARAM_WAITING_WIN_ID",
+      "offset": "0x21c854"
+    },
+    {
+      "id": "0x80071",
+      "name": "MMISMS_FIXSIM_SENDING_LIST_WIN_ID",
+      "offset": "0x21c886"
+    },
+    {
+      "id": "0x80072",
+      "name": "MMISMS_SIMBOX_WIN_ID",
+      "offset": "0x21c8b8"
+    },
+    {
+      "id": "0x80073",
+      "name": "MMISMS_CHATBOX_CHILD_BLOCKED_WIN_ID",
+      "offset": "0x21c8ea"
+    },
+    {
+      "id": "0x80074",
+      "name": "MMISMS_BLOCKNUMBER_WIN_ID",
+      "offset": "0x21c91c"
+    },
+    {
+      "id": "0x80075",
+      "name": "MMISMS_CHATBOX_BLOCK_CHILD_WIN_ID",
+      "offset": "0x21c94e"
+    },
+    {
+      "id": "0x80076",
+      "name": "MMISMS_CHATBOX_BLOCK_CHILD_OPT_WIN_ID",
+      "offset": "0x21c980"
+    },
+    {
+      "id": "0x80077",
+      "name": "MMISMS_MESSAGE_SETTING_WIN_ID",
+      "offset": "0x21c9b2"
+    },
+    {
+      "id": "0x80078",
+      "name": "MMISMS_ATTA_OPT_LIST_WIN_ID",
+      "offset": "0x21c9e4"
+    },
+    {
+      "id": "0x80079",
+      "name": "MMISMS_PICTURE_PREVIEW_WIN_ID",
+      "offset": "0x21ca16"
+    },
+    {
+      "id": "0x8007a",
+      "name": "MMISMS_VIDEO_PREVIEW_WIN_ID",
+      "offset": "0x21ca48"
+    },
+    {
+      "id": "0x8007b",
+      "name": "MMISMS_ATTACH_ALL_DEL_WIN_ID",
+      "offset": "0x21ca7a"
+    }
+  ]
+}

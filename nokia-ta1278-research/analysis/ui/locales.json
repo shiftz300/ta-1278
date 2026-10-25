@@ -1,0 +1,17 @@
+[
+  {
+    "locale": 0,
+    "name": "english-gb",
+    "offset": 11819136
+  },
+  {
+    "locale": 1,
+    "name": "chinese-cn",
+    "offset": 11819160
+  },
+  {
+    "locale": 2,
+    "name": "chinese-tw",
+    "offset": 11819184
+  }
+]

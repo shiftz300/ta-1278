@@ -1,0 +1,11 @@
+# Root contains only repository entry points and the research project.
+/*
+!/.gitignore
+!/README.md
+!/PUBLICATION.md
+!/THIRD_PARTY_NOTICES.md
+!/third-party-licenses/
+!/nokia-ta1278-research/
+.DS_Store
+__pycache__/
+*.pyc

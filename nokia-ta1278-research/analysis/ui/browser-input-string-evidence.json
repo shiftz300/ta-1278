@@ -1,0 +1,1949 @@
+{
+  "scope": "Static system image strings; existence does not prove active or reachable feature. No personal browsing or dictionary data.",
+  "strings": [
+    {
+      "offset": "0x60088",
+      "text": "NativeOperaMini"
+    },
+    {
+      "offset": "0x60098",
+      "text": "Native Opera Mini/4.4.34868"
+    },
+    {
+      "offset": "0x6a534",
+      "text": "Browser Version(DORADO): "
+    },
+    {
+      "offset": "0x6a550",
+      "text": "Browser Version(Opera Mini): "
+    },
+    {
+      "offset": "0x73014",
+      "text": "Dorado WAP-Browser/1.0.0"
+    },
+    {
+      "offset": "0x73030",
+      "text": "MAUI WAP Browser"
+    },
+    {
+      "offset": "0x98c77",
+      "text": "@InitSettingBrowser:is_open is %d"
+    },
+    {
+      "offset": "0xa2804",
+      "text": "mmibrowser_manager_wintable.c"
+    },
+    {
+      "offset": "0xba0cc",
+      "text": "[BRWW ProcRequestIDInd brw_info_ptr null"
+    },
+    {
+      "offset": "0xba124",
+      "text": "ProcRedirectInd:brw_info_ptr null"
+    },
+    {
+      "offset": "0xba5c8",
+      "text": "[BRW]W BrwHttpAuthResp:brw_info_ptr null"
+    },
+    {
+      "offset": "0xbb240",
+      "text": "ProcDataInd:brw_info_ptr =0x%x"
+    },
+    {
+      "offset": "0xbb28c",
+      "text": "ProcDataInd:BRW_STATE_DOWNLOADING,no data ind assumed"
+    },
+    {
+      "offset": "0xbb314",
+      "text": "BRW [%s:%d] brw_info_ptr is null"
+    },
+    {
+      "offset": "0xbb400",
+      "text": "[BRW]BrwHttpSSLCertResp:brw_info_ptr null"
+    },
+    {
+      "offset": "0xbbdf4",
+      "text": "BrwProcErrInd:brw_info_ptr null"
+    },
+    {
+      "offset": "0xbbe40",
+      "text": "ProcNetProgressInd:brw_info_ptr null"
+    },
+    {
+      "offset": "0xbbeac",
+      "text": "ProcNeedAuthInd:brw_info_ptr null"
+    },
+    {
+      "offset": "0xbbefc",
+      "text": "ProcGetCnf:brw_info_ptr =0x%x,http_req_ptr:%x"
+    },
+    {
+      "offset": "0xbbf4c",
+      "text": "ProcGetCnf:brw_info_ptr =0x%x"
+    },
+    {
+      "offset": "0xbd450",
+      "text": "MS_MMI_NQ2/source/mmi_app/app/browser/control/src/brw_history.c"
+    },
+    {
+      "offset": "0xbd598",
+      "text": "[BRW]BrwVisitHisAddItem:s_brw_visit_his_que_ptr null"
+    },
+    {
+      "offset": "0xbd5d0",
+      "text": "[BRW]BRW_VisitHisDelItem:index =%d"
+    },
+    {
+      "offset": "0xbd5f4",
+      "text": "[BRW]BRW_VisitHisDelItem ERROR:index =%d"
+    },
+    {
+      "offset": "0xbd620",
+      "text": "BRW_VisitHisDel:url null"
+    },
+    {
+      "offset": "0xbd63c",
+      "text": "[BRW]BRW_VisitHisDel:s_brw_visit_his_que_ptr null"
+    },
+    {
+      "offset": "0xbd670",
+      "text": "Browser\\History"
+    },
+    {
+      "offset": "0xbd690",
+      "text": "BRW_VisitHisInit:read_len =%d"
+    },
+    {
+      "offset": "0xbd6b0",
+      "text": "BRW_VisitHisInit:malloc s_brw_visit_his_que_ptr failed"
+    },
+    {
+      "offset": "0xbdaf4",
+      "text": "[BRW]W BRW_VisitHisGenIndexArr:index_arr_ptr=0x%x"
+    },
+    {
+      "offset": "0xbdb28",
+      "text": "[BRW]W BRW_VisitHisGetTotal:error"
+    },
+    {
+      "offset": "0xbdb4c",
+      "text": "BRW]W BRW_VisitHisGetHisInfoByIndex:index=%d"
+    },
+    {
+      "offset": "0xbdd68",
+      "text": "[BRW]BRW_ClearVisitHis result =%d"
+    },
+    {
+      "offset": "0xbe198",
+      "text": "PARSER/source/browser_render/src/brw_xhtml_layout.c"
+    },
+    {
+      "offset": "0xc19a0",
+      "text": "PARSER/source/browser_render/src/brw_css.c"
+    },
+    {
+      "offset": "0xc1fc8",
+      "text": "brw_css node_name  node == 0 || name == 0"
+    },
+    {
+      "offset": "0xc1ffc",
+      "text": "brw_css sibling  node == 0 || name == 0 || sibling == 0"
+    },
+    {
+      "offset": "0xc2034",
+      "text": "brw_css parent_node  node == 0 || parent == 0"
+    },
+    {
+      "offset": "0xc2064",
+      "text": "brw_css sibling_node  node == 0 || sibling == 0"
+    },
+    {
+      "offset": "0xc23dc",
+      "text": "brw_css node_is_first_child  node == 0 || match == 0"
+    },
+    {
+      "offset": "0xc28fc",
+      "text": "PARSER/source/browser_render/src/brw_wml_parser.c"
+    },
+    {
+      "offset": "0xcc3d4",
+      "text": "T9 V07.04.04.01"
+    },
+    {
+      "offset": "0xd7704",
+      "text": "T9CC V07.04.04.01"
+    },
+    {
+      "offset": "0xe5030",
+      "text": "T9AW V07.04.04.01"
+    },
+    {
+      "offset": "0x135990",
+      "text": "[lockscreen]: MMIAPIBROWSER_IsRunning(%d)"
+    },
+    {
+      "offset": "0x141cd8",
+      "text": "brw_dlinterface.c"
+    },
+    {
+      "offset": "0x142168",
+      "text": "[BRW]W Brw_DLGetDefaultFileName:PNULL == file_name"
+    },
+    {
+      "offset": "0x14219c",
+      "text": "[BRW]Brw_DLGetDefaultFileName type =%d"
+    },
+    {
+      "offset": "0x1421c4",
+      "text": "[BRW]Brw_DLGetDefaultFileName default_file_wname_ptr ALLOC Fail"
+    },
+    {
+      "offset": "0x142204",
+      "text": "[BRW]Brw_DLGetDefaultFileName url_file_name_len err"
+    },
+    {
+      "offset": "0x142364",
+      "text": "[BRW]W BrwStartDL:req_ptr=0x%x,brw_info_ptr=0x%x"
+    },
+    {
+      "offset": "0x142864",
+      "text": "[BRW]W--BrwCancelDL:req_ptr=0x%x,brw_info_ptr=0x%x"
+    },
+    {
+      "offset": "0x1428c4",
+      "text": "[BRW]W--BrwFreeDLResource:req_ptr=0x%x,brw_info_ptr=0x%x"
+    },
+    {
+      "offset": "0x142900",
+      "text": "[BRW]W BrwProcDLSuccess:req_ptr=0x%x,brw_info_ptr=0x%x"
+    },
+    {
+      "offset": "0x1429a4",
+      "text": "[BRW]W BrwStartOMADL:req_ptr=0x%x,brw_info_ptr=0x%x"
+    },
+    {
+      "offset": "0x1429fc",
+      "text": "[BRW]W--BrwOMADLResp:wap_req_ptr=0x%x,brw_info_ptr=0x%x"
+    },
+    {
+      "offset": "0x142a58",
+      "text": "[BRW]W BrwOMADLAuthResp:wap_req_ptr=0x%x,brw_info_ptr=0x%x"
+    },
+    {
+      "offset": "0x1c8148",
+      "text": "[MMIIM] MMIIM_UpdatePredictBarPosition: data_ptr is PNULL."
+    },
+    {
+      "offset": "0x1c8184",
+      "text": "[MMIIM] MMIIM_UpdatePredictBarPosition: cand_info_ptr is PNULL."
+    },
+    {
+      "offset": "0x215d7e",
+      "text": "MMIENG_BROWSER_LOG_WIN_ID"
+    },
+    {
+      "offset": "0x21c11a",
+      "text": "MMISMS_BROWSER_SETTING_MENUWIN_ID"
+    },
+    {
+      "offset": "0x21ce94",
+      "text": "MMISTK_LAUNCH_BROWSER_WIN_ID"
+    },
+    {
+      "offset": "0x25086c",
+      "text": "HandleWapSettingListWinMsg, dual_sys=%d, apn_index=%d, link_index=%d, sim_default_index=%d, dorado_index=%d"
+    },
+    {
+      "offset": "0x25106c",
+      "text": "[MMICONN_MULTIAPN] MMICONNECTION_GetMultiApnNames,get browser apn name=%s"
+    },
+    {
+      "offset": "0x25112c",
+      "text": "[MMICONN_MULTIAPN] MMICONNECTION_GetMultiApnNames2,get browser apn name=%s"
+    },
+    {
+      "offset": "0x25d69c",
+      "text": "[MMIBM]BMIsOtherRunning:cur_browser_type=%d,running_browser_type=%d"
+    },
+    {
+      "offset": "0x25df14",
+      "text": "[VP] MMIAPIVP_PlayVideoFromVideoPlayer MMIAPIBROWSER_IsRunning()"
+    },
+    {
+      "offset": "0x266d58",
+      "text": "[BRW]BrwProcHttpReqDone,BRW_STATE_DOWNLOADING:transfer_encoding = %d"
+    },
+    {
+      "offset": "0x266da0",
+      "text": "MS_MMI_NQ2/source/mmi_app/app/browser/control/src/brw_snapshot.c"
+    },
+    {
+      "offset": "0x266e74",
+      "text": "BRW_SnapshotParseOfflinePage no mem,g_snapshot_open_info.full_file_path_ptr"
+    },
+    {
+      "offset": "0x266ec0",
+      "text": "SonyEricssonK700c/R2AE SEMC-Browser/4.0.3 Profile/MIDP-2.0 Configuration/CLDC-1.1"
+    },
+    {
+      "offset": "0x266f14",
+      "text": "MAUI WAP Browser"
+    },
+    {
+      "offset": "0x26702d",
+      "text": " MMIBROWSER MMIBROWSER_SetProfile MMIBROWSER_GetNVSetting error"
+    },
+    {
+      "offset": "0x267070",
+      "text": "[BRW]EnterFileNmForLocalCbf:MMIBROWSER_SAVE_IMAGE_LIST_WIN_ID is not open!"
+    },
+    {
+      "offset": "0x2670bc",
+      "text": "[cookie] MMIBROWSER_SetPublicProfile profile.is_cookie_enable = FALSE; "
+    },
+    {
+      "offset": "0x267108",
+      "text": "[cookie] MMIBROWSER_SetPublicProfile is_cookie_enable = %d, nv_setting_ptr->is_cookie_enable  "
+    },
+    {
+      "offset": "0x267168",
+      "text": "[BRW]W MMIBROWSER_SetPublicProfile:GetLinkSettingItemByIndex error"
+    },
+    {
+      "offset": "0x26c571",
+      "text": " MMIBROWSER BrwHandleHistoryListWinMsg BRW_VisitHisGetHisInfoByIndex error"
+    },
+    {
+      "offset": "0x270110",
+      "text": "brw_css named_parent_node  node == 0 || name == 0 || parent == 0"
+    },
+    {
+      "offset": "0x2d9e24",
+      "text": "MMIAPIIM_InitDictionaryLanValue : dictionary_inputLan=%d."
+    },
+    {
+      "offset": "0x2eae10",
+      "text": "[MMIBM]MMIAPIBROWSER_IsActive:active_browser_type=%d"
+    },
+    {
+      "offset": "0x2eae48",
+      "text": "[MMIBM]MMIAPIBROWSER_IsRunning:running_browser_type=%d"
+    },
+    {
+      "offset": "0x35c0ec",
+      "text": "MMIBROWSER_ResetNvSetting: use predefined browser url"
+    },
+    {
+      "offset": "0x35c12c",
+      "text": "[BRW]W MMIDORADO_GetNetSettingIndex dual_sys =%d"
+    },
+    {
+      "offset": "0x35c168",
+      "text": "MMIBROWSER_Setting_ConnectionCallback,index=%d,dual_sys=%d"
+    },
+    {
+      "offset": "0x35c1a4",
+      "text": "mmibrowser_setting.c"
+    },
+    {
+      "offset": "0x35c1bc",
+      "text": "MMIBROWSER_UpdateUrl error_code= %d"
+    },
+    {
+      "offset": "0x35c1e0",
+      "text": "[BRW]MMIBROWSER_UpdateUrl ALLOC FAIL len =%d"
+    },
+    {
+      "offset": "0x35c210",
+      "text": "[BRW]MMIBROWSER_UpdateUserAgent ALLOC FAIL len =%d"
+    },
+    {
+      "offset": "0x35c618",
+      "text": "[BRW]MMIBROWSER_UpdateUaProfile ALLOC FAIL len =%d"
+    },
+    {
+      "offset": "0x35c650",
+      "text": "[BRW]MMIBROWSER_UpdateUserName ALLOC FAIL len =%d"
+    },
+    {
+      "offset": "0x35c684",
+      "text": "[BRW]MMIBROWSER_UpdatePassword ALLOC FAIL len =%d"
+    },
+    {
+      "offset": "0x35c6cb",
+      "text": "@[BRW]W MMIBROWSER_UpdateFileNameReq next_url_ptr ALLOC Fail!!"
+    },
+    {
+      "offset": "0x35cb10",
+      "text": "[BRW]MMIBROWSER_UpdateBookmarkEdit title ALLOC FAIL len =%d"
+    },
+    {
+      "offset": "0x35cb4c",
+      "text": "[BRW]MMIBROWSER_UpdateBookmarkEdit URL ALLOC FAIL len =%d"
+    },
+    {
+      "offset": "0x35cb8c",
+      "text": "[BRW] MMIBROWSER_UpdateSaveFile ALLOC FAIL LEN=%d"
+    },
+    {
+      "offset": "0x35cbc4",
+      "text": "[BRW]W MMIBROWSER_UpdateFileName: alloc fail"
+    },
+    {
+      "offset": "0x35cbf4",
+      "text": "BRW MMIBROWSER_SetIsUseWifi is_use_wifi = %d"
+    },
+    {
+      "offset": "0x35cc24",
+      "text": "[BRW]MMIBROWSER_UpdateSnapshotFilename ALLOC FAIL len =%d"
+    },
+    {
+      "offset": "0x35cc60",
+      "text": "[BRW]MMIBROWSER_SetEntryType entry_type = %d"
+    },
+    {
+      "offset": "0x35cc90",
+      "text": "[BRW]MMIBROWSER_SetWebEntryType entry_type = %d"
+    },
+    {
+      "offset": "0x35ce4c",
+      "text": "MMIBROWSER_UpdateEntryUrl error_code= %d"
+    },
+    {
+      "offset": "0x35ce78",
+      "text": "[BRW]MMIBROWSER_UpdateEntryUrl ALLOC FAIL len =%d"
+    },
+    {
+      "offset": "0x35ceac",
+      "text": "MMIBROWSER_UpdateSnapshotUrl error_code= %d"
+    },
+    {
+      "offset": "0x35ced8",
+      "text": "[BRW]MMIBROWSER_UpdateSnapshotUrl ALLOC FAIL len =%d"
+    },
+    {
+      "offset": "0x35cf10",
+      "text": "[BRW]MMIDORADO_SetConnectionSettings:connection_index=%d"
+    },
+    {
+      "offset": "0x3690d4",
+      "text": "PARSER/source/browser_render/src/brw_xhtml_calc_draw.c"
+    },
+    {
+      "offset": "0x36f328",
+      "text": "PARSER/source/browser_render/src/brw_xhtml_calc_draw.c"
+    },
+    {
+      "offset": "0x3776a4",
+      "text": "[MMI_STK] launch_browser_type is default with url!"
+    },
+    {
+      "offset": "0x3776e4",
+      "text": "STK: StartLaunchBrowserOperation:tem_buf MALLOC FAIL!"
+    },
+    {
+      "offset": "0x37771c",
+      "text": "STK: StartLaunchBrowserOperation: tem_buf FREE SUCCESSED!"
+    },
+    {
+      "offset": "0x377760",
+      "text": "[MMI_STK] launch_browser_type is default with default url!"
+    },
+    {
+      "offset": "0x377b8c",
+      "text": "[MMI_STK] SIMAT_LAUNCH_BROWSER_NOT_LAUCHED browser user deny"
+    },
+    {
+      "offset": "0x377bd0",
+      "text": "[MMI_STK] leave LaunchBrowserWinHandleMsg result %d"
+    },
+    {
+      "offset": "0x377c14",
+      "text": "[MMI_STK] enter MMISTK_OnLaunchBrowserCmd"
+    },
+    {
+      "offset": "0x377c4c",
+      "text": "MMISTK_OnLaunchBrowserCmd arg is NULL"
+    },
+    {
+      "offset": "0x377c78",
+      "text": "[MMI_STK] leave MMISTK_OnLaunchBrowserCmd because MMS sending"
+    },
+    {
+      "offset": "0x377cb8",
+      "text": "[MMI_STK] leave MMISTK_OnLaunchBrowserCmd"
+    },
+    {
+      "offset": "0x378150",
+      "text": " MMISTK_OnLaunchBrowserCmd ::PNULL == msg_ptr"
+    },
+    {
+      "offset": "0x379468",
+      "text": "MMISTK_BrowserTermination dual_sys=%d"
+    },
+    {
+      "offset": "0x3b3658",
+      "text": "[BRW]BRW_SetParam,temp_profile_type=0x%x"
+    },
+    {
+      "offset": "0x3b3684",
+      "text": "[cookie]BRW_SetPublicParam,is_cookie_enable=%d"
+    },
+    {
+      "offset": "0x3b36b4",
+      "text": "MS_MMI_NQ2/source/mmi_app/app/browser/control/src/brw_control.c"
+    },
+    {
+      "offset": "0x3b36f4",
+      "text": "[BRW]W BRW_SetPublicParam,profile=0x%x"
+    },
+    {
+      "offset": "0x3b371c",
+      "text": "BRW_SetParam,set ua failed because of mem!"
+    },
+    {
+      "offset": "0x3b3748",
+      "text": "[BRW]BRW_SetParam:set ua null!"
+    },
+    {
+      "offset": "0x3b3768",
+      "text": "BRW_SetParam,set uaprof failed because of mem!"
+    },
+    {
+      "offset": "0x3b3798",
+      "text": "[BRW]BRW_SetParam:set uaprof null!"
+    },
+    {
+      "offset": "0x3b37bc",
+      "text": "BRW_SetParam,set proxy_addr failed because of mem!"
+    },
+    {
+      "offset": "0x3b37f0",
+      "text": "[BRW]BRW_SetParam,proxy_addr_ptr null!"
+    },
+    {
+      "offset": "0x3b3818",
+      "text": "BRW_SetParam,set username_ptr failed because of mem!"
+    },
+    {
+      "offset": "0x3b3850",
+      "text": "BRW_SetParam,set psw_ptr failed because of mem!"
+    },
+    {
+      "offset": "0x3b3880",
+      "text": "BRW_SetScreenProfile:brw_info_ptr null"
+    },
+    {
+      "offset": "0x3b3c84",
+      "text": "[BRW]W BRW_SetParam,instance=0x%x,profile=0x%x"
+    },
+    {
+      "offset": "0x3b3cb4",
+      "text": "BRW_SetParam,get brw_info_ptr failed"
+    },
+    {
+      "offset": "0x3b3cdc",
+      "text": "BrwSetHttpInitState: brw_info_ptr NULL"
+    },
+    {
+      "offset": "0x3b3d04",
+      "text": "Browser"
+    },
+    {
+      "offset": "0x3b41e4",
+      "text": "[BRW]W BRW_InitInstance,ERROR option_ptr = 0x%x"
+    },
+    {
+      "offset": "0x3b4214",
+      "text": "BRW_InitInstance:malloc brw_info_t failed"
+    },
+    {
+      "offset": "0x3b4240",
+      "text": "BRW_InitInstance:BRWList_AppendObject failed!"
+    },
+    {
+      "offset": "0x3b4270",
+      "text": "BRW_InitInstance:instance_id =0x%x"
+    },
+    {
+      "offset": "0x3b4298",
+      "text": "[BRW]BRW_DestroyInstance instance=0x%x"
+    },
+    {
+      "offset": "0x3b42c0",
+      "text": "[BRW]W BRW_DestroyInstance brw_info_ptr PNULL"
+    },
+    {
+      "offset": "0x3b42f0",
+      "text": "[BRW]BRW_StopPageReq"
+    },
+    {
+      "offset": "0x3b4308",
+      "text": "BRW_StopPageReq,state =%d"
+    },
+    {
+      "offset": "0x3b4324",
+      "text": "BRW_StopPageReq,brw_info_ptr null"
+    },
+    {
+      "offset": "0x3b4348",
+      "text": "BRW_StopPageReq,wap_request_ptr null"
+    },
+    {
+      "offset": "0x3b4374",
+      "text": "BRW_DisconnetNetwork"
+    },
+    {
+      "offset": "0x3b43ac",
+      "text": "[BRW]W BrwGetWapReq,req_id=0x%x,brw_info_ptr=0x%x"
+    },
+    {
+      "offset": "0x3b4414",
+      "text": "[BRW]ProcNetLinkDisConnInd,brw_info_ptr:0x%x"
+    },
+    {
+      "offset": "0x3b483c",
+      "text": "[BRW]BrwGetUserAgentStr:brw_info_ptr NULL"
+    },
+    {
+      "offset": "0x3b486c",
+      "text": "BRW_AccessPage:BrwSendHttpRequest failed!"
+    },
+    {
+      "offset": "0x3b48bc",
+      "text": "BRW ProcNetLinkCnf:brw_info_ptr null"
+    },
+    {
+      "offset": "0x3b49dc",
+      "text": "BRW_AccessPage:brw_info_ptr null!"
+    },
+    {
+      "offset": "0x3b4dac",
+      "text": "BRW_AccessPage,url_len 0!"
+    },
+    {
+      "offset": "0x3b4dcc",
+      "text": "brw alloc wap request in BRW_AccessPage:%x"
+    },
+    {
+      "offset": "0x3b4df8",
+      "text": "BRW_AccessPage:malloc wap req failed!"
+    },
+    {
+      "offset": "0x3b4e20",
+      "text": "BRW_AccessPage:malloc uri failed!"
+    },
+    {
+      "offset": "0x3b4e44",
+      "text": "BRW_AccessPage:malloc original uri failed!"
+    },
+    {
+      "offset": "0x3b4e74",
+      "text": "BRW BRW_AccessPage init http session"
+    },
+    {
+      "offset": "0x3b4e9c",
+      "text": "BRW_AccessPage to ActiveNetwork"
+    },
+    {
+      "offset": "0x3b4ebc",
+      "text": "BRW_AccessPage, ActiveNetwork fail"
+    },
+    {
+      "offset": "0x3b4ee0",
+      "text": "BrwSetSnapshotOpenLayoutHandler:brw_info_ptr null!"
+    },
+    {
+      "offset": "0x3b4f14",
+      "text": "BrwGetSnapshotOpenLayoutHandler:brw_info_ptr null!"
+    },
+    {
+      "offset": "0x3b4f48",
+      "text": "BRW_ProcLayoutTimer,brw_info_ptr null"
+    },
+    {
+      "offset": "0x3b4f70",
+      "text": "BRW_ProcLayoutTimer,layout handler null"
+    },
+    {
+      "offset": "0x3b4f98",
+      "text": "BRW_ProcLayoutTimer,timer_id null"
+    },
+    {
+      "offset": "0x3b4fd8",
+      "text": "BRW_DisplayPage,brw_info_ptr null"
+    },
+    {
+      "offset": "0x3b4ffc",
+      "text": "BRW_DisplayPage,layout_handler null"
+    },
+    {
+      "offset": "0x3b5020",
+      "text": "BRW_RepaintPage ret = %d"
+    },
+    {
+      "offset": "0x3b503c",
+      "text": "BRW_RepaintPage,brw_info_ptr null"
+    },
+    {
+      "offset": "0x3b5060",
+      "text": "BRW_RepaintPage,layout_handler null"
+    },
+    {
+      "offset": "0x3b5084",
+      "text": "[BRW]BRW_StopDL"
+    },
+    {
+      "offset": "0x3b5094",
+      "text": "[BRW]BRW_StopDL,invalid param,wap_req_ptr=0x%x"
+    },
+    {
+      "offset": "0x3b50c4",
+      "text": "[BRW]BRW_StopDL,brw_info_ptr=0x%x"
+    },
+    {
+      "offset": "0x3b50e8",
+      "text": "[BRW]BRW_CheckIfPageNull,brw_info_ptr 0"
+    },
+    {
+      "offset": "0x3b5110",
+      "text": "Brw_GetPageReqState:brw_info_ptr null"
+    },
+    {
+      "offset": "0x3b5138",
+      "text": "Brw_GetPageReqState,wap_request_ptr null"
+    },
+    {
+      "offset": "0x3b5564",
+      "text": "BRW_ProcKeyEvent:brw_info_ptr null"
+    },
+    {
+      "offset": "0x3b5588",
+      "text": "BRW_ProcKeyEvent,layout_handle invalid"
+    },
+    {
+      "offset": "0x3b55b0",
+      "text": "BRW_ProcPenDownEvent,pendow_info_ptr null"
+    },
+    {
+      "offset": "0x3b55dc",
+      "text": "BRW_ProcPenDownEvent:brw_info_ptr null"
+    },
+    {
+      "offset": "0x3b5604",
+      "text": "BRW_ProcPenDownEvent,layout_handle invalid"
+    },
+    {
+      "offset": "0x3b5630",
+      "text": "BRW_ProcPenUpEvent,pendow_info_ptr null"
+    },
+    {
+      "offset": "0x3b5658",
+      "text": "BRW_ProcPenUpEvent:brw_info_ptr null"
+    },
+    {
+      "offset": "0x3b5680",
+      "text": "BRW_ProcPenUpEvent,layout_handle invalid"
+    },
+    {
+      "offset": "0x3b56b0",
+      "text": "BRW_ProcNavEvent:brw_info_ptr null"
+    },
+    {
+      "offset": "0x3b56d4",
+      "text": "[BRW]BRW_ProcNavEvent:cur_uri_ptr null"
+    },
+    {
+      "offset": "0x3b56fc",
+      "text": "[BRW]BRW_ProcNavEvent:new_uri_ptr null"
+    },
+    {
+      "offset": "0x3b5724",
+      "text": "BRW_ProcNavEvent,snapshot nav_event:%d"
+    },
+    {
+      "offset": "0x3b574c",
+      "text": "[BRW]BRW_ProcNavEvent BrwIsUrlIsEquExceptFragment"
+    },
+    {
+      "offset": "0x3b5780",
+      "text": "BRW_ProcNavEvent,card jumping,event:%d"
+    },
+    {
+      "offset": "0x3b57a8",
+      "text": "BRW_ProcNavEvent:BRW_AccessPage failed"
+    },
+    {
+      "offset": "0x3b57d0",
+      "text": "BRW_ProcNavEvent:wap_request_ptr null"
+    },
+    {
+      "offset": "0x3b5b50",
+      "text": "BRW_ProcScrollEvent:brw_info_ptr null"
+    },
+    {
+      "offset": "0x3b5b78",
+      "text": "BRW_ProcScrollEvent,layout_ctrl_ptr invalid"
+    },
+    {
+      "offset": "0x3b5ba4",
+      "text": "BRW_ProcTpScrollEvent:brw_info_ptr null"
+    },
+    {
+      "offset": "0x3b5bcc",
+      "text": "BRW_ProcTpScrollEvent,layout_ctrl_ptr invalid"
+    },
+    {
+      "offset": "0x3b5bfc",
+      "text": "GetCurDisplayLayout:brw_info_ptr null"
+    },
+    {
+      "offset": "0x3b5c74",
+      "text": "BRW_GetPageTitle,layout_ctrl_ptr invalid"
+    },
+    {
+      "offset": "0x3b5ca0",
+      "text": "BRW_GetPageUrl:brw_info_ptr null"
+    },
+    {
+      "offset": "0x3b5cc4",
+      "text": "BRW_GetPageUrl,cur_display_req_ptr null"
+    },
+    {
+      "offset": "0x3b5d00",
+      "text": "BRW_GetPageUrl:url_pptr null"
+    },
+    {
+      "offset": "0x3b5d90",
+      "text": "BRW BrwProcInitHttpCnf brw_info_ptr is NULL"
+    },
+    {
+      "offset": "0x3b5e30",
+      "text": "[BRW]W BrwProcNoMem,brw_info_ptr=0x%x"
+    },
+    {
+      "offset": "0x3b5ecc",
+      "text": "BrwStartNewInstance:brw_info_ptr null!"
+    },
+    {
+      "offset": "0x3b63b4",
+      "text": "BrwStartNewPageReq:brw_info_ptr null!"
+    },
+    {
+      "offset": "0x3b6a10",
+      "text": "[%s:%d]brw_info_ptr: %p, url_ptr: %p"
+    },
+    {
+      "offset": "0x3b6a70",
+      "text": "[BRW]W BrwStartNextMediaReq:brw_info_ptr=0x%x"
+    },
+    {
+      "offset": "0x3b7054",
+      "text": "[BRW]W BrwStartMediaReq:brw_info_ptr=0x%x"
+    },
+    {
+      "offset": "0x3b7104",
+      "text": "BrwAddNewMediaReq:brw_info_ptr=0x%x"
+    },
+    {
+      "offset": "0x3b7774",
+      "text": "[BRW]W brw ProcPageOK:req_ptr=0x%x,brw_info_ptr=0x%x"
+    },
+    {
+      "offset": "0x3b7818",
+      "text": "[BRW]W ProcMediaContent:brw_info_ptr=0x%x,req_ptr=0x%x"
+    },
+    {
+      "offset": "0x3b7d0c",
+      "text": "[BRW]W BrwRestartCurMediaReq:brw_info_ptr=0x%x"
+    },
+    {
+      "offset": "0x3b7d68",
+      "text": "BrwFileCopyForWspDl brw_info_ptr=0"
+    },
+    {
+      "offset": "0x3b7dac",
+      "text": "[BRW]W BrwGetWapReqByHttpReq:brw_info_ptr=0x%x"
+    },
+    {
+      "offset": "0x3b7e28",
+      "text": "[BRW]W BrwProcHttpReqDone:brw_info_ptr=0x%x,req_pptr=0x%x"
+    },
+    {
+      "offset": "0x3b83e8",
+      "text": "BrwProcCloseHttpCnf,brw_info_ptr=0x%x"
+    },
+    {
+      "offset": "0x3b8414",
+      "text": "[BRW]W BrwGetWapReqByDLSessionID:brw_info_ptr=0x%x"
+    },
+    {
+      "offset": "0x3b84b8",
+      "text": "BrwSetSubModuleID:brw_info_ptr NULL"
+    },
+    {
+      "offset": "0x3b8528",
+      "text": "[BRW]W BrwProcHttpErr,brw_info_ptr=0x%x"
+    },
+    {
+      "offset": "0x3b89f4",
+      "text": "[BRW]W BrwCancelMediaReq,brw_info_ptr=0x%x,wap_req_ptr=0x%x"
+    },
+    {
+      "offset": "0x3b8a30",
+      "text": "[BRW]W BrwProcHttpAuth,brw_info_ptr=0x%x"
+    },
+    {
+      "offset": "0x3b8ae8",
+      "text": "BrwSetWspDlFileNm brw_info_ptr=0"
+    },
+    {
+      "offset": "0x3b8b10",
+      "text": "[BRW]W BrwEnterFileNmCbf:brw_info_ptr=0x%x,wap_req_ptr=0x%x"
+    },
+    {
+      "offset": "0x3b9074",
+      "text": "BRW BRW_ClearCookie instance =0"
+    },
+    {
+      "offset": "0x3b9094",
+      "text": "BRW BRW_ClearCookie brw_info_ptr =0"
+    },
+    {
+      "offset": "0x3b90b8",
+      "text": "[BRW]BRW_ClearAllCache result_1 = %d"
+    },
+    {
+      "offset": "0x3b90e0",
+      "text": "[BRW]BRW_ClearAllCache result_2 = %d"
+    },
+    {
+      "offset": "0x3b9108",
+      "text": "[BRW] BRW_ClearAllCookie result_1 = %d"
+    },
+    {
+      "offset": "0x3b9130",
+      "text": "[BRW] BRW_ClearAllCookie result_2 = %d"
+    },
+    {
+      "offset": "0x3b9158",
+      "text": "[BRW] BRW_ClearAllCookie result = %d"
+    },
+    {
+      "offset": "0x3b9180",
+      "text": "[BRW]W BrwOMADLConfirmCbf:brw_info_ptr=0x%x,wap_req_ptr=0x%x"
+    },
+    {
+      "offset": "0x3b91fc",
+      "text": "[BRW]W BrwProcSSLCert,brw_info_ptr=0x%x"
+    },
+    {
+      "offset": "0x3b96c0",
+      "text": "BRW_GetFocusHotLinkMineType,layout_ctrl_ptr invalid"
+    },
+    {
+      "offset": "0x3b96f4",
+      "text": "MS_MMI_NQ2/source/mmi_app/app/browser/control/src/brw_control.c"
+    },
+    {
+      "offset": "0x3c6380",
+      "text": "mmisms_setpushsmsbrowserinfo: open_flag is %d,flag is %d"
+    },
+    {
+      "offset": "0x3c84ec",
+      "text": "mmisms_getpushsmsbrowserinfo: open_flag is %d"
+    },
+    {
+      "offset": "0x3cb514",
+      "text": "MMIAPIBRW_InsertWapPushToSms,index=%d"
+    },
+    {
+      "offset": "0x3cb55c",
+      "text": "MMIAPIBRW_InsertWapPushToSms list_num=%d"
+    },
+    {
+      "offset": "0x3cb588",
+      "text": "MMIAPIBRW_InsertWapPushToSms PNULL == g_push_info_ptr"
+    },
+    {
+      "offset": "0x3cb5c0",
+      "text": "MMIAPIBRW_InsertWapPushToSms time is zero!"
+    },
+    {
+      "offset": "0x3cc658",
+      "text": "MMICMS_WriteDataToItemStruct() maxnum>=MMICMSBRW_MAX_ITEM_NUM"
+    },
+    {
+      "offset": "0x3cc6b4",
+      "text": "MMICMS_WriteDataToItemStruct() maxnum<MMICMSBRW_MAX_ITEM_NUM"
+    },
+    {
+      "offset": "0x3ccc9c",
+      "text": "g_cmsbrw_pushmsg_info.item_detail[index].time=%d"
+    },
+    {
+      "offset": "0x3cede0",
+      "text": "MMIBRW_WriteFile_Ex,file_type=%d"
+    },
+    {
+      "offset": "0x3ceebc",
+      "text": "g_cmsbrw_pushmsg_info.item_num=%d"
+    },
+    {
+      "offset": "0x3cfc00",
+      "text": "ID_CMSBRW_PUSHMSG_DELETE index =%d"
+    },
+    {
+      "offset": "0x3d7b9c",
+      "text": "[BRW]BRW_SnapshotHandleFfsMsg,msg_id:%d"
+    },
+    {
+      "offset": "0x3d7bc4",
+      "text": "BRW_SnapshotHandleFfsMsg:msg_id = 0x%x,sfs_error:%d"
+    },
+    {
+      "offset": "0x3d7ffc",
+      "text": "BRW_SNAPSHOT_FFS_IMAGE_SAVE_CNF,sfs_error:%d"
+    },
+    {
+      "offset": "0x3d802c",
+      "text": "BRW_SNAPSHOT_FFS_PAGE_OPEN_CNF: file_size = %d"
+    },
+    {
+      "offset": "0x3d84e4",
+      "text": "BRW_SaveCurWebPage,BrwGenerateCssInfo fail"
+    },
+    {
+      "offset": "0x3d8510",
+      "text": "BRW_SaveCurWebPage,BrwFfsWritePageContent fail"
+    },
+    {
+      "offset": "0x3d8540",
+      "text": "BRW_SaveCurWebPage,BrwGenerateImgInfo fail"
+    },
+    {
+      "offset": "0x3d856c",
+      "text": "BRW_SaveCurWebPage,BrwSnapshotGenerateAllFileFolder fail"
+    },
+    {
+      "offset": "0x3d8ad0",
+      "text": "BRW_SnapshotOfflineBrowse,ERROR:file size=0"
+    },
+    {
+      "offset": "0x3d8afc",
+      "text": "BRW_SnapshotOfflineBrowse,ERROR:alloc file buffer fail"
+    },
+    {
+      "offset": "0x3d8b34",
+      "text": "BRW_SnapshotOfflineBrowse,ERROR:BRWPL_ReadFileAsync fail"
+    },
+    {
+      "offset": "0x3d8b74",
+      "text": ":\\Browser\\Snapshot\\*.html"
+    },
+    {
+      "offset": "0x3d8b98",
+      "text": "BRW_SnapshotRenameFile,rename fail!"
+    },
+    {
+      "offset": "0x3da5d4",
+      "text": "PARSER/source/browser_render/src/brw_xhtml_parser.c"
+    },
+    {
+      "offset": "0x3e99b0",
+      "text": "PARSER/source/browser_render/src/brw_sgml_parser.c"
+    },
+    {
+      "offset": "0x3fbf00",
+      "text": "Brw_ShouldResetSIM ret =%d"
+    },
+    {
+      "offset": "0x3fbf73",
+      "text": "@[BRW]W BrwExecuteSetting:BRW_InitInstance error"
+    },
+    {
+      "offset": "0x3fbfa4",
+      "text": "[BRW]W BrwExecuteSetting MMIBROWSER_GetHomepageUrl ERROR"
+    },
+    {
+      "offset": "0x40a120",
+      "text": "MAUI WAP Browser"
+    },
+    {
+      "offset": "0x42c5c5",
+      "text": " MMIBROWSER get item error"
+    },
+    {
+      "offset": "0x42cedf",
+      "text": "@mmibrowser_wintable_snapshot.c"
+    },
+    {
+      "offset": "0x42d30d",
+      "text": " MMIBROWSER not change snapshot name"
+    },
+    {
+      "offset": "0x431f68",
+      "text": "BROWSERTITLE"
+    },
+    {
+      "offset": "0x431f78",
+      "text": "BROWSERCURSOR"
+    },
+    {
+      "offset": "0x49dac4",
+      "text": "PARSER/source/browser_render/src/brw_xhtml_layout.c"
+    },
+    {
+      "offset": "0x4aed04",
+      "text": "MMIBROWSER_IsPermitEntry"
+    },
+    {
+      "offset": "0x4cb672",
+      "text": "MMICMSBRW_NEWPUSH_WIN_ID"
+    },
+    {
+      "offset": "0x4cb6a4",
+      "text": "MMICMSBRW_SHOWPUSHMSG_WIN_ID"
+    },
+    {
+      "offset": "0x4cb6d6",
+      "text": "MMICMSBRW_PUSHMSGMENU_WIN_ID"
+    },
+    {
+      "offset": "0x4f8e8c",
+      "text": "MS_MMI_NQ2/source/mmi_app/app/browser/control/src/brw_httpinterface.c"
+    },
+    {
+      "offset": "0x4f8ffd",
+      "text": " MMIBROWSER BrwHandleSnapshotListWinMsg BRW_SnapshotGetItemInfo error"
+    },
+    {
+      "offset": "0x4f9045",
+      "text": " mmibrowser BrwHandleSnapshotPopMenuWinMsg BRW_SnapshotGetItemInfo error 1"
+    },
+    {
+      "offset": "0x4f9091",
+      "text": " mmibrowser BrwHandleSnapshotPopMenuWinMsg BRW_SnapshotGetItemInfo error 2"
+    },
+    {
+      "offset": "0x4f90dc",
+      "text": "MMIBROWSER_ResetNvSetting: load default browser url from nv success"
+    },
+    {
+      "offset": "0x4f9120",
+      "text": "MMIBROWSER_SetAnimateConnectCtrlState:state = %d,s_browser_context.animate_state = %d"
+    },
+    {
+      "offset": "0x50b254",
+      "text": "need dictionary"
+    },
+    {
+      "offset": "0x51f1bc",
+      "text": "rcvd predictive header hits; acks:%lu, data:%lu"
+    },
+    {
+      "offset": "0x54cf60",
+      "text": "[MMIIM] T9CCLoadLdb nLdbNum:%d"
+    },
+    {
+      "offset": "0x54dae4",
+      "text": "MMIAPIIM_GetDictionaryLanguage lang:%d"
+    },
+    {
+      "offset": "0x54db0c",
+      "text": "MMIAPIIM_SetDictionaryLanguage lang:%d"
+    },
+    {
+      "offset": "0x54db34",
+      "text": "MMIAPIIM_SetDictionaryLanguage lang:%d"
+    },
+    {
+      "offset": "0x55727c",
+      "text": "OD_SchemeHandle: browser_entry.url_ptr == 0"
+    },
+    {
+      "offset": "0x559ba4",
+      "text": "opera_clone_browser_entry_param ALLOC FAIL len =%d"
+    },
+    {
+      "offset": "0x559c57",
+      "text": "@Error. Opera Mini Context allocation fail."
+    },
+    {
+      "offset": "0x559c84",
+      "text": "Error. Opera Mini Context Init Fail!"
+    },
+    {
+      "offset": "0x559ccc",
+      "text": "MMIBROWSER_Setting_ConnectionCallback,index=%d,dual_sys=%d"
+    },
+    {
+      "offset": "0x58b67c",
+      "text": "MMIAPICC_SwitchToBrowser audio_device= %d"
+    },
+    {
+      "offset": "0x5c7058",
+      "text": "[BRW]W OpenUrlFileByBrowser:file_size =%d"
+    },
+    {
+      "offset": "0x5c7088",
+      "text": "[BRW]W OpenUrlFileByBrowser:buf_ptr ALLOC FAIL"
+    },
+    {
+      "offset": "0x5c70b8",
+      "text": "[BRW]W OpenUrlFileByBrowser:url_buf_ptr ALLOC FAIL"
+    },
+    {
+      "offset": "0x5ddeb8",
+      "text": "MatchByAccountType browser!"
+    },
+    {
+      "offset": "0x6288ec",
+      "text": "PARSER/source/browser_render/src/brw_core_api.c"
+    },
+    {
+      "offset": "0x628e3c",
+      "text": "[BRW]BrwCreateImgAccordBuf: BRW_MIME_IMG calloc fail!"
+    },
+    {
+      "offset": "0x629338",
+      "text": "BrwParseWebPage: BRW_MIME_PLAINTEXT calloc fail!"
+    },
+    {
+      "offset": "0x629dd8",
+      "text": "WMLBrowser.go("
+    },
+    {
+      "offset": "0x63b488",
+      "text": "PARSER/source/browser_render/src/brw_parser.c"
+    },
+    {
+      "offset": "0x6415c0",
+      "text": "PARSER/source/browser_render/src/brw_js.c"
+    },
+    {
+      "offset": "0x6a828c",
+      "text": "PNULL!=data && (PNULL!=launch_browser_cnf_ptr)"
+    },
+    {
+      "offset": "0x6b65bc",
+      "text": "[BRW]MMIBROWSER_StartWeb:is_browser_inited = %d"
+    },
+    {
+      "offset": "0x6b65fc",
+      "text": "[BRW]MMIBROWSER_Init:begin"
+    },
+    {
+      "offset": "0x6b6618",
+      "text": "[BRW]MMIBROWSER_Init:end"
+    },
+    {
+      "offset": "0x6b6634",
+      "text": "[BRW]W MMIBROWSER_Init:InitMem error"
+    },
+    {
+      "offset": "0x6b665c",
+      "text": "[BRW]W MMIBROWSER_Enter: Try later"
+    },
+    {
+      "offset": "0x6b668b",
+      "text": "@[BRW]W MMIBROWSER_Init error"
+    },
+    {
+      "offset": "0x6b66b0",
+      "text": "[BRW]MMIBROWSER_Enter:avtive_sim:%d"
+    },
+    {
+      "offset": "0x6b66d8",
+      "text": "[BRW]MMIBROWSER_Enter sim mcc:%d, mnc:%d"
+    },
+    {
+      "offset": "0x6b6704",
+      "text": "[BRW]MMIBROWSER_Enter type = %d"
+    },
+    {
+      "offset": "0x6b6724",
+      "text": "[BRW]MMIBROWSER_Exit:begin"
+    },
+    {
+      "offset": "0x6b6740",
+      "text": "[BRW]MMIBROWSER_Exit"
+    },
+    {
+      "offset": "0x6b6758",
+      "text": "[BRW]MMIBROWSER_Exit:end"
+    },
+    {
+      "offset": "0x6b6774",
+      "text": "[BRW]MMIBROWSER_Exit:need wait http close!!!"
+    },
+    {
+      "offset": "0x6b67a4",
+      "text": "[BRW]MMIBROWSER_Exit has done or doing"
+    },
+    {
+      "offset": "0x6b67cc",
+      "text": "[BRW]MMIBROWSER_ExitWeb"
+    },
+    {
+      "offset": "0x6b6b98",
+      "text": "[BRW]MMIBROWSER_ExitWeb:need wait http close!!!"
+    },
+    {
+      "offset": "0x6b6bc8",
+      "text": "[BRW]MMIBROWSER_ExitWeb has done"
+    },
+    {
+      "offset": "0x6b6c30",
+      "text": "[BRW]W MMIBROWSER_SetHomepage result =%d"
+    },
+    {
+      "offset": "0x6b6c6c",
+      "text": "mmibrowser_func.c"
+    },
+    {
+      "offset": "0x6b6cc8",
+      "text": "[BRW]W MMIBROWSER_MergeTextAndNum error"
+    },
+    {
+      "offset": "0x6b70e4",
+      "text": "[BRW]W MMIBROWSER_FmmPathToDisplay param error"
+    },
+    {
+      "offset": "0x6b7114",
+      "text": "[BRW]W MMIBROWSER_FmmPathToDisplay err dev"
+    },
+    {
+      "offset": "0x6b7140",
+      "text": "[BRW]W MMIBROWSER_DisplayToFmmPath param error"
+    },
+    {
+      "offset": "0x6b7170",
+      "text": "[BRW]W MMIBROWSER_DisplayToFmmPath err dev"
+    },
+    {
+      "offset": "0x6b719c",
+      "text": "MS_MMI_NQ2/source/mmi_app/app/browser/c/mmibrowser_func.c"
+    },
+    {
+      "offset": "0x6b7204",
+      "text": "[BRW]BrowserDlGetDeviceName file_type =%d"
+    },
+    {
+      "offset": "0x6b7230",
+      "text": "[BRW]W MMIBROWSER_GetDefaultMediaFilePath full_path_ptr = 0x%x"
+    },
+    {
+      "offset": "0x6b7270",
+      "text": "[BRW]MMIBROWSER_GetBrwSysDevName dev =%d"
+    },
+    {
+      "offset": "0x6b729c",
+      "text": "[BRW]W MMIBROWSER_GetCurPageUrlInfo error param"
+    },
+    {
+      "offset": "0x6b76c8",
+      "text": "[BRW]W MMIBROWSER_GetCurPageUrlInfo url_ptr alloc fails"
+    },
+    {
+      "offset": "0x6b7700",
+      "text": "[BRW]W MMIBROWSER_GetCurPageUrlInfo wurl_buf_ptr alloc fails"
+    },
+    {
+      "offset": "0x6b7740",
+      "text": "[BRW]MMIBROWSER_GetCurPageUrlInfo result =%d"
+    },
+    {
+      "offset": "0x6b7770",
+      "text": "MMIBROWSER_FreeCurPageUrlInfo  wurl_pptr"
+    },
+    {
+      "offset": "0x6b779c",
+      "text": "MMIBROWSER_FreeCurPageUrlInfo"
+    },
+    {
+      "offset": "0x6b77bc",
+      "text": "[BRW]W MMIBROWSER_GetCurAddrLabelInfo label_info_pptr null"
+    },
+    {
+      "offset": "0x6b7a04",
+      "text": "[BRW] MMIBROWSER_CombineSendUrlContent:param error"
+    },
+    {
+      "offset": "0x76297c",
+      "text": "SonyEricssonK700c/R2AE SEMC-Browser/4.0.3 Profile/MIDP-2.0 Configuration/CLDC-1.1"
+    },
+    {
+      "offset": "0x762a2c",
+      "text": "HS-N51/1.0 Release/10.25.2009 Browser/NF3.5 Profile/MIDP-2.0 Config/CLDC-1.1"
+    },
+    {
+      "offset": "0x769bd4",
+      "text": "APP_MN_SIMAT_LAUNCH_BROWSER_IND"
+    },
+    {
+      "offset": "0x76d960",
+      "text": "application/x-wap-prov.browser-settings"
+    },
+    {
+      "offset": "0x76d988",
+      "text": "application/x-wap-prov.browser-bookmarks"
+    },
+    {
+      "offset": "0xa8111c",
+      "text": "mmibrowser_manager_func.c"
+    },
+    {
+      "offset": "0xa8113c",
+      "text": "MMIAPIBROWSER_HandleExScheme: in_url =%s"
+    },
+    {
+      "offset": "0xa81200",
+      "text": "MMIAPIBROWSER_HandleExScheme: in_url empty"
+    },
+    {
+      "offset": "0xa8122c",
+      "text": "MMIAPIBROWSER_HandleExScheme: Err No memory "
+    },
+    {
+      "offset": "0xa8170c",
+      "text": "MMIAPIBROWSER_HandleExScheme: mms alloc fail!"
+    },
+    {
+      "offset": "0xa818f8",
+      "text": "MMIBROWSER MIME CALLBACK PARAM ERROR callback"
+    },
+    {
+      "offset": "0xad17f0",
+      "text": "[BRW]MMIBRW_BookmarkGetItem ERROR:index=%d, icount=%d"
+    },
+    {
+      "offset": "0xad1828",
+      "text": "mmibrowser_bookmark.c"
+    },
+    {
+      "offset": "0xad1840",
+      "text": "[BRW]MMIBRW_BookmarkGetCount ERROR"
+    },
+    {
+      "offset": "0xad1864",
+      "text": "MMIBRW_BookmarkGotoURL:url_ptr= %s"
+    },
+    {
+      "offset": "0xad1a10",
+      "text": "[BRW]MMIBRW_BookmarkInit ALLOC FAIL"
+    },
+    {
+      "offset": "0xae1dc4",
+      "text": "PARSER/source/browser_render/src/brw_layout.c"
+    },
+    {
+      "offset": "0xafc24c",
+      "text": "PARSER/source/browser_render/src/brw_wml_layout.c"
+    },
+    {
+      "offset": "0xaff208",
+      "text": "PARSER/source/browser_render/src/brw_wml_layout.c"
+    },
+    {
+      "offset": "0xb081b4",
+      "text": "MMIAPISET_SetDictionaryStatus t9_status:%d"
+    },
+    {
+      "offset": "0xb0866c",
+      "text": "MMISET_SetDictionaryInputLanguage language_type:%d"
+    },
+    {
+      "offset": "0xb086a0",
+      "text": "MMIAPISET_GetDictionaryStatus t9_status:%d"
+    },
+    {
+      "offset": "0xb086cc",
+      "text": "MMISET_SetSelectLanguageFirstPowerOn : dictionary_status = %d"
+    },
+    {
+      "offset": "0xb09e00",
+      "text": "MMIAPISET_GetCurrentDictionaryInputLanguage language_type:%d"
+    },
+    {
+      "offset": "0xb0c20c",
+      "text": " BROWSER"
+    },
+    {
+      "offset": "0xb25188",
+      "text": "PARSER/source/browser_render/src/brw_global.c"
+    },
+    {
+      "offset": "0xb251d8",
+      "text": "BRW: brw_hash_ctx->bucketcount == 0"
+    },
+    {
+      "offset": "0xb25290",
+      "text": "PARSER/source/browser_render/src/brw_global.c"
+    },
+    {
+      "offset": "0xb26ee4",
+      "text": "BRW_WSTRLEN str null"
+    },
+    {
+      "offset": "0xb26f2c",
+      "text": "BRWMem_MallocEx,g_browser_mem_handle null!"
+    },
+    {
+      "offset": "0xb27120",
+      "text": "[BRW]W BRW_WstrCat :dest_ptr =0x%x"
+    },
+    {
+      "offset": "0xb27a6c",
+      "text": "BRW_Memcpy dest=%x,src=%x,size=%x"
+    },
+    {
+      "offset": "0xb27a94",
+      "text": "BRW_Memset:dest=%x,size=%x"
+    },
+    {
+      "offset": "0xb27ab0",
+      "text": "BRW_Strlen,string null!"
+    },
+    {
+      "offset": "0xb27ac8",
+      "text": "BRW_Strcpy,dst=%x,src=%x"
+    },
+    {
+      "offset": "0xb27ae4",
+      "text": "BRW_Strncpy,dst=%x,src=%x"
+    },
+    {
+      "offset": "0xb27b00",
+      "text": "BRW_Strcmp,string=%x,str=%x"
+    },
+    {
+      "offset": "0xb27b1c",
+      "text": "BRW_Stricmp,string=%x,str=%x"
+    },
+    {
+      "offset": "0xb27b3c",
+      "text": "BRW_Strnicmp,string=%x,str=%x"
+    },
+    {
+      "offset": "0xb27b5c",
+      "text": "BRW_Strstr,string=%x,str=%x"
+    },
+    {
+      "offset": "0xb27b7c",
+      "text": "BRW_Strchr,str=%x,c=%c"
+    },
+    {
+      "offset": "0xb27b94",
+      "text": "BRW_Atoi,invalid param"
+    },
+    {
+      "offset": "0xb27bac",
+      "text": "BRW_TailStricmp,long_str=%x,tail=%x"
+    },
+    {
+      "offset": "0xb27cd4",
+      "text": "Browser"
+    },
+    {
+      "offset": "0xb490f0",
+      "text": "brw_core_adapter.c"
+    },
+    {
+      "offset": "0xb544c4",
+      "text": "BRW_InsertClickURL invalid absoult_url"
+    },
+    {
+      "offset": "0xb544ec",
+      "text": "brw_url.c"
+    },
+    {
+      "offset": "0xb544f8",
+      "text": "brw_url.c"
+    },
+    {
+      "offset": "0xb54504",
+      "text": "BRW_InsertClickURL alloc memory fail"
+    },
+    {
+      "offset": "0xb54558",
+      "text": "PARSER/source/browser_render/src/brw_url.c"
+    },
+    {
+      "offset": "0xb54998",
+      "text": "BRW_IfHasClickedURL invalid input!"
+    },
+    {
+      "offset": "0xb60c08",
+      "text": "BRW:MMIBROWSER_UpdateAddrLable url_ptr is PNULL!"
+    },
+    {
+      "offset": "0xb60c98",
+      "text": "mmibrowser_wintable.c"
+    },
+    {
+      "offset": "0xb60d18",
+      "text": "[BRW]W BRW_MSG_TYPE_DISPLAY_READY_IND:BRW_DisplayPage Error!"
+    },
+    {
+      "offset": "0xb60d58",
+      "text": "MMIBROWSER need display TRUE"
+    },
+    {
+      "offset": "0xb611fc",
+      "text": "[BRW] MMIBROWSER_DelInvalidDlFile"
+    },
+    {
+      "offset": "0xb61220",
+      "text": "[BRW] MMIBROWSER_DelInvalidDlFile result = %d"
+    },
+    {
+      "offset": "0xb61300",
+      "text": "MMIBROWSER_StopLoading: BRW_StopPageReq error"
+    },
+    {
+      "offset": "0xb61330",
+      "text": "[BRW]W MMIBROWSER_EnterNewUrl url_ptr PNULL"
+    },
+    {
+      "offset": "0xb61770",
+      "text": "[BRW]Dorado download:end successful = %d"
+    },
+    {
+      "offset": "0xb617f4",
+      "text": "MS_MMI_NQ2/source/mmi_app/app/browser/c/mmibrowser_wintable.c"
+    },
+    {
+      "offset": "0xb618a1",
+      "text": " MMIBROWSER BrwHandleDownladMediaFileWinMsg stop dl SUCC"
+    },
+    {
+      "offset": "0xb618dd",
+      "text": " MMIBROWSER BrwHandleDownladMediaFileWinMsg stop dl FAIL"
+    },
+    {
+      "offset": "0xb61cec",
+      "text": "[BRW]MMIBROWSER_DisplayDownloadProgress GUI_IntersectRect FALSE"
+    },
+    {
+      "offset": "0xb61d7d",
+      "text": " MMIBROWSER start key timer"
+    },
+    {
+      "offset": "0xb61d9d",
+      "text": " MMIBROWSER stop key timer"
+    },
+    {
+      "offset": "0xb62255",
+      "text": " MMIBROWSER BrwHandleMainWinMsg BRW_InitInstance error"
+    },
+    {
+      "offset": "0xb6228c",
+      "text": "BrwHandleMainOpenWinMsg: BRW_AccessPage error"
+    },
+    {
+      "offset": "0xb622f0",
+      "text": "MMIBROWSER DISPLAY = %d"
+    },
+    {
+      "offset": "0xb62694",
+      "text": "[BRW]W BrwHandleMainWinMsg BRW_DisplayPage error instance=%d"
+    },
+    {
+      "offset": "0xb626d4",
+      "text": "[BRW]W BrwHandleMainWinMsg BRW_RepaintPage error instance=%d"
+    },
+    {
+      "offset": "0xb62715",
+      "text": " MMIBROWSER BrwHandleMainWinMsg BRW_ProcKeyEvent error 1"
+    },
+    {
+      "offset": "0xb62751",
+      "text": " MMIBROWSER BrwHandleMainWinMsg BRW_ProcKeyEvent error 2"
+    },
+    {
+      "offset": "0xb6278d",
+      "text": " MMIBROWSER BrwHandleMainWinMsg BRW_ProcKeyEvent error 3"
+    },
+    {
+      "offset": "0xb627c9",
+      "text": " MMIBROWSER BrwHandleMainWinMsg BRW_ProcKeyEvent error 4"
+    },
+    {
+      "offset": "0xb62805",
+      "text": " MMIBROWSER BrwHandleMainWinMsg BRW_ProcKeyEvent error 7"
+    },
+    {
+      "offset": "0xb62841",
+      "text": " MMIBROWSER BrwHandleMainWinMsg BRW_AccessPage error"
+    },
+    {
+      "offset": "0xb62878",
+      "text": "BrwHandleMainWinMsg:MSG_CTL_CANCEL BRW_StopPageReq error"
+    },
+    {
+      "offset": "0xb628c9",
+      "text": " MMIBROWSER BrwHandleMainWinMsg BRW_ProcLayoutTimer error"
+    },
+    {
+      "offset": "0xb62905",
+      "text": " MMIBROWSER BrwHandleMainWinMsg BRW_ProcScrollEvent error 1"
+    },
+    {
+      "offset": "0xb62945",
+      "text": " MMIBROWSER BrwHandleMainWinMsg BRW_ProcScrollEvent error 2"
+    },
+    {
+      "offset": "0xb62985",
+      "text": " MMIBROWSER BrwHandleMainWinMsg BRW_ProcScrollEvent error 3"
+    },
+    {
+      "offset": "0xb629c5",
+      "text": " MMIBROWSER BrwHandleMainWinMsg BRW_ProcScrollEvent error 4"
+    },
+    {
+      "offset": "0xb62a0c",
+      "text": "[BRW]MMIBROWSER_GetDefaultUserAgent mcc:%d, mnc:%d"
+    },
+    {
+      "offset": "0xb62dfc",
+      "text": "[BRW]MMIBROWSER_GetDefaultUserAgent PS is invalid"
+    },
+    {
+      "offset": "0xb62e84",
+      "text": "[BRW]MMIDORADO_HandleBrwControlMsg:brw_message_id:%d"
+    },
+    {
+      "offset": "0xb62ebc",
+      "text": "[BRW]W MMIDORADO_HandleBrwControlMsg BRW_RepaintPage ERROR"
+    },
+    {
+      "offset": "0xb63897",
+      "text": "@ID_POPUP_MENU_STOP BRW_StopPageReq error"
+    },
+    {
+      "offset": "0xb638c4",
+      "text": "MMIBROWSER forward error"
+    },
+    {
+      "offset": "0xb63cdc",
+      "text": "MMIBROWSER backward error"
+    },
+    {
+      "offset": "0xb6412c",
+      "text": "[BRW]Dorado download:begin = %d"
+    },
+    {
+      "offset": "0xb641b4",
+      "text": "[BRW]MMIBROWSER_StopDownload SUCC"
+    },
+    {
+      "offset": "0xb641d8",
+      "text": "[BRW]MMIBROWSER_StopDownload FAIL"
+    },
+    {
+      "offset": "0xb6479c",
+      "text": "[BRW]Dorado download:end fail = %d"
+    },
+    {
+      "offset": "0xb647c0",
+      "text": "[BRW]Dorado download:end fail_reseason  = %d"
+    },
+    {
+      "offset": "0xb647fc",
+      "text": "[BRW]Dorado download:end fail_reseason = %d"
+    },
+    {
+      "offset": "0xb650d0",
+      "text": "MMIBROWSER_SetPublicProfile MMIBROWSER_GetNVSetting error"
+    },
+    {
+      "offset": "0xb65110",
+      "text": "[BRW]MMIBROWSER_SetProfile:use customized_connection"
+    },
+    {
+      "offset": "0xb65148",
+      "text": "[BRW]MMIBROWSER_SetProfile:index=%d"
+    },
+    {
+      "offset": "0xb65b57",
+      "text": "@[BRW]Dorado download:end fail = %d"
+    },
+    {
+      "offset": "0xb65bdc",
+      "text": "mmibrowser_wintable.c"
+    },
+    {
+      "offset": "0xb6df34",
+      "text": "MS_MMI_NQ2/source/mmi_app/app/browser/control/src/brw_utility.c"
+    },
+    {
+      "offset": "0xb6e5a8",
+      "text": "Browser"
+    },
+    {
+      "offset": "0xb9eeff",
+      "text": "@mmibrowser_wintable_bookmark.c"
+    },
+    {
+      "offset": "0xb9f31c",
+      "text": "[BRW]W MMIBROWSER get item error"
+    },
+    {
+      "offset": "0xb9f384",
+      "text": "[BRW]W BrwSetBookmarkEditWindow MMIBRW_BM_CHANGE_ADD_URL err"
+    },
+    {
+      "offset": "0xb9f7d0",
+      "text": "BrwHandleBookMarkEditWinMsg MMIBRW_BookmarkUpdateItem error"
+    },
+    {
+      "offset": "0xba1c67",
+      "text": "@mmibrowser_wintable_history.c"
+    },
+    {
+      "offset": "0xba1c91",
+      "text": " MMIBROWSER BrwHandleHistoryListWinMsg:malloc mem failed"
+    },
+    {
+      "offset": "0xbe7034",
+      "text": "[BRW]MMIDORADO_Entry dual_sys = %d"
+    },
+    {
+      "offset": "0xbe7058",
+      "text": "[ATC:][FT:][BOOKMARK:]Atest_BROWSERBookmarkTitleInput  res = %d"
+    },
+    {
+      "offset": "0xbe7098",
+      "text": "[ATC:][FT:][BOOKMARK:]Atest_BROWSERBookmarkURLInput  res=%d"
+    },
+    {
+      "offset": "0xbf5d98",
+      "text": "Opera Mini Native"
+    },
+    {
+      "offset": "0xc6f0c4",
+      "text": "Native Opera Mini/4.4.34868/hifi/oem_nokia"
+    },
+    {
+      "offset": "0xc832fc",
+      "text": "LAUNCH BROWSER"
+    },
+    {
+      "offset": "0xc84c60",
+      "text": "[MMI_STK] StartLaunchBrowserOperation dual_sys=%d, url_len=%d,launch_browser_type"
+    },
+    {
+      "offset": "0xc84cb4",
+      "text": "[MMI_STK] SIMAT_LAUNCH_BROWSER_NOT_LAUCHED with url browser is running!"
+    },
+    {
+      "offset": "0xc84cfc",
+      "text": "STK: StartLaunchBrowserOperation:tem_buf MALLOC SUCCESSED! tem_buf=%s, strlen(launch_para_in->url.url)=%d"
+    },
+    {
+      "offset": "0xc84d68",
+      "text": "[MMI_STK] SIMAT_LAUNCH_BROWSER_NOT_LAUCHED browser with url success!"
+    },
+    {
+      "offset": "0xc84db0",
+      "text": "[MMI_STK] SIMAT_LAUNCH_BROWSER_NOT_LAUCHED browser with url error!"
+    },
+    {
+      "offset": "0xc84df4",
+      "text": "[MMI_STK] SIMAT_LAUNCH_BROWSER_NOT_LAUCHED default browser is running!"
+    },
+    {
+      "offset": "0xc84e3c",
+      "text": "[MMI_STK] SIMAT_LAUNCH_BROWSER_NOT_LAUCHED browser default success!"
+    },
+    {
+      "offset": "0xc84e80",
+      "text": "[MMI_STK] SIMAT_LAUNCH_BROWSER_NOT_LAUCHED browser default error!"
+    },
+    {
+      "offset": "0xc84ec4",
+      "text": "[MMI_STK] enter LaunchBrowserWinHandleMsg, msg_id = 0x%04X, s_mmistk_close_window = %d"
+    },
+    {
+      "offset": "0xc84f1c",
+      "text": "[MMI_STK] leave MMISTK_OnLaunchBrowserCmd because alloc MnSimatLaunchBrowserIndS fail"
+    },
+    {
+      "offset": "0xc84f74",
+      "text": "[MMI_STK] dual_sys:%d, launch_browser_type:%d, is_browser_id:%d, is_icon_id:%d, is_alpha_id:%d, is_gate_way:%d, is_bear:%d"
+    },
+    {
+      "offset": "0xc84ff0",
+      "text": "[MMI_STK] leave MMISTK_OnLaunchBrowserCmd because ExistActiveOrSetupCall"
+    },
+    {
+      "offset": "0xc859ec",
+      "text": "[BRW]W MMIBROWSER_Enter MMIAPICONNECTION_GetLinkSettingItemByIndex error"
+    },
+    {
+      "offset": "0xc85a38",
+      "text": "[BRW]MMIBROWSER_SelectNetworkType:sim_num=%d,dual_sys=%d,is_use_wifi=%d"
+    },
+    {
+      "offset": "0xc85a80",
+      "text": "[BRW]W MMIBROWSER_MergeTextAndNum alloc fail--text_str.wstr_len =%d"
+    },
+    {
+      "offset": "0xc85b28",
+      "text": "[BRW]MMIBROWSER BrowserDlGetDefaultMediaDir:path_ptr=0x%x,dir_path_len_ptr=0x%x"
+    },
+    {
+      "offset": "0xc85b78",
+      "text": "[BRW]W MMIBROWSER_GetCurAddrLabelInfo label_info_ptr alloc fails"
+    },
+    {
+      "offset": "0xc8d9cc",
+      "text": "MMICMS_WriteDataToItemStruct() maxnum>=MMICMSBRW_MAX_ITEM_NUM index=%d"
+    },
+    {
+      "offset": "0xc8f05c",
+      "text": "MS_MMI_NQ2/source/mmi_app/app/browser/control/src/brw_core_adapter.c"
+    },
+    {
+      "offset": "0xc8f200",
+      "text": "MS_MMI_NQ2/source/mmi_app/app/browser/control/src/brw_plinterface.c"
+    },
+    {
+      "offset": "0xc8f2dc",
+      "text": "MicromaxQ50/Q03C MAUI-browser/MIDP-2.0Configuration/CLDC-1.1"
+    },
+    {
+      "offset": "0xc8fc68",
+      "text": "[MMIBROWSER]: HandleSIMPlugNotifyBrowserFunc dual_sys=%d, notify_event=%d"
+    },
+    {
+      "offset": "0xc905b0",
+      "text": "LAUNCH BROWSER"
+    },
+    {
+      "offset": "0xc9068c",
+      "text": "BROWSER TERMINATION"
+    },
+    {
+      "offset": "0xc94d04",
+      "text": "[BRW]W DLGenFileName:(ext_name_len=%d) > (BRW_DL_SUFFIX_MAX_LEN=%d)"
+    },
+    {
+      "offset": "0xc94d48",
+      "text": "[BRW]Brw_DLGetDefaultFileName GetFileNameByContentDispositon TURE"
+    },
+    {
+      "offset": "0xc94d8c",
+      "text": "MS_MMI_NQ2/source/mmi_app/app/browser/control/src/brw_dlinterface.c"
+    },
+    {
+      "offset": "0xc9a478",
+      "text": "x-motorola:browser.ua"
+    },
+    {
+      "offset": "0xc9b0d4",
+      "text": "VLD_MPEG4_CFG1: config qp, mb availability, bDataPartitioning, bCodeDcAsAc and bACPrediction"
+    }
+  ]
+}

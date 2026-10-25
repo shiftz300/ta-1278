@@ -1,0 +1,252 @@
+{
+  "retrieved_on": "2026-10-25",
+  "commit": "d48d55e028c13b6f50c291cbb7ea29201c3c8432",
+  "scope": "Public framework reference from a different product/version; not Nokia TA-1278 source. Copyright notices retained. Repository-wide open-source licensing is not established. UTF-8 text fetched through connector; local hashes identify saved text, not Git blob object IDs. No upstream code compiled/executed.",
+  "files": [
+    {
+      "file": "GlobalDef.h",
+      "upstream_path": "tools/DEBUG_TOOL/BMP2Array/Source/Include/GlobalDef.h",
+      "url": "https://github.com/obaidi2005/ZW217_W19_V4.1_yisai/blob/d48d55e028c13b6f50c291cbb7ea29201c3c8432/tools/DEBUG_TOOL/BMP2Array/Source/Include/GlobalDef.h",
+      "local_sha256": "7203e47c99effdd228b7443856ecf1d4e019befdd765ad160bd346b86a290152",
+      "bytes": 20356
+    },
+    {
+      "file": "anim_def.h",
+      "upstream_path": "tools/DEBUG_TOOL/BMP2Array/Source/Include/anim_def.h",
+      "url": "https://github.com/obaidi2005/ZW217_W19_V4.1_yisai/blob/d48d55e028c13b6f50c291cbb7ea29201c3c8432/tools/DEBUG_TOOL/BMP2Array/Source/Include/anim_def.h",
+      "local_sha256": "5c53489f68a8b860e6ab0424d52e385367fbab7ad0a2540e64ead45385f5256b",
+      "bytes": 1283
+    },
+    {
+      "file": "caf.h",
+      "upstream_path": "CAF/Template/include/caf.h",
+      "url": "https://github.com/obaidi2005/ZW217_W19_V4.1_yisai/blob/d48d55e028c13b6f50c291cbb7ea29201c3c8432/CAF/Template/include/caf.h",
+      "local_sha256": "8d248b5d2570ded70a29529859b3492289275187783f3cb6ff6c234980558db2",
+      "bytes": 81353
+    },
+    {
+      "file": "ctrlbaseedit.c",
+      "upstream_path": "MS_MMI_Main/source/mmi_ctrl/source/editbox/c/ctrlbaseedit.c",
+      "url": "https://github.com/obaidi2005/ZW217_W19_V4.1_yisai/blob/d48d55e028c13b6f50c291cbb7ea29201c3c8432/MS_MMI_Main/source/mmi_ctrl/source/editbox/c/ctrlbaseedit.c",
+      "local_sha256": "9962f430271b6c2ef7427cb03443a4b3b1b86cfda7b4245ef53afbff0e401fbf",
+      "bytes": 49974
+    },
+    {
+      "file": "ctrlbaseedit_export.h",
+      "upstream_path": "MS_MMI_Main/source/mmi_ctrl/include/ctrlbaseedit_export.h",
+      "url": "https://github.com/obaidi2005/ZW217_W19_V4.1_yisai/blob/d48d55e028c13b6f50c291cbb7ea29201c3c8432/MS_MMI_Main/source/mmi_ctrl/include/ctrlbaseedit_export.h",
+      "local_sha256": "4660df0263f5c65e1d78d53002c24648b8fdea7da51d1f019cd2840b68e3fe23",
+      "bytes": 14817
+    },
+    {
+      "file": "ctrlbaseedit_internal.c",
+      "upstream_path": "MS_MMI_Main/source/mmi_ctrl/source/editbox/c/ctrlbaseedit_internal.c",
+      "url": "https://github.com/obaidi2005/ZW217_W19_V4.1_yisai/blob/d48d55e028c13b6f50c291cbb7ea29201c3c8432/MS_MMI_Main/source/mmi_ctrl/source/editbox/c/ctrlbaseedit_internal.c",
+      "local_sha256": "50ca6bb702005a630cbf4f264fa02760b13108f12e9e98b4114ccaca9d2c9f23",
+      "bytes": 36565
+    },
+    {
+      "file": "ctrlbaseflex_add_del.c",
+      "upstream_path": "MS_MMI_Main/source/mmi_ctrl/source/editbox/c/ctrlbaseflex_add_del.c",
+      "url": "https://github.com/obaidi2005/ZW217_W19_V4.1_yisai/blob/d48d55e028c13b6f50c291cbb7ea29201c3c8432/MS_MMI_Main/source/mmi_ctrl/source/editbox/c/ctrlbaseflex_add_del.c",
+      "local_sha256": "7ac9871bc7f9682f87dca860ad2674622fa6566d9bd1dd1e69ebfd9cfd6f3ae3",
+      "bytes": 38785
+    },
+    {
+      "file": "ctrlbaseflex_cursor.c",
+      "upstream_path": "MS_MMI_Main/source/mmi_ctrl/source/editbox/c/ctrlbaseflex_cursor.c",
+      "url": "https://github.com/obaidi2005/ZW217_W19_V4.1_yisai/blob/d48d55e028c13b6f50c291cbb7ea29201c3c8432/MS_MMI_Main/source/mmi_ctrl/source/editbox/c/ctrlbaseflex_cursor.c",
+      "local_sha256": "f47c01278d8ba5a000352a2360617d6d4b295b805d7b8c11baf89883cad79c2f",
+      "bytes": 41687
+    },
+    {
+      "file": "ctrlform_export.h",
+      "upstream_path": "MS_MMI_Main/source/mmi_ctrl/include/ctrlform_export.h",
+      "url": "https://github.com/obaidi2005/ZW217_W19_V4.1_yisai/blob/d48d55e028c13b6f50c291cbb7ea29201c3c8432/MS_MMI_Main/source/mmi_ctrl/include/ctrlform_export.h",
+      "local_sha256": "d7d594e599e2e6c52f8c291bb22b6bd513869728de89193ae449b7710cd6b756",
+      "bytes": 49246
+    },
+    {
+      "file": "ctrlinfo_export.h",
+      "upstream_path": "MS_MMI_Main/source/mmi_ctrl/include/ctrlinfo_export.h",
+      "url": "https://github.com/obaidi2005/ZW217_W19_V4.1_yisai/blob/d48d55e028c13b6f50c291cbb7ea29201c3c8432/MS_MMI_Main/source/mmi_ctrl/include/ctrlinfo_export.h",
+      "local_sha256": "4c78e71fab3c4c463c097d8d0247991e8554e18452b9c95192ad4c7741aab84c",
+      "bytes": 24196
+    },
+    {
+      "file": "ctrltextedit_count.c",
+      "upstream_path": "MS_MMI_Main/source/mmi_ctrl/source/editbox/c/ctrltextedit_count.c",
+      "url": "https://github.com/obaidi2005/ZW217_W19_V4.1_yisai/blob/d48d55e028c13b6f50c291cbb7ea29201c3c8432/MS_MMI_Main/source/mmi_ctrl/source/editbox/c/ctrltextedit_count.c",
+      "local_sha256": "32505df55f4431f18d490bba627db16329901460fa8e3fc6b5ec24ee9b75b987",
+      "bytes": 96625
+    },
+    {
+      "file": "guictrl.h",
+      "upstream_path": "MS_MMI_Main/source/mmi_gui/include/guictrl.h",
+      "url": "https://github.com/obaidi2005/ZW217_W19_V4.1_yisai/blob/d48d55e028c13b6f50c291cbb7ea29201c3c8432/MS_MMI_Main/source/mmi_gui/include/guictrl.h",
+      "local_sha256": "cbacc62b1b076cd0bc8207272871f61d4709ce858d4c02815bff5c2540230c62",
+      "bytes": 5290
+    },
+    {
+      "file": "guiedit.c",
+      "upstream_path": "MS_MMI_Main/source/mmi_gui/source/editbox/c/guiedit.c",
+      "url": "https://github.com/obaidi2005/ZW217_W19_V4.1_yisai/blob/d48d55e028c13b6f50c291cbb7ea29201c3c8432/MS_MMI_Main/source/mmi_gui/source/editbox/c/guiedit.c",
+      "local_sha256": "ce8262a7904fe804c340bed4cae5b37ac34ddce6f71e016cde4eda02a204a1c8",
+      "bytes": 12310
+    },
+    {
+      "file": "guiform.h",
+      "upstream_path": "MS_MMI_Main/source/mmi_gui/include/guiform.h",
+      "url": "https://github.com/obaidi2005/ZW217_W19_V4.1_yisai/blob/d48d55e028c13b6f50c291cbb7ea29201c3c8432/MS_MMI_Main/source/mmi_gui/include/guiform.h",
+      "local_sha256": "3572f2ed4a273ce7971d53ee7089e34f46154d2655698329dd193d02ce0f217a",
+      "bytes": 5425
+    },
+    {
+      "file": "guiimg.c",
+      "upstream_path": "MS_MMI_Main/source/mmi_gui/source/img/c/guiimg.c",
+      "url": "https://github.com/obaidi2005/ZW217_W19_V4.1_yisai/blob/d48d55e028c13b6f50c291cbb7ea29201c3c8432/MS_MMI_Main/source/mmi_gui/source/img/c/guiimg.c",
+      "local_sha256": "2f39420155d644b0166296cd019ce274272f900c1c8745b0f17f55d87349b05f",
+      "bytes": 47275
+    },
+    {
+      "file": "guiwin.h",
+      "upstream_path": "MS_MMI_Main/source/mmi_gui/include/guiwin.h",
+      "url": "https://github.com/obaidi2005/ZW217_W19_V4.1_yisai/blob/d48d55e028c13b6f50c291cbb7ea29201c3c8432/MS_MMI_Main/source/mmi_gui/include/guiwin.h",
+      "local_sha256": "1189ad6f0e9ef22f30eeb6882c4e79fc7da4eb6d5edf9eb9f91e33b40c95d5dd",
+      "bytes": 76016
+    },
+    {
+      "file": "img_def.h",
+      "upstream_path": "tools/DEBUG_TOOL/BMP2Array/Source/Include/img_def.h",
+      "url": "https://github.com/obaidi2005/ZW217_W19_V4.1_yisai/blob/d48d55e028c13b6f50c291cbb7ea29201c3c8432/tools/DEBUG_TOOL/BMP2Array/Source/Include/img_def.h",
+      "local_sha256": "17dbf1426522f5083ec062b1fa8556c1665fe014c76ad11b76b80ddf04da8448",
+      "bytes": 4553
+    },
+    {
+      "file": "mmi_appmsg.h",
+      "upstream_path": "MS_MMI_Main/source/mmi_app/common/h/mmi_appmsg.h",
+      "url": "https://github.com/obaidi2005/ZW217_W19_V4.1_yisai/blob/d48d55e028c13b6f50c291cbb7ea29201c3c8432/MS_MMI_Main/source/mmi_app/common/h/mmi_appmsg.h",
+      "local_sha256": "1a93a054fddfbf00df5d25c94fe733225fe325b4e02375821c4c0d66d91617ed",
+      "bytes": 60269
+    },
+    {
+      "file": "mmi_default.c",
+      "upstream_path": "MS_MMI_Main/source/mmi_app/kernel/c/mmi_default.c",
+      "url": "https://github.com/obaidi2005/ZW217_W19_V4.1_yisai/blob/d48d55e028c13b6f50c291cbb7ea29201c3c8432/MS_MMI_Main/source/mmi_app/kernel/c/mmi_default.c",
+      "local_sha256": "6af7172c572b29a5627d636669486693e9f7f793aafca7ae1365bf657016fef8",
+      "bytes": 238809
+    },
+    {
+      "file": "mmi_default.h",
+      "upstream_path": "MS_MMI_Main/source/mmi_kernel/include/mmi_default.h",
+      "url": "https://github.com/obaidi2005/ZW217_W19_V4.1_yisai/blob/d48d55e028c13b6f50c291cbb7ea29201c3c8432/MS_MMI_Main/source/mmi_kernel/include/mmi_default.h",
+      "local_sha256": "611aae34a82c2ccee7b6b17224835003cdaf4a8e28241f97f69f0c638028d0d7",
+      "bytes": 36002
+    },
+    {
+      "file": "mmi_resource_def.h",
+      "upstream_path": "MS_MMI_Main/source/mmi_kernel/include/mmi_resource_def.h",
+      "url": "https://github.com/obaidi2005/ZW217_W19_V4.1_yisai/blob/d48d55e028c13b6f50c291cbb7ea29201c3c8432/MS_MMI_Main/source/mmi_kernel/include/mmi_resource_def.h",
+      "local_sha256": "33793ad6165b9d53643c3f7de07672aa393d541a34af796bd8fbeac119a10b99",
+      "bytes": 4707
+    },
+    {
+      "file": "mmibrowser_wintable.c",
+      "upstream_path": "MS_MMI_Main/source/mmi_app/app/browser/c/mmibrowser_wintable.c",
+      "url": "https://github.com/obaidi2005/ZW217_W19_V4.1_yisai/blob/d48d55e028c13b6f50c291cbb7ea29201c3c8432/MS_MMI_Main/source/mmi_app/app/browser/c/mmibrowser_wintable.c",
+      "local_sha256": "e87dbf2cabee1bcf27a06829db4eb6b5c014d2c04b530ad1a294390060e13cfb",
+      "bytes": 573172
+    },
+    {
+      "file": "mmimms_editwin.c",
+      "upstream_path": "MS_MMI_Main/source/mmi_app/app/mms/c/mmimms_editwin.c",
+      "url": "https://github.com/obaidi2005/ZW217_W19_V4.1_yisai/blob/d48d55e028c13b6f50c291cbb7ea29201c3c8432/MS_MMI_Main/source/mmi_app/app/mms/c/mmimms_editwin.c",
+      "local_sha256": "a5fc632c082d6ec8170677b3cd958595965742bf3b733bbfdc4b924ea43b570d",
+      "bytes": 847188
+    },
+    {
+      "file": "mmimms_id.h",
+      "upstream_path": "MS_MMI_Main/source/mmi_app/app/mms/h/mmimms_id.h",
+      "url": "https://github.com/obaidi2005/ZW217_W19_V4.1_yisai/blob/d48d55e028c13b6f50c291cbb7ea29201c3c8432/MS_MMI_Main/source/mmi_app/app/mms/h/mmimms_id.h",
+      "local_sha256": "bb16cb3fd0b0c489980de59550517f446426791dde6bc28ebc59fb49e174b8de",
+      "bytes": 10546
+    },
+    {
+      "file": "mmk_app.h",
+      "upstream_path": "MS_MMI_Main/source/mmi_kernel/include/mmk_app.h",
+      "url": "https://github.com/obaidi2005/ZW217_W19_V4.1_yisai/blob/d48d55e028c13b6f50c291cbb7ea29201c3c8432/MS_MMI_Main/source/mmi_kernel/include/mmk_app.h",
+      "local_sha256": "019043ed68b0113ad675ce1d2d1ad282db060f6b4bda1cf679396afacf83b069",
+      "bytes": 107506
+    },
+    {
+      "file": "mmk_kbd.c",
+      "upstream_path": "MS_MMI_Main/source/mmi_kernel/source/c/mmk_kbd.c",
+      "url": "https://github.com/obaidi2005/ZW217_W19_V4.1_yisai/blob/d48d55e028c13b6f50c291cbb7ea29201c3c8432/MS_MMI_Main/source/mmi_kernel/source/c/mmk_kbd.c",
+      "local_sha256": "d62a6d164917770032fb3aa29b02a9f8144e387c7247a058057a2e2d7a2796e4",
+      "bytes": 41883
+    },
+    {
+      "file": "mmk_msg.h",
+      "upstream_path": "MS_MMI_Main/source/mmi_kernel/include/mmk_msg.h",
+      "url": "https://github.com/obaidi2005/ZW217_W19_V4.1_yisai/blob/d48d55e028c13b6f50c291cbb7ea29201c3c8432/MS_MMI_Main/source/mmi_kernel/include/mmk_msg.h",
+      "local_sha256": "371c7695ba1b8a08203356481d373d3206eac70b4fe3bd780f3b7745c8a9ad18",
+      "bytes": 31360
+    },
+    {
+      "file": "mmk_type.h",
+      "upstream_path": "MS_MMI_Main/source/mmi_kernel/include/mmk_type.h",
+      "url": "https://github.com/obaidi2005/ZW217_W19_V4.1_yisai/blob/d48d55e028c13b6f50c291cbb7ea29201c3c8432/MS_MMI_Main/source/mmi_kernel/include/mmk_type.h",
+      "local_sha256": "61c37a3ed6f4308cbdfd8fca3f54fc1a89d04acb47e791e9008a0b2e67d55ebf",
+      "bytes": 8859
+    },
+    {
+      "file": "spml_api.h",
+      "upstream_path": "MS_MMI_Main/source/mmi_spml/include/spml_api.h",
+      "url": "https://github.com/obaidi2005/ZW217_W19_V4.1_yisai/blob/d48d55e028c13b6f50c291cbb7ea29201c3c8432/MS_MMI_Main/source/mmi_spml/include/spml_api.h",
+      "local_sha256": "da0a20989bafa99459379e7a130d16e6a85d95d73c135cf0a1a52b801407d2e6",
+      "bytes": 22871
+    },
+    {
+      "file": "t9.h",
+      "upstream_path": "Third-party/t9/Include/t9.h",
+      "url": "https://github.com/obaidi2005/ZW217_W19_V4.1_yisai/blob/d48d55e028c13b6f50c291cbb7ea29201c3c8432/Third-party/t9/Include/t9.h",
+      "local_sha256": "33ba68db1fe18f7f4c7b70b145250f4505f496c22d696bd46460905698e710fd",
+      "bytes": 60287
+    },
+    {
+      "file": "t9awapi.h",
+      "upstream_path": "Third-party/t9/Include/t9awapi.h",
+      "url": "https://github.com/obaidi2005/ZW217_W19_V4.1_yisai/blob/d48d55e028c13b6f50c291cbb7ea29201c3c8432/Third-party/t9/Include/t9awapi.h",
+      "local_sha256": "61d0eeb6c5020fd348e30449b70c7f4df479b7e54735dadfd71123c0dd9c667b",
+      "bytes": 22158
+    },
+    {
+      "file": "t9ccapi.h",
+      "upstream_path": "Third-party/t9/Include/t9ccapi.h",
+      "url": "https://github.com/obaidi2005/ZW217_W19_V4.1_yisai/blob/d48d55e028c13b6f50c291cbb7ea29201c3c8432/Third-party/t9/Include/t9ccapi.h",
+      "local_sha256": "8ab5d629880274d4f7821a8e594f00baa6e5157a3d6228b3909a6f61fc09a14c",
+      "bytes": 30463
+    },
+    {
+      "file": "t9ver.h",
+      "upstream_path": "Third-party/t9/Include/t9ver.h",
+      "url": "https://github.com/obaidi2005/ZW217_W19_V4.1_yisai/blob/d48d55e028c13b6f50c291cbb7ea29201c3c8432/Third-party/t9/Include/t9ver.h",
+      "local_sha256": "5b9b9c4c0c1808a14d0c5fe6223ae2b9083bcceb9f0df941b60c4aa7bcb3f34f",
+      "bytes": 104
+    },
+    {
+      "file": "tool-mmi_resource_def.h",
+      "upstream_path": "tools/DEBUG_TOOL/BMP2Array/Source/Include/mmi_resource_def.h",
+      "url": "https://github.com/obaidi2005/ZW217_W19_V4.1_yisai/blob/d48d55e028c13b6f50c291cbb7ea29201c3c8432/tools/DEBUG_TOOL/BMP2Array/Source/Include/mmi_resource_def.h",
+      "local_sha256": "4fd774a536a4a975e93aa5854949d2f51fbba5f0227312a9d52939985e70d47d",
+      "bytes": 3561
+    },
+    {
+      "file": "window_parse.h",
+      "upstream_path": "MS_MMI_Main/source/mmi_app/kernel/h/window_parse.h",
+      "url": "https://github.com/obaidi2005/ZW217_W19_V4.1_yisai/blob/d48d55e028c13b6f50c291cbb7ea29201c3c8432/MS_MMI_Main/source/mmi_app/kernel/h/window_parse.h",
+      "local_sha256": "2c597b059cc3f8a7cc298f8b89427db664bafd822c69814fe2dd03f322de675c",
+      "bytes": 20325
+    }
+  ]
+}

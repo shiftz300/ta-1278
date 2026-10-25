@@ -1,0 +1,8192 @@
+[
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 2,
+    "translations": {
+      "0": "Message",
+      "1": "Message",
+      "2": "Message"
+    },
+    "offsets": {
+      "0": "0x208520",
+      "1": "0x211ac8",
+      "2": "0x21a3a8"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 14,
+    "translations": {
+      "0": "Menu",
+      "1": "Menu",
+      "2": "Menu"
+    },
+    "offsets": {
+      "0": "0x20859c",
+      "1": "0x211b40",
+      "2": "0x21a420"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 23,
+    "translations": {
+      "0": "Option",
+      "1": "选项",
+      "2": "選項"
+    },
+    "offsets": {
+      "0": "0x2085e4",
+      "1": "0x211b88",
+      "2": "0x21a468"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 25,
+    "translations": {
+      "0": "Delete",
+      "1": "Delete",
+      "2": "Delete"
+    },
+    "offsets": {
+      "0": "0x2085f4",
+      "1": "0x211b98",
+      "2": "0x21a478"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 66,
+    "translations": {
+      "0": "Input error",
+      "1": "Input error",
+      "2": "Input error"
+    },
+    "offsets": {
+      "0": "0x208944",
+      "1": "0x211e5c",
+      "2": "0x21a740"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 158,
+    "translations": {
+      "0": "Input password(4)",
+      "1": "Input password(4)",
+      "2": "Input password(4)"
+    },
+    "offsets": {
+      "0": "0x208dc8",
+      "1": "0x212270",
+      "2": "0x21ab54"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 159,
+    "translations": {
+      "0": "Input new password(4)",
+      "1": "Input new password(4)",
+      "2": "Input new password(4)"
+    },
+    "offsets": {
+      "0": "0x208ddc",
+      "1": "0x212284",
+      "2": "0x21ab68"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 160,
+    "translations": {
+      "0": "Input new password again(4)",
+      "1": "Input new password again(4)",
+      "2": "Input new password again(4)"
+    },
+    "offsets": {
+      "0": "0x208df4",
+      "1": "0x21229c",
+      "2": "0x21ab80"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 166,
+    "translations": {
+      "0": "Input new pwd(4-8)",
+      "1": "Input new pwd(4-8)",
+      "2": "Input new pwd(4-8)"
+    },
+    "offsets": {
+      "0": "0x208e5c",
+      "1": "0x21230c",
+      "2": "0x21abe8"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 167,
+    "translations": {
+      "0": "Input pwd cnf(4-8)",
+      "1": "Input pwd cnf(4-8)",
+      "2": "Input pwd cnf(4-8)"
+    },
+    "offsets": {
+      "0": "0x208e70",
+      "1": "0x212320",
+      "2": "0x21abfc"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 170,
+    "translations": {
+      "0": "SMS settings",
+      "1": "SMS settings",
+      "2": "SMS settings"
+    },
+    "offsets": {
+      "0": "0x208ea4",
+      "1": "0x212354",
+      "2": "0x21ac30"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 185,
+    "translations": {
+      "0": "Delete",
+      "1": "删除",
+      "2": "刪除"
+    },
+    "offsets": {
+      "0": "0x2085f4",
+      "1": "0x2123e8",
+      "2": "0x21acc4"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 186,
+    "translations": {
+      "0": "All Delete",
+      "1": "All Delete",
+      "2": "All Delete"
+    },
+    "offsets": {
+      "0": "0x208f38",
+      "1": "0x2123f0",
+      "2": "0x21accc"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 187,
+    "translations": {
+      "0": "Delete",
+      "1": "Delete",
+      "2": "Delete"
+    },
+    "offsets": {
+      "0": "0x2085f4",
+      "1": "0x211b98",
+      "2": "0x21a478"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 193,
+    "translations": {
+      "0": "Delete all",
+      "1": "Delete all",
+      "2": "Delete all"
+    },
+    "offsets": {
+      "0": "0x208f7c",
+      "1": "0x212434",
+      "2": "0x21ad10"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 197,
+    "translations": {
+      "0": "Delete City",
+      "1": "Delete City",
+      "2": "Delete City"
+    },
+    "offsets": {
+      "0": "0x208fb0",
+      "1": "0x212468",
+      "2": "0x21ad44"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 234,
+    "translations": {
+      "0": "Input modes",
+      "1": "Input modes",
+      "2": "Input modes"
+    },
+    "offsets": {
+      "0": "0x2090f8",
+      "1": "0x21257c",
+      "2": "0x21ae58"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 850,
+    "translations": {
+      "0": "Something's wrong with the time you entered",
+      "1": "您输入的时间有问题",
+      "2": "您輸入的時間有問題"
+    },
+    "offsets": {
+      "0": "0x20a630",
+      "1": "0x213aa8",
+      "2": "0x21c384"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 851,
+    "translations": {
+      "0": "Something's wrong with the date you entered",
+      "1": "您输入的日期有问题",
+      "2": "您輸入的日期有問題"
+    },
+    "offsets": {
+      "0": "0x20a65c",
+      "1": "0x213ac0",
+      "2": "0x21c39c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 865,
+    "translations": {
+      "0": "Deleted",
+      "1": "Deleted",
+      "2": "Deleted"
+    },
+    "offsets": {
+      "0": "0x20a760",
+      "1": "0x213b84",
+      "2": "0x21c468"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 868,
+    "translations": {
+      "0": "Something went wrong while deleting",
+      "1": "删除时出现错误",
+      "2": "刪除時發生問題"
+    },
+    "offsets": {
+      "0": "0x20a788",
+      "1": "0x213bac",
+      "2": "0x21c490"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 873,
+    "translations": {
+      "0": "Message",
+      "1": "信息",
+      "2": "訊息"
+    },
+    "offsets": {
+      "0": "0x208520",
+      "1": "0x213c00",
+      "2": "0x21c4e4"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 899,
+    "translations": {
+      "0": "Input PIN, please!",
+      "1": "Input PIN, please!",
+      "2": "Input PIN, please!"
+    },
+    "offsets": {
+      "0": "0x20a9e4",
+      "1": "0x213d5c",
+      "2": "0x21c648"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 900,
+    "translations": {
+      "0": "Enter PUK",
+      "1": "输入PUK码",
+      "2": "輸入PUK"
+    },
+    "offsets": {
+      "0": "0x20a9f8",
+      "1": "0x213d70",
+      "2": "0x21c65c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 1586,
+    "translations": {
+      "0": "SN-SENTEL SG",
+      "1": "SN-SENTEL SG",
+      "2": "SN-SENTEL SG"
+    },
+    "offsets": {
+      "0": "0x20bcfc",
+      "1": "0x2150f8",
+      "2": "0x21d9e4"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 1861,
+    "translations": {
+      "0": "Deleting...",
+      "1": "正在删除...",
+      "2": "刪除中..."
+    },
+    "offsets": {
+      "0": "0x20c770",
+      "1": "0x215af0",
+      "2": "0x21e3dc"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 1904,
+    "translations": {
+      "0": "Write message",
+      "1": "Write message",
+      "2": "Write message"
+    },
+    "offsets": {
+      "0": "0x20cc28",
+      "1": "0x215f28",
+      "2": "0x21e808"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 1905,
+    "translations": {
+      "0": "Write message",
+      "1": "编辑信息",
+      "2": "寫訊息"
+    },
+    "offsets": {
+      "0": "0x20cc28",
+      "1": "0x215f38",
+      "2": "0x21e818"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 1928,
+    "translations": {
+      "0": "Messaging",
+      "1": "信息",
+      "2": "訊息"
+    },
+    "offsets": {
+      "0": "0x20ce6c",
+      "1": "0x213c00",
+      "2": "0x21c4e4"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 1935,
+    "translations": {
+      "0": "Send message",
+      "1": "发送信息",
+      "2": "發送訊息"
+    },
+    "offsets": {
+      "0": "0x20ceb4",
+      "1": "0x2160bc",
+      "2": "0x21ea6c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 1936,
+    "translations": {
+      "0": "Product info",
+      "1": "产品信息",
+      "2": "產品資訊"
+    },
+    "offsets": {
+      "0": "0x20cec4",
+      "1": "0x2160c8",
+      "2": "0x21ea78"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 1969,
+    "translations": {
+      "0": "Have been saved,insert the headset to listen to the radio!",
+      "1": "Have been saved,insert the headset to listen to the radio!",
+      "2": "Have been saved,insert the headset to listen to the radio!"
+    },
+    "offsets": {
+      "0": "0x20d1c8",
+      "1": "0x216390",
+      "2": "0x21ed38"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 1976,
+    "translations": {
+      "0": "Not enough space. Delete expired files and try saving again.",
+      "1": "空间不足。请删除过期文件，然后再次尝试保存。",
+      "2": "空間不足。請刪除過期檔案並再次嘗試儲存。"
+    },
+    "offsets": {
+      "0": "0x20d2ec",
+      "1": "0x216490",
+      "2": "0x21ee34"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 1986,
+    "translations": {
+      "0": "The license for this file is still valid. Delete anyway?",
+      "1": "此文件的许可仍有效。仍然删除？",
+      "2": "此檔案的授權仍然有效。是否仍要刪除？"
+    },
+    "offsets": {
+      "0": "0x20d530",
+      "1": "0x216620",
+      "2": "0x21efc4"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 1987,
+    "translations": {
+      "0": "These files contain unexpired DRM files. Delete anyway?",
+      "1": "这些文件包含未过期的DRM文件。仍然删除？",
+      "2": "這些檔案包含未過期的DRM檔案。是否仍要刪除？"
+    },
+    "offsets": {
+      "0": "0x20d56c",
+      "1": "0x216644",
+      "2": "0x21efec"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 2010,
+    "translations": {
+      "0": "If you cancel DRM processing, the file will be deleted. Continue?",
+      "1": "如果取消DRM处理，文件将被删除。是否继续？",
+      "2": "如果取消DRM處理，檔案將會刪除。繼續？"
+    },
+    "offsets": {
+      "0": "0x20d8a4",
+      "1": "0x21686c",
+      "2": "0x21f218"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 2017,
+    "translations": {
+      "0": "Invalid input",
+      "1": "Invalid input",
+      "2": "Invalid input"
+    },
+    "offsets": {
+      "0": "0x20d94c",
+      "1": "0x2168f0",
+      "2": "0x21f298"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 2020,
+    "translations": {
+      "0": "unread message",
+      "1": "unread message",
+      "2": "unread message"
+    },
+    "offsets": {
+      "0": "0x20d980",
+      "1": "0x216924",
+      "2": "0x21f2cc"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 2021,
+    "translations": {
+      "0": "unread messages",
+      "1": "unread messages",
+      "2": "unread messages"
+    },
+    "offsets": {
+      "0": "0x20d990",
+      "1": "0x216934",
+      "2": "0x21f2dc"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 2072,
+    "translations": {
+      "0": "Input PWD, please!",
+      "1": "Input PWD, please!",
+      "2": "Input PWD, please!"
+    },
+    "offsets": {
+      "0": "0x20ddc4",
+      "1": "0x216d10",
+      "2": "0x21f6b8"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 2121,
+    "translations": {
+      "0": "File already existed, overwrite?",
+      "1": "File already existed, overwrite?",
+      "2": "File already existed, overwrite?"
+    },
+    "offsets": {
+      "0": "0x20e0c0",
+      "1": "0x216f9c",
+      "2": "0x21f964"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 2122,
+    "translations": {
+      "0": "Write SMS",
+      "1": "Write SMS",
+      "2": "Write SMS"
+    },
+    "offsets": {
+      "0": "0x20e0e4",
+      "1": "0x216fc0",
+      "2": "0x21f988"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 2143,
+    "translations": {
+      "0": "Main menu",
+      "1": "Main menu",
+      "2": "Main menu"
+    },
+    "offsets": {
+      "0": "0x20e1e0",
+      "1": "0x2170b8",
+      "2": "0x21fa84"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 2169,
+    "translations": {
+      "0": "Delete all?",
+      "1": "全部删除？",
+      "2": "全部刪除？"
+    },
+    "offsets": {
+      "0": "0x20e364",
+      "1": "0x21722c",
+      "2": "0x21fbf0"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 2170,
+    "translations": {
+      "0": "Delete?",
+      "1": "Delete?",
+      "2": "Delete?"
+    },
+    "offsets": {
+      "0": "0x20e370",
+      "1": "0x21723c",
+      "2": "0x21fc00"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 2173,
+    "translations": {
+      "0": "Inbox",
+      "1": "Inbox",
+      "2": "Inbox"
+    },
+    "offsets": {
+      "0": "0x20e3b0",
+      "1": "0x217270",
+      "2": "0x21fc34"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 2177,
+    "translations": {
+      "0": "Input number",
+      "1": "Input number",
+      "2": "Input number"
+    },
+    "offsets": {
+      "0": "0x20e3d8",
+      "1": "0x217298",
+      "2": "0x21fc5c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 2180,
+    "translations": {
+      "0": "Enter URL",
+      "1": "输入URL",
+      "2": "輸入網址"
+    },
+    "offsets": {
+      "0": "0x20e414",
+      "1": "0x2172d4",
+      "2": "0x21fc98"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 2181,
+    "translations": {
+      "0": "Input language",
+      "1": "Input language",
+      "2": "Input language"
+    },
+    "offsets": {
+      "0": "0x20e420",
+      "1": "0x2172e4",
+      "2": "0x21fca4"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 2197,
+    "translations": {
+      "0": "Text",
+      "1": "Text",
+      "2": "Text"
+    },
+    "offsets": {
+      "0": "0x20e4cc",
+      "1": "0x217388",
+      "2": "0x21fd4c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 2231,
+    "translations": {
+      "0": "Sent",
+      "1": "Sent",
+      "2": "Sent"
+    },
+    "offsets": {
+      "0": "0x20e6b0",
+      "1": "0x217544",
+      "2": "0x21ff0c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 2273,
+    "translations": {
+      "0": "push message",
+      "1": "push message",
+      "2": "push message"
+    },
+    "offsets": {
+      "0": "0x20e844",
+      "1": "0x2176d4",
+      "2": "0x220098"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 2283,
+    "translations": {
+      "0": "Save as draft",
+      "1": "Save as draft",
+      "2": "Save as draft"
+    },
+    "offsets": {
+      "0": "0x20e8bc",
+      "1": "0x21774c",
+      "2": "0x220110"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 2292,
+    "translations": {
+      "0": "Menu",
+      "1": "Menu",
+      "2": "Menu"
+    },
+    "offsets": {
+      "0": "0x20859c",
+      "1": "0x211b40",
+      "2": "0x21a420"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 2293,
+    "translations": {
+      "0": "Drafts",
+      "1": "Drafts",
+      "2": "Drafts"
+    },
+    "offsets": {
+      "0": "0x20e940",
+      "1": "0x2177c0",
+      "2": "0x220188"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 2317,
+    "translations": {
+      "0": "Outbox",
+      "1": "Outbox",
+      "2": "Outbox"
+    },
+    "offsets": {
+      "0": "0x20eac0",
+      "1": "0x217910",
+      "2": "0x2202d4"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 2319,
+    "translations": {
+      "0": "Something went wrong – not sent.",
+      "1": "出现错误–未发送。",
+      "2": "發生問題–未發送。"
+    },
+    "offsets": {
+      "0": "0x20ead8",
+      "1": "0x217924",
+      "2": "0x2202ec"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 2320,
+    "translations": {
+      "0": "Send message",
+      "1": "Send message",
+      "2": "Send message"
+    },
+    "offsets": {
+      "0": "0x20ceb4",
+      "1": "0x21793c",
+      "2": "0x220304"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 2344,
+    "translations": {
+      "0": "Insert",
+      "1": "Insert",
+      "2": "Insert"
+    },
+    "offsets": {
+      "0": "0x20ec7c",
+      "1": "0x217a7c",
+      "2": "0x220448"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 2384,
+    "translations": {
+      "0": "Shortcut settings",
+      "1": "Shortcut settings",
+      "2": "Shortcut settings"
+    },
+    "offsets": {
+      "0": "0x20ee9c",
+      "1": "0x217c60",
+      "2": "0x220638"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 2410,
+    "translations": {
+      "0": "Something's wrong with the password you entered.",
+      "1": "您输入的密码有问题。",
+      "2": "輸入的密碼有問題。"
+    },
+    "offsets": {
+      "0": "0x20f0c4",
+      "1": "0x217e08",
+      "2": "0x2207e8"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 2432,
+    "translations": {
+      "0": "Please Insert SIM",
+      "1": "请插入SIM卡",
+      "2": "請插入SIM卡"
+    },
+    "offsets": {
+      "0": "0x20f1b8",
+      "1": "0x217ef4",
+      "2": "0x2208d4"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 2433,
+    "translations": {
+      "0": "Please insert MemoryCard",
+      "1": "Please insert MemoryCard",
+      "2": "Please insert MemoryCard"
+    },
+    "offsets": {
+      "0": "0x20f1cc",
+      "1": "0x217f08",
+      "2": "0x2208e8"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 2434,
+    "translations": {
+      "0": "Enter your login details:",
+      "1": "输入您的详细登录信息：",
+      "2": "輸入您的登入詳情："
+    },
+    "offsets": {
+      "0": "0x20f1e8",
+      "1": "0x217f24",
+      "2": "0x220904"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 2438,
+    "translations": {
+      "0": "Delete",
+      "1": "删除",
+      "2": "刪除"
+    },
+    "offsets": {
+      "0": "0x2085f4",
+      "1": "0x2123e8",
+      "2": "0x21acc4"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 2443,
+    "translations": {
+      "0": "Deleted",
+      "1": "Deleted",
+      "2": "Deleted"
+    },
+    "offsets": {
+      "0": "0x20a760",
+      "1": "0x213b84",
+      "2": "0x21c468"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 2444,
+    "translations": {
+      "0": "Delete channel",
+      "1": "删除频道",
+      "2": "刪除頻道"
+    },
+    "offsets": {
+      "0": "0x20f248",
+      "1": "0x217f84",
+      "2": "0x220960"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 2445,
+    "translations": {
+      "0": "Delete all channels",
+      "1": "删除所有频道",
+      "2": "刪除所有頻道"
+    },
+    "offsets": {
+      "0": "0x20f258",
+      "1": "0x217f90",
+      "2": "0x22096c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 2543,
+    "translations": {
+      "0": "Message expired",
+      "1": "信息已过期",
+      "2": "訊息已過期"
+    },
+    "offsets": {
+      "0": "0x20f778",
+      "1": "0x2183d4",
+      "2": "0x220dc0"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 2546,
+    "translations": {
+      "0": "Please input",
+      "1": "Please input",
+      "2": "Please input"
+    },
+    "offsets": {
+      "0": "0x20f7a4",
+      "1": "0x218404",
+      "2": "0x220df0"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 2558,
+    "translations": {
+      "0": "Hint Text",
+      "1": "Hint Text",
+      "2": "Hint Text"
+    },
+    "offsets": {
+      "0": "0x20f808",
+      "1": "0x218478",
+      "2": "0x220e64"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 2564,
+    "translations": {
+      "0": "Keypad volume",
+      "1": "按键音量",
+      "2": "鍵盤音量"
+    },
+    "offsets": {
+      "0": "0x20f838",
+      "1": "0x2184a8",
+      "2": "0x220e94"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 2576,
+    "translations": {
+      "0": "Photos will not be automatically saved to OneDrive until you select the option from Options menu.",
+      "1": "Photos will not be automatically saved to OneDrive until you select the option from Options menu.",
+      "2": "Photos will not be automatically saved to OneDrive until you select the option from Options menu."
+    },
+    "offsets": {
+      "0": "0x20fbb4",
+      "1": "0x21880c",
+      "2": "0x2211f0"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 2593,
+    "translations": {
+      "0": "Messaging",
+      "1": "信息",
+      "2": "訊息"
+    },
+    "offsets": {
+      "0": "0x20ce6c",
+      "1": "0x213c00",
+      "2": "0x21c4e4"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 2637,
+    "translations": {
+      "0": "Deleting…",
+      "1": "正在删除…",
+      "2": "刪除中…"
+    },
+    "offsets": {
+      "0": "0x20fed0",
+      "1": "0x218ad8",
+      "2": "0x2214e8"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 2640,
+    "translations": {
+      "0": "Enter SIM lock code:",
+      "1": "输入SIM卡锁码：",
+      "2": "輸入SIM卡鎖定密碼："
+    },
+    "offsets": {
+      "0": "0x20fef0",
+      "1": "0x218af0",
+      "2": "0x2214fc"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 2649,
+    "translations": {
+      "0": "Delete all",
+      "1": "全部删除",
+      "2": "全部刪除"
+    },
+    "offsets": {
+      "0": "0x208f7c",
+      "1": "0x218bdc",
+      "2": "0x2215f8"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 2667,
+    "translations": {
+      "0": "Text messages",
+      "1": "短信",
+      "2": "簡訊"
+    },
+    "offsets": {
+      "0": "0x2100f0",
+      "1": "0x218cd0",
+      "2": "0x2216ec"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 2676,
+    "translations": {
+      "0": "Put in a memory card",
+      "1": "请插入存储卡",
+      "2": "請插入記憶卡"
+    },
+    "offsets": {
+      "0": "0x2102dc",
+      "1": "0x218de4",
+      "2": "0x22181c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 2681,
+    "translations": {
+      "0": "Msg. settings",
+      "1": "信息设置",
+      "2": "訊息設定"
+    },
+    "offsets": {
+      "0": "0x210304",
+      "1": "0x218e08",
+      "2": "0x221840"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 2724,
+    "translations": {
+      "0": "Menu",
+      "1": "功能表",
+      "2": "功能表"
+    },
+    "offsets": {
+      "0": "0x20859c",
+      "1": "0x219068",
+      "2": "0x221ab0"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 2729,
+    "translations": {
+      "0": "No SIM",
+      "1": "未插入SIM卡",
+      "2": "未插入SIM卡"
+    },
+    "offsets": {
+      "0": "0x20f028",
+      "1": "0x2190ac",
+      "2": "0x221af8"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 2733,
+    "translations": {
+      "0": "Enter PIN for SIM1:",
+      "1": "输入SIM1卡的PIN：",
+      "2": "輸入SIM1卡的PIN："
+    },
+    "offsets": {
+      "0": "0x2105bc",
+      "1": "0x219100",
+      "2": "0x221b58"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 2734,
+    "translations": {
+      "0": "Enter PIN for SIM2:",
+      "1": "输入SIM2卡的PIN：",
+      "2": "輸入SIM2卡的PIN："
+    },
+    "offsets": {
+      "0": "0x2105d0",
+      "1": "0x21911c",
+      "2": "0x221b74"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 2736,
+    "translations": {
+      "0": "Enter PUK for SIM1:",
+      "1": "输入SIM1卡的PUK码：",
+      "2": "輸入SIM1卡的PUK："
+    },
+    "offsets": {
+      "0": "0x2105f0",
+      "1": "0x219144",
+      "2": "0x221b9c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 2737,
+    "translations": {
+      "0": "Enter PUK for SIM2:",
+      "1": "输入SIM2卡的PUK码：",
+      "2": "輸入SIM2卡的PUK："
+    },
+    "offsets": {
+      "0": "0x210604",
+      "1": "0x219164",
+      "2": "0x221bb8"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 2738,
+    "translations": {
+      "0": "Enter PIN",
+      "1": "输入PIN码",
+      "2": "輸入PIN"
+    },
+    "offsets": {
+      "0": "0x2105e4",
+      "1": "0x219184",
+      "2": "0x221bd4"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 2739,
+    "translations": {
+      "0": "Enter PUK",
+      "1": "输入PUK码",
+      "2": "輸入PUK"
+    },
+    "offsets": {
+      "0": "0x20a9f8",
+      "1": "0x213d70",
+      "2": "0x21c65c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 2744,
+    "translations": {
+      "0": "Delete",
+      "1": "删除",
+      "2": "刪除"
+    },
+    "offsets": {
+      "0": "0x2085f4",
+      "1": "0x2123e8",
+      "2": "0x21acc4"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 2755,
+    "translations": {
+      "0": "Warranty",
+      "1": "保修信息",
+      "2": "保固"
+    },
+    "offsets": {
+      "0": "0x2106f0",
+      "1": "0x21925c",
+      "2": "0x221ccc"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 2758,
+    "translations": {
+      "0": "Your use of HMD Global services and applications in your device is governed by the HMD Global Privacy Policy, available at www.nokia.com/mobile-privacy. ",
+      "1": "在设备中使用HMD Global服务和应用软件须遵守HMD Global隐私政策。您可以随时访问www.nokia.com/mobile-privacy来了解这些信息。",
+      "2": "當您使用HMD Global服務和裝置上的應用程式時，需遵守HMD Global隱私權原則，您可以隨時瀏覽www.nokia.com/mobile-privacy了解該原則。"
+    },
+    "offsets": {
+      "0": "0x210754",
+      "1": "0x2192b4",
+      "2": "0x221d20"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 2760,
+    "translations": {
+      "0": "The device activation information with one-time device location will be sent to HMD Global. Data charges may apply.\n",
+      "1": "附有一次性设备位置信息的设备启动信息将发送到HMD Global。可能会向您收取数据费。\n",
+      "2": "包含一次性裝置位置訊息的裝置啟動資訊將發送給HMD Global。可能會收取數據傳輸費用。\n"
+    },
+    "offsets": {
+      "0": "0x21084c",
+      "1": "0x21939c",
+      "2": "0x221e10"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 2761,
+    "translations": {
+      "0": "Learn more about privacy in Options",
+      "1": "在\"选项\"中了解更多隐私详情",
+      "2": "在「選項」中瞭解更多隱私相關資訊。"
+    },
+    "offsets": {
+      "0": "0x2108c4",
+      "1": "0x2193fc",
+      "2": "0x221e70"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 2764,
+    "translations": {
+      "0": "HMD Global respects your privacy. The device activation information with one-time device location along with your unique device and network information will be sent to HMD Global. ",
+      "1": "HMD Global尊重您的隐私。附有一次性设备位置信息的设备启动信息以及您的唯一设备和网络信息将一起发送到HMD Global。",
+      "2": "HMD Global尊重您的隱私。包含一次性裝置位置訊息的裝置啟動資訊，以及您唯一的裝置和網路資訊將發送給HMD Global。"
+    },
+    "offsets": {
+      "0": "0x210900",
+      "1": "0x219434",
+      "2": "0x221eb0"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 2765,
+    "translations": {
+      "0": "This information enables us to better meet demand in your country, provide software updates, customer support, and activate services. ",
+      "1": "此信息能让我们更好地满足您所在国家/地区的需求，提供软件更新、客户支持以及启动服务。",
+      "2": "此資訊使我們能夠更好地滿足您所在國家/地區的需求、提供軟體更新、客戶支援和啟動服務。"
+    },
+    "offsets": {
+      "0": "0x2109b8",
+      "1": "0x2194bc",
+      "2": "0x221f34"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 2766,
+    "translations": {
+      "0": "Location information will be approximated to city level and will not be used to identify you personally. ",
+      "1": "位置信息将近似到城市级别，并且不会用于识别您的身份。",
+      "2": "位置資訊的精確度將大約為城市等級，將不會用來識別您的身分。"
+    },
+    "offsets": {
+      "0": "0x210a40",
+      "1": "0x219514",
+      "2": "0x221f8c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 2767,
+    "translations": {
+      "0": "We may share the information with HMD Global subsidiaries, affiliates, and authorised vendors.\n",
+      "1": "我们可能会与HMD Global子公司、关联公司和授权供应商共享这些信息。",
+      "2": "我們可能會與HMD Global分公司、附屬公司以及授權的供應商分享該資訊。\n"
+    },
+    "offsets": {
+      "0": "0x210aac",
+      "1": "0x21954c",
+      "2": "0x221fcc"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 2768,
+    "translations": {
+      "0": "Information may be transferred across international borders in compliance with applicable laws. We use appropriate information security measures to protect the information. You have a right to access or rectify your personal data. ",
+      "1": "在符合相关法律规定的前提下，您的信息可能会跨境传输。我们将采取适当的信息安全措施来保护您的信息。您有权访问或纠正您的个人数据。",
+      "2": "資訊可能會跨國界傳輸，相關行為皆符合適用的法律。我們會採取適當的資訊安全保護措施來保護資訊。您有權存取或更正您的個人資料。"
+    },
+    "offsets": {
+      "0": "0x210b0c",
+      "1": "0x21959c",
+      "2": "0x222020"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 2770,
+    "translations": {
+      "0": "Your use of HMD Global services and applications in your device is governed by the HMD Global Privacy Policy, available at www.nokia.com/mobile-privacy. ",
+      "1": "在设备中使用HMD Global服务和应用软件须遵守HMD Global隐私政策。您可以随时访问www.nokia.com/mobile-privacy来了解这些信息。",
+      "2": "當您使用HMD Global服務和裝置上的應用程式時，需遵守HMD Global隱私權原則，您可以隨時瀏覽www.nokia.com/mobile-privacy了解該原則。"
+    },
+    "offsets": {
+      "0": "0x210754",
+      "1": "0x2192b4",
+      "2": "0x221d20"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 2786,
+    "translations": {
+      "0": "Try again. Some of the characters you entered can't be used.",
+      "1": "请重试。无法使用您输入的一些字符。",
+      "2": "再試一次。您輸入的某些字元無法使用。"
+    },
+    "offsets": {
+      "0": "0x210e78",
+      "1": "0x219890",
+      "2": "0x22231c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 2813,
+    "translations": {
+      "0": "Delete selected files?",
+      "1": "删除选定文件？",
+      "2": "刪除所選的檔案？"
+    },
+    "offsets": {
+      "0": "0x21113c",
+      "1": "0x219afc",
+      "2": "0x222588"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 2830,
+    "translations": {
+      "0": "Delete",
+      "1": "删除",
+      "2": "刪除"
+    },
+    "offsets": {
+      "0": "0x2085f4",
+      "1": "0x2123e8",
+      "2": "0x21acc4"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 2898,
+    "translations": {
+      "0": "File already exists. Overwrite?",
+      "1": "文件已存在。是否覆盖？",
+      "2": "檔案已存在。替換？"
+    },
+    "offsets": {
+      "0": "0x21139c",
+      "1": "0x219d98",
+      "2": "0x22281c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 2928,
+    "translations": {
+      "0": "Something went wrong. The file was not sent.",
+      "1": "出现错误。文件未发送。",
+      "2": "發生問題。檔案未傳送。"
+    },
+    "offsets": {
+      "0": "0x2116a4",
+      "1": "0x21a044",
+      "2": "0x222ab0"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 2940,
+    "translations": {
+      "0": "Predictive text off",
+      "1": "联想输入关闭",
+      "2": "聯想字關閉"
+    },
+    "offsets": {
+      "0": "0x211930",
+      "1": "0x21a1d0",
+      "2": "0x222c48"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 2941,
+    "translations": {
+      "0": "Predictive text",
+      "1": "联想输入",
+      "2": "聯想字"
+    },
+    "offsets": {
+      "0": "0x211944",
+      "1": "0x21a1e0",
+      "2": "0x222c58"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 2942,
+    "translations": {
+      "0": "Predictive text on",
+      "1": "联想输入打开",
+      "2": "聯想字開啟"
+    },
+    "offsets": {
+      "0": "0x211954",
+      "1": "0x21a1ec",
+      "2": "0x222c64"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 0,
+    "index": 2943,
+    "translations": {
+      "0": "Predictive text off",
+      "1": "联想输入关闭",
+      "2": "聯想字關閉"
+    },
+    "offsets": {
+      "0": "0x211930",
+      "1": "0x21a1d0",
+      "2": "0x222c48"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 2,
+    "index": 11,
+    "translations": {
+      "0": "Input Language Set",
+      "1": "Input Language Set",
+      "2": "Input Language Set"
+    },
+    "offsets": {
+      "0": "0xa1fa4c",
+      "1": "0xa20194",
+      "2": "0xa208dc"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 2,
+    "index": 374,
+    "translations": {
+      "0": "Input method",
+      "1": "Input method",
+      "2": "Input method"
+    },
+    "offsets": {
+      "0": "0xa20080",
+      "1": "0xa207c8",
+      "2": "0xa20f10"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 4,
+    "index": 22,
+    "translations": {
+      "0": "删除",
+      "1": "删除",
+      "2": "删除"
+    },
+    "offsets": {
+      "0": "0xa45158",
+      "1": "0xa45704",
+      "2": "0xa45cb0"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 4,
+    "index": 36,
+    "translations": {
+      "0": "输入对方手机号码",
+      "1": "输入对方手机号码",
+      "2": "输入对方手机号码"
+    },
+    "offsets": {
+      "0": "0xa45210",
+      "1": "0xa457bc",
+      "2": "0xa45d68"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 4,
+    "index": 38,
+    "translations": {
+      "0": "已发送短信到",
+      "1": "已发送短信到",
+      "2": "已发送短信到"
+    },
+    "offsets": {
+      "0": "0xa45240",
+      "1": "0xa457ec",
+      "2": "0xa45d98"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 4,
+    "index": 39,
+    "translations": {
+      "0": "短信发送失败，请检查您输入的号码是否正确",
+      "1": "短信发送失败，请检查您输入的号码是否正确",
+      "2": "短信发送失败，请检查您输入的号码是否正确"
+    },
+    "offsets": {
+      "0": "0xa45250",
+      "1": "0xa457fc",
+      "2": "0xa45da8"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 4,
+    "index": 52,
+    "translations": {
+      "0": "版本信息",
+      "1": "版本信息",
+      "2": "版本信息"
+    },
+    "offsets": {
+      "0": "0xa453c8",
+      "1": "0xa45974",
+      "2": "0xa45f20"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 6,
+    "index": 2,
+    "translations": {
+      "0": "Delete all?",
+      "1": "Delete all?",
+      "2": "Delete all?"
+    },
+    "offsets": {
+      "0": "0xa4bb80",
+      "1": "0xa4c2dc",
+      "2": "0xa4c9e4"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 6,
+    "index": 21,
+    "translations": {
+      "0": "Delete Snapshot",
+      "1": "Delete Snapshot",
+      "2": "Delete Snapshot"
+    },
+    "offsets": {
+      "0": "0xa4bc7c",
+      "1": "0xa4c3d8",
+      "2": "0xa4cae0"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 6,
+    "index": 22,
+    "translations": {
+      "0": "Delete the Selected",
+      "1": "Delete the Selected",
+      "2": "Delete the Selected"
+    },
+    "offsets": {
+      "0": "0xa4bc8c",
+      "1": "0xa4c3e8",
+      "2": "0xa4caf0"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 6,
+    "index": 24,
+    "translations": {
+      "0": "Delete Bookmark",
+      "1": "Delete Bookmark",
+      "2": "Delete Bookmark"
+    },
+    "offsets": {
+      "0": "0xa4bcac",
+      "1": "0xa4c408",
+      "2": "0xa4cb10"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 6,
+    "index": 32,
+    "translations": {
+      "0": "Please Input User Name",
+      "1": "Please Input User Name",
+      "2": "Please Input User Name"
+    },
+    "offsets": {
+      "0": "0xa4bd34",
+      "1": "0xa4c490",
+      "2": "0xa4cb98"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 6,
+    "index": 49,
+    "translations": {
+      "0": "Delete folder",
+      "1": "删除文件夹",
+      "2": "刪除資料夾"
+    },
+    "offsets": {
+      "0": "0xa4be68",
+      "1": "0xa4c5cc",
+      "2": "0xa4ccd4"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 6,
+    "index": 52,
+    "translations": {
+      "0": "Enter URL",
+      "1": "输入URL",
+      "2": "輸入網址"
+    },
+    "offsets": {
+      "0": "0xa4be9c",
+      "1": "0xa4c600",
+      "2": "0xa4cd08"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 6,
+    "index": 64,
+    "translations": {
+      "0": "Add to mainmenu",
+      "1": "Add to mainmenu",
+      "2": "Add to mainmenu"
+    },
+    "offsets": {
+      "0": "0xa4bf4c",
+      "1": "0xa4c6b4",
+      "2": "0xa4cdb8"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 6,
+    "index": 75,
+    "translations": {
+      "0": "Delete all?",
+      "1": "全部删除？",
+      "2": "全部刪除？"
+    },
+    "offsets": {
+      "0": "0xa4bb80",
+      "1": "0xa4c744",
+      "2": "0xa4ce4c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 6,
+    "index": 76,
+    "translations": {
+      "0": "Delete bookmark?",
+      "1": "删除书签？",
+      "2": "刪除書籤？"
+    },
+    "offsets": {
+      "0": "0xa4bfe4",
+      "1": "0xa4c754",
+      "2": "0xa4ce5c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 6,
+    "index": 77,
+    "translations": {
+      "0": "Delete selected %N bookmarks?",
+      "1": "删除选定的%N个书签？",
+      "2": "刪除所選的%N個書籤？"
+    },
+    "offsets": {
+      "0": "0xa4bff8",
+      "1": "0xa4c764",
+      "2": "0xa4ce6c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 6,
+    "index": 78,
+    "translations": {
+      "0": "Delete offline page?",
+      "1": "删除离线页面？",
+      "2": "刪除離線頁面？"
+    },
+    "offsets": {
+      "0": "0xa4c018",
+      "1": "0xa4c780",
+      "2": "0xa4ce88"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 6,
+    "index": 79,
+    "translations": {
+      "0": "Delete selected %N offline pages?",
+      "1": "删除选定的%N个离线页面？",
+      "2": "刪除所選的%N個離線頁面？"
+    },
+    "offsets": {
+      "0": "0xa4c030",
+      "1": "0xa4c794",
+      "2": "0xa4ce9c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 6,
+    "index": 85,
+    "translations": {
+      "0": "Enter username",
+      "1": "输入用户名",
+      "2": "輸入使用者名稱"
+    },
+    "offsets": {
+      "0": "0xa4c0c8",
+      "1": "0xa4c804",
+      "2": "0xa4cf0c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 7,
+    "index": 1,
+    "translations": {
+      "0": "Recipients full",
+      "1": "收件人已满",
+      "2": "收訊人已滿"
+    },
+    "offsets": {
+      "0": "0xa513b4",
+      "1": "0xa51eb0",
+      "2": "0xa527e0"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 7,
+    "index": 2,
+    "translations": {
+      "0": "Message validity period",
+      "1": "Message validity period",
+      "2": "Message validity period"
+    },
+    "offsets": {
+      "0": "0xa513c4",
+      "1": "0xa51ec0",
+      "2": "0xa527f0"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 7,
+    "index": 13,
+    "translations": {
+      "0": "Inbox option",
+      "1": "Inbox option",
+      "2": "Inbox option"
+    },
+    "offsets": {
+      "0": "0xa5145c",
+      "1": "0xa51f54",
+      "2": "0xa5288c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 7,
+    "index": 14,
+    "translations": {
+      "0": "Sentbox option",
+      "1": "Sentbox option",
+      "2": "Sentbox option"
+    },
+    "offsets": {
+      "0": "0xa5146c",
+      "1": "0xa51f64",
+      "2": "0xa5289c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 7,
+    "index": 15,
+    "translations": {
+      "0": "Outbox option",
+      "1": "Outbox option",
+      "2": "Outbox option"
+    },
+    "offsets": {
+      "0": "0xa5147c",
+      "1": "0xa51f74",
+      "2": "0xa528ac"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 7,
+    "index": 16,
+    "translations": {
+      "0": "Message details",
+      "1": "Message details",
+      "2": "Message details"
+    },
+    "offsets": {
+      "0": "0xa5148c",
+      "1": "0xa51f84",
+      "2": "0xa528bc"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 7,
+    "index": 20,
+    "translations": {
+      "0": "Message has been delivered",
+      "1": "信息已送达",
+      "2": "訊息已傳送"
+    },
+    "offsets": {
+      "0": "0xa514c0",
+      "1": "0xa51fbc",
+      "2": "0xa528f4"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 7,
+    "index": 21,
+    "translations": {
+      "0": "Message refused",
+      "1": "信息被拒",
+      "2": "訊息已遭拒絕"
+    },
+    "offsets": {
+      "0": "0xa514dc",
+      "1": "0xa51fcc",
+      "2": "0xa52904"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 7,
+    "index": 22,
+    "translations": {
+      "0": "Message deferred by server",
+      "1": "信息被服务器延迟",
+      "2": "訊息被伺服器延期"
+    },
+    "offsets": {
+      "0": "0xa514ec",
+      "1": "0xa51fd8",
+      "2": "0xa52914"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 7,
+    "index": 23,
+    "translations": {
+      "0": "Message expired – not sent",
+      "1": "信息已过期–未发送",
+      "2": "訊息已過期–未傳送"
+    },
+    "offsets": {
+      "0": "0xa51508",
+      "1": "0xa51fec",
+      "2": "0xa52928"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 7,
+    "index": 24,
+    "translations": {
+      "0": "Message is not admitted",
+      "1": "信息未被允许",
+      "2": "訊息未獲認可"
+    },
+    "offsets": {
+      "0": "0xa51540",
+      "1": "0xa52004",
+      "2": "0xa52940"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 7,
+    "index": 25,
+    "translations": {
+      "0": "Message not sent – cancelled",
+      "1": "信息未发送–已取消",
+      "2": "訊息未傳送–已取消"
+    },
+    "offsets": {
+      "0": "0xa51558",
+      "1": "0xa52014",
+      "2": "0xa52950"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 7,
+    "index": 28,
+    "translations": {
+      "0": "Insert slide",
+      "1": "Insert slide",
+      "2": "Insert slide"
+    },
+    "offsets": {
+      "0": "0xa515b4",
+      "1": "0xa5204c",
+      "2": "0xa52988"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 7,
+    "index": 29,
+    "translations": {
+      "0": "Insert slide",
+      "1": "Insert slide",
+      "2": "Insert slide"
+    },
+    "offsets": {
+      "0": "0xa515b4",
+      "1": "0xa5204c",
+      "2": "0xa52988"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 7,
+    "index": 30,
+    "translations": {
+      "0": "Delete slide",
+      "1": "Delete slide",
+      "2": "Delete slide"
+    },
+    "offsets": {
+      "0": "0xa515c4",
+      "1": "0xa5205c",
+      "2": "0xa52998"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 7,
+    "index": 36,
+    "translations": {
+      "0": "Config. information",
+      "1": "配置信息",
+      "2": "組態資訊"
+    },
+    "offsets": {
+      "0": "0xa51630",
+      "1": "0xa520b4",
+      "2": "0xa529f0"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 7,
+    "index": 37,
+    "translations": {
+      "0": "Configuration information received",
+      "1": "已接收配置信息",
+      "2": "已接收組態資訊"
+    },
+    "offsets": {
+      "0": "0xa51644",
+      "1": "0xa520c0",
+      "2": "0xa529fc"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 7,
+    "index": 39,
+    "translations": {
+      "0": "Message ID:",
+      "1": "信息识别码：",
+      "2": "訊息識別碼："
+    },
+    "offsets": {
+      "0": "0xa51670",
+      "1": "0xa520e0",
+      "2": "0xa52a1c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 7,
+    "index": 55,
+    "translations": {
+      "0": "Multimedia message",
+      "1": "彩信",
+      "2": "多媒體訊息"
+    },
+    "offsets": {
+      "0": "0xa51790",
+      "1": "0xa52208",
+      "2": "0xa52b50"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 7,
+    "index": 61,
+    "translations": {
+      "0": "MMS memory full – delete some multimedia messages.",
+      "1": "彩信存储已满–请删除部分彩信。",
+      "2": "多媒體訊息記憶體已滿–請刪除一些。"
+    },
+    "offsets": {
+      "0": "0xa51818",
+      "1": "0xa52278",
+      "2": "0xa52bc0"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 7,
+    "index": 62,
+    "translations": {
+      "0": "Max. number of multimedia messages reached.",
+      "1": "已达到彩信数量上限。",
+      "2": "已達多媒體訊息數目上限。"
+    },
+    "offsets": {
+      "0": "0xa51880",
+      "1": "0xa5229c",
+      "2": "0xa52be8"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 7,
+    "index": 63,
+    "translations": {
+      "0": "Can't open this message – check your connection.",
+      "1": "无法打开此信息–请检查您的连接。",
+      "2": "無法開啟此訊息–檢查您的連結。"
+    },
+    "offsets": {
+      "0": "0xa518ac",
+      "1": "0xa522b4",
+      "2": "0xa52c04"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 7,
+    "index": 65,
+    "translations": {
+      "0": "The file is big than 300k,cann't insert!",
+      "1": "The file is big than 300k,cann't insert!",
+      "2": "The file is big than 300k,cann't insert!"
+    },
+    "offsets": {
+      "0": "0xa5192c",
+      "1": "0xa522e8",
+      "2": "0xa52c38"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 7,
+    "index": 66,
+    "translations": {
+      "0": "The file is big than 100k,cann't insert!",
+      "1": "The file is big than 100k,cann't insert!",
+      "2": "The file is big than 100k,cann't insert!"
+    },
+    "offsets": {
+      "0": "0xa51958",
+      "1": "0xa52314",
+      "2": "0xa52c64"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 7,
+    "index": 70,
+    "translations": {
+      "0": "Text Position",
+      "1": "Text Position",
+      "2": "Text Position"
+    },
+    "offsets": {
+      "0": "0xa519b4",
+      "1": "0xa52370",
+      "2": "0xa52cc0"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 7,
+    "index": 71,
+    "translations": {
+      "0": "Text Up",
+      "1": "Text Up",
+      "2": "Text Up"
+    },
+    "offsets": {
+      "0": "0xa519c4",
+      "1": "0xa52380",
+      "2": "0xa52cd0"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 7,
+    "index": 72,
+    "translations": {
+      "0": "Text Down",
+      "1": "Text Down",
+      "2": "Text Down"
+    },
+    "offsets": {
+      "0": "0xa519cc",
+      "1": "0xa52388",
+      "2": "0xa52cd8"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 7,
+    "index": 75,
+    "translations": {
+      "0": "Message denied by server.",
+      "1": "信息被服务器拒绝。",
+      "2": "訊息遭到伺服器拒絕。"
+    },
+    "offsets": {
+      "0": "0xa51a08",
+      "1": "0xa523c4",
+      "2": "0xa52d14"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 7,
+    "index": 76,
+    "translations": {
+      "0": "Message not sent due to format error.",
+      "1": "由于格式错误，未发送信息。",
+      "2": "由於格式錯誤，未傳送訊息。"
+    },
+    "offsets": {
+      "0": "0xa51a24",
+      "1": "0xa523dc",
+      "2": "0xa52d2c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 7,
+    "index": 78,
+    "translations": {
+      "0": "Message not found",
+      "1": "未找到信息",
+      "2": "找不到訊息"
+    },
+    "offsets": {
+      "0": "0xa51a60",
+      "1": "0xa52410",
+      "2": "0xa52d60"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 7,
+    "index": 79,
+    "translations": {
+      "0": "Message denied by server.",
+      "1": "信息被服务器拒绝。",
+      "2": "訊息遭伺服器拒絕。"
+    },
+    "offsets": {
+      "0": "0xa51a08",
+      "1": "0xa523c4",
+      "2": "0xa52d70"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 7,
+    "index": 80,
+    "translations": {
+      "0": "Unsupported message format.",
+      "1": "不支持的信息格式。",
+      "2": "不支援的訊息格式。"
+    },
+    "offsets": {
+      "0": "0xa51a74",
+      "1": "0xa52420",
+      "2": "0xa52d88"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 7,
+    "index": 89,
+    "translations": {
+      "0": "Message centre:",
+      "1": "信息中心：",
+      "2": "訊息中心："
+    },
+    "offsets": {
+      "0": "0xa51b08",
+      "1": "0xa524a4",
+      "2": "0xa52e0c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 7,
+    "index": 91,
+    "translations": {
+      "0": "Multimedia messages can only be sent to one recipient at a time.",
+      "1": "一次只能向一个收件人发送彩信。",
+      "2": "一次只能向一位收訊人傳送多媒體訊息。"
+    },
+    "offsets": {
+      "0": "0xa51b2c",
+      "1": "0xa524c8",
+      "2": "0xa52e30"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 7,
+    "index": 96,
+    "translations": {
+      "0": "Save to draft box",
+      "1": "Save to draft box",
+      "2": "Save to draft box"
+    },
+    "offsets": {
+      "0": "0xa51bcc",
+      "1": "0xa52530",
+      "2": "0xa52e9c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 7,
+    "index": 105,
+    "translations": {
+      "0": "Convert to SMS",
+      "1": "Convert to SMS",
+      "2": "Convert to SMS"
+    },
+    "offsets": {
+      "0": "0xa51c40",
+      "1": "0xa525a4",
+      "2": "0xa52f10"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 7,
+    "index": 106,
+    "translations": {
+      "0": "Delete Insert",
+      "1": "Delete Insert",
+      "2": "Delete Insert"
+    },
+    "offsets": {
+      "0": "0xa51c50",
+      "1": "0xa525b4",
+      "2": "0xa52f20"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 7,
+    "index": 116,
+    "translations": {
+      "0": "Click on to input",
+      "1": "Click on to input",
+      "2": "Click on to input"
+    },
+    "offsets": {
+      "0": "0xa51d00",
+      "1": "0xa52664",
+      "2": "0xa52fd0"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 7,
+    "index": 119,
+    "translations": {
+      "0": "Message content is empty",
+      "1": "Message content is empty",
+      "2": "Message content is empty"
+    },
+    "offsets": {
+      "0": "0xa51d20",
+      "1": "0xa52684",
+      "2": "0xa52ff0"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 0,
+    "translations": {
+      "0": "SMS SIMBOX",
+      "1": "SMS SIMBOX",
+      "2": "SMS SIMBOX"
+    },
+    "offsets": {
+      "0": "0xa61af4",
+      "1": "0xa6350c",
+      "2": "0xa64c08"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 1,
+    "translations": {
+      "0": "SMS Fixed_Sim Sending Setting",
+      "1": "SMS Fixed_Sim Sending Setting",
+      "2": "SMS Fixed_Sim Sending Setting"
+    },
+    "offsets": {
+      "0": "0xa61b00",
+      "1": "0xa63518",
+      "2": "0xa64c14"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 2,
+    "translations": {
+      "0": "SMS Fixed_Sim Sending Switch",
+      "1": "SMS Fixed_Sim Sending Switch",
+      "2": "SMS Fixed_Sim Sending Switch"
+    },
+    "offsets": {
+      "0": "0xa61b20",
+      "1": "0xa63538",
+      "2": "0xa64c34"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 3,
+    "translations": {
+      "0": "Enter message",
+      "1": "输入信息",
+      "2": "輸入訊息"
+    },
+    "offsets": {
+      "0": "0xa61b40",
+      "1": "0xa63558",
+      "2": "0xa64c54"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 5,
+    "translations": {
+      "0": "CB Message",
+      "1": "CB Message",
+      "2": "CB Message"
+    },
+    "offsets": {
+      "0": "0xa61b58",
+      "1": "0xa6356c",
+      "2": "0xa64c68"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 6,
+    "translations": {
+      "0": "Cell broadcast message",
+      "1": "小区广播信息",
+      "2": "區域廣播訊息"
+    },
+    "offsets": {
+      "0": "0xa61b64",
+      "1": "0xa63578",
+      "2": "0xa64c74"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 45,
+    "translations": {
+      "0": "Emergency message",
+      "1": "紧急信息",
+      "2": "緊急訊息"
+    },
+    "offsets": {
+      "0": "0xa61d90",
+      "1": "0xa6377c",
+      "2": "0xa64e74"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 46,
+    "translations": {
+      "0": "Message is empty",
+      "1": "Message is empty",
+      "2": "Message is empty"
+    },
+    "offsets": {
+      "0": "0xa61da4",
+      "1": "0xa63788",
+      "2": "0xa64e80"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 47,
+    "translations": {
+      "0": "ETWS alert message",
+      "1": "ETWS alert message",
+      "2": "ETWS alert message"
+    },
+    "offsets": {
+      "0": "0xa61db8",
+      "1": "0xa6379c",
+      "2": "0xa64e94"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 48,
+    "translations": {
+      "0": "No message to show.",
+      "1": "无信息可显示。",
+      "2": "沒有可顯示的訊息。"
+    },
+    "offsets": {
+      "0": "0xa61dcc",
+      "1": "0xa637b0",
+      "2": "0xa64ea8"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 55,
+    "translations": {
+      "0": "Important Channel,Do not delete.",
+      "1": "Important Channel,Do not delete.",
+      "2": "Important Channel,Do not delete."
+    },
+    "offsets": {
+      "0": "0xa61e48",
+      "1": "0xa63830",
+      "2": "0xa64f2c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 56,
+    "translations": {
+      "0": "This channel is critical in emergencies and can't be deleted.",
+      "1": "此频道是用于紧急情况的关键频道，无法删除。",
+      "2": "此頻道在緊急情況下很重要，因此無法刪除。"
+    },
+    "offsets": {
+      "0": "0xa61e6c",
+      "1": "0xa63854",
+      "2": "0xa64f50"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 61,
+    "translations": {
+      "0": "Cell info display",
+      "1": "小区信息显示",
+      "2": "區域訊息顯示"
+    },
+    "offsets": {
+      "0": "0xa61ee8",
+      "1": "0xa638c4",
+      "2": "0xa64fbc"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 66,
+    "translations": {
+      "0": "Insert template",
+      "1": "Insert template",
+      "2": "Insert template"
+    },
+    "offsets": {
+      "0": "0xa61f3c",
+      "1": "0xa63914",
+      "2": "0xa6500c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 70,
+    "translations": {
+      "0": "Message center number",
+      "1": "Message center number",
+      "2": "Message center number"
+    },
+    "offsets": {
+      "0": "0xa61f6c",
+      "1": "0xa63944",
+      "2": "0xa6503c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 71,
+    "translations": {
+      "0": "Message validity period",
+      "1": "Message validity period",
+      "2": "Message validity period"
+    },
+    "offsets": {
+      "0": "0xa61f84",
+      "1": "0xa6395c",
+      "2": "0xa65054"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 72,
+    "translations": {
+      "0": "Read message",
+      "1": "Read message",
+      "2": "Read message"
+    },
+    "offsets": {
+      "0": "0xa61f9c",
+      "1": "0xa63974",
+      "2": "0xa6506c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 73,
+    "translations": {
+      "0": "Save sent messages",
+      "1": "Save sent messages",
+      "2": "Save sent messages"
+    },
+    "offsets": {
+      "0": "0xa61fac",
+      "1": "0xa63984",
+      "2": "0xa6507c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 82,
+    "translations": {
+      "0": "No voicemail messages.",
+      "1": "没有语音邮件。",
+      "2": "無語音留言訊息。"
+    },
+    "offsets": {
+      "0": "0xa62010",
+      "1": "0xa639e4",
+      "2": "0xa650dc"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 84,
+    "translations": {
+      "0": "Go to Settings and enter a message centre number",
+      "1": "转至“设置”并输入信息中心号码",
+      "2": "前往「設定」並輸入訊息中心號碼"
+    },
+    "offsets": {
+      "0": "0xa62030",
+      "1": "0xa63a00",
+      "2": "0xa650f8"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 85,
+    "translations": {
+      "0": "New message",
+      "1": "New message",
+      "2": "New message"
+    },
+    "offsets": {
+      "0": "0xa62064",
+      "1": "0xa63a24",
+      "2": "0xa6511c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 87,
+    "translations": {
+      "0": "Message had been deleted!",
+      "1": "Message had been deleted!",
+      "2": "Message had been deleted!"
+    },
+    "offsets": {
+      "0": "0xa6207c",
+      "1": "0xa63a3c",
+      "2": "0xa65134"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 130,
+    "translations": {
+      "0": "Not enough space to save the message. Send anyway?",
+      "1": "空间不足，无法保存信息。仍然发送？",
+      "2": "空間不足，無法儲存訊息。是否仍要傳送？"
+    },
+    "offsets": {
+      "0": "0xa62274",
+      "1": "0xa63c34",
+      "2": "0xa6532c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 131,
+    "translations": {
+      "0": "Sentbox",
+      "1": "Sentbox",
+      "2": "Sentbox"
+    },
+    "offsets": {
+      "0": "0xa622a8",
+      "1": "0xa63c5c",
+      "2": "0xa65358"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 132,
+    "translations": {
+      "0": "Message Memory",
+      "1": "Message Memory",
+      "2": "Message Memory"
+    },
+    "offsets": {
+      "0": "0xa622b0",
+      "1": "0xa63c64",
+      "2": "0xa65360"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 135,
+    "translations": {
+      "0": "Maximum number of messages reached.",
+      "1": "信息数已达最大值。",
+      "2": "已達訊息數目上限。"
+    },
+    "offsets": {
+      "0": "0xa622dc",
+      "1": "0xa63c94",
+      "2": "0xa65390"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 145,
+    "translations": {
+      "0": "To send this message, add the correct message centre number to the fixed dialling number list.",
+      "1": "要发送此信息，请将正确的信息中心号码添加到固定拨号表。",
+      "2": "若要傳送此訊息，請將正確的訊息中心號碼增加到固定撥號號碼清單。"
+    },
+    "offsets": {
+      "0": "0xa623a8",
+      "1": "0xa63d54",
+      "2": "0xa65450"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 147,
+    "translations": {
+      "0": "Delete Message",
+      "1": "Delete Message",
+      "2": "Delete Message"
+    },
+    "offsets": {
+      "0": "0xa62414",
+      "1": "0xa63d9c",
+      "2": "0xa654a0"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 148,
+    "translations": {
+      "0": "Delete  All Message",
+      "1": "Delete  All Message",
+      "2": "Delete  All Message"
+    },
+    "offsets": {
+      "0": "0xa62424",
+      "1": "0xa63dac",
+      "2": "0xa654b0"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 149,
+    "translations": {
+      "0": "message",
+      "1": "message",
+      "2": "message"
+    },
+    "offsets": {
+      "0": "0xa62438",
+      "1": "0xa63dc0",
+      "2": "0xa654c4"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 150,
+    "translations": {
+      "0": "SMS Memory:",
+      "1": "SMS Memory:",
+      "2": "SMS Memory:"
+    },
+    "offsets": {
+      "0": "0xa62440",
+      "1": "0xa63dc8",
+      "2": "0xa654cc"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 151,
+    "translations": {
+      "0": "SMS memory full",
+      "1": "SMS memory full",
+      "2": "SMS memory full"
+    },
+    "offsets": {
+      "0": "0xa6244c",
+      "1": "0xa63dd4",
+      "2": "0xa654d8"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 154,
+    "translations": {
+      "0": "SIM1 Storage SMS",
+      "1": "SIM1 Storage SMS",
+      "2": "SIM1 Storage SMS"
+    },
+    "offsets": {
+      "0": "0xa62474",
+      "1": "0xa63dfc",
+      "2": "0xa65500"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 155,
+    "translations": {
+      "0": "SIM2 Storage SMS",
+      "1": "SIM2 Storage SMS",
+      "2": "SIM2 Storage SMS"
+    },
+    "offsets": {
+      "0": "0xa62488",
+      "1": "0xa63e10",
+      "2": "0xa65514"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 156,
+    "translations": {
+      "0": "messages",
+      "1": "messages",
+      "2": "messages"
+    },
+    "offsets": {
+      "0": "0xa6249c",
+      "1": "0xa63e24",
+      "2": "0xa65528"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 157,
+    "translations": {
+      "0": "New messages",
+      "1": "New messages",
+      "2": "New messages"
+    },
+    "offsets": {
+      "0": "0xa624a8",
+      "1": "0xa63e30",
+      "2": "0xa65534"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 158,
+    "translations": {
+      "0": "New SMS",
+      "1": "New SMS",
+      "2": "New SMS"
+    },
+    "offsets": {
+      "0": "0xa624b8",
+      "1": "0xa63e40",
+      "2": "0xa65544"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 160,
+    "translations": {
+      "0": "Unloaded SMS:",
+      "1": "Unloaded SMS:",
+      "2": "Unloaded SMS:"
+    },
+    "offsets": {
+      "0": "0xa624c8",
+      "1": "0xa63e50",
+      "2": "0xa65554"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 165,
+    "translations": {
+      "0": "SMS phone memory full.",
+      "1": "短信手机内存已满。",
+      "2": "短信手機內存已滿。"
+    },
+    "offsets": {
+      "0": "0xa62528",
+      "1": "0xa63eb0",
+      "2": "0xa655b4"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 166,
+    "translations": {
+      "0": "SIM1 SMS memory full – delete some text messages.",
+      "1": "SIM1短信存储已满–请删除部分短信。",
+      "2": "SIM1簡訊記憶體已滿–請刪除部分簡訊。"
+    },
+    "offsets": {
+      "0": "0xa62540",
+      "1": "0xa63ec8",
+      "2": "0xa655cc"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 167,
+    "translations": {
+      "0": "SIM2 SMS memory full – delete some text messages.",
+      "1": "SIM2短信存储已满–请删除部分短信。",
+      "2": "SIM2簡訊記憶體已滿–請刪除部分簡訊。"
+    },
+    "offsets": {
+      "0": "0xa625a8",
+      "1": "0xa63ef4",
+      "2": "0xa655f8"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 169,
+    "translations": {
+      "0": "Delete Same Number",
+      "1": "Delete Same Number",
+      "2": "Delete Same Number"
+    },
+    "offsets": {
+      "0": "0xa62620",
+      "1": "0xa63f30",
+      "2": "0xa65634"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 170,
+    "translations": {
+      "0": "Message locked",
+      "1": "Message locked",
+      "2": "Message locked"
+    },
+    "offsets": {
+      "0": "0xa62634",
+      "1": "0xa63f44",
+      "2": "0xa65648"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 171,
+    "translations": {
+      "0": "Save as draft?",
+      "1": "Save as draft?",
+      "2": "Save as draft?"
+    },
+    "offsets": {
+      "0": "0xa62644",
+      "1": "0xa63f54",
+      "2": "0xa65658"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 178,
+    "translations": {
+      "0": "Messages updated",
+      "1": "信息已更新",
+      "2": "訊息已更新"
+    },
+    "offsets": {
+      "0": "0xa626a4",
+      "1": "0xa63fbc",
+      "2": "0xa656c0"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 179,
+    "translations": {
+      "0": "Sending sms can not be deleted",
+      "1": "Sending sms can not be deleted",
+      "2": "Sending sms can not be deleted"
+    },
+    "offsets": {
+      "0": "0xa626b8",
+      "1": "0xa63fcc",
+      "2": "0xa656d0"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 180,
+    "translations": {
+      "0": "Push message",
+      "1": "推送信息",
+      "2": "推送訊息"
+    },
+    "offsets": {
+      "0": "0xa626d8",
+      "1": "0xa63fec",
+      "2": "0xa656f0"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 181,
+    "translations": {
+      "0": "The message configuration was incorrect and ignored.",
+      "1": "信息配置不正确，已忽略。",
+      "2": "訊息組態不正確，已忽略。"
+    },
+    "offsets": {
+      "0": "0xa626e8",
+      "1": "0xa63ff8",
+      "2": "0xa656fc"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 185,
+    "translations": {
+      "0": "Draft",
+      "1": "草稿",
+      "2": "草稿"
+    },
+    "offsets": {
+      "0": "0xa62758",
+      "1": "0xa6404c",
+      "2": "0xa65750"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 186,
+    "translations": {
+      "0": "No recipient",
+      "1": "没有收件人",
+      "2": "無收訊人"
+    },
+    "offsets": {
+      "0": "0xa62760",
+      "1": "0xa64054",
+      "2": "0xa65758"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 187,
+    "translations": {
+      "0": "No recipient",
+      "1": "没有收件人",
+      "2": "無收件者"
+    },
+    "offsets": {
+      "0": "0xa62760",
+      "1": "0xa64054",
+      "2": "0xa65764"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 190,
+    "translations": {
+      "0": "Type a message",
+      "1": "键入信息",
+      "2": "輸入訊息"
+    },
+    "offsets": {
+      "0": "0xa62784",
+      "1": "0xa64078",
+      "2": "0xa64c54"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 191,
+    "translations": {
+      "0": "Insert options",
+      "1": "插入选项",
+      "2": "插入選項"
+    },
+    "offsets": {
+      "0": "0xa62794",
+      "1": "0xa64084",
+      "2": "0xa65784"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 192,
+    "translations": {
+      "0": "Insert symbol",
+      "1": "插入符号",
+      "2": "插入符號"
+    },
+    "offsets": {
+      "0": "0xa627a4",
+      "1": "0xa64090",
+      "2": "0xa65790"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 193,
+    "translations": {
+      "0": "Insert smiley",
+      "1": "插入表情符号",
+      "2": "插入表情符號"
+    },
+    "offsets": {
+      "0": "0xa627b4",
+      "1": "0xa6409c",
+      "2": "0xa6579c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 194,
+    "translations": {
+      "0": "Insert template",
+      "1": "插入模板",
+      "2": "插入範本"
+    },
+    "offsets": {
+      "0": "0xa61f3c",
+      "1": "0xa640ac",
+      "2": "0xa657ac"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 200,
+    "translations": {
+      "0": "My battery's low. Send me a message.",
+      "1": "我的电池电量低。请给我发送信息。",
+      "2": "我的電量不足。請傳送訊息給我。"
+    },
+    "offsets": {
+      "0": "0xa6282c",
+      "1": "0xa64108",
+      "2": "0xa65804"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 206,
+    "translations": {
+      "0": "Delete conversations",
+      "1": "删除会话",
+      "2": "刪除會談"
+    },
+    "offsets": {
+      "0": "0xa628d4",
+      "1": "0xa641a8",
+      "2": "0xa658a8"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 207,
+    "translations": {
+      "0": "Blocked messages",
+      "1": "阻止的信息",
+      "2": "已封鎖訊息"
+    },
+    "offsets": {
+      "0": "0xa628ec",
+      "1": "0xa641b4",
+      "2": "0xa658b4"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 208,
+    "translations": {
+      "0": "Delete selected messages?",
+      "1": "删除选定的信息？",
+      "2": "刪除已選擇的訊息？"
+    },
+    "offsets": {
+      "0": "0xa62900",
+      "1": "0xa641c4",
+      "2": "0xa658c4"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 209,
+    "translations": {
+      "0": "Delete selected conversations?",
+      "1": "删除选定的会话？\n",
+      "2": "刪除已選擇的會談？\n"
+    },
+    "offsets": {
+      "0": "0xa6291c",
+      "1": "0xa641d8",
+      "2": "0xa658dc"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 210,
+    "translations": {
+      "0": "Delete conversation? All the messages in this conversation will be deleted.",
+      "1": "删除会话？将删除此会话中的所有信息。",
+      "2": "刪除會談？將刪除此會談中的所有訊息。"
+    },
+    "offsets": {
+      "0": "0xa6293c",
+      "1": "0xa641f0",
+      "2": "0xa658f4"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 211,
+    "translations": {
+      "0": "Deleting conversations…",
+      "1": "正在删除会话…",
+      "2": "正在刪除會談…"
+    },
+    "offsets": {
+      "0": "0xa62988",
+      "1": "0xa64218",
+      "2": "0xa6591c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 213,
+    "translations": {
+      "0": "Delete",
+      "1": "删除",
+      "2": "刪除"
+    },
+    "offsets": {
+      "0": "0xa629e4",
+      "1": "0xa64248",
+      "2": "0xa6594c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 214,
+    "translations": {
+      "0": "Delete (%N)",
+      "1": "删除(%N)",
+      "2": "刪除(%N)"
+    },
+    "offsets": {
+      "0": "0xa629ec",
+      "1": "0xa64250",
+      "2": "0xa65954"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 217,
+    "translations": {
+      "0": "Delete",
+      "1": "删除",
+      "2": "刪除"
+    },
+    "offsets": {
+      "0": "0xa629e4",
+      "1": "0xa64248",
+      "2": "0xa6594c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 219,
+    "translations": {
+      "0": "Message will be sent when you’re online again",
+      "1": "信息将在您恢复在线时发送",
+      "2": "訊息將在重新連線時發送"
+    },
+    "offsets": {
+      "0": "0xa62a20",
+      "1": "0xa64284",
+      "2": "0xa65988"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 220,
+    "translations": {
+      "0": "Couldn't send message",
+      "1": "无法发送信息",
+      "2": "無法發送訊息"
+    },
+    "offsets": {
+      "0": "0xa62a80",
+      "1": "0xa642a0",
+      "2": "0xa659a4"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 221,
+    "translations": {
+      "0": "Can't add this. Message will be too big.",
+      "1": "无法添加此内容。信息过大。",
+      "2": "無法增加此內容。訊息將過大。"
+    },
+    "offsets": {
+      "0": "0xa62a98",
+      "1": "0xa642b0",
+      "2": "0xa659b4"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 225,
+    "translations": {
+      "0": "Free up some space or insert a memory card.",
+      "1": "释放一些空间或插入存储卡",
+      "2": "釋放一些空間或插入記憶卡。"
+    },
+    "offsets": {
+      "0": "0xa62b0c",
+      "1": "0xa64304",
+      "2": "0xa65a0c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 229,
+    "translations": {
+      "0": "Messaging",
+      "1": "信息",
+      "2": "訊息"
+    },
+    "offsets": {
+      "0": "0xa62b50",
+      "1": "0xa64344",
+      "2": "0xa65a50"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 230,
+    "translations": {
+      "0": "Send someone a message and say Hi!",
+      "1": "发信息问候一下！",
+      "2": "發送訊息給某人並打個招呼！"
+    },
+    "offsets": {
+      "0": "0xa62b5c",
+      "1": "0xa6434c",
+      "2": "0xa65a58"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 232,
+    "translations": {
+      "0": "New message",
+      "1": "新建信息",
+      "2": "新訊息"
+    },
+    "offsets": {
+      "0": "0xa62064",
+      "1": "0xa64374",
+      "2": "0xa65a8c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 234,
+    "translations": {
+      "0": "Message settings",
+      "1": "信息设置",
+      "2": "訊息設定"
+    },
+    "offsets": {
+      "0": "0xa62b9c",
+      "1": "0xa64388",
+      "2": "0xa65aa0"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 235,
+    "translations": {
+      "0": "Text messages",
+      "1": "短信",
+      "2": "簡訊"
+    },
+    "offsets": {
+      "0": "0xa62bb0",
+      "1": "0xa64394",
+      "2": "0xa65aac"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 236,
+    "translations": {
+      "0": "Text messages",
+      "1": "短信",
+      "2": "簡訊"
+    },
+    "offsets": {
+      "0": "0xa62bb0",
+      "1": "0xa64394",
+      "2": "0xa65aac"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 237,
+    "translations": {
+      "0": "SIM1 message center",
+      "1": "SIM1 message center",
+      "2": "SIM1 message center"
+    },
+    "offsets": {
+      "0": "0xa62bc0",
+      "1": "0xa6439c",
+      "2": "0xa65ab4"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 238,
+    "translations": {
+      "0": "SIM2 message center",
+      "1": "SIM2 message center",
+      "2": "SIM2 message center"
+    },
+    "offsets": {
+      "0": "0xa62bd4",
+      "1": "0xa643b0",
+      "2": "0xa65ac8"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 239,
+    "translations": {
+      "0": "SIM1 message centre",
+      "1": "SIM1信息中心",
+      "2": "SIM1卡訊息中心"
+    },
+    "offsets": {
+      "0": "0xa62be8",
+      "1": "0xa643c4",
+      "2": "0xa65adc"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 240,
+    "translations": {
+      "0": "SIM2 message centre",
+      "1": "SIM2信息中心",
+      "2": "SIM2卡訊息中心"
+    },
+    "offsets": {
+      "0": "0xa62bfc",
+      "1": "0xa643d8",
+      "2": "0xa65af4"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 252,
+    "translations": {
+      "0": "Msg. centre number",
+      "1": "信息中心号码",
+      "2": "訊息中心號碼"
+    },
+    "offsets": {
+      "0": "0xa62c54",
+      "1": "0xa6445c",
+      "2": "0xa65b78"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 254,
+    "translations": {
+      "0": "Clear text",
+      "1": "清除文字",
+      "2": "清除文字"
+    },
+    "offsets": {
+      "0": "0xa62c74",
+      "1": "0xa64478",
+      "2": "0xa65b94"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 255,
+    "translations": {
+      "0": "Deleted",
+      "1": "已删除",
+      "2": "已刪除"
+    },
+    "offsets": {
+      "0": "0xa62c80",
+      "1": "0xa64484",
+      "2": "0xa65ba0"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 257,
+    "translations": {
+      "0": "Save as draft",
+      "1": "另存为草稿",
+      "2": "另存為草稿"
+    },
+    "offsets": {
+      "0": "0xa62c98",
+      "1": "0xa644a0",
+      "2": "0xa65bbc"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 260,
+    "translations": {
+      "0": "Message not sent. Try again.",
+      "1": "信息未发送。请重试。",
+      "2": "訊息未傳送。請再試一次。"
+    },
+    "offsets": {
+      "0": "0xa62cd0",
+      "1": "0xa644d4",
+      "2": "0xa65bf0"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 261,
+    "translations": {
+      "0": "New message",
+      "1": "新信息",
+      "2": "新訊息"
+    },
+    "offsets": {
+      "0": "0xa62064",
+      "1": "0xa644ec",
+      "2": "0xa65a8c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 262,
+    "translations": {
+      "0": "Recipients",
+      "1": "收件人",
+      "2": "收訊人"
+    },
+    "offsets": {
+      "0": "0xa62cf0",
+      "1": "0xa644f8",
+      "2": "0xa65c0c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 263,
+    "translations": {
+      "0": "This attachment is too large for this message. Attachments must be under %U kB.",
+      "1": "此信息的附件太大。附件必须小于%U KB。",
+      "2": "此訊息的附件過大。附件必須小於%U kB。"
+    },
+    "offsets": {
+      "0": "0xa62cfc",
+      "1": "0xa64504",
+      "2": "0xa65c18"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 266,
+    "translations": {
+      "0": "Delete message?",
+      "1": "删除此条信息？",
+      "2": "刪除此訊息？"
+    },
+    "offsets": {
+      "0": "0xa62d58",
+      "1": "0xa64540",
+      "2": "0xa65c54"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 267,
+    "translations": {
+      "0": "Something's wrong with this contact's info or number.",
+      "1": "此联系人的信息或号码存在错误。",
+      "2": "此連絡人資訊或號碼有誤。"
+    },
+    "offsets": {
+      "0": "0xa62d68",
+      "1": "0xa64554",
+      "2": "0xa65c64"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 268,
+    "translations": {
+      "0": "Something's wrong with these contacts' info or numbers.",
+      "1": "这些联系人的信息或号码有问题。",
+      "2": "這些連絡人的資訊或號碼有問題。"
+    },
+    "offsets": {
+      "0": "0xa62da0",
+      "1": "0xa64578",
+      "2": "0xa65c80"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 269,
+    "translations": {
+      "0": "Not sent to %U",
+      "1": "未发送到%U",
+      "2": "未發送至%U"
+    },
+    "offsets": {
+      "0": "0xa62dd8",
+      "1": "0xa6459c",
+      "2": "0xa65ca4"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 270,
+    "translations": {
+      "0": "Sent to %U",
+      "1": "已发送到%U",
+      "2": "已發送至%U"
+    },
+    "offsets": {
+      "0": "0xa62de8",
+      "1": "0xa645ac",
+      "2": "0xa65cb4"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 271,
+    "translations": {
+      "0": "Char. support",
+      "1": "支持不同字符",
+      "2": "字元編碼方式"
+    },
+    "offsets": {
+      "0": "0xa62df4",
+      "1": "0xa645bc",
+      "2": "0xa65cc4"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 275,
+    "translations": {
+      "0": "Character support",
+      "1": "支持不同字符",
+      "2": "支援不同字元"
+    },
+    "offsets": {
+      "0": "0xa62e1c",
+      "1": "0xa645bc",
+      "2": "0xa65cf4"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 276,
+    "translations": {
+      "0": "Sending message now – try again later.",
+      "1": "目前正在发送信息–请稍后重试。",
+      "2": "目前正在傳送訊息–請稍後再試一次。"
+    },
+    "offsets": {
+      "0": "0xa62e30",
+      "1": "0xa645e8",
+      "2": "0xa65d04"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 277,
+    "translations": {
+      "0": "Retrieving message now – try again later.",
+      "1": "目前正在检索信息–请稍后重试。",
+      "2": "目前正在擷取訊息–請S稍後再試一次。"
+    },
+    "offsets": {
+      "0": "0xa62e80",
+      "1": "0xa6460c",
+      "2": "0xa65d2c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 281,
+    "translations": {
+      "0": "Informational",
+      "1": "信息化",
+      "2": "信息化"
+    },
+    "offsets": {
+      "0": "0xa62f1c",
+      "1": "0xa64658",
+      "2": "0xa65d80"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 285,
+    "translations": {
+      "0": "CB message",
+      "1": "CB message",
+      "2": "CB message"
+    },
+    "offsets": {
+      "0": "0xa62f60",
+      "1": "0xa6468c",
+      "2": "0xa65db8"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 302,
+    "translations": {
+      "0": "Inbox",
+      "1": "收件箱",
+      "2": "收件匣"
+    },
+    "offsets": {
+      "0": "0xa63040",
+      "1": "0xa6474c",
+      "2": "0xa65e78"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 338,
+    "translations": {
+      "0": "Test Messages",
+      "1": "短信",
+      "2": "短信"
+    },
+    "offsets": {
+      "0": "0xa632b4",
+      "1": "0xa64394",
+      "2": "0xa660d8"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 339,
+    "translations": {
+      "0": "Messages of particular relevance can be received regardless of the User's settings",
+      "1": "Messages of particular relevance can be received regardless of the User's settings",
+      "2": "Messages of particular relevance can be received regardless of the User's settings"
+    },
+    "offsets": {
+      "0": "0xa632c4",
+      "1": "0xa649b4",
+      "2": "0xa660e0"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 342,
+    "translations": {
+      "0": "Test Message ",
+      "1": "测试信息",
+      "2": "測試消息"
+    },
+    "offsets": {
+      "0": "0xa63348",
+      "1": "0xa64a24",
+      "2": "0xa66150"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 8,
+    "index": 345,
+    "translations": {
+      "0": "%N Alert Message",
+      "1": "%N 警报通知",
+      "2": "%N 警訊通知"
+    },
+    "offsets": {
+      "0": "0xa6336c",
+      "1": "0xa64a40",
+      "2": "0xa6616c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 9,
+    "index": 0,
+    "translations": {
+      "0": "Please input headset!",
+      "1": "Please input headset!",
+      "2": "Please input headset!"
+    },
+    "offsets": {
+      "0": "0xa6c568",
+      "1": "0xa6cb2c",
+      "2": "0xa6cfd8"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 9,
+    "index": 8,
+    "translations": {
+      "0": "Delete this channel!",
+      "1": "Delete this channel!",
+      "2": "Delete this channel!"
+    },
+    "offsets": {
+      "0": "0xa6c628",
+      "1": "0xa6cbd0",
+      "2": "0xa6d080"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 9,
+    "index": 9,
+    "translations": {
+      "0": "Delete all channel!",
+      "1": "Delete all channel!",
+      "2": "Delete all channel!"
+    },
+    "offsets": {
+      "0": "0xa6c640",
+      "1": "0xa6cbe8",
+      "2": "0xa6d098"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 9,
+    "index": 14,
+    "translations": {
+      "0": "Overwrite old channel?",
+      "1": "Overwrite old channel?",
+      "2": "Overwrite old channel?"
+    },
+    "offsets": {
+      "0": "0xa6c698",
+      "1": "0xa6cc3c",
+      "2": "0xa6d0ec"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 9,
+    "index": 19,
+    "translations": {
+      "0": "Delete Old File list",
+      "1": "Delete Old File list",
+      "2": "Delete Old File list"
+    },
+    "offsets": {
+      "0": "0xa6c748",
+      "1": "0xa6cca0",
+      "2": "0xa6d150"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 9,
+    "index": 46,
+    "translations": {
+      "0": "Delete this recording?",
+      "1": "删除此录音？",
+      "2": "刪除此錄音？"
+    },
+    "offsets": {
+      "0": "0xa6c930",
+      "1": "0xa6ce44",
+      "2": "0xa6d2f8"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 9,
+    "index": 47,
+    "translations": {
+      "0": "Maximum number of favourites reached. Delete some and try again.",
+      "1": "已达到收藏夹数量上限。请删除一些并重试。",
+      "2": "已達我的最愛數目上限。刪除一些，然後再試一次。"
+    },
+    "offsets": {
+      "0": "0xa6c948",
+      "1": "0xa6ce54",
+      "2": "0xa6d308"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 9,
+    "index": 65,
+    "translations": {
+      "0": "Insert headset to get better performance",
+      "1": "插入耳机以获得更好的性能",
+      "2": "插上耳機以取得更好的音效"
+    },
+    "offsets": {
+      "0": "0xa6cb00",
+      "1": "0xa6cfbc",
+      "2": "0xa6d47c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 13,
+    "index": 1,
+    "translations": {
+      "0": "Message alert",
+      "1": "Message alert",
+      "2": "Message alert"
+    },
+    "offsets": {
+      "0": "0xa78730",
+      "1": "0xa7afc8",
+      "2": "0xa7d4c8"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 13,
+    "index": 2,
+    "translations": {
+      "0": "Keypad tones",
+      "1": "Keypad tones",
+      "2": "Keypad tones"
+    },
+    "offsets": {
+      "0": "0xa78740",
+      "1": "0xa7afd8",
+      "2": "0xa7d4d8"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 13,
+    "index": 6,
+    "translations": {
+      "0": "Message ringtone",
+      "1": "Message ringtone",
+      "2": "Message ringtone"
+    },
+    "offsets": {
+      "0": "0xa78788",
+      "1": "0xa7b020",
+      "2": "0xa7d520"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 13,
+    "index": 24,
+    "translations": {
+      "0": "Keypad light",
+      "1": "Keypad light",
+      "2": "Keypad light"
+    },
+    "offsets": {
+      "0": "0xa7888c",
+      "1": "0xa7b124",
+      "2": "0xa7d624"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 13,
+    "index": 35,
+    "translations": {
+      "0": "Call trackers",
+      "1": "通话时费选项 ",
+      "2": "通話記錄"
+    },
+    "offsets": {
+      "0": "0xa78914",
+      "1": "0xa7b1a4",
+      "2": "0xa7d6a4"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 13,
+    "index": 36,
+    "translations": {
+      "0": "Call trackers",
+      "1": "通话时费选项  ",
+      "2": "通話記錄"
+    },
+    "offsets": {
+      "0": "0xa78914",
+      "1": "0xa7b1b8",
+      "2": "0xa7d6a4"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 13,
+    "index": 41,
+    "translations": {
+      "0": "Enter time (1– 60 seconds)",
+      "1": "输入时间(1– 60秒)",
+      "2": "輸入時間(1– 60秒)"
+    },
+    "offsets": {
+      "0": "0xa78954",
+      "1": "0xa7b1f8",
+      "2": "0xa7d6dc"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 13,
+    "index": 116,
+    "translations": {
+      "0": "Restore factory settings and delete all user data and settings?",
+      "1": "Restore factory settings and delete all user data and settings?",
+      "2": "Restore factory settings and delete all user data and settings?"
+    },
+    "offsets": {
+      "0": "0xa78dc0",
+      "1": "0xa7b654",
+      "2": "0xa7db30"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 13,
+    "index": 158,
+    "translations": {
+      "0": "Send SMS",
+      "1": "Send SMS",
+      "2": "Send SMS"
+    },
+    "offsets": {
+      "0": "0xa79090",
+      "1": "0xa7b924",
+      "2": "0xa7de00"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 13,
+    "index": 165,
+    "translations": {
+      "0": "Main menu style",
+      "1": "Main menu style",
+      "2": "Main menu style"
+    },
+    "offsets": {
+      "0": "0xa791e4",
+      "1": "0xa7ba78",
+      "2": "0xa7df54"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 13,
+    "index": 166,
+    "translations": {
+      "0": "Block menu",
+      "1": "Block menu",
+      "2": "Block menu"
+    },
+    "offsets": {
+      "0": "0xa791f4",
+      "1": "0xa7ba88",
+      "2": "0xa7df64"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 13,
+    "index": 189,
+    "translations": {
+      "0": "3D style mainmenu",
+      "1": "3D style mainmenu",
+      "2": "3D style mainmenu"
+    },
+    "offsets": {
+      "0": "0xa7937c",
+      "1": "0xa7bc10",
+      "2": "0xa7e0ec"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 13,
+    "index": 200,
+    "translations": {
+      "0": "Reply Message",
+      "1": "Reply Message",
+      "2": "Reply Message"
+    },
+    "offsets": {
+      "0": "0xa7940c",
+      "1": "0xa7bca0",
+      "2": "0xa7e17c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 13,
+    "index": 201,
+    "translations": {
+      "0": "Reply SMS",
+      "1": "Reply SMS",
+      "2": "Reply SMS"
+    },
+    "offsets": {
+      "0": "0xa7941c",
+      "1": "0xa7bcb0",
+      "2": "0xa7e18c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 13,
+    "index": 211,
+    "translations": {
+      "0": "Shortcut 1",
+      "1": "Shortcut 1",
+      "2": "Shortcut 1"
+    },
+    "offsets": {
+      "0": "0xa794d4",
+      "1": "0xa7bd68",
+      "2": "0xa7e244"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 13,
+    "index": 212,
+    "translations": {
+      "0": "Shortcut 2",
+      "1": "Shortcut 2",
+      "2": "Shortcut 2"
+    },
+    "offsets": {
+      "0": "0xa794e0",
+      "1": "0xa7bd74",
+      "2": "0xa7e250"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 13,
+    "index": 213,
+    "translations": {
+      "0": "Shortcut 3",
+      "1": "Shortcut 3",
+      "2": "Shortcut 3"
+    },
+    "offsets": {
+      "0": "0xa794ec",
+      "1": "0xa7bd80",
+      "2": "0xa7e25c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 13,
+    "index": 214,
+    "translations": {
+      "0": "shortcut 4",
+      "1": "shortcut 4",
+      "2": "shortcut 4"
+    },
+    "offsets": {
+      "0": "0xa794f8",
+      "1": "0xa7bd8c",
+      "2": "0xa7e268"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 13,
+    "index": 215,
+    "translations": {
+      "0": "shortcut 5",
+      "1": "shortcut 5",
+      "2": "shortcut 5"
+    },
+    "offsets": {
+      "0": "0xa79504",
+      "1": "0xa7bd98",
+      "2": "0xa7e274"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 13,
+    "index": 217,
+    "translations": {
+      "0": "Red Key Locks Keyboard",
+      "1": "Red Key Locks Keyboard",
+      "2": "Red Key Locks Keyboard"
+    },
+    "offsets": {
+      "0": "0xa7951c",
+      "1": "0xa7bdb0",
+      "2": "0xa7e28c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 13,
+    "index": 225,
+    "translations": {
+      "0": "SIM1 Message alert",
+      "1": "SIM1 Message alert",
+      "2": "SIM1 Message alert"
+    },
+    "offsets": {
+      "0": "0xa795a8",
+      "1": "0xa7be3c",
+      "2": "0xa7e318"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 13,
+    "index": 226,
+    "translations": {
+      "0": "SIM2 Message alert",
+      "1": "SIM2 Message alert",
+      "2": "SIM2 Message alert"
+    },
+    "offsets": {
+      "0": "0xa795bc",
+      "1": "0xa7be50",
+      "2": "0xa7e32c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 13,
+    "index": 246,
+    "translations": {
+      "0": "Block Message",
+      "1": "Block Message",
+      "2": "Block Message"
+    },
+    "offsets": {
+      "0": "0xa798b8",
+      "1": "0xa7c144",
+      "2": "0xa7e620"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 13,
+    "index": 249,
+    "translations": {
+      "0": "Please input number",
+      "1": "Please input number",
+      "2": "Please input number"
+    },
+    "offsets": {
+      "0": "0xa798e8",
+      "1": "0xa7c174",
+      "2": "0xa7e650"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 13,
+    "index": 258,
+    "translations": {
+      "0": "please input phone password(4-8)",
+      "1": "please input phone password(4-8)",
+      "2": "please input phone password(4-8)"
+    },
+    "offsets": {
+      "0": "0xa79984",
+      "1": "0xa7c200",
+      "2": "0xa7e6dc"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 13,
+    "index": 278,
+    "translations": {
+      "0": "Messages",
+      "1": "信息",
+      "2": "訊息"
+    },
+    "offsets": {
+      "0": "0xa79ad0",
+      "1": "0xa7c334",
+      "2": "0xa7e810"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 13,
+    "index": 284,
+    "translations": {
+      "0": "Operator messages",
+      "1": "运营商信息",
+      "2": "系統業者訊息"
+    },
+    "offsets": {
+      "0": "0xa79b10",
+      "1": "0xa7c368",
+      "2": "0xa7e848"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 13,
+    "index": 289,
+    "translations": {
+      "0": "Product info",
+      "1": "产品信息",
+      "2": "產品資訊"
+    },
+    "offsets": {
+      "0": "0xa79b3c",
+      "1": "0xa7c398",
+      "2": "0xa7e874"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 13,
+    "index": 293,
+    "translations": {
+      "0": "Personalisation",
+      "1": "个性化选项",
+      "2": "個人化"
+    },
+    "offsets": {
+      "0": "0xa79b8c",
+      "1": "0xa7c3cc",
+      "2": "0xa7e8a8"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 13,
+    "index": 294,
+    "translations": {
+      "0": "Product info",
+      "1": "产品信息",
+      "2": "產品資訊"
+    },
+    "offsets": {
+      "0": "0xa79b3c",
+      "1": "0xa7c398",
+      "2": "0xa7e874"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 13,
+    "index": 305,
+    "translations": {
+      "0": "Keypad",
+      "1": "键盘",
+      "2": "鍵盤"
+    },
+    "offsets": {
+      "0": "0xa79c34",
+      "1": "0xa7c468",
+      "2": "0xa7e944"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 13,
+    "index": 311,
+    "translations": {
+      "0": "Keypad shortcuts",
+      "1": "键盘快捷操作",
+      "2": "鍵盤快捷操作"
+    },
+    "offsets": {
+      "0": "0xa79c88",
+      "1": "0xa7c4ac",
+      "2": "0xa7e98c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 13,
+    "index": 313,
+    "translations": {
+      "0": "Lock screen shortcuts",
+      "1": "锁定屏幕快捷操作",
+      "2": "鎖定螢幕快捷操作"
+    },
+    "offsets": {
+      "0": "0xa79c9c",
+      "1": "0xa7c4c8",
+      "2": "0xa7e9a8"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 13,
+    "index": 329,
+    "translations": {
+      "0": "Security",
+      "1": "安全选项",
+      "2": "安全"
+    },
+    "offsets": {
+      "0": "0xa79dc4",
+      "1": "0xa7c5b8",
+      "2": "0xa7ea80"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 13,
+    "index": 333,
+    "translations": {
+      "0": "Feedback sent",
+      "1": "反馈已发送",
+      "2": "回饋已傳送"
+    },
+    "offsets": {
+      "0": "0xa79e00",
+      "1": "0xa7c5f4",
+      "2": "0xa7eab4"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 13,
+    "index": 340,
+    "translations": {
+      "0": "Message alert",
+      "1": "信息提示",
+      "2": "訊息提示"
+    },
+    "offsets": {
+      "0": "0xa78730",
+      "1": "0xa7c66c",
+      "2": "0xa7eb34"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 13,
+    "index": 351,
+    "translations": {
+      "0": "Messaging",
+      "1": "信息",
+      "2": "訊息"
+    },
+    "offsets": {
+      "0": "0xa79f38",
+      "1": "0xa7c334",
+      "2": "0xa7e810"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 13,
+    "index": 374,
+    "translations": {
+      "0": "Menu",
+      "1": "功能表",
+      "2": "功能表"
+    },
+    "offsets": {
+      "0": "0xa7a024",
+      "1": "0xa7c7d8",
+      "2": "0xa7ec98"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 13,
+    "index": 375,
+    "translations": {
+      "0": "Messaging",
+      "1": "信息",
+      "2": "訊息"
+    },
+    "offsets": {
+      "0": "0xa79f38",
+      "1": "0xa7c334",
+      "2": "0xa7e810"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 13,
+    "index": 410,
+    "translations": {
+      "0": "Security",
+      "1": "安全选项",
+      "2": "安全"
+    },
+    "offsets": {
+      "0": "0xa79dc4",
+      "1": "0xa7c5b8",
+      "2": "0xa7ea80"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 13,
+    "index": 430,
+    "translations": {
+      "0": "Enter SIM PIN:",
+      "1": "输入SIM卡PIN码：",
+      "2": "輸入SIM PIN："
+    },
+    "offsets": {
+      "0": "0xa7a2e4",
+      "1": "0xa7ca48",
+      "2": "0xa7ef18"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 13,
+    "index": 431,
+    "translations": {
+      "0": "Enter barring password:",
+      "1": "输入呼叫限制密码：",
+      "2": "請輸入限制密碼："
+    },
+    "offsets": {
+      "0": "0xa7a2f4",
+      "1": "0xa7ca64",
+      "2": "0xa7ef30"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 13,
+    "index": 439,
+    "translations": {
+      "0": "Call options",
+      "1": "通话选项",
+      "2": "通話選項"
+    },
+    "offsets": {
+      "0": "0xa7a394",
+      "1": "0xa7cb00",
+      "2": "0xa7efd0"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 13,
+    "index": 440,
+    "translations": {
+      "0": "SIM options",
+      "1": "SIM卡选项",
+      "2": "SIM卡選項"
+    },
+    "offsets": {
+      "0": "0xa7a3a4",
+      "1": "0xa7cb0c",
+      "2": "0xa7efdc"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 13,
+    "index": 469,
+    "translations": {
+      "0": "Enter phone number:",
+      "1": "输入电话号码：",
+      "2": "輸入電話號碼："
+    },
+    "offsets": {
+      "0": "0xa7a5e4",
+      "1": "0xa7ccdc",
+      "2": "0xa7f1c0"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 13,
+    "index": 474,
+    "translations": {
+      "0": "Caller ID will now be sent",
+      "1": "现在将发送本机号码",
+      "2": "本機號碼現已傳送"
+    },
+    "offsets": {
+      "0": "0xa7a650",
+      "1": "0xa7cd34",
+      "2": "0xa7f218"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 13,
+    "index": 484,
+    "translations": {
+      "0": "Do you want to remove your Microsoft account from this phone? This resets the phone to factory settings and deletes your service data.",
+      "1": "是否将您的Microsoft帐户从此手机移除？这会将手机重置为出厂设置并删除服务数据。",
+      "2": "是否要從此手機移除您的Microsoft帳號？這會將手機重設為原廠設定並會刪除您的服務數據。"
+    },
+    "offsets": {
+      "0": "0xa7a774",
+      "1": "0xa7ce30",
+      "2": "0xa7f318"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 13,
+    "index": 492,
+    "translations": {
+      "0": "Restore factory settings and delete all user data and settings?",
+      "1": "恢复出厂设置并删除所有用户数据和设置？",
+      "2": "還原原廠設定並刪除所有使用者資料和設定？"
+    },
+    "offsets": {
+      "0": "0xa78dc0",
+      "1": "0xa7cee8",
+      "2": "0xa7f3d4"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 13,
+    "index": 494,
+    "translations": {
+      "0": "Remove number",
+      "1": "删除号码",
+      "2": "移除號碼"
+    },
+    "offsets": {
+      "0": "0xa7a86c",
+      "1": "0xa7cf20",
+      "2": "0xa7f40c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 13,
+    "index": 497,
+    "translations": {
+      "0": "Number removed",
+      "1": "号码已删除",
+      "2": "號碼已移除"
+    },
+    "offsets": {
+      "0": "0xa7a8a8",
+      "1": "0xa7cf58",
+      "2": "0xa7f440"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 13,
+    "index": 519,
+    "translations": {
+      "0": "SOS message settings",
+      "1": "SOS message settings",
+      "2": "SOS message settings"
+    },
+    "offsets": {
+      "0": "0xa7aa08",
+      "1": "0xa7d0cc",
+      "2": "0xa7f5a0"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 13,
+    "index": 520,
+    "translations": {
+      "0": "SOS message sending",
+      "1": "SOS message sending",
+      "2": "SOS message sending"
+    },
+    "offsets": {
+      "0": "0xa7aa20",
+      "1": "0xa7d0e4",
+      "2": "0xa7f5b8"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 13,
+    "index": 525,
+    "translations": {
+      "0": "SOS message settings: Edit your personal text for emergency messages.",
+      "1": "SOS message settings: Edit your personal text for emergency messages.",
+      "2": "SOS message settings: Edit your personal text for emergency messages."
+    },
+    "offsets": {
+      "0": "0xa7aad0",
+      "1": "0xa7d194",
+      "2": "0xa7f668"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 13,
+    "index": 526,
+    "translations": {
+      "0": "SOS settings: Config the switch of SOS and its sub-function like message sending, led alert, etc.",
+      "1": "SOS settings: Config the switch of SOS and its sub-function like message sending, led alert, etc.",
+      "2": "SOS settings: Config the switch of SOS and its sub-function like message sending, led alert, etc."
+    },
+    "offsets": {
+      "0": "0xa7ab18",
+      "1": "0xa7d1dc",
+      "2": "0xa7f6b0"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 13,
+    "index": 528,
+    "translations": {
+      "0": "Insert a SIM card or Turn off flight mode",
+      "1": "插入SIM卡或关闭飞行模式",
+      "2": "插入SIM卡或關閉飛行模式"
+    },
+    "offsets": {
+      "0": "0xa7ab94",
+      "1": "0xa7d250",
+      "2": "0xa7f724"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 13,
+    "index": 529,
+    "translations": {
+      "0": "Put in a memory card",
+      "1": "请插入存储卡",
+      "2": "請插入記憶卡"
+    },
+    "offsets": {
+      "0": "0xa7abc0",
+      "1": "0xa7d270",
+      "2": "0xa7f744"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 13,
+    "index": 538,
+    "translations": {
+      "0": "Fail to delete old Pac file",
+      "1": " ",
+      "2": "Fail to delete old Pac file"
+    },
+    "offsets": {
+      "0": "0xa7adc4",
+      "1": "0xa7d3a0",
+      "2": "0xa7f884"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 13,
+    "index": 545,
+    "translations": {
+      "0": "User data could be erased caused by update purpose. \nThe update will continue about 3 minutes, blue screen will be shown during update process, please do not power off or remove battery.",
+      "1": "由于更新目的，可能会删除用户数据。\n升级将持续约3分钟，更新过程中将显示蓝屏，请勿关闭电源或取出电池。",
+      "2": "由於更新目的，可能會刪除用戶數據。\n升級將持續約3分鐘，更新過程中將顯示藍屏，請勿關閉電源或取出電池。"
+    },
+    "offsets": {
+      "0": "0xa7ae90",
+      "1": "0xa7d410",
+      "2": "0xa7f924"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 14,
+    "index": 5,
+    "translations": {
+      "0": "Delete from list",
+      "1": "Delete from list",
+      "2": "Delete from list"
+    },
+    "offsets": {
+      "0": "0xa839ec",
+      "1": "0xa841b0",
+      "2": "0xa84870"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 14,
+    "index": 6,
+    "translations": {
+      "0": "Delete",
+      "1": "Delete",
+      "2": "Delete"
+    },
+    "offsets": {
+      "0": "0xa83a00",
+      "1": "0xa841c4",
+      "2": "0xa84884"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 14,
+    "index": 8,
+    "translations": {
+      "0": "Input list name",
+      "1": "Input list name",
+      "2": "Input list name"
+    },
+    "offsets": {
+      "0": "0xa83a14",
+      "1": "0xa841d8",
+      "2": "0xa84898"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 14,
+    "index": 27,
+    "translations": {
+      "0": "Delete Real Music",
+      "1": "Delete Real Music",
+      "2": "Delete Real Music"
+    },
+    "offsets": {
+      "0": "0xa83b7c",
+      "1": "0xa84330",
+      "2": "0xa849e8"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 14,
+    "index": 28,
+    "translations": {
+      "0": "Delete Real Music?",
+      "1": "Delete Real Music?",
+      "2": "Delete Real Music?"
+    },
+    "offsets": {
+      "0": "0xa83b90",
+      "1": "0xa84344",
+      "2": "0xa849fc"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 14,
+    "index": 31,
+    "translations": {
+      "0": "Cannot delete an opened file!",
+      "1": "Cannot delete an opened file!",
+      "2": "Cannot delete an opened file!"
+    },
+    "offsets": {
+      "0": "0xa83bd8",
+      "1": "0xa8438c",
+      "2": "0xa84a44"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 14,
+    "index": 53,
+    "translations": {
+      "0": "Multi media message",
+      "1": "Multi media message",
+      "2": "Multi media message"
+    },
+    "offsets": {
+      "0": "0xa83d64",
+      "1": "0xa84514",
+      "2": "0xa84bd4"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 14,
+    "index": 60,
+    "translations": {
+      "0": "Delete album",
+      "1": "删除专辑",
+      "2": "刪除專輯"
+    },
+    "offsets": {
+      "0": "0xa83dbc",
+      "1": "0xa84570",
+      "2": "0xa84c34"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 14,
+    "index": 61,
+    "translations": {
+      "0": "Delete artist",
+      "1": "删除艺术家",
+      "2": "刪除演出者"
+    },
+    "offsets": {
+      "0": "0xa83dcc",
+      "1": "0xa8457c",
+      "2": "0xa84c40"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 14,
+    "index": 62,
+    "translations": {
+      "0": "Delete playlist",
+      "1": "删除播放列表",
+      "2": "刪除播放清單"
+    },
+    "offsets": {
+      "0": "0xa83ddc",
+      "1": "0xa8458c",
+      "2": "0xa84c50"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 14,
+    "index": 63,
+    "translations": {
+      "0": "Delete all songs by this artist?",
+      "1": "删除此艺术家的全部歌曲？",
+      "2": "刪除此演出者的所有歌曲？"
+    },
+    "offsets": {
+      "0": "0xa83dec",
+      "1": "0xa8459c",
+      "2": "0xa84c60"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 14,
+    "index": 64,
+    "translations": {
+      "0": "Delete all songs on this album?",
+      "1": "删除此专辑上的全部歌曲？",
+      "2": "刪除此專輯上的所有歌曲？"
+    },
+    "offsets": {
+      "0": "0xa83e10",
+      "1": "0xa845b8",
+      "2": "0xa84c7c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 14,
+    "index": 65,
+    "translations": {
+      "0": "Delete this playlist?",
+      "1": "删除此播放列表？",
+      "2": "刪除此播放清單？"
+    },
+    "offsets": {
+      "0": "0xa83e30",
+      "1": "0xa845d4",
+      "2": "0xa84c98"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 14,
+    "index": 68,
+    "translations": {
+      "0": "Artist deleted",
+      "1": "艺术家已删除",
+      "2": "演出者已刪除"
+    },
+    "offsets": {
+      "0": "0xa83e6c",
+      "1": "0xa8460c",
+      "2": "0xa84cd0"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 14,
+    "index": 69,
+    "translations": {
+      "0": "Album deleted",
+      "1": "专辑已删除",
+      "2": "專輯已刪除"
+    },
+    "offsets": {
+      "0": "0xa83e7c",
+      "1": "0xa8461c",
+      "2": "0xa84ce0"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 14,
+    "index": 70,
+    "translations": {
+      "0": "Playlist deleted",
+      "1": "播放列表已删除",
+      "2": "播放清單已刪除"
+    },
+    "offsets": {
+      "0": "0xa83e8c",
+      "1": "0xa8462c",
+      "2": "0xa84cf0"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 14,
+    "index": 72,
+    "translations": {
+      "0": "Delete songs",
+      "1": "删除歌曲",
+      "2": "刪除歌曲"
+    },
+    "offsets": {
+      "0": "0xa83eb0",
+      "1": "0xa84650",
+      "2": "0xa84d14"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 14,
+    "index": 85,
+    "translations": {
+      "0": "Deleting music files…",
+      "1": "正在删除音乐文件…",
+      "2": "正在刪除音樂檔案…"
+    },
+    "offsets": {
+      "0": "0xa83f4c",
+      "1": "0xa846d0",
+      "2": "0xa84d94"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 14,
+    "index": 88,
+    "translations": {
+      "0": "Can't delete this music file as it's now playing",
+      "1": "正在播放此音乐文件，无法将其删除",
+      "2": "目前正在播放此音樂檔案，因此無法將其刪除"
+    },
+    "offsets": {
+      "0": "0xa83fc8",
+      "1": "0xa84714",
+      "2": "0xa84de0"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 14,
+    "index": 89,
+    "translations": {
+      "0": "Can't delete this artist while the artist's song is playing",
+      "1": "正在播放此艺术家的歌曲，无法将其删除",
+      "2": "無法在播放此演出者的歌曲時刪除該演出者"
+    },
+    "offsets": {
+      "0": "0xa83ffc",
+      "1": "0xa84738",
+      "2": "0xa84e0c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 14,
+    "index": 90,
+    "translations": {
+      "0": "Can't delete the album while this album's song is playing",
+      "1": "正在播放此专辑的歌曲，无法将其删除",
+      "2": "無法在播放此專輯的歌曲時刪除該專輯"
+    },
+    "offsets": {
+      "0": "0xa84038",
+      "1": "0xa84760",
+      "2": "0xa84e38"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 15,
+    "index": 63,
+    "translations": {
+      "0": "Call not answered because your caller ID is hidden. Check your options in Settings.",
+      "1": "由于您的本机号码被隐藏，呼叫未接听。请检查设置中的选项。",
+      "2": "通話無應答，因為您的本機號碼已隱藏。請檢查「設定」中的選項。"
+    },
+    "offsets": {
+      "0": "0xa9f100",
+      "1": "0xaa03c4",
+      "2": "0xaa15e4"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 15,
+    "index": 103,
+    "translations": {
+      "0": "Last sent:",
+      "1": "上次已发送：",
+      "2": "上次已傳送："
+    },
+    "offsets": {
+      "0": "0xa9f3d4",
+      "1": "0xaa0674",
+      "2": "0xaa1894"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 15,
+    "index": 106,
+    "translations": {
+      "0": "All sent:",
+      "1": "全部已发送：",
+      "2": "全部已傳送："
+    },
+    "offsets": {
+      "0": "0xa9f400",
+      "1": "0xaa06a4",
+      "2": "0xaa18c4"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 15,
+    "index": 111,
+    "translations": {
+      "0": "Delete",
+      "1": "删除",
+      "2": "刪除"
+    },
+    "offsets": {
+      "0": "0xa9f468",
+      "1": "0xaa06fc",
+      "2": "0xaa191c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 15,
+    "index": 114,
+    "translations": {
+      "0": "Text message",
+      "1": "短信",
+      "2": "簡訊"
+    },
+    "offsets": {
+      "0": "0xa9f484",
+      "1": "0xaa0718",
+      "2": "0xaa1938"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 15,
+    "index": 115,
+    "translations": {
+      "0": "Assign to text message",
+      "1": "设定为信息",
+      "2": "設定至簡訊"
+    },
+    "offsets": {
+      "0": "0xa9f494",
+      "1": "0xaa0720",
+      "2": "0xaa1940"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 15,
+    "index": 121,
+    "translations": {
+      "0": "Delete speed dial from key ⁯%N⁮?",
+      "1": "删除单键拨号键%N？",
+      "2": "取消按鍵%N單鍵撥號？"
+    },
+    "offsets": {
+      "0": "0xa9f528",
+      "1": "0xaa07a8",
+      "2": "0xaa19c0"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 15,
+    "index": 123,
+    "translations": {
+      "0": "Speed dial deleted from ⁯%N⁮",
+      "1": "单键拨号%N已删除",
+      "2": "按鍵%N的單鍵撥號已取消"
+    },
+    "offsets": {
+      "0": "0xa9f574",
+      "1": "0xaa07cc",
+      "2": "0xaa19e8"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 15,
+    "index": 126,
+    "translations": {
+      "0": "Delete call?",
+      "1": "删除呼叫？",
+      "2": "刪除通話？"
+    },
+    "offsets": {
+      "0": "0xa9f5f0",
+      "1": "0xaa0814",
+      "2": "0xaa1a34"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 15,
+    "index": 127,
+    "translations": {
+      "0": "Delete all calls?",
+      "1": "删除所有通话？",
+      "2": "刪除所有通話？"
+    },
+    "offsets": {
+      "0": "0xa9f600",
+      "1": "0xaa0824",
+      "2": "0xaa1a44"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 15,
+    "index": 135,
+    "translations": {
+      "0": "Call deleted",
+      "1": "呼叫已删除",
+      "2": "通話已刪除"
+    },
+    "offsets": {
+      "0": "0xa9f660",
+      "1": "0xaa087c",
+      "2": "0xaa1aa0"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 15,
+    "index": 136,
+    "translations": {
+      "0": "All calls deleted",
+      "1": "所有通话均已删除",
+      "2": "已刪除所有通話"
+    },
+    "offsets": {
+      "0": "0xa9f670",
+      "1": "0xaa088c",
+      "2": "0xaa1ab0"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 15,
+    "index": 169,
+    "translations": {
+      "0": "Text reply",
+      "1": "短信回复",
+      "2": "文字回覆"
+    },
+    "offsets": {
+      "0": "0xa9f800",
+      "1": "0xaa0a44",
+      "2": "0xaa1c68"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 15,
+    "index": 172,
+    "translations": {
+      "0": "\"My battery's low. Send me a message.\"",
+      "1": "\"手机电量不足。请给我发短信。\"",
+      "2": "「我的電量不足。請傳送訊息給我。」"
+    },
+    "offsets": {
+      "0": "0xa9f860",
+      "1": "0xaa0aa0",
+      "2": "0xaa1cc0"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 15,
+    "index": 180,
+    "translations": {
+      "0": "The following tone is being sent:",
+      "1": "将发送以下铃声：",
+      "2": "將發送以下鈴聲："
+    },
+    "offsets": {
+      "0": "0xa9f96c",
+      "1": "0xaa0b84",
+      "2": "0xaa1db8"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 17,
+    "index": 14,
+    "translations": {
+      "0": "Is Overwrite or not",
+      "1": "Is Overwrite or not",
+      "2": "Is Overwrite or not"
+    },
+    "offsets": {
+      "0": "0xaa47f8",
+      "1": "0xaa5c48",
+      "2": "0xaa6e30"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 17,
+    "index": 20,
+    "translations": {
+      "0": "Delete Group",
+      "1": "Delete Group",
+      "2": "Delete Group"
+    },
+    "offsets": {
+      "0": "0xaa4850",
+      "1": "0xaa5ca0",
+      "2": "0xaa6e88"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 17,
+    "index": 41,
+    "translations": {
+      "0": "Pls Input Search String",
+      "1": "Pls Input Search String",
+      "2": "Pls Input Search String"
+    },
+    "offsets": {
+      "0": "0xaa49d4",
+      "1": "0xaa5e18",
+      "2": "0xaa700c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 17,
+    "index": 43,
+    "translations": {
+      "0": "Multi Delete",
+      "1": "Multi Delete",
+      "2": "Multi Delete"
+    },
+    "offsets": {
+      "0": "0xaa49fc",
+      "1": "0xaa5e40",
+      "2": "0xaa7034"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 17,
+    "index": 65,
+    "translations": {
+      "0": "Instant Message",
+      "1": "Instant Message",
+      "2": "Instant Message"
+    },
+    "offsets": {
+      "0": "0xaa4af0",
+      "1": "0xaa5f34",
+      "2": "0xaa7128"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 17,
+    "index": 81,
+    "translations": {
+      "0": "Please input content",
+      "1": "Please input content",
+      "2": "Please input content"
+    },
+    "offsets": {
+      "0": "0xaa4bd8",
+      "1": "0xaa601c",
+      "2": "0xaa7210"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 17,
+    "index": 91,
+    "translations": {
+      "0": "Delete Contact",
+      "1": "Delete Contact",
+      "2": "Delete Contact"
+    },
+    "offsets": {
+      "0": "0xaa4ca4",
+      "1": "0xaa60e8",
+      "2": "0xaa72dc"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 17,
+    "index": 100,
+    "translations": {
+      "0": "Write group message",
+      "1": "Write group message",
+      "2": "Write group message"
+    },
+    "offsets": {
+      "0": "0xaa4d30",
+      "1": "0xaa6174",
+      "2": "0xaa7368"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 17,
+    "index": 106,
+    "translations": {
+      "0": "Some information may be lost. Do you want to continue?",
+      "1": "部分信息可能会丢失。是否要继续？",
+      "2": "部分資訊可能會遺失。是否要繼續？"
+    },
+    "offsets": {
+      "0": "0xaa4dc8",
+      "1": "0xaa620c",
+      "2": "0xaa7400"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 17,
+    "index": 109,
+    "translations": {
+      "0": "You've exceeded the maximum number of recipients.",
+      "1": "您已超出收件人数上限。",
+      "2": "已超過收件者數目上限。"
+    },
+    "offsets": {
+      "0": "0xaa4e28",
+      "1": "0xaa6254",
+      "2": "0xaa7448"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 17,
+    "index": 120,
+    "translations": {
+      "0": "Deleting contacts…",
+      "1": "正在删除联系人…",
+      "2": "正在刪除連絡人…"
+    },
+    "offsets": {
+      "0": "0xaa4f20",
+      "1": "0xaa6314",
+      "2": "0xaa750c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 17,
+    "index": 122,
+    "translations": {
+      "0": "1 contact deleted",
+      "1": "1个联系人已删除",
+      "2": "1位連絡人已刪除"
+    },
+    "offsets": {
+      "0": "0xaa4f5c",
+      "1": "0xaa633c",
+      "2": "0xaa7538"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 17,
+    "index": 123,
+    "translations": {
+      "0": "%N contacts deleted",
+      "1": "%N个联系人已删除",
+      "2": "%N位連絡人已刪除"
+    },
+    "offsets": {
+      "0": "0xaa4f70",
+      "1": "0xaa6350",
+      "2": "0xaa754c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 17,
+    "index": 128,
+    "translations": {
+      "0": "Delete 1 contact from your phone?",
+      "1": "从手机中删除1个联系人？",
+      "2": "從您的手機刪除1個連絡人？"
+    },
+    "offsets": {
+      "0": "0xaa5040",
+      "1": "0xaa6418",
+      "2": "0xaa7618"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 17,
+    "index": 129,
+    "translations": {
+      "0": "Delete %N contacts from your phone?",
+      "1": "从手机中删除%N个联系人？",
+      "2": "從您的手機刪除%N個連絡人？"
+    },
+    "offsets": {
+      "0": "0xaa5064",
+      "1": "0xaa6434",
+      "2": "0xaa7638"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 17,
+    "index": 140,
+    "translations": {
+      "0": "Something's missing. Enter your contact's details.",
+      "1": "某些内容缺失。请输入联系人的详情。",
+      "2": "缺少某些內容。請輸入連絡人詳情。"
+    },
+    "offsets": {
+      "0": "0xaa5154",
+      "1": "0xaa6530",
+      "2": "0xaa7734"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 17,
+    "index": 145,
+    "translations": {
+      "0": "Enter a fixed dialling number to continue.",
+      "1": "输入固定拨号号码以继续。",
+      "2": "輸入固定撥號號碼以繼續。"
+    },
+    "offsets": {
+      "0": "0xaa51fc",
+      "1": "0xaa65a8",
+      "2": "0xaa77a8"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 17,
+    "index": 151,
+    "translations": {
+      "0": "Max recipients reached: 100",
+      "1": "已达到收件人数量上限：100",
+      "2": "收訊人數目已達上限：100"
+    },
+    "offsets": {
+      "0": "0xaa52ac",
+      "1": "0xaa6618",
+      "2": "0xaa781c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 17,
+    "index": 156,
+    "translations": {
+      "0": "Groups make it easy to send the same message to many contacts at once. Create some now.",
+      "1": "通过组，易于一次给许多联系人发送相同信息。请现在创建一些。",
+      "2": "透過群組，可輕鬆地將同一條訊息同時發送給多個連絡人。請立即建立一些群組。"
+    },
+    "offsets": {
+      "0": "0xaa530c",
+      "1": "0xaa6680",
+      "2": "0xaa7888"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 17,
+    "index": 160,
+    "translations": {
+      "0": "Do you want to delete this group?",
+      "1": "是否删除此分组？",
+      "2": "您是否要刪除此群組？"
+    },
+    "offsets": {
+      "0": "0xaa5420",
+      "1": "0xaa670c",
+      "2": "0xaa7920"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 17,
+    "index": 166,
+    "translations": {
+      "0": "Remove member",
+      "1": "删除成员",
+      "2": "移除成員"
+    },
+    "offsets": {
+      "0": "0xaa5478",
+      "1": "0xaa6758",
+      "2": "0xaa7978"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 17,
+    "index": 177,
+    "translations": {
+      "0": "Send message (mobile)",
+      "1": "发送信息(手机)",
+      "2": "傳送訊息(手機)"
+    },
+    "offsets": {
+      "0": "0xaa5670",
+      "1": "0xaa68a8",
+      "2": "0xaa7ae0"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 17,
+    "index": 179,
+    "translations": {
+      "0": "Send message (office)",
+      "1": "发送信息(办公电话)",
+      "2": "傳送訊息(辦公室)"
+    },
+    "offsets": {
+      "0": "0xaa5698",
+      "1": "0xaa68d0",
+      "2": "0xaa7b08"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 17,
+    "index": 181,
+    "translations": {
+      "0": "Send message (home)",
+      "1": "发送信息(住宅电话)",
+      "2": "傳送訊息(住家)"
+    },
+    "offsets": {
+      "0": "0xaa56bc",
+      "1": "0xaa68fc",
+      "2": "0xaa7b30"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 17,
+    "index": 213,
+    "translations": {
+      "0": "Delete contacts",
+      "1": "删除联系人",
+      "2": "刪除連絡人"
+    },
+    "offsets": {
+      "0": "0xaa5898",
+      "1": "0xaa6abc",
+      "2": "0xaa7ce0"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 17,
+    "index": 217,
+    "translations": {
+      "0": "Delete group",
+      "1": "删除分组",
+      "2": "刪除群組"
+    },
+    "offsets": {
+      "0": "0xaa58d8",
+      "1": "0xaa6afc",
+      "2": "0xaa7d1c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 17,
+    "index": 219,
+    "translations": {
+      "0": "Delete contact",
+      "1": "删除联系人",
+      "2": "刪除連絡人"
+    },
+    "offsets": {
+      "0": "0xaa58f8",
+      "1": "0xaa6abc",
+      "2": "0xaa7ce0"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 17,
+    "index": 220,
+    "translations": {
+      "0": "Do you want to delete this contact?",
+      "1": "是否删除此联系人？",
+      "2": "是否要刪除此連絡人？"
+    },
+    "offsets": {
+      "0": "0xaa5908",
+      "1": "0xaa6b18",
+      "2": "0xaa7d38"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 17,
+    "index": 223,
+    "translations": {
+      "0": "Send group message",
+      "1": "发送群组消息",
+      "2": "傳送群組訊息"
+    },
+    "offsets": {
+      "0": "0xaa593c",
+      "1": "0xaa6b30",
+      "2": "0xaa7d50"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 17,
+    "index": 224,
+    "translations": {
+      "0": "Send mail message",
+      "1": "发送电子邮件消息",
+      "2": "傳送郵件訊息"
+    },
+    "offsets": {
+      "0": "0xaa5950",
+      "1": "0xaa6b40",
+      "2": "0xaa7d60"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 17,
+    "index": 225,
+    "translations": {
+      "0": "Contact deleted",
+      "1": "联系人已被删除",
+      "2": "連絡人已刪除"
+    },
+    "offsets": {
+      "0": "0xaa5964",
+      "1": "0xaa6b54",
+      "2": "0xaa7d70"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 17,
+    "index": 226,
+    "translations": {
+      "0": "Group deleted",
+      "1": "分组已删除",
+      "2": "群組已刪除"
+    },
+    "offsets": {
+      "0": "0xaa5974",
+      "1": "0xaa6b68",
+      "2": "0xaa7d80"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 17,
+    "index": 240,
+    "translations": {
+      "0": "Keep all your contact info safe in one place with Microsoft Outlook Contacts. You can access them at http://outlook.com from any device.",
+      "1": "通过Microsoft Outlook联系人将您的所有联系人信息保存在安全位置。您可以从任何设备在http://outlook.com上进行访问。",
+      "2": "使用Microsoft Outlook連絡人將所有連絡人的資訊安全存放在一個位置。您可以從任何裝置在http://outlook.com存取它們。"
+    },
+    "offsets": {
+      "0": "0xaa5a60",
+      "1": "0xaa6c38",
+      "2": "0xaa7e48"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 18,
+    "index": 0,
+    "translations": {
+      "0": "At least 1 character must be entered.",
+      "1": "必须至少输入1个字符。",
+      "2": "必須至少輸入1個字元。"
+    },
+    "offsets": {
+      "0": "0xaa8054",
+      "1": "0xaa8168",
+      "2": "0xaa8240"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 18,
+    "index": 1,
+    "translations": {
+      "0": "Try something longer. Min. input length not reached.",
+      "1": "请尝试输入长一些的内容。未达到最小输入长度。",
+      "2": "請嘗試輸入更長的內容。未達到最小輸入長度。"
+    },
+    "offsets": {
+      "0": "0xaa807c",
+      "1": "0xaa8184",
+      "2": "0xaa825c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 18,
+    "index": 7,
+    "translations": {
+      "0": "Message sending not allowed",
+      "1": "不允许发送信息",
+      "2": "不允許傳送訊息"
+    },
+    "offsets": {
+      "0": "0xaa8128",
+      "1": "0xaa8218",
+      "2": "0xaa82f4"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 18,
+    "index": 8,
+    "translations": {
+      "0": "Send messages with modifications",
+      "1": "发送经修改的信息",
+      "2": "傳送經修改的訊息"
+    },
+    "offsets": {
+      "0": "0xaa8144",
+      "1": "0xaa822c",
+      "2": "0xaa8308"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 19,
+    "index": 101,
+    "translations": {
+      "0": "Please input timer:",
+      "1": "Please input timer:",
+      "2": "Please input timer:"
+    },
+    "offsets": {
+      "0": "0xaa9608",
+      "1": "0xaaa55c",
+      "2": "0xaab4a4"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 19,
+    "index": 117,
+    "translations": {
+      "0": "SMS ASSERT",
+      "1": "SMS ASSERT",
+      "2": "SMS ASSERT"
+    },
+    "offsets": {
+      "0": "0xaa9720",
+      "1": "0xaaa674",
+      "2": "0xaab5bc"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 19,
+    "index": 259,
+    "translations": {
+      "0": "SMS full filled, not implemented yet",
+      "1": "SMS full filled, not implemented yet",
+      "2": "SMS full filled, not implemented yet"
+    },
+    "offsets": {
+      "0": "0xaa9ea8",
+      "1": "0xaaadf0",
+      "2": "0xaabd44"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 19,
+    "index": 267,
+    "translations": {
+      "0": "PB debug menu",
+      "1": "PB debug menu",
+      "2": "PB debug menu"
+    },
+    "offsets": {
+      "0": "0xaa9f48",
+      "1": "0xaaae90",
+      "2": "0xaabde4"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 19,
+    "index": 276,
+    "translations": {
+      "0": "Please input ID:",
+      "1": "Please input ID:",
+      "2": "Please input ID:"
+    },
+    "offsets": {
+      "0": "0xaa9fc0",
+      "1": "0xaaaf08",
+      "2": "0xaabe5c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 19,
+    "index": 277,
+    "translations": {
+      "0": "Please input Value:",
+      "1": "Please input Value:",
+      "2": "Please input Value:"
+    },
+    "offsets": {
+      "0": "0xaa9fd4",
+      "1": "0xaaaf1c",
+      "2": "0xaabe70"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 20,
+    "index": 2,
+    "translations": {
+      "0": "You need to enter your username.",
+      "1": "您需要输入用户名。",
+      "2": "需要輸入使用者名稱。"
+    },
+    "offsets": {
+      "0": "0xaad18c",
+      "1": "0xaad3f8",
+      "2": "0xaad5c0"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 20,
+    "index": 3,
+    "translations": {
+      "0": "You need to enter your password.",
+      "1": "您需要输入密码。",
+      "2": "需要輸入密碼。"
+    },
+    "offsets": {
+      "0": "0xaad1b0",
+      "1": "0xaad410",
+      "2": "0xaad5d8"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 20,
+    "index": 14,
+    "translations": {
+      "0": "Delete task",
+      "1": "删除任务",
+      "2": "刪除工作"
+    },
+    "offsets": {
+      "0": "0xaad328",
+      "1": "0xaad4f4",
+      "2": "0xaad6bc"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 20,
+    "index": 16,
+    "translations": {
+      "0": "Delete all",
+      "1": "全部删除",
+      "2": "全部刪除"
+    },
+    "offsets": {
+      "0": "0xaad334",
+      "1": "0xaad50c",
+      "2": "0xaad6d4"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 21,
+    "index": 34,
+    "translations": {
+      "0": "SMS Path",
+      "1": "SMS Path",
+      "2": "SMS Path"
+    },
+    "offsets": {
+      "0": "0xaadd6c",
+      "1": "0xaae1cc",
+      "2": "0xaae62c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 21,
+    "index": 35,
+    "translations": {
+      "0": "sms serv",
+      "1": "sms serv",
+      "2": "sms serv"
+    },
+    "offsets": {
+      "0": "0xaadd78",
+      "1": "0xaae1d8",
+      "2": "0xaae638"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 22,
+    "index": 7,
+    "translations": {
+      "0": "Save successfully,if set it as inserted record now?",
+      "1": "Save successfully,if set it as inserted record now?",
+      "2": "Save successfully,if set it as inserted record now?"
+    },
+    "offsets": {
+      "0": "0xab820c",
+      "1": "0xab8458",
+      "2": "0xab869c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 22,
+    "index": 8,
+    "translations": {
+      "0": "Time out!Save successfully,if set it as inserted record now?",
+      "1": "Time out!Save successfully,if set it as inserted record now?",
+      "2": "Time out!Save successfully,if set it as inserted record now?"
+    },
+    "offsets": {
+      "0": "0xab8240",
+      "1": "0xab848c",
+      "2": "0xab86d0"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 22,
+    "index": 9,
+    "translations": {
+      "0": "Insert Record",
+      "1": "Insert Record",
+      "2": "Insert Record"
+    },
+    "offsets": {
+      "0": "0xab8280",
+      "1": "0xab84cc",
+      "2": "0xab8710"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 22,
+    "index": 17,
+    "translations": {
+      "0": "Delete this recording?",
+      "1": "Delete this recording?",
+      "2": "Delete this recording?"
+    },
+    "offsets": {
+      "0": "0xab8304",
+      "1": "0xab8550",
+      "2": "0xab8794"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 22,
+    "index": 20,
+    "translations": {
+      "0": "Delete all",
+      "1": "Delete all",
+      "2": "Delete all"
+    },
+    "offsets": {
+      "0": "0xab832c",
+      "1": "0xab8578",
+      "2": "0xab87bc"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 22,
+    "index": 21,
+    "translations": {
+      "0": "Delete all recordings?",
+      "1": "Delete all recordings?",
+      "2": "Delete all recordings?"
+    },
+    "offsets": {
+      "0": "0xab8338",
+      "1": "0xab8584",
+      "2": "0xab87c8"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 22,
+    "index": 22,
+    "translations": {
+      "0": "Recordings deleted.",
+      "1": "Recordings deleted.",
+      "2": "Recordings deleted."
+    },
+    "offsets": {
+      "0": "0xab8350",
+      "1": "0xab859c",
+      "2": "0xab87e0"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 22,
+    "index": 27,
+    "translations": {
+      "0": "Recording deleted",
+      "1": "录音已删除",
+      "2": "錄音已刪除"
+    },
+    "offsets": {
+      "0": "0xab838c",
+      "1": "0xab85e4",
+      "2": "0xab8824"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 23,
+    "index": 89,
+    "translations": {
+      "0": "Input name:",
+      "1": "转换前单位：",
+      "2": "轉換前單位："
+    },
+    "offsets": {
+      "0": "0xabd858",
+      "1": "0xabdeb8",
+      "2": "0xabe4a4"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 24,
+    "index": 48,
+    "translations": {
+      "0": "Current day has period schedule,also delete",
+      "1": "Current day has period schedule,also delete",
+      "2": "Current day has period schedule,also delete"
+    },
+    "offsets": {
+      "0": "0xac67ac",
+      "1": "0xac8530",
+      "2": "0xaca4e4"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 24,
+    "index": 264,
+    "translations": {
+      "0": "Delete all until today",
+      "1": "删除今天前的所有项",
+      "2": "刪除全部直到今日"
+    },
+    "offsets": {
+      "0": "0xac7088",
+      "1": "0xac8e40",
+      "2": "0xacade8"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 24,
+    "index": 270,
+    "translations": {
+      "0": "Add text",
+      "1": "添加文字",
+      "2": "增加文字"
+    },
+    "offsets": {
+      "0": "0xac70d8",
+      "1": "0xac8e88",
+      "2": "0xacae2c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 24,
+    "index": 282,
+    "translations": {
+      "0": "Delete this event?",
+      "1": "删除此事件？",
+      "2": "刪除此活動？"
+    },
+    "offsets": {
+      "0": "0xac7160",
+      "1": "0xac8f0c",
+      "2": "0xacaeb0"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 24,
+    "index": 283,
+    "translations": {
+      "0": "Delete %N events?",
+      "1": "删除%N个事件？",
+      "2": "刪除%N項活動？"
+    },
+    "offsets": {
+      "0": "0xac7174",
+      "1": "0xac8f1c",
+      "2": "0xacaec0"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 24,
+    "index": 284,
+    "translations": {
+      "0": "Deleting…",
+      "1": "正在删除…",
+      "2": "正在刪除…"
+    },
+    "offsets": {
+      "0": "0xac7188",
+      "1": "0xac8f30",
+      "2": "0xacaed4"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 24,
+    "index": 285,
+    "translations": {
+      "0": "Event deleted",
+      "1": "事件已删除",
+      "2": "活動已刪除"
+    },
+    "offsets": {
+      "0": "0xac71a0",
+      "1": "0xac8f40",
+      "2": "0xacaee4"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 24,
+    "index": 286,
+    "translations": {
+      "0": "%N events deleted",
+      "1": "%N个事件已删除",
+      "2": "%N項活動已刪除"
+    },
+    "offsets": {
+      "0": "0xac71b0",
+      "1": "0xac8f50",
+      "2": "0xacaef4"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 24,
+    "index": 351,
+    "translations": {
+      "0": "Delete all",
+      "1": "全部删除",
+      "2": "全部刪除"
+    },
+    "offsets": {
+      "0": "0xac748c",
+      "1": "0xac924c",
+      "2": "0xacb1dc"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 24,
+    "index": 358,
+    "translations": {
+      "0": "Delete all alarms?",
+      "1": "删除全部闹钟？",
+      "2": "刪除所有鬧鐘？"
+    },
+    "offsets": {
+      "0": "0xac74c4",
+      "1": "0xac927c",
+      "2": "0xacb20c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 24,
+    "index": 453,
+    "translations": {
+      "0": "Delete",
+      "1": "Delete",
+      "2": "Delete"
+    },
+    "offsets": {
+      "0": "0xac7b28",
+      "1": "0xac9ad0",
+      "2": "0xacba34"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 24,
+    "index": 456,
+    "translations": {
+      "0": "Menu",
+      "1": "Menu",
+      "2": "Menu"
+    },
+    "offsets": {
+      "0": "0xac7b40",
+      "1": "0xac9ae8",
+      "2": "0xacba4c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 24,
+    "index": 468,
+    "translations": {
+      "0": "About text",
+      "1": "About text",
+      "2": "About text"
+    },
+    "offsets": {
+      "0": "0xac7bd8",
+      "1": "0xac9b88",
+      "2": "0xacbaec"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 24,
+    "index": 469,
+    "translations": {
+      "0": "Help text",
+      "1": "Help text",
+      "2": "Help text"
+    },
+    "offsets": {
+      "0": "0xac7be4",
+      "1": "0xac9b94",
+      "2": "0xacbaf8"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 24,
+    "index": 471,
+    "translations": {
+      "0": "Application free memory is running low. In case this message returns you are advised to close application and re-launch it again.",
+      "1": "Application free memory is running low. In case this message returns you are advised to close application and re-launch it again.",
+      "2": "Application free memory is running low. In case this message returns you are advised to close application and re-launch it again."
+    },
+    "offsets": {
+      "0": "0xac7c18",
+      "1": "0xac9bc8",
+      "2": "0xacbb2c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 25,
+    "index": 37,
+    "translations": {
+      "0": "Delete All Finished",
+      "1": "Delete All Finished",
+      "2": "Delete All Finished"
+    },
+    "offsets": {
+      "0": "0xaccc9c",
+      "1": "0xacdcc0",
+      "2": "0xacea00"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 25,
+    "index": 38,
+    "translations": {
+      "0": "Delete All Finished, Actived Headset Remian",
+      "1": "Delete All Finished, Actived Headset Remian",
+      "2": "Delete All Finished, Actived Headset Remian"
+    },
+    "offsets": {
+      "0": "0xacccb0",
+      "1": "0xacdcd4",
+      "2": "0xacea14"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 25,
+    "index": 64,
+    "translations": {
+      "0": "Are you sure you want to delete files from your phone?",
+      "1": "确定要从您的手机删除文件吗？",
+      "2": "確認要從手機刪除檔案？"
+    },
+    "offsets": {
+      "0": "0xaccff4",
+      "1": "0xacdfe0",
+      "2": "0xaced24"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 25,
+    "index": 88,
+    "translations": {
+      "0": "Enter a name",
+      "1": "输入名称",
+      "2": "輸入名稱"
+    },
+    "offsets": {
+      "0": "0xacd2a4",
+      "1": "0xace1f8",
+      "2": "0xacef40"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 25,
+    "index": 96,
+    "translations": {
+      "0": "Delete pairing",
+      "1": "删除配对",
+      "2": "刪除配對"
+    },
+    "offsets": {
+      "0": "0xacd2f4",
+      "1": "0xace24c",
+      "2": "0xacef94"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 25,
+    "index": 103,
+    "translations": {
+      "0": "Pairing deleted:\n⁯%U⁮",
+      "1": "配对已删除\n%U",
+      "2": "配對已刪除\n%U"
+    },
+    "offsets": {
+      "0": "0xacd420",
+      "1": "0xace2e8",
+      "2": "0xacf034"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 25,
+    "index": 109,
+    "translations": {
+      "0": "All done – file sent!",
+      "1": "全部完成– 文件已发送！",
+      "2": "全部完成– 檔案已傳送！"
+    },
+    "offsets": {
+      "0": "0xacd514",
+      "1": "0xace378",
+      "2": "0xacf0c0"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 25,
+    "index": 117,
+    "translations": {
+      "0": "This accessory is still connected. Disconnect it before deleting it.",
+      "1": "此配件仍处于连接状态。请先断开连接再删除。",
+      "2": "此配件仍處於連結狀態。請先中斷連結再刪除。"
+    },
+    "offsets": {
+      "0": "0xacd59c",
+      "1": "0xace3e0",
+      "2": "0xacf130"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 25,
+    "index": 118,
+    "translations": {
+      "0": "A file is being transferred. Cancel the transfer or try deleting after the transfer is complete.",
+      "1": "正在传输文件。请取消传输，或在传输完成后再尝试删除。",
+      "2": "檔案正在傳送中。請取消傳送或在傳送完成後嘗試刪除。"
+    },
+    "offsets": {
+      "0": "0xacd5e4",
+      "1": "0xace410",
+      "2": "0xacf160"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 25,
+    "index": 119,
+    "translations": {
+      "0": "Disconnect the FTP connection before deleting.",
+      "1": "断开FTP连接再删除。",
+      "2": "請先中斷FTP連結再進行刪除。"
+    },
+    "offsets": {
+      "0": "0xacd648",
+      "1": "0xace448",
+      "2": "0xacf198"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 25,
+    "index": 139,
+    "translations": {
+      "0": "Enter passcode for%U",
+      "1": "输入%U的通行码",
+      "2": "輸入%U的密碼"
+    },
+    "offsets": {
+      "0": "0xacd80c",
+      "1": "0xace5d8",
+      "2": "0xacf320"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 28,
+    "index": 0,
+    "translations": {
+      "0": "Enter Unlock Code",
+      "1": "请输入解锁码",
+      "2": "輸入解鎖代碼"
+    },
+    "offsets": {
+      "0": "0xad0490",
+      "1": "0xad0b34",
+      "2": "0xad10d4"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 28,
+    "index": 5,
+    "translations": {
+      "0": "You will receive an SMS from",
+      "1": "你将收到1条短信，来自",
+      "2": "您將會收到一封簡訊，來自"
+    },
+    "offsets": {
+      "0": "0xad04f4",
+      "1": "0xad0b7c",
+      "2": "0xad111c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 28,
+    "index": 7,
+    "translations": {
+      "0": "have sufficient credit to process your order.Info and customer care:",
+      "1": "有足够的余额来完成订单。信息和客户服务：",
+      "2": "擁有足夠的額度才能購買。詳情請洽客戶服務："
+    },
+    "offsets": {
+      "0": "0xad0558",
+      "1": "0xad0bb4",
+      "2": "0xad115c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 28,
+    "index": 9,
+    "translations": {
+      "0": "+ cost of 1 SMS",
+      "1": "+1条短信的费用",
+      "2": "+ 一封簡訊的費用"
+    },
+    "offsets": {
+      "0": "0xad05a4",
+      "1": "0xad0be4",
+      "2": "0xad1190"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 28,
+    "index": 12,
+    "translations": {
+      "0": "Check Inbox for Unlock Code",
+      "1": "查看收件箱获取解锁码",
+      "2": "查看收信匣內的解鎖代碼"
+    },
+    "offsets": {
+      "0": "0xad05e8",
+      "1": "0xad0c20",
+      "2": "0xad11d4"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 28,
+    "index": 16,
+    "translations": {
+      "0": "You should receive an SMS with the Unlock Code shortly.",
+      "1": "你很快会收到1条带有解锁码的短信。",
+      "2": "您應該馬上就會收到含有解鎖代碼的簡訊"
+    },
+    "offsets": {
+      "0": "0xad0668",
+      "1": "0xad0c78",
+      "2": "0xad1234"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 28,
+    "index": 25,
+    "translations": {
+      "0": "GAMELOFT PRESENTS",
+      "1": "GAMELOFT出品",
+      "2": "GAMELOFT鉅獻"
+    },
+    "offsets": {
+      "0": "0xad0754",
+      "1": "0xad0d30",
+      "2": "0xad1304"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 28,
+    "index": 61,
+    "translations": {
+      "0": "Back to Main Menu?",
+      "1": "返回主菜单？",
+      "2": "要返回主選單嗎？"
+    },
+    "offsets": {
+      "0": "0xad0918",
+      "1": "0xad0ec4",
+      "2": "0xad14ac"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 28,
+    "index": 64,
+    "translations": {
+      "0": "MAIN MENU",
+      "1": "主菜单",
+      "2": "主選單"
+    },
+    "offsets": {
+      "0": "0xad0948",
+      "1": "0xad0ef0",
+      "2": "0xad14dc"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 28,
+    "index": 66,
+    "translations": {
+      "0": "Options",
+      "1": "选项",
+      "2": "選項"
+    },
+    "offsets": {
+      "0": "0xad0960",
+      "1": "0xad0efc",
+      "2": "0xad14f4"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 34,
+    "index": 75,
+    "translations": {
+      "0": "Enter a port number",
+      "1": "输入端口号",
+      "2": "輸入埠號"
+    },
+    "offsets": {
+      "0": "0xadef78",
+      "1": "0xadf568",
+      "2": "0xadfb14"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 34,
+    "index": 95,
+    "translations": {
+      "0": "Delete this access point?",
+      "1": "删除此接入点？",
+      "2": "刪除此存取點？"
+    },
+    "offsets": {
+      "0": "0xadf0b4",
+      "1": "0xadf66c",
+      "2": "0xadfc14"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 35,
+    "index": 35,
+    "translations": {
+      "0": "Do you want to delete this folder and all the files inside it?",
+      "1": "是否要删除此文件夹及其内的所有文件？",
+      "2": "是否要刪除此資料夾及其內的所有檔案？"
+    },
+    "offsets": {
+      "0": "0xae1408",
+      "1": "0xae1d8c",
+      "2": "0xae26a4"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 35,
+    "index": 36,
+    "translations": {
+      "0": "Deleted a folder and all files inside it",
+      "1": "删除了一个文件夹及其内的所有文件",
+      "2": "已刪除資料夾及其內的所有檔案"
+    },
+    "offsets": {
+      "0": "0xae1448",
+      "1": "0xae1db4",
+      "2": "0xae26cc"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 35,
+    "index": 54,
+    "translations": {
+      "0": "%N files deleted",
+      "1": "%N个文件已删除",
+      "2": "%N個檔案已刪除"
+    },
+    "offsets": {
+      "0": "0xae15c0",
+      "1": "0xae1f0c",
+      "2": "0xae2820"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 35,
+    "index": 55,
+    "translations": {
+      "0": "Delete folder",
+      "1": "删除文件夹",
+      "2": "刪除資料夾"
+    },
+    "offsets": {
+      "0": "0xae15d4",
+      "1": "0xae1f20",
+      "2": "0xae2834"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 35,
+    "index": 56,
+    "translations": {
+      "0": "Delete folders",
+      "1": "删除文件夹",
+      "2": "刪除資料夾"
+    },
+    "offsets": {
+      "0": "0xae15e4",
+      "1": "0xae1f20",
+      "2": "0xae2834"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 35,
+    "index": 57,
+    "translations": {
+      "0": "Delete files",
+      "1": "删除文件",
+      "2": "刪除檔案"
+    },
+    "offsets": {
+      "0": "0xae15f4",
+      "1": "0xae1f30",
+      "2": "0xae2844"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 35,
+    "index": 74,
+    "translations": {
+      "0": "Delete",
+      "1": "删除",
+      "2": "刪除"
+    },
+    "offsets": {
+      "0": "0xae16b4",
+      "1": "0xae2008",
+      "2": "0xae291c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 35,
+    "index": 75,
+    "translations": {
+      "0": "Delete (%N)",
+      "1": "删除(%N)",
+      "2": "刪除(%N)"
+    },
+    "offsets": {
+      "0": "0xae16bc",
+      "1": "0xae2010",
+      "2": "0xae2924"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 35,
+    "index": 86,
+    "translations": {
+      "0": "Formatting will delete all data on the memory card. Continue?",
+      "1": "格式化会删除存储卡中的所有数据。是否继续？",
+      "2": "格式化將刪除記憶卡上的所有數據。繼續？"
+    },
+    "offsets": {
+      "0": "0xae1738",
+      "1": "0xae2098",
+      "2": "0xae29b0"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 35,
+    "index": 87,
+    "translations": {
+      "0": "Formatting will delete all data on the phone memory. Continue?",
+      "1": "格式化会删除手机存储中的所有数据。是否继续？",
+      "2": "格式化將刪除手機記憶體中的所有數據。繼續？"
+    },
+    "offsets": {
+      "0": "0xae1778",
+      "1": "0xae20c8",
+      "2": "0xae29dc"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 35,
+    "index": 93,
+    "translations": {
+      "0": "Do you want to delete the selected folders? All content inside these folders will also be deleted.",
+      "1": "是否删除选定的文件夹？这些文件夹中的所有内容也将随之删除。",
+      "2": "是否要刪除所選資料夾？這些資料夾中的所有內容也將隨之刪除。"
+    },
+    "offsets": {
+      "0": "0xae1828",
+      "1": "0xae2168",
+      "2": "0xae2a7c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 35,
+    "index": 94,
+    "translations": {
+      "0": "Do you want to delete the selected files and folders? All content inside the folders will also be deleted.",
+      "1": "是否删除选定的文件和文件夹？这些文件夹中的所有内容也将随之删除。",
+      "2": "是否要刪除所選檔案和資料夾？資料夾中的所有內容也將隨之刪除。"
+    },
+    "offsets": {
+      "0": "0xae188c",
+      "1": "0xae21a8",
+      "2": "0xae2abc"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 35,
+    "index": 95,
+    "translations": {
+      "0": "1 file deleted",
+      "1": "1个文件已删除",
+      "2": "1個檔案已刪除"
+    },
+    "offsets": {
+      "0": "0xae18f8",
+      "1": "0xae21ec",
+      "2": "0xae2afc"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 35,
+    "index": 96,
+    "translations": {
+      "0": "1 folder deleted",
+      "1": "1个文件夹已删除",
+      "2": "1個資料夾已刪除"
+    },
+    "offsets": {
+      "0": "0xae1908",
+      "1": "0xae2200",
+      "2": "0xae2b10"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 35,
+    "index": 97,
+    "translations": {
+      "0": "%N folders deleted",
+      "1": "%N个文件夹已删除",
+      "2": "%N個資料夾已刪除"
+    },
+    "offsets": {
+      "0": "0xae191c",
+      "1": "0xae2214",
+      "2": "0xae2b24"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 35,
+    "index": 98,
+    "translations": {
+      "0": "1 file and 1 folder deleted",
+      "1": "1个文件和1个文件夹已删除",
+      "2": "1個檔案和1個資料夾已刪除"
+    },
+    "offsets": {
+      "0": "0xae1930",
+      "1": "0xae222c",
+      "2": "0xae2b3c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 35,
+    "index": 99,
+    "translations": {
+      "0": "%0N files and %1N folders deleted",
+      "1": "%0N个文件和%1N个文件夹已删除",
+      "2": "%0N個檔案和%1N個資料夾已刪除"
+    },
+    "offsets": {
+      "0": "0xae194c",
+      "1": "0xae224c",
+      "2": "0xae2b5c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 35,
+    "index": 100,
+    "translations": {
+      "0": "%N files and 1 folder deleted",
+      "1": "%N个文件和1个文件夹已删除",
+      "2": "%N個檔案和1個資料夾已刪除"
+    },
+    "offsets": {
+      "0": "0xae1970",
+      "1": "0xae2274",
+      "2": "0xae2b84"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 35,
+    "index": 101,
+    "translations": {
+      "0": "1 file and %N folders deleted",
+      "1": "1个文件和%N个文件夹已删除",
+      "2": "1個檔案和%N個資料夾已刪除"
+    },
+    "offsets": {
+      "0": "0xae1990",
+      "1": "0xae2294",
+      "2": "0xae2ba4"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 35,
+    "index": 103,
+    "translations": {
+      "0": "Delete all recordings?",
+      "1": "Delete all recordings?",
+      "2": "Delete all recordings?"
+    },
+    "offsets": {
+      "0": "0xae19d4",
+      "1": "0xae22d8",
+      "2": "0xae2be8"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 35,
+    "index": 104,
+    "translations": {
+      "0": "Multi media message",
+      "1": "Multi media message",
+      "2": "Multi media message"
+    },
+    "offsets": {
+      "0": "0xae19ec",
+      "1": "0xae22f0",
+      "2": "0xae2c00"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 35,
+    "index": 110,
+    "translations": {
+      "0": "Delete all",
+      "1": "Delete all",
+      "2": "Delete all"
+    },
+    "offsets": {
+      "0": "0xae1a40",
+      "1": "0xae2344",
+      "2": "0xae2c54"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 35,
+    "index": 111,
+    "translations": {
+      "0": "Delete all recordings?",
+      "1": "删除全部录音？",
+      "2": "刪除所有錄音？"
+    },
+    "offsets": {
+      "0": "0xae19d4",
+      "1": "0xae2350",
+      "2": "0xae2c60"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 35,
+    "index": 112,
+    "translations": {
+      "0": "Delete all",
+      "1": "全部删除",
+      "2": "全部刪除"
+    },
+    "offsets": {
+      "0": "0xae1a40",
+      "1": "0xae2364",
+      "2": "0xae2c74"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 35,
+    "index": 113,
+    "translations": {
+      "0": "Recordings deleted",
+      "1": "录音已删除",
+      "2": "錄音已刪除"
+    },
+    "offsets": {
+      "0": "0xae1a4c",
+      "1": "0xae2370",
+      "2": "0xae2c80"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 38,
+    "index": 40,
+    "translations": {
+      "0": "Free up some space or insert a memory card.",
+      "1": "释放一些空间或插入存储卡",
+      "2": "釋放一些空間或插入記憶卡。"
+    },
+    "offsets": {
+      "0": "0xae8550",
+      "1": "0xae8714",
+      "2": "0xae88c8"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 40,
+    "index": 13,
+    "translations": {
+      "0": "Character",
+      "1": "Character",
+      "2": "Character"
+    },
+    "offsets": {
+      "0": "0xaf8424",
+      "1": "0xaf872c",
+      "2": "0xaf8a28"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 40,
+    "index": 20,
+    "translations": {
+      "0": "Input Word",
+      "1": "Input Word",
+      "2": "Input Word"
+    },
+    "offsets": {
+      "0": "0xaf846c",
+      "1": "0xaf8774",
+      "2": "0xaf8a70"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 40,
+    "index": 39,
+    "translations": {
+      "0": "Add Character",
+      "1": "Add Character",
+      "2": "Add Character"
+    },
+    "offsets": {
+      "0": "0xaf8520",
+      "1": "0xaf8818",
+      "2": "0xaf8b18"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 40,
+    "index": 41,
+    "translations": {
+      "0": "Can't read the picture file info",
+      "1": "无法读取图片文件信息",
+      "2": "無法讀取圖片檔資訊"
+    },
+    "offsets": {
+      "0": "0xaf8548",
+      "1": "0xaf883c",
+      "2": "0xaf8b3c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 41,
+    "index": 18,
+    "translations": {
+      "0": "Delete items",
+      "1": "删除项目",
+      "2": "刪除項目"
+    },
+    "offsets": {
+      "0": "0xafd318",
+      "1": "0xafd8e4",
+      "2": "0xafde44"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 41,
+    "index": 29,
+    "translations": {
+      "0": "The photo will be deleted from your phone but will still be saved in OneDrive. Delete selected photo?",
+      "1": "照片将从您的手机删除但仍将保存在OneDrive中。删除选定照片？",
+      "2": "該相片將從您的手機上刪除，但仍將儲存在OneDrive中。刪除所選的相片？"
+    },
+    "offsets": {
+      "0": "0xafd434",
+      "1": "0xafd9f0",
+      "2": "0xafdf54"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 41,
+    "index": 30,
+    "translations": {
+      "0": "Delete selected item?",
+      "1": "删除选定项目？",
+      "2": "刪除所選的項目？"
+    },
+    "offsets": {
+      "0": "0xafd49c",
+      "1": "0xafda38",
+      "2": "0xafdfa4"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 41,
+    "index": 40,
+    "translations": {
+      "0": "Delete",
+      "1": "删除",
+      "2": "刪除"
+    },
+    "offsets": {
+      "0": "0xafd610",
+      "1": "0xafdb98",
+      "2": "0xafe100"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 41,
+    "index": 43,
+    "translations": {
+      "0": "Via text message",
+      "1": "以短信格式",
+      "2": "以文字訊息格式"
+    },
+    "offsets": {
+      "0": "0xafd620",
+      "1": "0xafdbb0",
+      "2": "0xafe118"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 41,
+    "index": 51,
+    "translations": {
+      "0": "Deleted",
+      "1": "已删除",
+      "2": "已刪除"
+    },
+    "offsets": {
+      "0": "0xafd73c",
+      "1": "0xafdc98",
+      "2": "0xafe21c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 41,
+    "index": 52,
+    "translations": {
+      "0": "Delete %N items?",
+      "1": "删除%N个条目？",
+      "2": "刪除%N筆資料？"
+    },
+    "offsets": {
+      "0": "0xafd744",
+      "1": "0xafdca4",
+      "2": "0xafe228"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 41,
+    "index": 53,
+    "translations": {
+      "0": "Delete 1 item?",
+      "1": "删除1个条目？",
+      "2": "刪除1筆資料？"
+    },
+    "offsets": {
+      "0": "0xafd758",
+      "1": "0xafdcb8",
+      "2": "0xafe23c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 45,
+    "index": 1,
+    "translations": {
+      "0": "Push message",
+      "1": "推送信息",
+      "2": "推送訊息"
+    },
+    "offsets": {
+      "0": "0xafe4c8",
+      "1": "0xafe540",
+      "2": "0xafe594"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 45,
+    "index": 2,
+    "translations": {
+      "0": "New message from website",
+      "1": "来自网站的新信息",
+      "2": "來自網站的新訊息"
+    },
+    "offsets": {
+      "0": "0xafe4d8",
+      "1": "0xafe54c",
+      "2": "0xafe5a0"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 45,
+    "index": 4,
+    "translations": {
+      "0": "User PIN for configuration message",
+      "1": "配置消息的用户PIN",
+      "2": "配置消息的用戶PIN"
+    },
+    "offsets": {
+      "0": "0xafe510",
+      "1": "0xafe570",
+      "2": "0xafe5c4"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 49,
+    "index": 16,
+    "translations": {
+      "0": "Enter your comment",
+      "1": "输入评论",
+      "2": "輸入您的評論"
+    },
+    "offsets": {
+      "0": "0xafec14",
+      "1": "0xafeff8",
+      "2": "0xaff380"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 49,
+    "index": 19,
+    "translations": {
+      "0": "Your information will be associated with your phone and treated according to the HMD Global Privacy Policy. Operator fees may apply.",
+      "1": "您的信息将与您的手机关联，我们会根据HMD Global隐私政策处理信息。可能会向您收取运营商费用。",
+      "2": "您的資訊將與您的手機相關聯，並依據HMD Global隱私權原則進行處理。系統業者可能會收取相關費用。"
+    },
+    "offsets": {
+      "0": "0xafec58",
+      "1": "0xaff034",
+      "2": "0xaff3c0"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 49,
+    "index": 20,
+    "translations": {
+      "0": "Enter your email address:",
+      "1": "输入电子邮件地址：",
+      "2": "輸入您的電子郵件位址："
+    },
+    "offsets": {
+      "0": "0xafece0",
+      "1": "0xaff09c",
+      "2": "0xaff42c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 49,
+    "index": 26,
+    "translations": {
+      "0": "Feedback sent",
+      "1": "反馈已发送",
+      "2": "回饋已傳送"
+    },
+    "offsets": {
+      "0": "0xafed58",
+      "1": "0xaff0fc",
+      "2": "0xaff490"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 49,
+    "index": 27,
+    "translations": {
+      "0": "Insert SIM",
+      "1": "插入SIM卡",
+      "2": "插入SIM卡"
+    },
+    "offsets": {
+      "0": "0xafed68",
+      "1": "0xaff10c",
+      "2": "0xaff4a0"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 50,
+    "index": 1,
+    "translations": {
+      "0": "Multi media message",
+      "1": "Multi media message",
+      "2": "Multi media message"
+    },
+    "offsets": {
+      "0": "0xb01584",
+      "1": "0xb01b44",
+      "2": "0xb0203c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 50,
+    "index": 6,
+    "translations": {
+      "0": "Delete videos",
+      "1": "删除视频",
+      "2": "刪除影片"
+    },
+    "offsets": {
+      "0": "0xb01608",
+      "1": "0xb01bb4",
+      "2": "0xb020b0"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 50,
+    "index": 40,
+    "translations": {
+      "0": "Input URL:",
+      "1": "Input URL:",
+      "2": "Input URL:"
+    },
+    "offsets": {
+      "0": "0xb018dc",
+      "1": "0xb01e0c",
+      "2": "0xb02304"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 50,
+    "index": 50,
+    "translations": {
+      "0": "Delete LocalList",
+      "1": "Delete LocalList",
+      "2": "Delete LocalList"
+    },
+    "offsets": {
+      "0": "0xb01984",
+      "1": "0xb01e9c",
+      "2": "0xb02394"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 55,
+    "index": 32,
+    "translations": {
+      "0": "+cost of %d standard SMS",
+      "1": "+cost of %d standard SMS",
+      "2": "+%d條標準簡訊的費用"
+    },
+    "offsets": {
+      "0": "0xb3e5f4",
+      "1": "0xb3fa50",
+      "2": "0xb40dd0"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 55,
+    "index": 34,
+    "translations": {
+      "0": "Enter unlock code",
+      "1": "Enter unlock code",
+      "2": "輸入解鎖碼"
+    },
+    "offsets": {
+      "0": "0xb3e630",
+      "1": "0xb3fa8c",
+      "2": "0xb40e08"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 55,
+    "index": 38,
+    "translations": {
+      "0": "You will send a purchase SMS to %s. After send the SMS you can unlock the game .",
+      "1": "You will send a purchase SMS to %s. After send the SMS you can unlock the game .",
+      "2": "You will send a purchase SMS to %s. After send the SMS you can unlock the game ."
+    },
+    "offsets": {
+      "0": "0xb3e668",
+      "1": "0xb3fac4",
+      "2": "0xb40e3c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 55,
+    "index": 39,
+    "translations": {
+      "0": "You will receive an SMS from %s, follow the instructions to complete the purchase. You must have sufficient credits to process your order.",
+      "1": "You will receive an SMS from %s, follow the instructions to complete the purchase. You must have sufficient credits to process your order.",
+      "2": "你將收到一條來自%s的簡訊，請按照說明完成購買。你必須擁有足夠的積分才能處理訂單。"
+    },
+    "offsets": {
+      "0": "0xb3e6bc",
+      "1": "0xb3fb18",
+      "2": "0xb40e90"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 55,
+    "index": 42,
+    "translations": {
+      "0": "You should receive an unlock code within 5 minutes. \n\nPlease check your SMS Inbox and follow the instructions to unlock your game.",
+      "1": "You should receive an unlock code within 5 minutes. \n\nPlease check your SMS Inbox and follow the instructions to unlock your game.",
+      "2": "你會在5分鐘內收到解鎖碼。 \n\n請檢查你的簡訊收件箱，並按照說明解鎖遊戲。\n"
+    },
+    "offsets": {
+      "0": "0xb3e7c4",
+      "1": "0xb3fc20",
+      "2": "0xb40f40"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 55,
+    "index": 45,
+    "translations": {
+      "0": "Enter your unlock code with your keypad:",
+      "1": "Enter your unlock code with your keypad:",
+      "2": "使用鍵盤輸入解鎖碼："
+    },
+    "offsets": {
+      "0": "0xb3e868",
+      "1": "0xb3fcc4",
+      "2": "0xb40fa8"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 55,
+    "index": 48,
+    "translations": {
+      "0": "Error: unable to detect your SIM card.\n\nYour SIM card is required to process your order. Please check if it is correctly inserted into your device and restart the game.",
+      "1": "Error: unable to detect your SIM card.\n\nYour SIM card is required to process your order. Please check if it is correctly inserted into your device and restart the game.",
+      "2": "錯誤：無法偵測到你的SIM卡。\n\n處理訂單需要SIM卡。請檢查SIM卡是否正確插入設備並重新開始遊戲。\n"
+    },
+    "offsets": {
+      "0": "0xb3e8d8",
+      "1": "0xb3fd34",
+      "2": "0xb40ff8"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 55,
+    "index": 49,
+    "translations": {
+      "0": "Error: unable to send SMS.\n\nThe game needs to send SMS in order to process your order. Please check your network connection and try again later.",
+      "1": "Error: unable to send SMS.\n\nThe game needs to send SMS in order to process your order. Please check your network connection and try again later.",
+      "2": "錯誤：無法發送簡訊。\n\n遊戲需要發送簡訊，以便處理訂單。請檢查網路連線，並稍後重試。\n"
+    },
+    "offsets": {
+      "0": "0xb3e984",
+      "1": "0xb3fde0",
+      "2": "0xb41064"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 55,
+    "index": 55,
+    "translations": {
+      "0": "(RENTAL) Costs sending 5 international SMS.",
+      "1": "(RENTAL) Costs sending 5 international SMS.",
+      "2": "（租金）發送5條國際簡訊的費用。"
+    },
+    "offsets": {
+      "0": "0xb3eb3c",
+      "1": "0xb3ff98",
+      "2": "0xb4118c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 55,
+    "index": 71,
+    "translations": {
+      "0": "Confirm you want to buy a pack of %d revives. Costs is 5 SMS international.",
+      "1": " ",
+      "2": "確認你要購買%d次復活的禮包。費用為5條國際簡訊的資費。"
+    },
+    "offsets": {
+      "0": "0xb3ed48",
+      "1": "0xb3ffc4",
+      "2": "0xb41334"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 55,
+    "index": 114,
+    "translations": {
+      "0": "Answer questions correctly and test your level of English.\nAccess online contents: Videos, dictionary and word of the day (data charge may apply)\n\nData charge may apply.\nBy playing this game you consent to the following Privacy Policy: www.p.odt.im  \n\nEnglish with Oxford By Origindata with content from Oxford University Press Content (c) Oxford University Press 2019. (c) Origindata 2019",
+      "1": "Answer questions correctly and test your level of English.\nAccess online contents: Videos, dictionary and word of the day (data charge may apply)\n\nData charge may apply.\nBy playing this game you consent to the following Privacy Policy: www.p.odt.im  \n\nEnglish with Oxford By Origindata with content from Oxford University Press Content (c) Oxford University Press 2019. (c) Origindata 2019",
+      "2": "正確回答問題，測試你的英語水平。\n瀏覽線上內容：當天的視訊、字典和單詞（可能會收取網絡費）\n\n可能會收取網絡費。\n玩此遊戲，則表示您同意以下隱私政策：www.p.odt.im\n\nOrigindata牛津英語，內容來自牛津大學出版社 (c) Oxford University Press 2019. (c) Origindata 2019"
+    },
+    "offsets": {
+      "0": "0xb3f1f8",
+      "1": "0xb4056c",
+      "2": "0xb41708"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 55,
+    "index": 141,
+    "translations": {
+      "0": "Single Player: Race as far as you can and score points.Multiplayer mode:Race against another player in ghost mode and beat his score.Submit your score.Check our rank in High Score menu Update your league with latest top players Data charge may apply. By playing this game you consent to the following Privacy Policy: www.p.odt.im",
+      "1": "Single Player: Race as far as you can and score points.Multiplayer mode:Race against another player in ghost mode and beat his score.Submit your score.Check our rank in High Score menu Update your league with latest top players Data charge may apply. By playing this game you consent to the following Privacy Policy: www.p.odt.im",
+      "2": "單人模式：競賽的路程越遠越好，進而獲取得分。多人模式：在幽靈模式下與其他玩家角逐，並超越他的分數。提交分數。查看高分菜單中的排名 升級包含頂級玩家的聯賽 可能會收取網絡費。玩此遊戲，則表示您同意以下隱私政策：www.p.odt.im"
+    },
+    "offsets": {
+      "0": "0xb3f5c4",
+      "1": "0xb40938",
+      "2": "0xb41aa0"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 58,
+    "index": 9,
+    "translations": {
+      "0": "Enter SIM number",
+      "1": "输入SIM卡号",
+      "2": "輸入SIM卡號碼"
+    },
+    "offsets": {
+      "0": "0xb420bc",
+      "1": "0xb42414",
+      "2": "0xb42714"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 58,
+    "index": 24,
+    "translations": {
+      "0": "Insert two SIM cards to use Smart Dual SIM.",
+      "1": "插入两个SIM卡以使用智能双SIM卡。",
+      "2": "插入兩張SIM卡以使用智慧雙SIM卡。"
+    },
+    "offsets": {
+      "0": "0xb422a8",
+      "1": "0xb425b8",
+      "2": "0xb428d4"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 58,
+    "index": 30,
+    "translations": {
+      "0": "Preferred SIM for messages",
+      "1": "首选信息用SIM卡",
+      "2": "首選訊息用SIM卡"
+    },
+    "offsets": {
+      "0": "0xb4235c",
+      "1": "0xb42660",
+      "2": "0xb42980"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 58,
+    "index": 31,
+    "translations": {
+      "0": "SIM for messages",
+      "1": "信息用SIM卡",
+      "2": "訊息用SIM卡"
+    },
+    "offsets": {
+      "0": "0xb42378",
+      "1": "0xb42678",
+      "2": "0xb42998"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 59,
+    "index": 4,
+    "translations": {
+      "0": "By using your Microsoft account on this phone, you can keep your contacts and photos safe in OneDrive, use Outlook.com email, OneNote notes and Skype GroupMe instant messaging service.",
+      "1": "在此手机上使用Microsoft帐户，可以在OneDrive中保护联系人和手机安全，使用Outlook.com电子邮件、OneNote笔记和Skype GroupMe即时信息服务。",
+      "2": "在此手機上使用Microsoft帳號，即可在OneDrive中保持通訊錄和手機的安全，使用Outlook.com電子郵件、OneNote備註和Skype GroupMe立即訊息服務。"
+    },
+    "offsets": {
+      "0": "0xb42b1c",
+      "1": "0xb42ce0",
+      "2": "0xb42e78"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 60,
+    "index": 1,
+    "translations": {
+      "0": "Thank you for choosing Nokia.By continuing you accept the Microsoft Mobile Privacy Policy and Service Terms.               The device activation information with up to two one-time device location message will be sent to Microsoft Mobile. SMS or data charges may apply.               Learn more about privacy in Options.",
+      "1": "Thank you for choosing Nokia.By continuing you accept the Microsoft Mobile Privacy Policy and Service Terms.               The device activation information with up to two one-time device location message will be sent to Microsoft Mobile. SMS or data charges may apply.               Learn more about privacy in Options.",
+      "2": "Thank you for choosing Nokia.By continuing you accept the Microsoft Mobile Privacy Policy and Service Terms.               The device activation information with up to two one-time device location message will be sent to Microsoft Mobile. SMS or data charges may apply.               Learn more about privacy in Options."
+    },
+    "offsets": {
+      "0": "0xb4305c",
+      "1": "0xb431cc",
+      "2": "0xb4333c"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 61,
+    "index": 4,
+    "translations": {
+      "0": "SMS",
+      "1": "短信",
+      "2": "簡訊"
+    },
+    "offsets": {
+      "0": "0xb43f14",
+      "1": "0xb441c0",
+      "2": "0xb44454"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 61,
+    "index": 13,
+    "translations": {
+      "0": "Sent",
+      "1": "已发",
+      "2": "已發送"
+    },
+    "offsets": {
+      "0": "0xb43f80",
+      "1": "0xb44228",
+      "2": "0xb444c0"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 61,
+    "index": 19,
+    "translations": {
+      "0": "Do you want to clear the counter for SMS?",
+      "1": "是否要将短信计数器清零？",
+      "2": "是否要將簡訊計數器清零？"
+    },
+    "offsets": {
+      "0": "0xb43fd8",
+      "1": "0xb44280",
+      "2": "0xb44520"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 61,
+    "index": 28,
+    "translations": {
+      "0": "Sent data",
+      "1": "已发送数据",
+      "2": "傳送的數據"
+    },
+    "offsets": {
+      "0": "0xb440e0",
+      "1": "0xb44340",
+      "2": "0xb445e8"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 61,
+    "index": 30,
+    "translations": {
+      "0": "All SMS",
+      "1": "全部短信",
+      "2": "所有簡訊"
+    },
+    "offsets": {
+      "0": "0xb440fc",
+      "1": "0xb44360",
+      "2": "0xb44608"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 61,
+    "index": 31,
+    "translations": {
+      "0": "Sent SMS",
+      "1": "已发送短信",
+      "2": "傳送的簡訊"
+    },
+    "offsets": {
+      "0": "0xb44104",
+      "1": "0xb4436c",
+      "2": "0xb44614"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 61,
+    "index": 32,
+    "translations": {
+      "0": "Received SMS",
+      "1": "已接收短信",
+      "2": "接收的簡訊"
+    },
+    "offsets": {
+      "0": "0xb44110",
+      "1": "0xb4437c",
+      "2": "0xb44624"
+    }
+  },
+  {
+    "tres": 0,
+    "group": 61,
+    "index": 34,
+    "translations": {
+      "0": "Sent MMS",
+      "1": "已发送彩信",
+      "2": "傳送的MMS"
+    },
+    "offsets": {
+      "0": "0xb44128",
+      "1": "0xb44398",
+      "2": "0xb44644"
+    }
+  }
+]

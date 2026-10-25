@@ -1,0 +1,505 @@
+{
+  "engine_strings": [
+    {
+      "offset": "0xcc3d4",
+      "text": "T9 V07.04.04.01"
+    },
+    {
+      "offset": "0xd7704",
+      "text": "T9CC V07.04.04.01"
+    },
+    {
+      "offset": "0xe5030",
+      "text": "T9AW V07.04.04.01"
+    }
+  ],
+  "alphabetic": [
+    {
+      "file": "t9/t9-aw-0109-variant-0.ldb",
+      "size": 36651,
+      "sha256": "7c85dc8eb53b275475d3d13e82198eae8c57c9e64fe91a2d8adffa9ba72176a7",
+      "data_indices": [
+        3,
+        4,
+        5
+      ],
+      "language_id": "0x109",
+      "language": "English (public T9 language ID)",
+      "status": "native resource chunks concatenated; internal trie and candidate ranking not decoded"
+    },
+    {
+      "file": "t9/t9-aw-0109-variant-1.ldb",
+      "size": 36651,
+      "sha256": "85fcfff29dbff0fa943c7c9a2edaf196ee4d3437686cf90437b8c5507a8de8d8",
+      "data_indices": [
+        6,
+        7,
+        8
+      ],
+      "language_id": "0x109",
+      "language": "English (public T9 language ID)",
+      "status": "native resource chunks concatenated; internal trie and candidate ranking not decoded"
+    }
+  ],
+  "chinese": [
+    {
+      "variant": "simplified",
+      "header_ram_address": "0x81c6e3f8",
+      "header_init_offset": "0x4e3f8",
+      "header_file": "t9/t9-simplified-header.bin",
+      "header_sha256": "35a0c610cc5be298782a390147233197b8ef8aee459a57ff3eda82910d7bbe67",
+      "language_id": "0x204",
+      "module_flags": "0x3a",
+      "modules": [
+        "stroke",
+        "component",
+        "pinyin",
+        "context40"
+      ],
+      "blocks": [
+        {
+          "slot": 0,
+          "data_index": 373,
+          "header_size": 13896,
+          "resource_size": 13896,
+          "size_matches": true
+        },
+        {
+          "slot": 8,
+          "data_index": 374,
+          "header_size": 1080,
+          "resource_size": 1080,
+          "size_matches": true
+        },
+        {
+          "slot": 9,
+          "data_index": 375,
+          "header_size": 13896,
+          "resource_size": 13896,
+          "size_matches": true
+        },
+        {
+          "slot": 17,
+          "data_index": 376,
+          "header_size": 13896,
+          "resource_size": 13896,
+          "size_matches": true
+        },
+        {
+          "slot": 25,
+          "data_index": 377,
+          "header_size": 8088,
+          "resource_size": 8088,
+          "size_matches": true
+        },
+        {
+          "slot": 37,
+          "data_index": 378,
+          "header_size": 6952,
+          "resource_size": 6952,
+          "size_matches": true
+        },
+        {
+          "slot": 41,
+          "data_index": 379,
+          "header_size": 16312,
+          "resource_size": 16312,
+          "size_matches": true
+        },
+        {
+          "slot": 42,
+          "data_index": 380,
+          "header_size": 16320,
+          "resource_size": 16320,
+          "size_matches": true
+        },
+        {
+          "slot": 43,
+          "data_index": 381,
+          "header_size": 7408,
+          "resource_size": 7408,
+          "size_matches": true
+        },
+        {
+          "slot": 46,
+          "data_index": 382,
+          "header_size": 2624,
+          "resource_size": 2624,
+          "size_matches": true
+        },
+        {
+          "slot": 47,
+          "data_index": 383,
+          "header_size": 13880,
+          "resource_size": 13880,
+          "size_matches": true
+        },
+        {
+          "slot": 48,
+          "data_index": 384,
+          "header_size": 9832,
+          "resource_size": 9832,
+          "size_matches": true
+        },
+        {
+          "slot": 59,
+          "data_index": 385,
+          "header_size": 776,
+          "resource_size": 776,
+          "size_matches": true
+        },
+        {
+          "slot": 60,
+          "data_index": 386,
+          "header_size": 6952,
+          "resource_size": 6952,
+          "size_matches": true
+        },
+        {
+          "slot": 64,
+          "data_index": 387,
+          "header_size": 3480,
+          "resource_size": 3480,
+          "size_matches": true
+        }
+      ],
+      "file": "t9/t9-simplified-0204-reconstructed.ldb",
+      "size": 135848,
+      "sha256": "ea0435d16b27147db877284d099444a0300aece87a6670fed9ab9e780408cee9",
+      "status": "external-offset container rebuilt; all 15 block lengths match. Candidate algorithm/checksum not validated by native engine."
+    },
+    {
+      "variant": "traditional",
+      "header_ram_address": "0x81c6e5c0",
+      "header_init_offset": "0x4e5c0",
+      "header_file": "t9/t9-traditional-header.bin",
+      "header_sha256": "1afe97893a0d3fc6478fe761ead03bcb2d3b86021c4d4e91dfe9e844ced7232a",
+      "language_id": "0x104",
+      "module_flags": "0x35",
+      "modules": [
+        "stroke",
+        "component",
+        "bopomofo",
+        "context20"
+      ],
+      "blocks": [
+        {
+          "slot": 0,
+          "data_index": 431,
+          "header_size": 16256,
+          "resource_size": 16256,
+          "size_matches": true
+        },
+        {
+          "slot": 1,
+          "data_index": 432,
+          "header_size": 15784,
+          "resource_size": 15784,
+          "size_matches": true
+        },
+        {
+          "slot": 8,
+          "data_index": 433,
+          "header_size": 1408,
+          "resource_size": 1408,
+          "size_matches": true
+        },
+        {
+          "slot": 9,
+          "data_index": 434,
+          "header_size": 16256,
+          "resource_size": 16256,
+          "size_matches": true
+        },
+        {
+          "slot": 10,
+          "data_index": 435,
+          "header_size": 15784,
+          "resource_size": 15784,
+          "size_matches": true
+        },
+        {
+          "slot": 17,
+          "data_index": 436,
+          "header_size": 16256,
+          "resource_size": 16256,
+          "size_matches": true
+        },
+        {
+          "slot": 18,
+          "data_index": 437,
+          "header_size": 15784,
+          "resource_size": 15784,
+          "size_matches": true
+        },
+        {
+          "slot": 25,
+          "data_index": 438,
+          "header_size": 16256,
+          "resource_size": 16256,
+          "size_matches": true
+        },
+        {
+          "slot": 26,
+          "data_index": 439,
+          "header_size": 16256,
+          "resource_size": 16256,
+          "size_matches": true
+        },
+        {
+          "slot": 27,
+          "data_index": 440,
+          "header_size": 1872,
+          "resource_size": 1872,
+          "size_matches": true
+        },
+        {
+          "slot": 37,
+          "data_index": 441,
+          "header_size": 16024,
+          "resource_size": 16024,
+          "size_matches": true
+        },
+        {
+          "slot": 41,
+          "data_index": 442,
+          "header_size": 16312,
+          "resource_size": 16312,
+          "size_matches": true
+        },
+        {
+          "slot": 42,
+          "data_index": 443,
+          "header_size": 3720,
+          "resource_size": 16320,
+          "size_matches": false
+        },
+        {
+          "slot": 43,
+          "data_index": 444,
+          "header_size": 0,
+          "resource_size": 7392,
+          "size_matches": false
+        },
+        {
+          "slot": 46,
+          "data_index": 445,
+          "header_size": 2280,
+          "resource_size": 2280,
+          "size_matches": true
+        },
+        {
+          "slot": 47,
+          "data_index": 446,
+          "header_size": 16120,
+          "resource_size": 15408,
+          "size_matches": false
+        },
+        {
+          "slot": 48,
+          "data_index": 447,
+          "header_size": 11520,
+          "resource_size": 15904,
+          "size_matches": false
+        },
+        {
+          "slot": 49,
+          "data_index": 448,
+          "header_size": 15568,
+          "resource_size": 11904,
+          "size_matches": false
+        },
+        {
+          "slot": 59,
+          "data_index": 449,
+          "header_size": 2280,
+          "resource_size": 2280,
+          "size_matches": true
+        },
+        {
+          "slot": 60,
+          "data_index": 450,
+          "header_size": 16024,
+          "resource_size": 16024,
+          "size_matches": true
+        },
+        {
+          "slot": 64,
+          "data_index": 451,
+          "header_size": 8016,
+          "resource_size": 8016,
+          "size_matches": true
+        }
+      ],
+      "status": "header and resource chunks preserved; header size disagreement prevents claiming a faithful complete container"
+    },
+    {
+      "variant": "traditional-alt",
+      "header_ram_address": "0x81c6e788",
+      "header_init_offset": "0x4e788",
+      "header_file": "t9/t9-traditional-alt-header.bin",
+      "header_sha256": "fc7a28bc61108402e25caf707396e5db7ac1b55a38f30341debcae77ae628e33",
+      "language_id": "0x104",
+      "module_flags": "0x3a",
+      "modules": [
+        "stroke",
+        "component",
+        "pinyin",
+        "context40"
+      ],
+      "blocks": [
+        {
+          "slot": 0,
+          "data_index": 388,
+          "header_size": 16256,
+          "resource_size": 16256,
+          "size_matches": true
+        },
+        {
+          "slot": 1,
+          "data_index": 389,
+          "header_size": 15784,
+          "resource_size": 15784,
+          "size_matches": true
+        },
+        {
+          "slot": 8,
+          "data_index": 390,
+          "header_size": 1408,
+          "resource_size": 1408,
+          "size_matches": true
+        },
+        {
+          "slot": 9,
+          "data_index": 391,
+          "header_size": 16256,
+          "resource_size": 16256,
+          "size_matches": true
+        },
+        {
+          "slot": 10,
+          "data_index": 392,
+          "header_size": 15784,
+          "resource_size": 15784,
+          "size_matches": true
+        },
+        {
+          "slot": 17,
+          "data_index": 393,
+          "header_size": 16256,
+          "resource_size": 16256,
+          "size_matches": true
+        },
+        {
+          "slot": 18,
+          "data_index": 394,
+          "header_size": 15784,
+          "resource_size": 15784,
+          "size_matches": true
+        },
+        {
+          "slot": 25,
+          "data_index": 395,
+          "header_size": 16256,
+          "resource_size": 16256,
+          "size_matches": true
+        },
+        {
+          "slot": 26,
+          "data_index": 396,
+          "header_size": 16256,
+          "resource_size": 16256,
+          "size_matches": true
+        },
+        {
+          "slot": 27,
+          "data_index": 397,
+          "header_size": 1872,
+          "resource_size": 1872,
+          "size_matches": true
+        },
+        {
+          "slot": 37,
+          "data_index": 398,
+          "header_size": 16024,
+          "resource_size": 16024,
+          "size_matches": true
+        },
+        {
+          "slot": 41,
+          "data_index": 399,
+          "header_size": 16312,
+          "resource_size": 16312,
+          "size_matches": true
+        },
+        {
+          "slot": 42,
+          "data_index": 400,
+          "header_size": 16320,
+          "resource_size": 16320,
+          "size_matches": true
+        },
+        {
+          "slot": 43,
+          "data_index": 401,
+          "header_size": 7392,
+          "resource_size": 7392,
+          "size_matches": true
+        },
+        {
+          "slot": 46,
+          "data_index": 402,
+          "header_size": 2616,
+          "resource_size": 2280,
+          "size_matches": false
+        },
+        {
+          "slot": 47,
+          "data_index": 403,
+          "header_size": 9792,
+          "resource_size": 16120,
+          "size_matches": false
+        },
+        {
+          "slot": 48,
+          "data_index": 404,
+          "header_size": 14872,
+          "resource_size": 11520,
+          "size_matches": false
+        },
+        {
+          "slot": 49,
+          "data_index": 405,
+          "header_size": 12416,
+          "resource_size": 15568,
+          "size_matches": false
+        },
+        {
+          "slot": 59,
+          "data_index": 406,
+          "header_size": 2280,
+          "resource_size": 2280,
+          "size_matches": true
+        },
+        {
+          "slot": 60,
+          "data_index": 407,
+          "header_size": 16024,
+          "resource_size": 16024,
+          "size_matches": true
+        },
+        {
+          "slot": 64,
+          "data_index": 408,
+          "header_size": 8016,
+          "resource_size": 8016,
+          "size_matches": true
+        }
+      ],
+      "status": "header and resource chunks preserved; header size disagreement prevents claiming a faithful complete container"
+    }
+  ],
+  "personal_dictionary_accessed": false,
+  "native_engine_executed": false,
+  "init_sha256": "76b95ae0d1948b677a38d8e6311b65f154642fb19723a4dcdcc8ec0a2da04210"
+}

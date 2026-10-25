@@ -1,0 +1,1476 @@
+{
+  "scope": "name-based inventory; overlaps are intentional and names do not prove feature availability",
+  "families": {
+    "messages": {
+      "count": 70,
+      "windows": [
+        {
+          "id": "0xf0018",
+          "name": "MMICC_SMS_REJECT_CALL_WIN_ID",
+          "handler": "0x8858c733",
+          "offset": "0x1fe494"
+        },
+        {
+          "id": "0x80028",
+          "name": "MMISMS_SHOWCLASS0_WIN_ID",
+          "handler": "0x883f427f",
+          "offset": "0x21120c"
+        },
+        {
+          "id": "0x8000b",
+          "name": "MMISMS_SHOWMSG_WIN_ID",
+          "handler": "0x883f4ead",
+          "offset": "0x211240"
+        },
+        {
+          "id": "0x8002a",
+          "name": "MMISMS_MTSMS_DETAIL_WIN_ID",
+          "handler": "0x883f38ab",
+          "offset": "0x21127c"
+        },
+        {
+          "id": "0x80016",
+          "name": "MMISMS_NOSENDBOX_CHILD_WIN_ID",
+          "handler": "0x88b4ed8f",
+          "offset": "0x2112a8"
+        },
+        {
+          "id": "0x80063",
+          "name": "MMISMS_CHATBOX_CHILD_WIN_ID",
+          "handler": "0x88b4f3fb",
+          "offset": "0x2112e0"
+        },
+        {
+          "id": "0x80074",
+          "name": "MMISMS_BLOCKNUMBER_WIN_ID",
+          "handler": "0x88b4ff0f",
+          "offset": "0x211364"
+        },
+        {
+          "id": "0x80008",
+          "name": "MMISMS_WORDLIST_WIN_ID",
+          "handler": "0x8864b591",
+          "offset": "0x2113c0"
+        },
+        {
+          "id": "0x80027",
+          "name": "MMISMS_SELECTWORD_WIN_ID",
+          "handler": "0x8864b6d5",
+          "offset": "0x2113f0"
+        },
+        {
+          "id": "0x80025",
+          "name": "MMISMS_INPUTWORD_WIN_ID",
+          "handler": "0x8864b87f",
+          "offset": "0x21142c"
+        },
+        {
+          "id": "0x70029",
+          "name": "MMIMMS_ADD_PHIZ_WIN_ID",
+          "handler": "0x8839ea25",
+          "offset": "0x227720"
+        },
+        {
+          "id": "0x7002a",
+          "name": "MMIMMS_ATTACH_WIN_ID",
+          "handler": "0x8839ebbb",
+          "offset": "0x227758"
+        },
+        {
+          "id": "0x7000c",
+          "name": "MMIMMS_EDIT_MENU_WIN_ID",
+          "handler": "0x8839962b",
+          "offset": "0x227790"
+        },
+        {
+          "id": "0x70011",
+          "name": "MMIMMS_EDIT_MAINMENU_OPT_WIN_ID",
+          "handler": "0x8839bf5b",
+          "offset": "0x2278a8"
+        },
+        {
+          "id": "0x7002c",
+          "name": "MMIMMS_ADDCONATCTS_MENU_OPT_WIN_ID",
+          "handler": "0x8839b0a7",
+          "offset": "0x2278d4"
+        },
+        {
+          "id": "0x70026",
+          "name": "MMIMMS_EDIT_MAINMENU_INSERT_OPT_WIN_ID",
+          "handler": "0x8839e5b5",
+          "offset": "0x227900"
+        },
+        {
+          "id": "0x7000f",
+          "name": "MMIMMS_EDIT_TO_LIST_WIN_ID",
+          "handler": "0x8839cb71",
+          "offset": "0x227938"
+        },
+        {
+          "id": "0x7000d",
+          "name": "MMIMMS_EDIT_SUBJECT_WIN_ID",
+          "handler": "0x8839d6d9",
+          "offset": "0x227974"
+        },
+        {
+          "id": "0x70010",
+          "name": "MMIMMS_EDIT_TEXT_WIN_ID",
+          "handler": "0x8839d7bb",
+          "offset": "0x2279ac"
+        },
+        {
+          "id": "0x7000e",
+          "name": "MMIMMS_EDIT_SET_SLIDE_TIME_WIN_ID",
+          "handler": "0x8839d96f",
+          "offset": "0x2279e4"
+        },
+        {
+          "id": "0x70017",
+          "name": "MMIMMS_ATTACHMENT_LIST_OPT_WIN_ID",
+          "handler": "0x88144bfb",
+          "offset": "0x230478"
+        },
+        {
+          "id": "0x70018",
+          "name": "MMIMMS_PREVIEW_WIN_ID",
+          "handler": "0x8813c499",
+          "offset": "0x4c4318"
+        },
+        {
+          "id": "0x70019",
+          "name": "MMIMMS_PREVIEW_NUMBER_POP_WIN_ID",
+          "handler": "0x8813d67f",
+          "offset": "0x4c436c"
+        },
+        {
+          "id": "0x7001a",
+          "name": "MMIMMS_PREVIEW_URL_POP_WIN_ID",
+          "handler": "0x8813d8d7",
+          "offset": "0x4c43a4"
+        },
+        {
+          "id": "0x7001b",
+          "name": "MMIMMS_PREVIEW_EMAIL_POP_WIN_ID",
+          "handler": "0x8813db93",
+          "offset": "0x4c43dc"
+        },
+        {
+          "id": "0x7001c",
+          "name": "MMIMMS_INBOX_MMSOPT_MENU_WIN_ID",
+          "handler": "0x8813dd53",
+          "offset": "0x4c4414"
+        },
+        {
+          "id": "0x7001d",
+          "name": "MMIMMS_SENTBOX_OPT_MENU_WIN_ID",
+          "handler": "0x8813e8b7",
+          "offset": "0x4c444c"
+        },
+        {
+          "id": "0x7001e",
+          "name": "MMIMMS_OUTBOX_OPT_MENU_WIN_ID",
+          "handler": "0x8813ec4b",
+          "offset": "0x4c4484"
+        },
+        {
+          "id": "0x7001f",
+          "name": "MMIMMS_INBOX_NOTIDETAIL_WIN_ID",
+          "handler": "0x8814074b",
+          "offset": "0x4c44c4"
+        },
+        {
+          "id": "0x70020",
+          "name": "MMIMMS_INBOX_MMSNOTIOPT_MENU_WIN_ID",
+          "handler": "0x8813e363",
+          "offset": "0x4c44f0"
+        },
+        {
+          "id": "0x70021",
+          "name": "MMIMMS_SAVE_MULTIFILE_LIST_WIN_ID",
+          "handler": "0x8813ef8b",
+          "offset": "0x4c4524"
+        },
+        {
+          "id": "0x70024",
+          "name": "MMIMMS_MULTIFILE_VIEW_WIN_ID",
+          "handler": "0x8813f8af",
+          "offset": "0x4c4554"
+        },
+        {
+          "id": "0x80036",
+          "name": "MMISMS_CB_READ_WIN_ID",
+          "handler": "0x88aec6b5",
+          "offset": "0x727ac0"
+        },
+        {
+          "id": "0x80037",
+          "name": "MMISMS_CB_CLASS0_READ_WIN_ID",
+          "handler": "0x88aedb83",
+          "offset": "0x727b64"
+        },
+        {
+          "id": "0x80041",
+          "name": "MMISMS_CB_MSG_LIST_WIN_ID",
+          "handler": "0x88aebacf",
+          "offset": "0x727b98"
+        },
+        {
+          "id": "0x80038",
+          "name": "MMISMS_CB_STARTUP_WIN_ID",
+          "handler": "0x88ae881b",
+          "offset": "0x727bd0"
+        },
+        {
+          "id": "0x8003b",
+          "name": "MMISMS_CB_LANGUAGE_LIST_WIN_ID",
+          "handler": "0x88ae8c77",
+          "offset": "0x727c00"
+        },
+        {
+          "id": "0x8003a",
+          "name": "MMISMS_CB_CHANNEL_LIST_WIN_ID",
+          "handler": "0x88ae9797",
+          "offset": "0x727c30"
+        },
+        {
+          "id": "0x8003c",
+          "name": "MMISMS_CB_ADD_EDIT_CHANNEL_WIN_ID",
+          "handler": "0x88aeb069",
+          "offset": "0x727c60"
+        },
+        {
+          "id": "0x8003f",
+          "name": "MMISMS_CB_CHECK_CHANNEL_NUM_WIN_ID",
+          "handler": "0x88aeb275",
+          "offset": "0x727cc0"
+        },
+        {
+          "id": "0x80035",
+          "name": "MMISMS_CB_MAIN_MENU_WIN_ID",
+          "handler": "0x88aee03d",
+          "offset": "0x727cf4"
+        },
+        {
+          "id": "0x80045",
+          "name": "MMISMS_CB_SETTING_WIN_ID",
+          "handler": "0x88aee377",
+          "offset": "0x727d24"
+        },
+        {
+          "id": "0x80045",
+          "name": "MMISMS_CB_SETTING_WIN_ID",
+          "handler": "0x88aee5c7",
+          "offset": "0x727d54"
+        },
+        {
+          "id": "0x8003a",
+          "name": "MMISMS_CB_CHANNEL_LIST_WIN_ID",
+          "handler": "0x88aea963",
+          "offset": "0x727d84"
+        },
+        {
+          "id": "0x80041",
+          "name": "MMISMS_CB_MSG_LIST_WIN_ID",
+          "handler": "0x88aec183",
+          "offset": "0x727db4"
+        },
+        {
+          "id": "0x80002",
+          "name": "MMISMS_SMS_SETTING_MENU_WIN_ID",
+          "handler": "0x88098d61",
+          "offset": "0x727e14"
+        },
+        {
+          "id": "0x80018",
+          "name": "MMISMS_SELECTVP_WIN_ID",
+          "handler": "0x880980d7",
+          "offset": "0x727e44"
+        },
+        {
+          "id": "0x8001a",
+          "name": "MMISMS_SELECTSAVEPOS_WIN_ID",
+          "handler": "0x880981c3",
+          "offset": "0x727e7c"
+        },
+        {
+          "id": "0x80010",
+          "name": "MMISMS_SETTINGS_TAB_WIN_ID",
+          "handler": "0x88098847",
+          "offset": "0x727eac"
+        },
+        {
+          "id": "0x8004b",
+          "name": "MMISMS_BROWSER_SETTING_MENUWIN_ID",
+          "handler": "0x88098a5f",
+          "offset": "0x727ed0"
+        },
+        {
+          "id": "0x8004c",
+          "name": "MMISMS_SERVICE_LOADING_OPERATION_SETTING_WIN_ID",
+          "handler": "0x880986f1",
+          "offset": "0x727f00"
+        },
+        {
+          "id": "0x8006c",
+          "name": "MMISMS_ALPHABET_MANAGEMENT_WIN_ID",
+          "handler": "0x88098fcd",
+          "offset": "0x727f38"
+        },
+        {
+          "id": "0x80077",
+          "name": "MMISMS_MESSAGE_SETTING_WIN_ID",
+          "handler": "0x8809922b",
+          "offset": "0x727f68"
+        },
+        {
+          "id": "0x8002b",
+          "name": "MMISMS_MEMORY_STATE_WIN_ID",
+          "handler": "0x8841f85b",
+          "offset": "0x727fd4"
+        },
+        {
+          "id": "0x80065",
+          "name": "MMISMS_SHOW_CHAT_SMS_WIN_ID",
+          "handler": "0x883e4bc1",
+          "offset": "0x728004"
+        },
+        {
+          "id": "0x80078",
+          "name": "MMISMS_ATTA_OPT_LIST_WIN_ID",
+          "handler": "0x883e6757",
+          "offset": "0x7280a8"
+        },
+        {
+          "id": "0x80079",
+          "name": "MMISMS_PICTURE_PREVIEW_WIN_ID",
+          "handler": "0x883e6d35",
+          "offset": "0x7280dc"
+        },
+        {
+          "id": "0x8007a",
+          "name": "MMISMS_VIDEO_PREVIEW_WIN_ID",
+          "handler": "0x883e6db5",
+          "offset": "0x728114"
+        },
+        {
+          "id": "0x80066",
+          "name": "MMISMS_SHOW_CHAT_SMS_OPT_WIN_ID",
+          "handler": "0x883e6e51",
+          "offset": "0x728128"
+        },
+        {
+          "id": "0x80003",
+          "name": "MMISMS_VOICEMAIL_SETTING_MENU_WIN_ID",
+          "handler": "0x883d0491",
+          "offset": "0x728184"
+        },
+        {
+          "id": "0x80052",
+          "name": "MMISMS_VM_EDIT_WIN_ID",
+          "handler": "0x883d0d9d",
+          "offset": "0x7281cc"
+        },
+        {
+          "id": "0x70002",
+          "name": "MMIMMS_MMSSETTING_WIN_ID",
+          "handler": "0x880adbf5",
+          "offset": "0x73f6d4"
+        },
+        {
+          "id": "0x70005",
+          "name": "MMIMMS_RECEVINGSETTING_WIN_ID",
+          "handler": "0x880adfe5",
+          "offset": "0x73f704"
+        },
+        {
+          "id": "0x70027",
+          "name": "MMIMMS_SEND_SETTINGS_WIN_ID",
+          "handler": "0x880ae32b",
+          "offset": "0x73f734"
+        },
+        {
+          "id": "0x70022",
+          "name": "MMIMMS_SAVE_FILE_POS_WIN_ID",
+          "handler": "0x880ae4b9",
+          "offset": "0x73f76c"
+        },
+        {
+          "id": "0x70006",
+          "name": "MMIMMS_SENDINGSETTING_WIN_ID",
+          "handler": "0x880ae1b9",
+          "offset": "0x73f7a4"
+        },
+        {
+          "id": "0x7002b",
+          "name": "MMIMMS_SETTING_RETRIEVE_MODE_WIN_ID",
+          "handler": "0x880ae5ad",
+          "offset": "0x73f7dc"
+        },
+        {
+          "id": "0x8000a",
+          "name": "MMISMS_PHIZLIST_WIN_ID",
+          "handler": "0x88173235",
+          "offset": "0x7453bc"
+        },
+        {
+          "id": "0x8006d",
+          "name": "MMISMS_PUSH_MESSAGE_WIN_ID",
+          "handler": "0x8862df8d",
+          "offset": "0x7a9a0c"
+        },
+        {
+          "id": "0x80006",
+          "name": "MMISMS_SENDNUMOPTION_WIN_ID",
+          "handler": "0x88082a9f",
+          "offset": "0x7a9a5c"
+        }
+      ]
+    },
+    "browser": {
+      "count": 1,
+      "windows": [
+        {
+          "id": "0x8004b",
+          "name": "MMISMS_BROWSER_SETTING_MENUWIN_ID",
+          "handler": "0x88098a5f",
+          "offset": "0x727ed0"
+        }
+      ]
+    },
+    "home": {
+      "count": 7,
+      "windows": [
+        {
+          "id": "0x70011",
+          "name": "MMIMMS_EDIT_MAINMENU_OPT_WIN_ID",
+          "handler": "0x8839bf5b",
+          "offset": "0x2278a8"
+        },
+        {
+          "id": "0x70026",
+          "name": "MMIMMS_EDIT_MAINMENU_INSERT_OPT_WIN_ID",
+          "handler": "0x8839e5b5",
+          "offset": "0x227900"
+        },
+        {
+          "id": "0x1d0001",
+          "name": "NINJA_MAINMENU_WIN_ID",
+          "handler": "0x8868af3f",
+          "offset": "0x4c66cc"
+        },
+        {
+          "id": "0x130001",
+          "name": "MMIENG_MAINMENU_WIN_ID",
+          "handler": "0x882deab1",
+          "offset": "0x6f9068"
+        },
+        {
+          "id": "0x1e0001",
+          "name": "NITRORACING_MAINMENU_WIN_ID",
+          "handler": "0x8817a0fd",
+          "offset": "0x7414f8"
+        },
+        {
+          "id": "0x200001",
+          "name": "ARROWMASTER_MAINMENU_WIN_ID",
+          "handler": "0x88ba00f5",
+          "offset": "0x741704"
+        },
+        {
+          "id": "0x200001",
+          "name": "ARROWMASTER_MAINMENU_WIN_ID",
+          "handler": "0x88ba00f5",
+          "offset": "0x741738"
+        }
+      ]
+    },
+    "settings": {
+      "count": 145,
+      "windows": [
+        {
+          "id": "0x32001e",
+          "name": "MMIVP_PDA_SETTINGS_WIN_ID",
+          "handler": "0x88a8bb13",
+          "offset": "0x202f9c"
+        },
+        {
+          "id": "0x32001f",
+          "name": "MMIVP_SETTINGS_PLAYBACK_MODE_WIN_ID",
+          "handler": "0x88a8bd87",
+          "offset": "0x202fd8"
+        },
+        {
+          "id": "0xd0082",
+          "name": "MMIENVSET_OPERATION_WIN_ID",
+          "handler": "0x886c934f",
+          "offset": "0x207ba0"
+        },
+        {
+          "id": "0xd0084",
+          "name": "MMIENVSET_CHANGE_ENV_NAME_WIN_ID",
+          "handler": "0x886c940d",
+          "offset": "0x207bd8"
+        },
+        {
+          "id": "0xd0085",
+          "name": "MMIENVSET_RING_VOL_WIN_ID",
+          "handler": "0x886c9621",
+          "offset": "0x207c24"
+        },
+        {
+          "id": "0xd00d0",
+          "name": "MMIENVSET_ALL_RING_VOL_WIN_ID",
+          "handler": "0x886c9e75",
+          "offset": "0x207c50"
+        },
+        {
+          "id": "0xd008b",
+          "name": "MMIENVSET_RING_TYPE_WIN_ID",
+          "handler": "0x886ca11f",
+          "offset": "0x207dbc"
+        },
+        {
+          "id": "0xd00d1",
+          "name": "MMIENVSET_OTHER_RING_SET_WIN_ID",
+          "handler": "0x886ca21d",
+          "offset": "0x207df4"
+        },
+        {
+          "id": "0xd008e",
+          "name": "MMIENVSET_CALL_RING_TYPE_WIN_ID",
+          "handler": "0x886c9b9f",
+          "offset": "0x207ed8"
+        },
+        {
+          "id": "0xd008f",
+          "name": "MMIENVSET_MSG_RING_TYPE_WIN_ID",
+          "handler": "0x886c9bb3",
+          "offset": "0x207f10"
+        },
+        {
+          "id": "0xd0090",
+          "name": "MMIENVSET_ALARM_RING_TYPE_WIN_ID",
+          "handler": "0x886c9bc7",
+          "offset": "0x207f48"
+        },
+        {
+          "id": "0xd0091",
+          "name": "MMIENVSET_KEY_RING_TYPE_WIN_ID",
+          "handler": "0x886c9bdb",
+          "offset": "0x207f80"
+        },
+        {
+          "id": "0xd0094",
+          "name": "MMIENVSET_DOWNLOAD_NOTIFY_SWITCH_WIN_ID",
+          "handler": "0x886c9d6d",
+          "offset": "0x207fb8"
+        },
+        {
+          "id": "0xd0095",
+          "name": "MMIENVSET_LOW_VOLTAGE_WARN_SWITCH_WIN_ID",
+          "handler": "0x886c9df1",
+          "offset": "0x207ff0"
+        },
+        {
+          "id": "0xd0096",
+          "name": "MMIENVSET_POWER_RING_SWICTH_WIN_ID",
+          "handler": "0x886c9c3b",
+          "offset": "0x208028"
+        },
+        {
+          "id": "0x2d0002",
+          "name": "MMIOTA_CONFIG_SET_MENU_WIN_ID",
+          "handler": "0x883ce2c9",
+          "offset": "0x208e50"
+        },
+        {
+          "id": "0xd0069",
+          "name": "MMISET_SET_POWER_ON_ANIM_WIN_ID",
+          "handler": "0x880b6153",
+          "offset": "0x20fed0"
+        },
+        {
+          "id": "0xd006a",
+          "name": "MMISET_SET_POWER_OFF_ANIM_WIN_ID",
+          "handler": "0x880b642b",
+          "offset": "0x20ff08"
+        },
+        {
+          "id": "0xd0034",
+          "name": "MMISET_SET_DISPLAY_ICON_ANIMATION_WIN_ID",
+          "handler": "0x880b601b",
+          "offset": "0x20ff40"
+        },
+        {
+          "id": "0xd00d3",
+          "name": "MMISET_SET_INPUT_LANGUAGE_CONTENT_WIN_ID",
+          "handler": "0x8859a337",
+          "offset": "0x2101d8"
+        },
+        {
+          "id": "0xd00d2",
+          "name": "MMISET_SET_SHOW_LANGUAGE_CONTENT_WIN_ID",
+          "handler": "0x8859a289",
+          "offset": "0x210214"
+        },
+        {
+          "id": "0xd0025",
+          "name": "MMISET_SET_LANGUAGE_WIN_ID",
+          "handler": "0x8859a12d",
+          "offset": "0x210250"
+        },
+        {
+          "id": "0xd0026",
+          "name": "MMISET_SET_LANGUAGE2_WIN_ID",
+          "handler": "0x8859a207",
+          "offset": "0x210300"
+        },
+        {
+          "id": "0xd0015",
+          "name": "MMISET_SET_PHONE_WIN_ID",
+          "handler": "0x8859ada9",
+          "offset": "0x210334"
+        },
+        {
+          "id": "0xd0015",
+          "name": "MMISET_SET_PHONE_WIN_ID",
+          "handler": "0x8859a071",
+          "offset": "0x210368"
+        },
+        {
+          "id": "0xd0016",
+          "name": "MMISET_PHONE_SETTING_WIN_ID",
+          "handler": "0x8859a9ef",
+          "offset": "0x2103a4"
+        },
+        {
+          "id": "0xd0019",
+          "name": "MMISET_MSA_LIST_OPT_WIN_ID",
+          "handler": "0x8859a7f5",
+          "offset": "0x2103dc"
+        },
+        {
+          "id": "0x9000f",
+          "name": "FM_SET_TIMER_INFO_WIN_ID",
+          "handler": "0x88594409",
+          "offset": "0x225fe0"
+        },
+        {
+          "id": "0x7000e",
+          "name": "MMIMMS_EDIT_SET_SLIDE_TIME_WIN_ID",
+          "handler": "0x8839d96f",
+          "offset": "0x2279e4"
+        },
+        {
+          "id": "0xe0005",
+          "name": "MMIMP3_ALARM_RING_SET_WIN_ID",
+          "handler": "0x8868997d",
+          "offset": "0x2292cc"
+        },
+        {
+          "id": "0xe0006",
+          "name": "MMIMP3_DISPLAY_SET_WIN_ID",
+          "handler": "0x88689bf7",
+          "offset": "0x229308"
+        },
+        {
+          "id": "0xe000a",
+          "name": "MMIMP3_BT_SET_WIN_ID",
+          "handler": "0x88689caf",
+          "offset": "0x2293bc"
+        },
+        {
+          "id": "0xe000b",
+          "name": "MMIMP3_BT_HEADSET_WIN_ID",
+          "handler": "0x88689e3b",
+          "offset": "0x2293f8"
+        },
+        {
+          "id": "0xe000c",
+          "name": "MMIMP3_SET_CODE_TYPE_WIN_ID",
+          "handler": "0x88689ecf",
+          "offset": "0x229448"
+        },
+        {
+          "id": "0xe004c",
+          "name": "MMIMP3_SETTINGS_WIN_ID",
+          "handler": "0x8868825b",
+          "offset": "0x229484"
+        },
+        {
+          "id": "0xe0019",
+          "name": "MMIMP3_SET_AS_RING_SELETION_WIN_ID",
+          "handler": "0x88ad67c5",
+          "offset": "0x229b70"
+        },
+        {
+          "id": "0x1f0004",
+          "name": "SNAKEX_SETLEVEL_WIN_ID",
+          "handler": "0x88099e79",
+          "offset": "0x22a1c4"
+        },
+        {
+          "id": "0x19001d",
+          "name": "MMIBT_SET_SAVE_LOCATION_WIN_ID",
+          "handler": "0x8808134f",
+          "offset": "0x22ffcc"
+        },
+        {
+          "id": "0x190005",
+          "name": "MMIBT_SET_VISIBILITY_WIN_ID",
+          "handler": "0x883282e5",
+          "offset": "0x230028"
+        },
+        {
+          "id": "0xd0035",
+          "name": "MMISET_SET_SCREENSAVER_WIN_ID",
+          "handler": "0x88097a47",
+          "offset": "0x4b7838"
+        },
+        {
+          "id": "0xd0037",
+          "name": "MMISET_SET_SCREENSAVER_PREVIEW_WIN_ID",
+          "handler": "0x88097c81",
+          "offset": "0x4b7870"
+        },
+        {
+          "id": "0x110066",
+          "name": "MMIPB_SETTINGS_WIN_ID",
+          "handler": "0x885c3da5",
+          "offset": "0x4cb804"
+        },
+        {
+          "id": "0x110067",
+          "name": "MMIPB_SETTINGS_SORT_BY_WIN_ID",
+          "handler": "0x885c403d",
+          "offset": "0x4cb834"
+        },
+        {
+          "id": "0x110068",
+          "name": "MMIPB_SETTINGS_SDN_SIM_SELECT_WIN_ID",
+          "handler": "0x885c42ef",
+          "offset": "0x4cb864"
+        },
+        {
+          "id": "0xd00c4",
+          "name": "MMISET_SET_FIXED_DIALING_WIN_ID",
+          "handler": "0x88614d8f",
+          "offset": "0x6f8914"
+        },
+        {
+          "id": "0xd00a7",
+          "name": "MMISET_FLY_MODE_OPEN_PHONE_WIN_ID",
+          "handler": "0x8832192d",
+          "offset": "0x70d7b8"
+        },
+        {
+          "id": "0xd00c9",
+          "name": "MMISET_SET_CALL_HIDE_ID_WIN_ID",
+          "handler": "0x8831db33",
+          "offset": "0x70d7f0"
+        },
+        {
+          "id": "0xd0048",
+          "name": "MMISET_SET_OPEN_DIVERT_WIN_ID",
+          "handler": "0x8831c2bd",
+          "offset": "0x70d820"
+        },
+        {
+          "id": "0xd0049",
+          "name": "MMISET_SET_DIVERT_VOICE_WIN_ID",
+          "handler": "0x8831ddc5",
+          "offset": "0x70d858"
+        },
+        {
+          "id": "0xd004a",
+          "name": "MMISET_SET_DIVERT_NUMBER_WIN_ID",
+          "handler": "0x8831cd3d",
+          "offset": "0x70d890"
+        },
+        {
+          "id": "0xd0074",
+          "name": "MMISET_LIST_IPNUMBER_WIN_ID",
+          "handler": "0x8831e275",
+          "offset": "0x70d8c8"
+        },
+        {
+          "id": "0xd0073",
+          "name": "MMISET_MODIFY_IPNUMBER_WIN_ID",
+          "handler": "0x8831e5a5",
+          "offset": "0x70d900"
+        },
+        {
+          "id": "0xd006d",
+          "name": "MMISET_SET_MINUTE_REMINDER_WIN_ID",
+          "handler": "0x8831e831",
+          "offset": "0x70d938"
+        },
+        {
+          "id": "0xd006d",
+          "name": "MMISET_SET_MINUTE_REMINDER_WIN_ID",
+          "handler": "0x8831eb3d",
+          "offset": "0x70d968"
+        },
+        {
+          "id": "0xd007e",
+          "name": "MMISET_SEL_NET_WIN_ID",
+          "handler": "0x8831ed7d",
+          "offset": "0x70d998"
+        },
+        {
+          "id": "0xd002a",
+          "name": "MMISET_SET_NETWORK_METHOD_WIN_ID",
+          "handler": "0x8831ee87",
+          "offset": "0x70d9d0"
+        },
+        {
+          "id": "0xd00a3",
+          "name": "MMISET_LINE_SELECT_WIN_ID",
+          "handler": "0x88321afb",
+          "offset": "0x70da38"
+        },
+        {
+          "id": "0xd00a4",
+          "name": "MMISET_LOCK_LINE_WIN_ID",
+          "handler": "0x88321b8b",
+          "offset": "0x70da70"
+        },
+        {
+          "id": "0xd00a5",
+          "name": "MMISET_FLY_MODE_WIN_ID",
+          "handler": "0x8831f5e5",
+          "offset": "0x70daa8"
+        },
+        {
+          "id": "0xd00a6",
+          "name": "MMISET_FLY_MODE_SET_WIN_ID",
+          "handler": "0x8831f831",
+          "offset": "0x70dae0"
+        },
+        {
+          "id": "0xd0029",
+          "name": "MMISET_SET_NETWORK_TYPE_WIN_ID",
+          "handler": "0x8831fbed",
+          "offset": "0x70db18"
+        },
+        {
+          "id": "0xd0075",
+          "name": "MMISET_IPNUMBER_OPTION_WIN_ID",
+          "handler": "0x8831e3df",
+          "offset": "0x70db50"
+        },
+        {
+          "id": "0xd0075",
+          "name": "MMISET_IPNUMBER_OPTION_WIN_ID",
+          "handler": "0x8831e3df",
+          "offset": "0x70db88"
+        },
+        {
+          "id": "0xd00b3",
+          "name": "MMISET_SET_SIM_NAME_WIN_ID",
+          "handler": "0x88320d43",
+          "offset": "0x70dbc0"
+        },
+        {
+          "id": "0xd00aa",
+          "name": "MMISET_SET_MULTISYS_TYPE_WIN_ID",
+          "handler": "0x8832075d",
+          "offset": "0x70dc00"
+        },
+        {
+          "id": "0xd00af",
+          "name": "MMISET_SET_DUALSYS_SIM_ACTIVE_TYPE_WIN_ID",
+          "handler": "0x88320ad1",
+          "offset": "0x70dc38"
+        },
+        {
+          "id": "0xd00b6",
+          "name": "MMISET_SET_ANSWER_WITH_ORIGINAL_SIM_WIN_ID",
+          "handler": "0x883209fd",
+          "offset": "0x70dc78"
+        },
+        {
+          "id": "0xd00a9",
+          "name": "MMISET_SET_MULTI_SYS_SETTING_WIN_ID",
+          "handler": "0x88321145",
+          "offset": "0x70dca8"
+        },
+        {
+          "id": "0xd00ae",
+          "name": "MMISET_DUAL_MAJOR_SIM_SEL_WIN_ID",
+          "handler": "0x88320e59",
+          "offset": "0x70dce0"
+        },
+        {
+          "id": "0xd00d5",
+          "name": "MMISET_SLECT_POP_WAITING_WIN_ID",
+          "handler": "0x8831d85d",
+          "offset": "0x70dd18"
+        },
+        {
+          "id": "0xd00d6",
+          "name": "MMISET_SLECT_POP_BAR_WIN_ID",
+          "handler": "0x8831d5b9",
+          "offset": "0x70dd48"
+        },
+        {
+          "id": "0xd00c7",
+          "name": "MMISET_SET_CALL_BAR_WIN_ID",
+          "handler": "0x8831d409",
+          "offset": "0x70dd78"
+        },
+        {
+          "id": "0xd00c0",
+          "name": "MMISET_SET_CALL_DIVERT_CONDITIONS_ID",
+          "handler": "0x8831c469",
+          "offset": "0x70dda8"
+        },
+        {
+          "id": "0xd00c1",
+          "name": "MMISET_SET_CALL_DIVERT_SIMCARD_ID",
+          "handler": "0x8831cef7",
+          "offset": "0x70ddd8"
+        },
+        {
+          "id": "0xd00c2",
+          "name": "MMISET_SET_CALL_WAITING_WIN_ID",
+          "handler": "0x8831ccb9",
+          "offset": "0x70ddfc"
+        },
+        {
+          "id": "0xd00c3",
+          "name": "MMISET_SET_VOICEMAIL_SELECT_SIM_WIN_ID",
+          "handler": "0x8831c63f",
+          "offset": "0x70de20"
+        },
+        {
+          "id": "0xd00c4",
+          "name": "MMISET_SET_FIXED_DIALING_WIN_ID",
+          "handler": "0x8831c713",
+          "offset": "0x70de44"
+        },
+        {
+          "id": "0xd0064",
+          "name": "MMISET_SET_SECURITY_FDN_WIN_ID",
+          "handler": "0x8831c7a7",
+          "offset": "0x70de68"
+        },
+        {
+          "id": "0xd00bf",
+          "name": "MMISET_SET_CALL_DIVERT_WIN_ID",
+          "handler": "0x8831cfdf",
+          "offset": "0x70de98"
+        },
+        {
+          "id": "0xd001f",
+          "name": "MMISET_SET_CALL_WIN_ID",
+          "handler": "0x8831bef3",
+          "offset": "0x70ded4"
+        },
+        {
+          "id": "0xd0054",
+          "name": "MMISET_SET_PLMN_LIST_WIN_ID",
+          "handler": "0x8831fedb",
+          "offset": "0x70e1cc"
+        },
+        {
+          "id": "0xf001b",
+          "name": "MMISPEEDDIAL_SETTINGS_WIN_ID",
+          "handler": "0x88139637",
+          "offset": "0x71b3e0"
+        },
+        {
+          "id": "0xd0080",
+          "name": "MMIENVSET_MAIN_MENU_WIN_ID",
+          "handler": "0x886c904b",
+          "offset": "0x71d0a8"
+        },
+        {
+          "id": "0x110052",
+          "name": "MMIPB_SET_DEFAULT_NUMBER_WIN_ID",
+          "handler": "0x8830a817",
+          "offset": "0x71dba0"
+        },
+        {
+          "id": "0xd0001",
+          "name": "MMISET_RING_MENU_WIN_ID",
+          "handler": "0x88aaddd5",
+          "offset": "0x726f2c"
+        },
+        {
+          "id": "0xd0002",
+          "name": "MMISET_RING_SELECT_CALL_WIN_ID",
+          "handler": "0x88aadf07",
+          "offset": "0x726f64"
+        },
+        {
+          "id": "0xd0003",
+          "name": "MMISET_RING_SELECT_FIXED_WIN_ID",
+          "handler": "0x88aae3b5",
+          "offset": "0x726f9c"
+        },
+        {
+          "id": "0xd0004",
+          "name": "MMISET_MSG_RING_SELECT_FIXED_WIN_ID",
+          "handler": "0x88aae1d7",
+          "offset": "0x726fcc"
+        },
+        {
+          "id": "0xd0008",
+          "name": "MMISET_RING_SELECT_MSG_WIN_ID",
+          "handler": "0x88aae6a3",
+          "offset": "0x726ffc"
+        },
+        {
+          "id": "0x80045",
+          "name": "MMISMS_CB_SETTING_WIN_ID",
+          "handler": "0x88aee377",
+          "offset": "0x727d24"
+        },
+        {
+          "id": "0x80045",
+          "name": "MMISMS_CB_SETTING_WIN_ID",
+          "handler": "0x88aee5c7",
+          "offset": "0x727d54"
+        },
+        {
+          "id": "0x80002",
+          "name": "MMISMS_SMS_SETTING_MENU_WIN_ID",
+          "handler": "0x88098d61",
+          "offset": "0x727e14"
+        },
+        {
+          "id": "0x80010",
+          "name": "MMISMS_SETTINGS_TAB_WIN_ID",
+          "handler": "0x88098847",
+          "offset": "0x727eac"
+        },
+        {
+          "id": "0x8004b",
+          "name": "MMISMS_BROWSER_SETTING_MENUWIN_ID",
+          "handler": "0x88098a5f",
+          "offset": "0x727ed0"
+        },
+        {
+          "id": "0x8004c",
+          "name": "MMISMS_SERVICE_LOADING_OPERATION_SETTING_WIN_ID",
+          "handler": "0x880986f1",
+          "offset": "0x727f00"
+        },
+        {
+          "id": "0x80077",
+          "name": "MMISMS_MESSAGE_SETTING_WIN_ID",
+          "handler": "0x8809922b",
+          "offset": "0x727f68"
+        },
+        {
+          "id": "0x80003",
+          "name": "MMISMS_VOICEMAIL_SETTING_MENU_WIN_ID",
+          "handler": "0x883d0491",
+          "offset": "0x728184"
+        },
+        {
+          "id": "0x17001d",
+          "name": "MMIUNITCONV_SUBSET_WIN_ID",
+          "handler": "0x88b9d9c9",
+          "offset": "0x733a3c"
+        },
+        {
+          "id": "0x70002",
+          "name": "MMIMMS_MMSSETTING_WIN_ID",
+          "handler": "0x880adbf5",
+          "offset": "0x73f6d4"
+        },
+        {
+          "id": "0x70005",
+          "name": "MMIMMS_RECEVINGSETTING_WIN_ID",
+          "handler": "0x880adfe5",
+          "offset": "0x73f704"
+        },
+        {
+          "id": "0x70027",
+          "name": "MMIMMS_SEND_SETTINGS_WIN_ID",
+          "handler": "0x880ae32b",
+          "offset": "0x73f734"
+        },
+        {
+          "id": "0x70006",
+          "name": "MMIMMS_SENDINGSETTING_WIN_ID",
+          "handler": "0x880ae1b9",
+          "offset": "0x73f7a4"
+        },
+        {
+          "id": "0x7002b",
+          "name": "MMIMMS_SETTING_RETRIEVE_MODE_WIN_ID",
+          "handler": "0x880ae5ad",
+          "offset": "0x73f7dc"
+        },
+        {
+          "id": "0x360004",
+          "name": "MMIIKB_SETTING_CHILD_WIN_ID",
+          "handler": "0x88ae074f",
+          "offset": "0x73fb84"
+        },
+        {
+          "id": "0x20002",
+          "name": "MMIIM_SET_PY_FUZZY_WIN_ID",
+          "handler": "0x885be897",
+          "offset": "0xa2368c"
+        },
+        {
+          "id": "0x220006",
+          "name": "MMICONNECTION_SETTINGLINKLISTMENU_WIN_ID",
+          "handler": "0x885df455",
+          "offset": "0xc188e0"
+        },
+        {
+          "id": "0x220005",
+          "name": "MMICONNECTION_SETTINGLIST_WIN_ID",
+          "handler": "0x885dec53",
+          "offset": "0xc18918"
+        },
+        {
+          "id": "0x220017",
+          "name": "MMICONNECTION_GPRS_SETTINGS_WIN_ID",
+          "handler": "0x885e0445",
+          "offset": "0xc18980"
+        },
+        {
+          "id": "0x220009",
+          "name": "MMICONNECTION_SETTINGLINKMENU_WIN_ID",
+          "handler": "0x885e16c3",
+          "offset": "0xc189b0"
+        },
+        {
+          "id": "0x22000a",
+          "name": "MMICONNECTION_SETTINGLINKDETAILVIEW_WIN_ID",
+          "handler": "0x885e1c5d",
+          "offset": "0xc189e0"
+        },
+        {
+          "id": "0x22000b",
+          "name": "MMICONNECTION_SETTINGSECURITYCONNECTLIST_WIN_ID",
+          "handler": "0x885e1ce9",
+          "offset": "0xc18a0c"
+        },
+        {
+          "id": "0x22000c",
+          "name": "MMICONNECTION_SETTINGIPTYPE_WIN_ID",
+          "handler": "0x885e1da1",
+          "offset": "0xc18a3c"
+        },
+        {
+          "id": "0x220014",
+          "name": "MMICONNECTION_SETTINGLINK_ADVANCE_WIN_ID",
+          "handler": "0x885e1f21",
+          "offset": "0xc18a6c"
+        },
+        {
+          "id": "0x220015",
+          "name": "MMICONNECTION_SETTINGLINK_DNS_WIN_ID",
+          "handler": "0x885e0c85",
+          "offset": "0xc18a9c"
+        },
+        {
+          "id": "0x220016",
+          "name": "MMICONNECTION_SETTINGLINK_NETTYPE_WIN_ID",
+          "handler": "0x885e20db",
+          "offset": "0xc18ad0"
+        },
+        {
+          "id": "0x22001f",
+          "name": "MMISET_GPRS_CR_WIN_ID",
+          "handler": "0x885e2c5d",
+          "offset": "0xc18ba8"
+        },
+        {
+          "id": "0xd0044",
+          "name": "MMISET_VALIDATE_PRIVACY_PWD_WIN_ID",
+          "handler": "0x88087eb7",
+          "offset": "0xc1a628"
+        },
+        {
+          "id": "0xd0042",
+          "name": "MMISET_SET_PRIVACY_PROTECT_ITEM_WIN_ID",
+          "handler": "0x8808809f",
+          "offset": "0xc1a660"
+        },
+        {
+          "id": "0xd0043",
+          "name": "MMISET_INPUT_PRIVACY_PROTRCT_PWD_WIN_ID",
+          "handler": "0x88088923",
+          "offset": "0xc1a698"
+        },
+        {
+          "id": "0xd0078",
+          "name": "MMISET_SET_SECURITY_PWD_WIN_ID",
+          "handler": "0x880886d3",
+          "offset": "0xc1a6d0"
+        },
+        {
+          "id": "0xd007d",
+          "name": "MMISET_PRIVACY_PROTECT_NEW_PWD_CNF_WIN_ID",
+          "handler": "0x88088c55",
+          "offset": "0xc1a708"
+        },
+        {
+          "id": "0xd007a",
+          "name": "MMISET_SET_SECURITY_NEW_PWD_WIN_ID",
+          "handler": "0x88088b0d",
+          "offset": "0xc1a740"
+        },
+        {
+          "id": "0xd007b",
+          "name": "MMISET_SET_SECURITY_NEW_PWD_CNF_WIN_ID",
+          "handler": "0x88088d1f",
+          "offset": "0xc1a778"
+        },
+        {
+          "id": "0xd0064",
+          "name": "MMISET_SET_SECURITY_FDN_WIN_ID",
+          "handler": "0x8808828d",
+          "offset": "0xc1a7b0"
+        },
+        {
+          "id": "0xd0065",
+          "name": "MMISET_SET_FDN_STATE_WIN_ID",
+          "handler": "0x88088411",
+          "offset": "0xc1a7e8"
+        },
+        {
+          "id": "0xd0055",
+          "name": "MMISET_SET_SECURITY_WIN_ID",
+          "handler": "0x88087739",
+          "offset": "0xc1a858"
+        },
+        {
+          "id": "0xd0058",
+          "name": "MMISET_SET_NEW_SECURITY_WIN_ID",
+          "handler": "0x88086349",
+          "offset": "0xc1a890"
+        },
+        {
+          "id": "0xd0059",
+          "name": "MMISET_SET_KEYGUARD_WIN_ID",
+          "handler": "0x88086cb1",
+          "offset": "0xc1a8c0"
+        },
+        {
+          "id": "0xd005b",
+          "name": "MMISET_SET_CALLBARRING_WIN_ID",
+          "handler": "0x88086f83",
+          "offset": "0xc1a8f0"
+        },
+        {
+          "id": "0xd005a",
+          "name": "MMISET_SET_KEYGUARD_LIST_WIN_ID",
+          "handler": "0x880870ff",
+          "offset": "0xc1a920"
+        },
+        {
+          "id": "0xd005e",
+          "name": "MMISET_SET_SECURITY_PIN1_WIN_ID",
+          "handler": "0x88087a0f",
+          "offset": "0xc1a950"
+        },
+        {
+          "id": "0xd005f",
+          "name": "MMISET_SET_ENABLE_PIN1_WIN_ID",
+          "handler": "0x8808620d",
+          "offset": "0xc1a988"
+        },
+        {
+          "id": "0xd0060",
+          "name": "MMISET_SET_MODIFY_PIN1_WIN_ID",
+          "handler": "0x88086117",
+          "offset": "0xc1a9c8"
+        },
+        {
+          "id": "0xd0061",
+          "name": "MMISET_SET_DISABLE_PIN1_WIN_ID",
+          "handler": "0x880861e7",
+          "offset": "0xc1aa08"
+        },
+        {
+          "id": "0xd0063",
+          "name": "MMISET_SET_MODIFY_PIN2_WIN_ID",
+          "handler": "0x8808613d",
+          "offset": "0xc1aa48"
+        },
+        {
+          "id": "0xd004b",
+          "name": "MMISET_SET_NO_ANSWER_TIME_WIN_ID",
+          "handler": "0x8831ff4d",
+          "offset": "0xc1ab08"
+        },
+        {
+          "id": "0xd00cb",
+          "name": "MMISET_SET_BACKGROUND_WIN_ID",
+          "handler": "0x88358f99",
+          "offset": "0xc1ae9c"
+        },
+        {
+          "id": "0x170008",
+          "name": "MMIACC_WCLK_SET_DST_WIN_ID",
+          "handler": "0x88626711",
+          "offset": "0xc1fddc"
+        },
+        {
+          "id": "0x170024",
+          "name": "WCLK_SET_TIME_ZONE_WIN_ID",
+          "handler": "0x8862704b",
+          "offset": "0xc1feec"
+        },
+        {
+          "id": "0x13000e",
+          "name": "MMIENG_UITESTHEADSET_WIN_ID",
+          "handler": "0x88316963",
+          "offset": "0xc214fc"
+        },
+        {
+          "id": "0xd001b",
+          "name": "MMISET_SET_SHORTCUT_WIN_ID",
+          "handler": "0x8834eb89",
+          "offset": "0xc2b7bc"
+        },
+        {
+          "id": "0xd001c",
+          "name": "MMISET_SHORTCUT_SUB_WIN_ID",
+          "handler": "0x8834ec7b",
+          "offset": "0xc2b7ec"
+        },
+        {
+          "id": "0xd0031",
+          "name": "MMISET_SET_STATIC_WALLPAPER_WIN_ID",
+          "handler": "0x8835086d",
+          "offset": "0xc2b860"
+        },
+        {
+          "id": "0xd0021",
+          "name": "MMISET_SET_TIME_WIN_ID",
+          "handler": "0x8803e1a5",
+          "offset": "0xc2b908"
+        },
+        {
+          "id": "0xd0022",
+          "name": "MMISET_SET_DATE_WIN_ID",
+          "handler": "0x8803e28d",
+          "offset": "0xc2b93c"
+        }
+      ]
+    },
+    "input": {
+      "count": 18,
+      "windows": [
+        {
+          "id": "0xf0014",
+          "name": "MMICC_COM_SELECT_SIM_WIN_ID",
+          "handler": "0x885835a5",
+          "offset": "0x1fe280"
+        },
+        {
+          "id": "0x32001d",
+          "name": "MMIVP_SELECT_SIM_WIN_ID",
+          "handler": "0x88a8b7df",
+          "offset": "0x202f6c"
+        },
+        {
+          "id": "0xd0069",
+          "name": "MMISET_SET_POWER_ON_ANIM_WIN_ID",
+          "handler": "0x880b6153",
+          "offset": "0x20fed0"
+        },
+        {
+          "id": "0xd006a",
+          "name": "MMISET_SET_POWER_OFF_ANIM_WIN_ID",
+          "handler": "0x880b642b",
+          "offset": "0x20ff08"
+        },
+        {
+          "id": "0xd00d3",
+          "name": "MMISET_SET_INPUT_LANGUAGE_CONTENT_WIN_ID",
+          "handler": "0x8859a337",
+          "offset": "0x2101d8"
+        },
+        {
+          "id": "0x80025",
+          "name": "MMISMS_INPUTWORD_WIN_ID",
+          "handler": "0x8864b87f",
+          "offset": "0x21142c"
+        },
+        {
+          "id": "0x37000d",
+          "name": "OD_GAME_INPUT_SCREEN_WIN_ID",
+          "handler": "0x885cc595",
+          "offset": "0x4c6b90"
+        },
+        {
+          "id": "0x110068",
+          "name": "MMIPB_SETTINGS_SDN_SIM_SELECT_WIN_ID",
+          "handler": "0x885c42ef",
+          "offset": "0x4cb864"
+        },
+        {
+          "id": "0xd00b3",
+          "name": "MMISET_SET_SIM_NAME_WIN_ID",
+          "handler": "0x88320d43",
+          "offset": "0x70dbc0"
+        },
+        {
+          "id": "0xd00af",
+          "name": "MMISET_SET_DUALSYS_SIM_ACTIVE_TYPE_WIN_ID",
+          "handler": "0x88320ad1",
+          "offset": "0x70dc38"
+        },
+        {
+          "id": "0xd00b6",
+          "name": "MMISET_SET_ANSWER_WITH_ORIGINAL_SIM_WIN_ID",
+          "handler": "0x883209fd",
+          "offset": "0x70dc78"
+        },
+        {
+          "id": "0xd00ae",
+          "name": "MMISET_DUAL_MAJOR_SIM_SEL_WIN_ID",
+          "handler": "0x88320e59",
+          "offset": "0x70dce0"
+        },
+        {
+          "id": "0xd00c3",
+          "name": "MMISET_SET_VOICEMAIL_SELECT_SIM_WIN_ID",
+          "handler": "0x8831c63f",
+          "offset": "0x70de20"
+        },
+        {
+          "id": "0x20002",
+          "name": "MMIIM_SET_PY_FUZZY_WIN_ID",
+          "handler": "0x885be897",
+          "offset": "0xa2368c"
+        },
+        {
+          "id": "0xd0043",
+          "name": "MMISET_INPUT_PRIVACY_PROTRCT_PWD_WIN_ID",
+          "handler": "0x88088923",
+          "offset": "0xc1a698"
+        },
+        {
+          "id": "0x390003",
+          "name": "MMICP_PREFERRED_SIM_WIN_ID",
+          "handler": "0x8834c981",
+          "offset": "0xc1b764"
+        },
+        {
+          "id": "0x390004",
+          "name": "MMICP_IM_LANGUAGE_OPT_WIN_ID",
+          "handler": "0x8834cb3f",
+          "offset": "0xc1b788"
+        },
+        {
+          "id": "0x11006a",
+          "name": "MMIPB_WAIT_LOAD_SIM_READY_WIN_ID",
+          "handler": "0x8810d819",
+          "offset": "0xc2380c"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,783 @@
+[
+  {
+    "source": "00291-icon-00049864.bin",
+    "source_sha256": "1af6176785578e7141246b9aaef64cd9df308fff13efa19bae480a7c7a1af504",
+    "format": "SJPG/JPEG422",
+    "width": 240,
+    "height": 320,
+    "quality_enum": 0,
+    "quality": 40,
+    "native_table_matches": [
+      {
+        "type": "DQT-natural-order",
+        "table": 0,
+        "kernel_offset": "0xbc6720",
+        "size": 64,
+        "sha256": "1cac84a601583394dce53d55c582abcbee11ebac58169375a1a623e441d37703"
+      },
+      {
+        "type": "DQT-natural-order",
+        "table": 1,
+        "kernel_offset": "0xbc6860",
+        "size": 64,
+        "sha256": "1975fda02b1b7b16a8a4ec7ee6bb6cfa4586db39c202a07fbd42ce5ec0f9eeb5"
+      },
+      {
+        "type": "DHT-counts-and-symbols",
+        "table": 0,
+        "kernel_offset": "0xbc69a1",
+        "size": 28,
+        "sha256": "2f66814c875b53173f057d784a16a34d0d1f9aa91cdfa7143c41be02c9c7b005"
+      },
+      {
+        "type": "DHT-counts-and-symbols",
+        "table": 16,
+        "kernel_offset": "0xbc69be",
+        "size": 178,
+        "sha256": "a6283a08f5d97906b66adcc812e32396ea83059e55dd4cc91934cf447559aeb6"
+      },
+      {
+        "type": "DHT-counts-and-symbols",
+        "table": 1,
+        "kernel_offset": "0xbc6acf",
+        "size": 28,
+        "sha256": "602f734c8c12c1d9d049a18fd91d9ef3d3d8c402665f90db3d97721fc49e4804"
+      },
+      {
+        "type": "DHT-counts-and-symbols",
+        "table": 17,
+        "kernel_offset": "0xbc6aec",
+        "size": 178,
+        "sha256": "13f90e3c9dc476c66f24347f6ad29cea93262e99faed279970c2f74e0557f445"
+      }
+    ],
+    "entropy_validation": {
+      "blocks": 2400,
+      "entropy_bytes_unstuffed": 1516,
+      "padding_bits": 3,
+      "padding_value": 1,
+      "all_blocks_and_byte_consumption_verified": true
+    },
+    "jpeg": "native-images/00291-icon-00049864.jpg",
+    "jpeg_sha256": "578c8253c63582ae077ecd76fd64935efc6c1579aa4dfdae33034a72ce8bfd6c",
+    "frames": [
+      {
+        "file": "native-images/00291-icon-00049864.png",
+        "width": 240,
+        "height": 320,
+        "sha256": "fd94c1484eb379e5c6b21a31cab873cd384ad93b3c4733cb0de7de2ca9c80609"
+      }
+    ],
+    "limitation": "Pillow IDCT and color conversion; native rounding may differ by pixels."
+  },
+  {
+    "source": "02851-icon-00b02630.bin",
+    "source_sha256": "497fe499d7c514e86d6ad27f7a7a513c815661034eeb09cedd32e80974c58465",
+    "format": "SJPG/JPEG422",
+    "width": 240,
+    "height": 320,
+    "quality_enum": 4,
+    "quality": 95,
+    "native_table_matches": [
+      {
+        "type": "DQT-natural-order",
+        "table": 0,
+        "kernel_offset": "0xbc6820",
+        "size": 64,
+        "sha256": "64e17ca636237eef82577332646dc0dff7eab60c3a22ebc8894891e7e870c8b9"
+      },
+      {
+        "type": "DQT-natural-order",
+        "table": 1,
+        "kernel_offset": "0xbc6960",
+        "size": 64,
+        "sha256": "f022d545e988a66dea098c2939f43043a29dd91a3442b775fe9983522c2c05e2"
+      },
+      {
+        "type": "DHT-counts-and-symbols",
+        "table": 0,
+        "kernel_offset": "0xbc69a1",
+        "size": 28,
+        "sha256": "2f66814c875b53173f057d784a16a34d0d1f9aa91cdfa7143c41be02c9c7b005"
+      },
+      {
+        "type": "DHT-counts-and-symbols",
+        "table": 16,
+        "kernel_offset": "0xbc69be",
+        "size": 178,
+        "sha256": "a6283a08f5d97906b66adcc812e32396ea83059e55dd4cc91934cf447559aeb6"
+      },
+      {
+        "type": "DHT-counts-and-symbols",
+        "table": 1,
+        "kernel_offset": "0xbc6acf",
+        "size": 28,
+        "sha256": "602f734c8c12c1d9d049a18fd91d9ef3d3d8c402665f90db3d97721fc49e4804"
+      },
+      {
+        "type": "DHT-counts-and-symbols",
+        "table": 17,
+        "kernel_offset": "0xbc6aec",
+        "size": 178,
+        "sha256": "13f90e3c9dc476c66f24347f6ad29cea93262e99faed279970c2f74e0557f445"
+      }
+    ],
+    "entropy_validation": {
+      "blocks": 2400,
+      "entropy_bytes_unstuffed": 18599,
+      "padding_bits": 7,
+      "padding_value": 0,
+      "all_blocks_and_byte_consumption_verified": true
+    },
+    "jpeg": "native-images/02851-icon-00b02630.jpg",
+    "jpeg_sha256": "48b3ea2be1246d932a90780cc2bec67ff2783cffaf686852f3585ecebe904642",
+    "frames": [
+      {
+        "file": "native-images/02851-icon-00b02630.png",
+        "width": 240,
+        "height": 320,
+        "sha256": "7104999663385d0a71d9bf1f4d4406d7e339435524bf761b465a864a727ad30d"
+      }
+    ],
+    "limitation": "Pillow IDCT and color conversion; native rounding may differ by pixels."
+  },
+  {
+    "source": "02852-icon-00b06f48.bin",
+    "source_sha256": "ba2313932473df197bc319aff35c6a70dc79b3c318cdb3d6b42ed77191a0cfd2",
+    "format": "SJPG/JPEG422",
+    "width": 240,
+    "height": 320,
+    "quality_enum": 4,
+    "quality": 95,
+    "native_table_matches": [
+      {
+        "type": "DQT-natural-order",
+        "table": 0,
+        "kernel_offset": "0xbc6820",
+        "size": 64,
+        "sha256": "64e17ca636237eef82577332646dc0dff7eab60c3a22ebc8894891e7e870c8b9"
+      },
+      {
+        "type": "DQT-natural-order",
+        "table": 1,
+        "kernel_offset": "0xbc6960",
+        "size": 64,
+        "sha256": "f022d545e988a66dea098c2939f43043a29dd91a3442b775fe9983522c2c05e2"
+      },
+      {
+        "type": "DHT-counts-and-symbols",
+        "table": 0,
+        "kernel_offset": "0xbc69a1",
+        "size": 28,
+        "sha256": "2f66814c875b53173f057d784a16a34d0d1f9aa91cdfa7143c41be02c9c7b005"
+      },
+      {
+        "type": "DHT-counts-and-symbols",
+        "table": 16,
+        "kernel_offset": "0xbc69be",
+        "size": 178,
+        "sha256": "a6283a08f5d97906b66adcc812e32396ea83059e55dd4cc91934cf447559aeb6"
+      },
+      {
+        "type": "DHT-counts-and-symbols",
+        "table": 1,
+        "kernel_offset": "0xbc6acf",
+        "size": 28,
+        "sha256": "602f734c8c12c1d9d049a18fd91d9ef3d3d8c402665f90db3d97721fc49e4804"
+      },
+      {
+        "type": "DHT-counts-and-symbols",
+        "table": 17,
+        "kernel_offset": "0xbc6aec",
+        "size": 178,
+        "sha256": "13f90e3c9dc476c66f24347f6ad29cea93262e99faed279970c2f74e0557f445"
+      }
+    ],
+    "entropy_validation": {
+      "blocks": 2400,
+      "entropy_bytes_unstuffed": 19945,
+      "padding_bits": 7,
+      "padding_value": 0,
+      "all_blocks_and_byte_consumption_verified": true
+    },
+    "jpeg": "native-images/02852-icon-00b06f48.jpg",
+    "jpeg_sha256": "802d667f895bed03b0ecb279f0b9715b09047e4279ea25aef72fdd3220886ec0",
+    "frames": [
+      {
+        "file": "native-images/02852-icon-00b06f48.png",
+        "width": 240,
+        "height": 320,
+        "sha256": "35121372b26d30e8c5a1f73a39f1e6a8fd47f6c0f236359f36b8f22f50f2e4e4"
+      }
+    ],
+    "limitation": "Pillow IDCT and color conversion; native rounding may differ by pixels."
+  },
+  {
+    "source": "02853-icon-00b0bdb0.bin",
+    "source_sha256": "e99454684cef089a532f37a4410d4f211b1e3ab315a8ae76de5fab29b9d703d5",
+    "format": "SJPG/JPEG422",
+    "width": 240,
+    "height": 320,
+    "quality_enum": 4,
+    "quality": 95,
+    "native_table_matches": [
+      {
+        "type": "DQT-natural-order",
+        "table": 0,
+        "kernel_offset": "0xbc6820",
+        "size": 64,
+        "sha256": "64e17ca636237eef82577332646dc0dff7eab60c3a22ebc8894891e7e870c8b9"
+      },
+      {
+        "type": "DQT-natural-order",
+        "table": 1,
+        "kernel_offset": "0xbc6960",
+        "size": 64,
+        "sha256": "f022d545e988a66dea098c2939f43043a29dd91a3442b775fe9983522c2c05e2"
+      },
+      {
+        "type": "DHT-counts-and-symbols",
+        "table": 0,
+        "kernel_offset": "0xbc69a1",
+        "size": 28,
+        "sha256": "2f66814c875b53173f057d784a16a34d0d1f9aa91cdfa7143c41be02c9c7b005"
+      },
+      {
+        "type": "DHT-counts-and-symbols",
+        "table": 16,
+        "kernel_offset": "0xbc69be",
+        "size": 178,
+        "sha256": "a6283a08f5d97906b66adcc812e32396ea83059e55dd4cc91934cf447559aeb6"
+      },
+      {
+        "type": "DHT-counts-and-symbols",
+        "table": 1,
+        "kernel_offset": "0xbc6acf",
+        "size": 28,
+        "sha256": "602f734c8c12c1d9d049a18fd91d9ef3d3d8c402665f90db3d97721fc49e4804"
+      },
+      {
+        "type": "DHT-counts-and-symbols",
+        "table": 17,
+        "kernel_offset": "0xbc6aec",
+        "size": 178,
+        "sha256": "13f90e3c9dc476c66f24347f6ad29cea93262e99faed279970c2f74e0557f445"
+      }
+    ],
+    "entropy_validation": {
+      "blocks": 2400,
+      "entropy_bytes_unstuffed": 18956,
+      "padding_bits": 0,
+      "padding_value": 0,
+      "all_blocks_and_byte_consumption_verified": true
+    },
+    "jpeg": "native-images/02853-icon-00b0bdb0.jpg",
+    "jpeg_sha256": "037b07b58061457673ce45556ec1d788e084dbc06c7d69970f33cd31571081fe",
+    "frames": [
+      {
+        "file": "native-images/02853-icon-00b0bdb0.png",
+        "width": 240,
+        "height": 320,
+        "sha256": "bf4a14052f3c400bbfc42f944dd3bf40be9eefe54a910983c2bc27f135469a63"
+      }
+    ],
+    "limitation": "Pillow IDCT and color conversion; native rounding may differ by pixels."
+  },
+  {
+    "source": "02854-icon-00b1082c.bin",
+    "source_sha256": "0d828213c7de5afe64c63fa42223359e8bc130ecdfae4f5af3758d2923788a64",
+    "format": "SJPG/JPEG422",
+    "width": 240,
+    "height": 320,
+    "quality_enum": 4,
+    "quality": 95,
+    "native_table_matches": [
+      {
+        "type": "DQT-natural-order",
+        "table": 0,
+        "kernel_offset": "0xbc6820",
+        "size": 64,
+        "sha256": "64e17ca636237eef82577332646dc0dff7eab60c3a22ebc8894891e7e870c8b9"
+      },
+      {
+        "type": "DQT-natural-order",
+        "table": 1,
+        "kernel_offset": "0xbc6960",
+        "size": 64,
+        "sha256": "f022d545e988a66dea098c2939f43043a29dd91a3442b775fe9983522c2c05e2"
+      },
+      {
+        "type": "DHT-counts-and-symbols",
+        "table": 0,
+        "kernel_offset": "0xbc69a1",
+        "size": 28,
+        "sha256": "2f66814c875b53173f057d784a16a34d0d1f9aa91cdfa7143c41be02c9c7b005"
+      },
+      {
+        "type": "DHT-counts-and-symbols",
+        "table": 16,
+        "kernel_offset": "0xbc69be",
+        "size": 178,
+        "sha256": "a6283a08f5d97906b66adcc812e32396ea83059e55dd4cc91934cf447559aeb6"
+      },
+      {
+        "type": "DHT-counts-and-symbols",
+        "table": 1,
+        "kernel_offset": "0xbc6acf",
+        "size": 28,
+        "sha256": "602f734c8c12c1d9d049a18fd91d9ef3d3d8c402665f90db3d97721fc49e4804"
+      },
+      {
+        "type": "DHT-counts-and-symbols",
+        "table": 17,
+        "kernel_offset": "0xbc6aec",
+        "size": 178,
+        "sha256": "13f90e3c9dc476c66f24347f6ad29cea93262e99faed279970c2f74e0557f445"
+      }
+    ],
+    "entropy_validation": {
+      "blocks": 2400,
+      "entropy_bytes_unstuffed": 26700,
+      "padding_bits": 5,
+      "padding_value": 1,
+      "all_blocks_and_byte_consumption_verified": true
+    },
+    "jpeg": "native-images/02854-icon-00b1082c.jpg",
+    "jpeg_sha256": "393e01a72ad5413649a5350b863db9989fc800fa20f97de656fff9211a3e39ac",
+    "frames": [
+      {
+        "file": "native-images/02854-icon-00b1082c.png",
+        "width": 240,
+        "height": 320,
+        "sha256": "38a8fa9b73c4bbad27b86c42a1f50ec7945bdafad3cad44cd3695ed5a5a73fe9"
+      }
+    ],
+    "limitation": "Pillow IDCT and color conversion; native rounding may differ by pixels."
+  },
+  {
+    "source": "02855-icon-00b17104.bin",
+    "source_sha256": "28fb0127043894d9a5340c24d77bb8d49cb38885d827638fe53a08571b470863",
+    "format": "SJPG/JPEG422",
+    "width": 240,
+    "height": 320,
+    "quality_enum": 4,
+    "quality": 95,
+    "native_table_matches": [
+      {
+        "type": "DQT-natural-order",
+        "table": 0,
+        "kernel_offset": "0xbc6820",
+        "size": 64,
+        "sha256": "64e17ca636237eef82577332646dc0dff7eab60c3a22ebc8894891e7e870c8b9"
+      },
+      {
+        "type": "DQT-natural-order",
+        "table": 1,
+        "kernel_offset": "0xbc6960",
+        "size": 64,
+        "sha256": "f022d545e988a66dea098c2939f43043a29dd91a3442b775fe9983522c2c05e2"
+      },
+      {
+        "type": "DHT-counts-and-symbols",
+        "table": 0,
+        "kernel_offset": "0xbc69a1",
+        "size": 28,
+        "sha256": "2f66814c875b53173f057d784a16a34d0d1f9aa91cdfa7143c41be02c9c7b005"
+      },
+      {
+        "type": "DHT-counts-and-symbols",
+        "table": 16,
+        "kernel_offset": "0xbc69be",
+        "size": 178,
+        "sha256": "a6283a08f5d97906b66adcc812e32396ea83059e55dd4cc91934cf447559aeb6"
+      },
+      {
+        "type": "DHT-counts-and-symbols",
+        "table": 1,
+        "kernel_offset": "0xbc6acf",
+        "size": 28,
+        "sha256": "602f734c8c12c1d9d049a18fd91d9ef3d3d8c402665f90db3d97721fc49e4804"
+      },
+      {
+        "type": "DHT-counts-and-symbols",
+        "table": 17,
+        "kernel_offset": "0xbc6aec",
+        "size": 178,
+        "sha256": "13f90e3c9dc476c66f24347f6ad29cea93262e99faed279970c2f74e0557f445"
+      }
+    ],
+    "entropy_validation": {
+      "blocks": 2400,
+      "entropy_bytes_unstuffed": 32451,
+      "padding_bits": 3,
+      "padding_value": 0,
+      "all_blocks_and_byte_consumption_verified": true
+    },
+    "jpeg": "native-images/02855-icon-00b17104.jpg",
+    "jpeg_sha256": "e1a4d9fa0459b8fafa73054b3dd9c67027fab320237d36d29a7c2969a48659ce",
+    "frames": [
+      {
+        "file": "native-images/02855-icon-00b17104.png",
+        "width": 240,
+        "height": 320,
+        "sha256": "032d16af75c6a91d535c32839a2432981bf44501da855082d312d4aade150bfd"
+      }
+    ],
+    "limitation": "Pillow IDCT and color conversion; native rounding may differ by pixels."
+  },
+  {
+    "source": "02856-icon-00b1f0a0.bin",
+    "source_sha256": "8696e4eee8a7bec0afed60f94d0583ce59b1527ac52c47596c117e8db9953bb1",
+    "format": "SJPG/JPEG422",
+    "width": 76,
+    "height": 76,
+    "quality_enum": 4,
+    "quality": 95,
+    "native_table_matches": [
+      {
+        "type": "DQT-natural-order",
+        "table": 0,
+        "kernel_offset": "0xbc6820",
+        "size": 64,
+        "sha256": "64e17ca636237eef82577332646dc0dff7eab60c3a22ebc8894891e7e870c8b9"
+      },
+      {
+        "type": "DQT-natural-order",
+        "table": 1,
+        "kernel_offset": "0xbc6960",
+        "size": 64,
+        "sha256": "f022d545e988a66dea098c2939f43043a29dd91a3442b775fe9983522c2c05e2"
+      },
+      {
+        "type": "DHT-counts-and-symbols",
+        "table": 0,
+        "kernel_offset": "0xbc69a1",
+        "size": 28,
+        "sha256": "2f66814c875b53173f057d784a16a34d0d1f9aa91cdfa7143c41be02c9c7b005"
+      },
+      {
+        "type": "DHT-counts-and-symbols",
+        "table": 16,
+        "kernel_offset": "0xbc69be",
+        "size": 178,
+        "sha256": "a6283a08f5d97906b66adcc812e32396ea83059e55dd4cc91934cf447559aeb6"
+      },
+      {
+        "type": "DHT-counts-and-symbols",
+        "table": 1,
+        "kernel_offset": "0xbc6acf",
+        "size": 28,
+        "sha256": "602f734c8c12c1d9d049a18fd91d9ef3d3d8c402665f90db3d97721fc49e4804"
+      },
+      {
+        "type": "DHT-counts-and-symbols",
+        "table": 17,
+        "kernel_offset": "0xbc6aec",
+        "size": 178,
+        "sha256": "13f90e3c9dc476c66f24347f6ad29cea93262e99faed279970c2f74e0557f445"
+      }
+    ],
+    "entropy_validation": {
+      "blocks": 200,
+      "entropy_bytes_unstuffed": 2934,
+      "padding_bits": 0,
+      "padding_value": 0,
+      "all_blocks_and_byte_consumption_verified": true
+    },
+    "jpeg": "native-images/02856-icon-00b1f0a0.jpg",
+    "jpeg_sha256": "18a8760bcd7094580d1833a35d4f0fb1c9180da82392c5d6aaf3d193e727f6c1",
+    "frames": [
+      {
+        "file": "native-images/02856-icon-00b1f0a0.png",
+        "width": 76,
+        "height": 76,
+        "sha256": "dd8a3f1e626cc281d05211e47f2823a1f61d9f6dd950de4f1500f1ca05a97d86"
+      }
+    ],
+    "limitation": "Pillow IDCT and color conversion; native rounding may differ by pixels."
+  },
+  {
+    "source": "02857-icon-00b1fc60.bin",
+    "source_sha256": "dbedb9d9e73e200bf26e76e36083d9d60507892293ba8f4037e1e036d0d70253",
+    "format": "SJPG/JPEG422",
+    "width": 76,
+    "height": 76,
+    "quality_enum": 4,
+    "quality": 95,
+    "native_table_matches": [
+      {
+        "type": "DQT-natural-order",
+        "table": 0,
+        "kernel_offset": "0xbc6820",
+        "size": 64,
+        "sha256": "64e17ca636237eef82577332646dc0dff7eab60c3a22ebc8894891e7e870c8b9"
+      },
+      {
+        "type": "DQT-natural-order",
+        "table": 1,
+        "kernel_offset": "0xbc6960",
+        "size": 64,
+        "sha256": "f022d545e988a66dea098c2939f43043a29dd91a3442b775fe9983522c2c05e2"
+      },
+      {
+        "type": "DHT-counts-and-symbols",
+        "table": 0,
+        "kernel_offset": "0xbc69a1",
+        "size": 28,
+        "sha256": "2f66814c875b53173f057d784a16a34d0d1f9aa91cdfa7143c41be02c9c7b005"
+      },
+      {
+        "type": "DHT-counts-and-symbols",
+        "table": 16,
+        "kernel_offset": "0xbc69be",
+        "size": 178,
+        "sha256": "a6283a08f5d97906b66adcc812e32396ea83059e55dd4cc91934cf447559aeb6"
+      },
+      {
+        "type": "DHT-counts-and-symbols",
+        "table": 1,
+        "kernel_offset": "0xbc6acf",
+        "size": 28,
+        "sha256": "602f734c8c12c1d9d049a18fd91d9ef3d3d8c402665f90db3d97721fc49e4804"
+      },
+      {
+        "type": "DHT-counts-and-symbols",
+        "table": 17,
+        "kernel_offset": "0xbc6aec",
+        "size": 178,
+        "sha256": "13f90e3c9dc476c66f24347f6ad29cea93262e99faed279970c2f74e0557f445"
+      }
+    ],
+    "entropy_validation": {
+      "blocks": 200,
+      "entropy_bytes_unstuffed": 3153,
+      "padding_bits": 0,
+      "padding_value": 0,
+      "all_blocks_and_byte_consumption_verified": true
+    },
+    "jpeg": "native-images/02857-icon-00b1fc60.jpg",
+    "jpeg_sha256": "06bbcf34e082510ce031be5239cb532b6f63ef806f7d2a6672b3bbe713eddd97",
+    "frames": [
+      {
+        "file": "native-images/02857-icon-00b1fc60.png",
+        "width": 76,
+        "height": 76,
+        "sha256": "edbb7c4a4c3255aee57e02bd1c706b6b52329e1cc6c47f24951c7173bb5fdee8"
+      }
+    ],
+    "limitation": "Pillow IDCT and color conversion; native rounding may differ by pixels."
+  },
+  {
+    "source": "02858-icon-00b208fc.bin",
+    "source_sha256": "5ba7f429f48d2c3fec4c8341b7723aa4969e84f5269c9c1f4ffa714ad3760bed",
+    "format": "SJPG/JPEG422",
+    "width": 76,
+    "height": 76,
+    "quality_enum": 4,
+    "quality": 95,
+    "native_table_matches": [
+      {
+        "type": "DQT-natural-order",
+        "table": 0,
+        "kernel_offset": "0xbc6820",
+        "size": 64,
+        "sha256": "64e17ca636237eef82577332646dc0dff7eab60c3a22ebc8894891e7e870c8b9"
+      },
+      {
+        "type": "DQT-natural-order",
+        "table": 1,
+        "kernel_offset": "0xbc6960",
+        "size": 64,
+        "sha256": "f022d545e988a66dea098c2939f43043a29dd91a3442b775fe9983522c2c05e2"
+      },
+      {
+        "type": "DHT-counts-and-symbols",
+        "table": 0,
+        "kernel_offset": "0xbc69a1",
+        "size": 28,
+        "sha256": "2f66814c875b53173f057d784a16a34d0d1f9aa91cdfa7143c41be02c9c7b005"
+      },
+      {
+        "type": "DHT-counts-and-symbols",
+        "table": 16,
+        "kernel_offset": "0xbc69be",
+        "size": 178,
+        "sha256": "a6283a08f5d97906b66adcc812e32396ea83059e55dd4cc91934cf447559aeb6"
+      },
+      {
+        "type": "DHT-counts-and-symbols",
+        "table": 1,
+        "kernel_offset": "0xbc6acf",
+        "size": 28,
+        "sha256": "602f734c8c12c1d9d049a18fd91d9ef3d3d8c402665f90db3d97721fc49e4804"
+      },
+      {
+        "type": "DHT-counts-and-symbols",
+        "table": 17,
+        "kernel_offset": "0xbc6aec",
+        "size": 178,
+        "sha256": "13f90e3c9dc476c66f24347f6ad29cea93262e99faed279970c2f74e0557f445"
+      }
+    ],
+    "entropy_validation": {
+      "blocks": 200,
+      "entropy_bytes_unstuffed": 3063,
+      "padding_bits": 2,
+      "padding_value": 0,
+      "all_blocks_and_byte_consumption_verified": true
+    },
+    "jpeg": "native-images/02858-icon-00b208fc.jpg",
+    "jpeg_sha256": "78c70300a0796b655130ae151820d3937329bb7b756716fd2ac6c41b52a304d5",
+    "frames": [
+      {
+        "file": "native-images/02858-icon-00b208fc.png",
+        "width": 76,
+        "height": 76,
+        "sha256": "0913352ca989db31be31d542fcb3aaab7310fddc070a6201eddd1f373be45019"
+      }
+    ],
+    "limitation": "Pillow IDCT and color conversion; native rounding may differ by pixels."
+  },
+  {
+    "source": "02859-icon-00b21534.bin",
+    "source_sha256": "e2f415f2ac4df7f922baccb2bee6c557fba5b83aa3ae81d1ca03eb8bf0d6302f",
+    "format": "SJPG/JPEG422",
+    "width": 76,
+    "height": 76,
+    "quality_enum": 4,
+    "quality": 95,
+    "native_table_matches": [
+      {
+        "type": "DQT-natural-order",
+        "table": 0,
+        "kernel_offset": "0xbc6820",
+        "size": 64,
+        "sha256": "64e17ca636237eef82577332646dc0dff7eab60c3a22ebc8894891e7e870c8b9"
+      },
+      {
+        "type": "DQT-natural-order",
+        "table": 1,
+        "kernel_offset": "0xbc6960",
+        "size": 64,
+        "sha256": "f022d545e988a66dea098c2939f43043a29dd91a3442b775fe9983522c2c05e2"
+      },
+      {
+        "type": "DHT-counts-and-symbols",
+        "table": 0,
+        "kernel_offset": "0xbc69a1",
+        "size": 28,
+        "sha256": "2f66814c875b53173f057d784a16a34d0d1f9aa91cdfa7143c41be02c9c7b005"
+      },
+      {
+        "type": "DHT-counts-and-symbols",
+        "table": 16,
+        "kernel_offset": "0xbc69be",
+        "size": 178,
+        "sha256": "a6283a08f5d97906b66adcc812e32396ea83059e55dd4cc91934cf447559aeb6"
+      },
+      {
+        "type": "DHT-counts-and-symbols",
+        "table": 1,
+        "kernel_offset": "0xbc6acf",
+        "size": 28,
+        "sha256": "602f734c8c12c1d9d049a18fd91d9ef3d3d8c402665f90db3d97721fc49e4804"
+      },
+      {
+        "type": "DHT-counts-and-symbols",
+        "table": 17,
+        "kernel_offset": "0xbc6aec",
+        "size": 178,
+        "sha256": "13f90e3c9dc476c66f24347f6ad29cea93262e99faed279970c2f74e0557f445"
+      }
+    ],
+    "entropy_validation": {
+      "blocks": 200,
+      "entropy_bytes_unstuffed": 2337,
+      "padding_bits": 0,
+      "padding_value": 0,
+      "all_blocks_and_byte_consumption_verified": true
+    },
+    "jpeg": "native-images/02859-icon-00b21534.jpg",
+    "jpeg_sha256": "d6d5bcdd24c8696c769ccf2aa3863c14d9136318959f1d7af94d5e3c8306570c",
+    "frames": [
+      {
+        "file": "native-images/02859-icon-00b21534.png",
+        "width": 76,
+        "height": 76,
+        "sha256": "f53db78503cc3cfcd73b25c88502d0aec0560d2fc5ac560d7c011c2735b57403"
+      }
+    ],
+    "limitation": "Pillow IDCT and color conversion; native rounding may differ by pixels."
+  },
+  {
+    "source": "02860-icon-00b21e9c.bin",
+    "source_sha256": "c2f678c5f64d53df6fbe8c8a8649d902ca2d48ab73c099ca09967f1692d10289",
+    "format": "SJPG/JPEG422",
+    "width": 76,
+    "height": 76,
+    "quality_enum": 4,
+    "quality": 95,
+    "native_table_matches": [
+      {
+        "type": "DQT-natural-order",
+        "table": 0,
+        "kernel_offset": "0xbc6820",
+        "size": 64,
+        "sha256": "64e17ca636237eef82577332646dc0dff7eab60c3a22ebc8894891e7e870c8b9"
+      },
+      {
+        "type": "DQT-natural-order",
+        "table": 1,
+        "kernel_offset": "0xbc6960",
+        "size": 64,
+        "sha256": "f022d545e988a66dea098c2939f43043a29dd91a3442b775fe9983522c2c05e2"
+      },
+      {
+        "type": "DHT-counts-and-symbols",
+        "table": 0,
+        "kernel_offset": "0xbc69a1",
+        "size": 28,
+        "sha256": "2f66814c875b53173f057d784a16a34d0d1f9aa91cdfa7143c41be02c9c7b005"
+      },
+      {
+        "type": "DHT-counts-and-symbols",
+        "table": 16,
+        "kernel_offset": "0xbc69be",
+        "size": 178,
+        "sha256": "a6283a08f5d97906b66adcc812e32396ea83059e55dd4cc91934cf447559aeb6"
+      },
+      {
+        "type": "DHT-counts-and-symbols",
+        "table": 1,
+        "kernel_offset": "0xbc6acf",
+        "size": 28,
+        "sha256": "602f734c8c12c1d9d049a18fd91d9ef3d3d8c402665f90db3d97721fc49e4804"
+      },
+      {
+        "type": "DHT-counts-and-symbols",
+        "table": 17,
+        "kernel_offset": "0xbc6aec",
+        "size": 178,
+        "sha256": "13f90e3c9dc476c66f24347f6ad29cea93262e99faed279970c2f74e0557f445"
+      }
+    ],
+    "entropy_validation": {
+      "blocks": 200,
+      "entropy_bytes_unstuffed": 2876,
+      "padding_bits": 0,
+      "padding_value": 0,
+      "all_blocks_and_byte_consumption_verified": true
+    },
+    "jpeg": "native-images/02860-icon-00b21e9c.jpg",
+    "jpeg_sha256": "d29509834ed0dd514e3a62ebd4a3fdf3f9ad2c124893e8881123983fd9f7f56f",
+    "frames": [
+      {
+        "file": "native-images/02860-icon-00b21e9c.png",
+        "width": 76,
+        "height": 76,
+        "sha256": "600aa37dea5b59769a9bc72756059fd07b9b72d98b9233d477bc95a2a74a54bd"
+      }
+    ],
+    "limitation": "Pillow IDCT and color conversion; native rounding may differ by pixels."
+  }
+]

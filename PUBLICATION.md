@@ -1,0 +1,45 @@
+# 发布范围与复现
+
+2026-10-25。仓库保持原研究目录结构，避免改动采集原件或使偏移索引失效。Git 采用白名单管理；本地完整档案仍在原路径。
+
+## 包含
+
+- 6 个实机读取的原始系统/BootROM 文件，总大小与逐文件 SHA 见 `firmware/public-system-manifest.json`。
+- 设备、协议、采集和逆向报告，本项目 Python/C/汇编脚本。
+- 仅从系统镜像派生的字体、图像、声音、文案、词库块、控件/事件索引和定向反汇编。
+- 原始 kernel 的 keymap 和初始化数据切片，供离线分析使用；不包含个人 NV 或用户自学习词库。
+- 外部框架固定提交、来源 URL 与保存文本 SHA 清单；公开参考源码需自行取回，不将其冒充本项目源码。
+
+## 仅本地保留
+
+完整物理 NAND/OOB、NV、逻辑分区备份、采集会话、USB/主机原始日志、donor PAC、第三方加载器、编译产物和重复工作副本。完整本地 `SHA256SUMS` 也不提交；仓库使用 `PUBLIC_SHA256SUMS` 校验发布文件。
+
+大型字形轮廓 JSON、人工 ELF、GitHub 全仓树索引及含主机命令路径的生成日志可重建，不提交。报告指向被排除文件时，应按本节理解为本地证据或重建产物，而非漏传系统固件。
+
+## 复现步骤
+
+已验证环境：macOS arm64，Python 3.9，已有 Pillow/fontTools、Node.js、Xcode `xcrun llvm-objdump`。未承诺 Linux/Windows 的反汇编命令兼容性。依赖不会自动安装。
+
+```sh
+cd nokia-ta1278-research
+shasum -a 256 -c PUBLIC_SHA256SUMS
+python3 tools/prepare_offline_workspace.py
+python3 tools/analyze_system.py
+```
+
+`prepare_offline_workspace.py` 校验发布清单后复制五个系统文件到既有脚本约定的工作目录；已有不同内容会拒绝覆盖。仅操作本地文件。
+
+框架语义步骤需要 `tools/upstream-reference/mmi-framework/` 中的 35 个参考文本。清单 `provenance.json` 指向固定提交，版权保留。显式运行以下命令会联网下载这些文本并校验，不会编译或执行它们：
+
+```sh
+python3 tools/fetch_framework_reference.py
+python3 tools/rebuild_offline_ui.py
+```
+
+源文本编码/换行规范化后必须匹配此前记录的 SHA；无法匹配则停止，不能忽略校验。取回参考文件后，14 步流水线完全离线运行。它会重建轮廓 JSON、人工 ELF、资源目录及验证记录，某些报告已附带的派生文件可能随工具版本重新编码。
+
+实机采集工具依赖另外准备的 libusb、上游工具和特定 RAM 加载器。它们保留本次实测地址与版本检查，不是可对任意 Nokia 运行的通用命令；详见协议报告。仓库复现不需要重新采集，也不自动接触手机。
+
+## 发布检查
+
+已从暂存文件单独导出临时目录，成功校验/准备六份原件、实际联网取回并验证 35 个固定参考文本，运行 analyze_system.py 和全部 14 步流水线。未借用被排除的工作副本或私人分区。结果见 [publication-validation.json](nokia-ta1278-research/analysis/ui/publication-validation.json)。

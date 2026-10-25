@@ -1,0 +1,49 @@
+[
+  {
+    "name": "boot0",
+    "size": 31284,
+    "sha256": "aefd78512018752d3cca0046c19c192221f55c3e8308737db5c6976b8e53e001",
+    "magic_hex": "44485442010000000000000000000000",
+    "payload_offset": 512,
+    "payload_size": 30080,
+    "trailer_bytes": 692,
+    "topic_string_count": 1
+  },
+  {
+    "name": "boot1",
+    "size": 63972,
+    "sha256": "63aa1fc89d279c43119353607982ce2ee3d695bfc7486fc11d01553f25eaab9b",
+    "magic_hex": "44485442010000000000000000000000",
+    "payload_offset": 512,
+    "payload_size": 62768,
+    "trailer_bytes": 692,
+    "topic_string_count": 0
+  },
+  {
+    "name": "kernel",
+    "size": 13154212,
+    "sha256": "b871d5a004c9251f3bb7cc58ea637d486f05d680efd3c39be83c38051f11e303",
+    "magic_hex": "44485442010000000000000000000000",
+    "payload_offset": 512,
+    "payload_size": 13153008,
+    "trailer_bytes": 692,
+    "topic_string_count": 1077
+  },
+  {
+    "name": "user",
+    "size": 13312500,
+    "sha256": "8f0db2dc82f9e763cb700c2e5781b7ca7125a4d250f4c075dbec793eb549c1ca",
+    "magic_hex": "44485442010000000000000000000000",
+    "payload_offset": 512,
+    "payload_size": 13311328,
+    "trailer_bytes": 660,
+    "topic_string_count": 11282
+  },
+  {
+    "name": "mmi",
+    "size": 11835196,
+    "sha256": "14c573027f375ea6b5f8ead2c6c432f2773f373faaa3c8a33261d0de9737886c",
+    "magic_hex": "73726573303030311000000000030100",
+    "topic_string_count": 996
+  }
+]

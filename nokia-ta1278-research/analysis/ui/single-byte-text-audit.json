@@ -1,0 +1,808 @@
+{
+  "records": [
+    {
+      "resource_id": "0x400000fc",
+      "locale": 0,
+      "offset": "0x20919c",
+      "raw_hex": "4df362696c2052",
+      "latin1": "Móbil R",
+      "windows1252": "Móbil R",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 0
+    },
+    {
+      "resource_id": "0x400009e8",
+      "locale": 0,
+      "offset": "0x20f6d8",
+      "raw_hex": "3f3fea3fed3f3f3f",
+      "latin1": "??ê?í???",
+      "windows1252": "??ê?í???",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 6
+    },
+    {
+      "resource_id": "0x40000a1c",
+      "locale": 0,
+      "offset": "0x20fcc8",
+      "raw_hex": "4a757374206120666577206d6f6d656e7473202da0616e20617070206973206265696e6720696e7374616c6c65642e",
+      "latin1": "Just a few moments - an app is being installed.",
+      "windows1252": "Just a few moments - an app is being installed.",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 0
+    },
+    {
+      "resource_id": "0x400000fc",
+      "locale": 1,
+      "offset": "0x212620",
+      "raw_hex": "4df362696c2052",
+      "latin1": "Móbil R",
+      "windows1252": "Móbil R",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 0
+    },
+    {
+      "resource_id": "0x400009e8",
+      "locale": 1,
+      "offset": "0x21835c",
+      "raw_hex": "3f3fea3fed3f3f3f",
+      "latin1": "??ê?í???",
+      "windows1252": "??ê?í???",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 6
+    },
+    {
+      "resource_id": "0x400000fc",
+      "locale": 2,
+      "offset": "0x21aefc",
+      "raw_hex": "4df362696c2052",
+      "latin1": "Móbil R",
+      "windows1252": "Móbil R",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 0
+    },
+    {
+      "resource_id": "0x400009e8",
+      "locale": 2,
+      "offset": "0x220d4c",
+      "raw_hex": "3f3fea3fed3f3f3f",
+      "latin1": "??ê?í???",
+      "windows1252": "??ê?í???",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 6
+    },
+    {
+      "resource_id": "0x400f00c9",
+      "locale": 0,
+      "offset": "0xa9fa7c",
+      "raw_hex": "526573747269636369f36e2064657465726d696e61646120706f7220656c206f70657261646f72",
+      "latin1": "Restricción determinada por el operador",
+      "windows1252": "Restricción determinada por el operador",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 0
+    },
+    {
+      "resource_id": "0x400f00ca",
+      "locale": 0,
+      "offset": "0xa9faa4",
+      "raw_hex": "4efa6d65726f2063616d626961646f",
+      "latin1": "Número cambiado",
+      "windows1252": "Número cambiado",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 0
+    },
+    {
+      "resource_id": "0x400f00cc",
+      "locale": 0,
+      "offset": "0xa9fac4",
+      "raw_hex": "436f6d70656e73616369f36e206465207573756172696f206e6f2073656c656363696f6e616461",
+      "latin1": "Compensación de usuario no seleccionada",
+      "windows1252": "Compensación de usuario no seleccionada",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 0
+    },
+    {
+      "resource_id": "0x400f00ce",
+      "locale": 0,
+      "offset": "0xa9fb08",
+      "raw_hex": "466f726d61746f206465206efa6d65726f206e6f2076e16c69646f20286efa6d65726f20696e636f6d706c65746f29",
+      "latin1": "Formato de número no válido (número incompleto)",
+      "windows1252": "Formato de número no válido (número incompleto)",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 0
+    },
+    {
+      "resource_id": "0x400f00cf",
+      "locale": 0,
+      "offset": "0xa9fb38",
+      "raw_hex": "496e7374616c616369f36e2072656368617a616461",
+      "latin1": "Instalación rechazada",
+      "windows1252": "Instalación rechazada",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 0
+    },
+    {
+      "resource_id": "0x400f00d5",
+      "locale": 0,
+      "offset": "0xa9fbc0",
+      "raw_hex": "436f6e6765737469f36e2064652065717569706f7320646520636f6e6d7574616369f36e",
+      "latin1": "Congestión de equipos de conmutación",
+      "windows1252": "Congestión de equipos de conmutación",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 0
+    },
+    {
+      "resource_id": "0x400f00d6",
+      "locale": 0,
+      "offset": "0xa9fbe8",
+      "raw_hex": "496e666f726d616369f36e2064652061636365736f2064657363617274616461",
+      "latin1": "Información de acceso descartada",
+      "windows1252": "Información de acceso descartada",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 0
+    },
+    {
+      "resource_id": "0x400f00d8",
+      "locale": 0,
+      "offset": "0xa9fc30",
+      "raw_hex": "496e7374616c616369f36e20736f6c69636974616461206e6f207375736372697461",
+      "latin1": "Instalación solicitada no suscrita",
+      "windows1252": "Instalación solicitada no suscrita",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 0
+    },
+    {
+      "resource_id": "0x400f00dc",
+      "locale": 0,
+      "offset": "0xa9fcd8",
+      "raw_hex": "536572766963696f2075206f706369f36e206e6f20646973706f6e69626c652c2073696e206573706563696669636172",
+      "latin1": "Servicio u opción no disponible, sin especificar",
+      "windows1252": "Servicio u opción no disponible, sin especificar",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 0
+    },
+    {
+      "resource_id": "0x400f00df",
+      "locale": 0,
+      "offset": "0xa9fd50",
+      "raw_hex": "496e7374616c616369f36e20736f6c69636974616461206e6f20696d706c656d656e74616461",
+      "latin1": "Instalación solicitada no implementada",
+      "windows1252": "Instalación solicitada no implementada",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 0
+    },
+    {
+      "resource_id": "0x400f00e0",
+      "locale": 0,
+      "offset": "0xa9fd78",
+      "raw_hex": "536f6c6f20657374e120646973706f6e69626c65206c612063617061636964616420646520706f727461646f7220646520696e666f726d616369f36e206469676974616c207265737472696e67696461",
+      "latin1": "Solo está disponible la capacidad de portador de información digital restringida",
+      "windows1252": "Solo está disponible la capacidad de portador de información digital restringida",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 0
+    },
+    {
+      "resource_id": "0x400f00e1",
+      "locale": 0,
+      "offset": "0xa9fdcc",
+      "raw_hex": "536572766963696f2075206f706369f36e206e6f20696d706c656d656e746164612c206e6f20657370656369666963616461",
+      "latin1": "Servicio u opción no implementada, no especificada",
+      "windows1252": "Servicio u opción no implementada, no especificada",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 0
+    },
+    {
+      "resource_id": "0x400f00e2",
+      "locale": 0,
+      "offset": "0xa9fe00",
+      "raw_hex": "56616c6f72206465206964656e746966696361646f72206465207472616e7361636369f36e206e6f2076e16c69646f",
+      "latin1": "Valor de identificador de transacción no válido",
+      "windows1252": "Valor de identificador de transacción no válido",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 0
+    },
+    {
+      "resource_id": "0x400f00e5",
+      "locale": 0,
+      "offset": "0xa9fe64",
+      "raw_hex": "53656c65636369f36e20646520726564206465207472e16e7369746f206e6f2076e16c696461",
+      "latin1": "Selección de red de tránsito no válida",
+      "windows1252": "Selección de red de tránsito no válida",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 0
+    },
+    {
+      "resource_id": "0x400f00e6",
+      "locale": 0,
+      "offset": "0xa9fe8c",
+      "raw_hex": "4d656e73616a652073656de16e746963616d656e746520696e636f72726563746f",
+      "latin1": "Mensaje semánticamente incorrecto",
+      "windows1252": "Mensaje semánticamente incorrecto",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 0
+    },
+    {
+      "resource_id": "0x400f00e7",
+      "locale": 0,
+      "offset": "0xa9feb0",
+      "raw_hex": "496e666f726d616369f36e206f626c696761746f726961206e6f2076e16c696461",
+      "latin1": "Información obligatoria no válida",
+      "windows1252": "Información obligatoria no válida",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 0
+    },
+    {
+      "resource_id": "0x400f00ea",
+      "locale": 0,
+      "offset": "0xa9ff4c",
+      "raw_hex": "456c656d656e746f20646520696e666f726d616369f36e20696e6578697374656e7465206f206e6f20696d706c656d656e7461646f",
+      "latin1": "Elemento de información inexistente o no implementado",
+      "windows1252": "Elemento de información inexistente o no implementado",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 0
+    },
+    {
+      "resource_id": "0x400f00ed",
+      "locale": 0,
+      "offset": "0xa9ffd0",
+      "raw_hex": "52656375706572616369f36e20616c206578706972617220656c2074656d706f72697a61646f72",
+      "latin1": "Recuperación al expirar el temporizador",
+      "windows1252": "Recuperación al expirar el temporizador",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 0
+    },
+    {
+      "resource_id": "0x400f00c9",
+      "locale": 1,
+      "offset": "0xaa0c94",
+      "raw_hex": "526573747269636369f36e2064657465726d696e61646120706f7220656c206f70657261646f72",
+      "latin1": "Restricción determinada por el operador",
+      "windows1252": "Restricción determinada por el operador",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 0
+    },
+    {
+      "resource_id": "0x400f00ca",
+      "locale": 1,
+      "offset": "0xaa0cbc",
+      "raw_hex": "4efa6d65726f2063616d626961646f",
+      "latin1": "Número cambiado",
+      "windows1252": "Número cambiado",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 0
+    },
+    {
+      "resource_id": "0x400f00cc",
+      "locale": 1,
+      "offset": "0xaa0cdc",
+      "raw_hex": "436f6d70656e73616369f36e206465207573756172696f206e6f2073656c656363696f6e616461",
+      "latin1": "Compensación de usuario no seleccionada",
+      "windows1252": "Compensación de usuario no seleccionada",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 0
+    },
+    {
+      "resource_id": "0x400f00ce",
+      "locale": 1,
+      "offset": "0xaa0d20",
+      "raw_hex": "466f726d61746f206465206efa6d65726f206e6f2076e16c69646f20286efa6d65726f20696e636f6d706c65746f29",
+      "latin1": "Formato de número no válido (número incompleto)",
+      "windows1252": "Formato de número no válido (número incompleto)",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 0
+    },
+    {
+      "resource_id": "0x400f00cf",
+      "locale": 1,
+      "offset": "0xaa0d50",
+      "raw_hex": "496e7374616c616369f36e2072656368617a616461",
+      "latin1": "Instalación rechazada",
+      "windows1252": "Instalación rechazada",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 0
+    },
+    {
+      "resource_id": "0x400f00d5",
+      "locale": 1,
+      "offset": "0xaa0dd8",
+      "raw_hex": "436f6e6765737469f36e2064652065717569706f7320646520636f6e6d7574616369f36e",
+      "latin1": "Congestión de equipos de conmutación",
+      "windows1252": "Congestión de equipos de conmutación",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 0
+    },
+    {
+      "resource_id": "0x400f00d6",
+      "locale": 1,
+      "offset": "0xaa0e00",
+      "raw_hex": "496e666f726d616369f36e2064652061636365736f2064657363617274616461",
+      "latin1": "Información de acceso descartada",
+      "windows1252": "Información de acceso descartada",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 0
+    },
+    {
+      "resource_id": "0x400f00d8",
+      "locale": 1,
+      "offset": "0xaa0e48",
+      "raw_hex": "496e7374616c616369f36e20736f6c69636974616461206e6f207375736372697461",
+      "latin1": "Instalación solicitada no suscrita",
+      "windows1252": "Instalación solicitada no suscrita",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 0
+    },
+    {
+      "resource_id": "0x400f00dc",
+      "locale": 1,
+      "offset": "0xaa0ef0",
+      "raw_hex": "536572766963696f2075206f706369f36e206e6f20646973706f6e69626c652c2073696e206573706563696669636172",
+      "latin1": "Servicio u opción no disponible, sin especificar",
+      "windows1252": "Servicio u opción no disponible, sin especificar",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 0
+    },
+    {
+      "resource_id": "0x400f00df",
+      "locale": 1,
+      "offset": "0xaa0f68",
+      "raw_hex": "496e7374616c616369f36e20736f6c69636974616461206e6f20696d706c656d656e74616461",
+      "latin1": "Instalación solicitada no implementada",
+      "windows1252": "Instalación solicitada no implementada",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 0
+    },
+    {
+      "resource_id": "0x400f00e0",
+      "locale": 1,
+      "offset": "0xaa0f90",
+      "raw_hex": "536f6c6f20657374e120646973706f6e69626c65206c612063617061636964616420646520706f727461646f7220646520696e666f726d616369f36e206469676974616c207265737472696e67696461",
+      "latin1": "Solo está disponible la capacidad de portador de información digital restringida",
+      "windows1252": "Solo está disponible la capacidad de portador de información digital restringida",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 0
+    },
+    {
+      "resource_id": "0x400f00e1",
+      "locale": 1,
+      "offset": "0xaa0fe4",
+      "raw_hex": "536572766963696f2075206f706369f36e206e6f20696d706c656d656e746164612c206e6f20657370656369666963616461",
+      "latin1": "Servicio u opción no implementada, no especificada",
+      "windows1252": "Servicio u opción no implementada, no especificada",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 0
+    },
+    {
+      "resource_id": "0x400f00e2",
+      "locale": 1,
+      "offset": "0xaa1018",
+      "raw_hex": "56616c6f72206465206964656e746966696361646f72206465207472616e7361636369f36e206e6f2076e16c69646f",
+      "latin1": "Valor de identificador de transacción no válido",
+      "windows1252": "Valor de identificador de transacción no válido",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 0
+    },
+    {
+      "resource_id": "0x400f00e5",
+      "locale": 1,
+      "offset": "0xaa107c",
+      "raw_hex": "53656c65636369f36e20646520726564206465207472e16e7369746f206e6f2076e16c696461",
+      "latin1": "Selección de red de tránsito no válida",
+      "windows1252": "Selección de red de tránsito no válida",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 0
+    },
+    {
+      "resource_id": "0x400f00e6",
+      "locale": 1,
+      "offset": "0xaa10a4",
+      "raw_hex": "4d656e73616a652073656de16e746963616d656e746520696e636f72726563746f",
+      "latin1": "Mensaje semánticamente incorrecto",
+      "windows1252": "Mensaje semánticamente incorrecto",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 0
+    },
+    {
+      "resource_id": "0x400f00e7",
+      "locale": 1,
+      "offset": "0xaa10c8",
+      "raw_hex": "496e666f726d616369f36e206f626c696761746f726961206e6f2076e16c696461",
+      "latin1": "Información obligatoria no válida",
+      "windows1252": "Información obligatoria no válida",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 0
+    },
+    {
+      "resource_id": "0x400f00ea",
+      "locale": 1,
+      "offset": "0xaa1164",
+      "raw_hex": "456c656d656e746f20646520696e666f726d616369f36e20696e6578697374656e7465206f206e6f20696d706c656d656e7461646f",
+      "latin1": "Elemento de información inexistente o no implementado",
+      "windows1252": "Elemento de información inexistente o no implementado",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 0
+    },
+    {
+      "resource_id": "0x400f00ed",
+      "locale": 1,
+      "offset": "0xaa11e8",
+      "raw_hex": "52656375706572616369f36e20616c206578706972617220656c2074656d706f72697a61646f72",
+      "latin1": "Recuperación al expirar el temporizador",
+      "windows1252": "Recuperación al expirar el temporizador",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 0
+    },
+    {
+      "resource_id": "0x400f00c9",
+      "locale": 2,
+      "offset": "0xaa1ebc",
+      "raw_hex": "526573747269636369f36e2064657465726d696e61646120706f7220656c206f70657261646f72",
+      "latin1": "Restricción determinada por el operador",
+      "windows1252": "Restricción determinada por el operador",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 0
+    },
+    {
+      "resource_id": "0x400f00ca",
+      "locale": 2,
+      "offset": "0xaa1ee4",
+      "raw_hex": "4efa6d65726f2063616d626961646f",
+      "latin1": "Número cambiado",
+      "windows1252": "Número cambiado",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 0
+    },
+    {
+      "resource_id": "0x400f00cc",
+      "locale": 2,
+      "offset": "0xaa1f04",
+      "raw_hex": "436f6d70656e73616369f36e206465207573756172696f206e6f2073656c656363696f6e616461",
+      "latin1": "Compensación de usuario no seleccionada",
+      "windows1252": "Compensación de usuario no seleccionada",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 0
+    },
+    {
+      "resource_id": "0x400f00ce",
+      "locale": 2,
+      "offset": "0xaa1f48",
+      "raw_hex": "466f726d61746f206465206efa6d65726f206e6f2076e16c69646f20286efa6d65726f20696e636f6d706c65746f29",
+      "latin1": "Formato de número no válido (número incompleto)",
+      "windows1252": "Formato de número no válido (número incompleto)",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 0
+    },
+    {
+      "resource_id": "0x400f00cf",
+      "locale": 2,
+      "offset": "0xaa1f78",
+      "raw_hex": "496e7374616c616369f36e2072656368617a616461",
+      "latin1": "Instalación rechazada",
+      "windows1252": "Instalación rechazada",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 0
+    },
+    {
+      "resource_id": "0x400f00d5",
+      "locale": 2,
+      "offset": "0xaa2000",
+      "raw_hex": "436f6e6765737469f36e2064652065717569706f7320646520636f6e6d7574616369f36e",
+      "latin1": "Congestión de equipos de conmutación",
+      "windows1252": "Congestión de equipos de conmutación",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 0
+    },
+    {
+      "resource_id": "0x400f00d6",
+      "locale": 2,
+      "offset": "0xaa2028",
+      "raw_hex": "496e666f726d616369f36e2064652061636365736f2064657363617274616461",
+      "latin1": "Información de acceso descartada",
+      "windows1252": "Información de acceso descartada",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 0
+    },
+    {
+      "resource_id": "0x400f00d8",
+      "locale": 2,
+      "offset": "0xaa2070",
+      "raw_hex": "496e7374616c616369f36e20736f6c69636974616461206e6f207375736372697461",
+      "latin1": "Instalación solicitada no suscrita",
+      "windows1252": "Instalación solicitada no suscrita",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 0
+    },
+    {
+      "resource_id": "0x400f00dc",
+      "locale": 2,
+      "offset": "0xaa2118",
+      "raw_hex": "536572766963696f2075206f706369f36e206e6f20646973706f6e69626c652c2073696e206573706563696669636172",
+      "latin1": "Servicio u opción no disponible, sin especificar",
+      "windows1252": "Servicio u opción no disponible, sin especificar",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 0
+    },
+    {
+      "resource_id": "0x400f00df",
+      "locale": 2,
+      "offset": "0xaa2190",
+      "raw_hex": "496e7374616c616369f36e20736f6c69636974616461206e6f20696d706c656d656e74616461",
+      "latin1": "Instalación solicitada no implementada",
+      "windows1252": "Instalación solicitada no implementada",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 0
+    },
+    {
+      "resource_id": "0x400f00e0",
+      "locale": 2,
+      "offset": "0xaa21b8",
+      "raw_hex": "536f6c6f20657374e120646973706f6e69626c65206c612063617061636964616420646520706f727461646f7220646520696e666f726d616369f36e206469676974616c207265737472696e67696461",
+      "latin1": "Solo está disponible la capacidad de portador de información digital restringida",
+      "windows1252": "Solo está disponible la capacidad de portador de información digital restringida",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 0
+    },
+    {
+      "resource_id": "0x400f00e1",
+      "locale": 2,
+      "offset": "0xaa220c",
+      "raw_hex": "536572766963696f2075206f706369f36e206e6f20696d706c656d656e746164612c206e6f20657370656369666963616461",
+      "latin1": "Servicio u opción no implementada, no especificada",
+      "windows1252": "Servicio u opción no implementada, no especificada",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 0
+    },
+    {
+      "resource_id": "0x400f00e2",
+      "locale": 2,
+      "offset": "0xaa2240",
+      "raw_hex": "56616c6f72206465206964656e746966696361646f72206465207472616e7361636369f36e206e6f2076e16c69646f",
+      "latin1": "Valor de identificador de transacción no válido",
+      "windows1252": "Valor de identificador de transacción no válido",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 0
+    },
+    {
+      "resource_id": "0x400f00e5",
+      "locale": 2,
+      "offset": "0xaa22a4",
+      "raw_hex": "53656c65636369f36e20646520726564206465207472e16e7369746f206e6f2076e16c696461",
+      "latin1": "Selección de red de tránsito no válida",
+      "windows1252": "Selección de red de tránsito no válida",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 0
+    },
+    {
+      "resource_id": "0x400f00e6",
+      "locale": 2,
+      "offset": "0xaa22cc",
+      "raw_hex": "4d656e73616a652073656de16e746963616d656e746520696e636f72726563746f",
+      "latin1": "Mensaje semánticamente incorrecto",
+      "windows1252": "Mensaje semánticamente incorrecto",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 0
+    },
+    {
+      "resource_id": "0x400f00e7",
+      "locale": 2,
+      "offset": "0xaa22f0",
+      "raw_hex": "496e666f726d616369f36e206f626c696761746f726961206e6f2076e16c696461",
+      "latin1": "Información obligatoria no válida",
+      "windows1252": "Información obligatoria no válida",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 0
+    },
+    {
+      "resource_id": "0x400f00ea",
+      "locale": 2,
+      "offset": "0xaa238c",
+      "raw_hex": "456c656d656e746f20646520696e666f726d616369f36e20696e6578697374656e7465206f206e6f20696d706c656d656e7461646f",
+      "latin1": "Elemento de información inexistente o no implementado",
+      "windows1252": "Elemento de información inexistente o no implementado",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 0
+    },
+    {
+      "resource_id": "0x400f00ed",
+      "locale": 2,
+      "offset": "0xaa2410",
+      "raw_hex": "52656375706572616369f36e20616c206578706972617220656c2074656d706f72697a61646f72",
+      "latin1": "Recuperación al expirar el temporizador",
+      "windows1252": "Recuperación al expirar el temporizador",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 0
+    },
+    {
+      "resource_id": "0x4011007d",
+      "locale": 0,
+      "offset": "0xaa4f84",
+      "raw_hex": "436f6e746163747320636f706965642066726f6d2025305520746f202531553a2025324ea06f66a025334e",
+      "latin1": "Contacts copied from %0U to %1U: %2N of %3N",
+      "windows1252": "Contacts copied from %0U to %1U: %2N of %3N",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 0
+    },
+    {
+      "resource_id": "0x4017003a",
+      "locale": 0,
+      "offset": "0xabd694",
+      "raw_hex": "466f6f74b22d6d65747265b2",
+      "latin1": "Foot²-metre²",
+      "windows1252": "Foot²-metre²",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 0
+    },
+    {
+      "resource_id": "0x4017003b",
+      "locale": 0,
+      "offset": "0xabd6a4",
+      "raw_hex": "496e6368b22d636db2",
+      "latin1": "Inch²-cm²",
+      "windows1252": "Inch²-cm²",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 0
+    },
+    {
+      "resource_id": "0x4017003c",
+      "locale": 0,
+      "offset": "0xabd6b0",
+      "raw_hex": "59617264b22d6d65747265b2",
+      "latin1": "Yard²-metre²",
+      "windows1252": "Yard²-metre²",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 0
+    },
+    {
+      "resource_id": "0x4017003d",
+      "locale": 0,
+      "offset": "0xabd6c0",
+      "raw_hex": "4d696c65b22d6b6db2",
+      "latin1": "Mile²-km²",
+      "windows1252": "Mile²-km²",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 0
+    },
+    {
+      "resource_id": "0x40170048",
+      "locale": 0,
+      "offset": "0xabd768",
+      "raw_hex": "496e6368b32d636db3",
+      "latin1": "Inch³-cm³",
+      "windows1252": "Inch³-cm³",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 0
+    },
+    {
+      "resource_id": "0x40170049",
+      "locale": 0,
+      "offset": "0xabd774",
+      "raw_hex": "466f6f74b32d6d65747265b3",
+      "latin1": "Foot³-metre³",
+      "windows1252": "Foot³-metre³",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 0
+    },
+    {
+      "resource_id": "0x4017004a",
+      "locale": 0,
+      "offset": "0xabd784",
+      "raw_hex": "4d65747265b32d79617264b3",
+      "latin1": "Metre³-yard³",
+      "windows1252": "Metre³-yard³",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 0
+    },
+    {
+      "resource_id": "0x40370037",
+      "locale": 0,
+      "offset": "0xb3eb08",
+      "raw_hex": "506c65617365a077616974a0666f72a0746865a06c617374a07075726368617365a0746fa06265a0636f6d706c657465642e",
+      "latin1": "Please wait for the last purchase to be completed.",
+      "windows1252": "Please wait for the last purchase to be completed.",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 0
+    },
+    {
+      "resource_id": "0x40370038",
+      "locale": 0,
+      "offset": "0xb3eb3c",
+      "raw_hex": "2852454e54414c29a0436f737473a073656e64696e67a035a0696e7465726e6174696f6e616ca0534d532e",
+      "latin1": "(RENTAL) Costs sending 5 international SMS.",
+      "windows1252": "(RENTAL) Costs sending 5 international SMS.",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 0
+    },
+    {
+      "resource_id": "0x40370039",
+      "locale": 0,
+      "offset": "0xb3eb68",
+      "raw_hex": "464f52a043484152474553a04d4f44414c4954494553a0504c45415345a0434845434ba057495448a0594f5552a04f50455241544f522ea0544845a04f52444552a057494c4ca04245a043484152474544a0544fa0594f5552a050524550414944a02fa0504f535450414944a04f50455241544f52a04143434f554e542ca04b494e444c59a0454e53555245a053554646494349454e54a042414c414e4345",
+      "latin1": "FOR CHARGES MODALITIES PLEASE CHECK WITH YOUR OPERATOR. THE ORDER WILL BE CHARGED TO YOUR PREPAID / POSTPAID OPERATOR ACCOUNT, KINDLY ENSURE SUFFICIENT BALANCE",
+      "windows1252": "FOR CHARGES MODALITIES PLEASE CHECK WITH YOUR OPERATOR. THE ORDER WILL BE CHARGED TO YOUR PREPAID / POSTPAID OPERATOR ACCOUNT, KINDLY ENSURE SUFFICIENT BALANCE",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 0
+    },
+    {
+      "resource_id": "0x40370073",
+      "locale": 0,
+      "offset": "0xb3f1f8",
+      "raw_hex": "416e73776572207175657374696f6e7320636f72726563746c7920616e64207465737420796f7572206c6576656c206f6620456e676c6973682e0a416363657373206f6e6c696e6520636f6e74656e74733a20566964656f732c2064696374696f6e61727920616e6420776f7264a06f66207468652064617920286461746120636861726765206d6179206170706c79290a0a4461746120636861726765206d6179206170706c792e0a427920706c6179696e6720746869732067616d6520796f75a0636f6e73656e7420746f2074686520666f6c6c6f77696e67a05072697661637920506f6c6963793aa07777772e702e6f64742e696da0a00a0a456e676c6973682077697468204f78666f7264204279204f726967696e64617461207769746820636f6e74656e742066726f6d204f78666f726420556e697665727369747920507265737320436f6e74656e7420286329204f78666f726420556e697665727369747920507265737320323031392e20286329204f726967696e646174612032303139",
+      "latin1": "Answer questions correctly and test your level of English.\nAccess online contents: Videos, dictionary and word of the day (data charge may apply)\n\nData charge may apply.\nBy playing this game you consent to the following Privacy Policy: www.p.odt.im  \n\nEnglish with Oxford By Origindata with content from Oxford University Press Content (c) Oxford University Press 2019. (c) Origindata 2019",
+      "windows1252": "Answer questions correctly and test your level of English.\nAccess online contents: Videos, dictionary and word of the day (data charge may apply)\n\nData charge may apply.\nBy playing this game you consent to the following Privacy Policy: www.p.odt.im  \n\nEnglish with Oxford By Origindata with content from Oxford University Press Content (c) Oxford University Press 2019. (c) Origindata 2019",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 0
+    },
+    {
+      "resource_id": "0x40370037",
+      "locale": 1,
+      "offset": "0xb3ff64",
+      "raw_hex": "506c65617365a077616974a0666f72a0746865a06c617374a07075726368617365a0746fa06265a0636f6d706c657465642e",
+      "latin1": "Please wait for the last purchase to be completed.",
+      "windows1252": "Please wait for the last purchase to be completed.",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 0
+    },
+    {
+      "resource_id": "0x40370038",
+      "locale": 1,
+      "offset": "0xb3ff98",
+      "raw_hex": "2852454e54414c29a0436f737473a073656e64696e67a035a0696e7465726e6174696f6e616ca0534d532e",
+      "latin1": "(RENTAL) Costs sending 5 international SMS.",
+      "windows1252": "(RENTAL) Costs sending 5 international SMS.",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 0
+    },
+    {
+      "resource_id": "0x40370073",
+      "locale": 1,
+      "offset": "0xb4056c",
+      "raw_hex": "416e73776572207175657374696f6e7320636f72726563746c7920616e64207465737420796f7572206c6576656c206f6620456e676c6973682e0a416363657373206f6e6c696e6520636f6e74656e74733a20566964656f732c2064696374696f6e61727920616e6420776f7264a06f66207468652064617920286461746120636861726765206d6179206170706c79290a0a4461746120636861726765206d6179206170706c792e0a427920706c6179696e6720746869732067616d6520796f75a0636f6e73656e7420746f2074686520666f6c6c6f77696e67a05072697661637920506f6c6963793aa07777772e702e6f64742e696da0a00a0a456e676c6973682077697468204f78666f7264204279204f726967696e64617461207769746820636f6e74656e742066726f6d204f78666f726420556e697665727369747920507265737320436f6e74656e7420286329204f78666f726420556e697665727369747920507265737320323031392e20286329204f726967696e646174612032303139",
+      "latin1": "Answer questions correctly and test your level of English.\nAccess online contents: Videos, dictionary and word of the day (data charge may apply)\n\nData charge may apply.\nBy playing this game you consent to the following Privacy Policy: www.p.odt.im  \n\nEnglish with Oxford By Origindata with content from Oxford University Press Content (c) Oxford University Press 2019. (c) Origindata 2019",
+      "windows1252": "Answer questions correctly and test your level of English.\nAccess online contents: Videos, dictionary and word of the day (data charge may apply)\n\nData charge may apply.\nBy playing this game you consent to the following Privacy Policy: www.p.odt.im  \n\nEnglish with Oxford By Origindata with content from Oxford University Press Content (c) Oxford University Press 2019. (c) Origindata 2019",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 0
+    },
+    {
+      "resource_id": "0x403a001a",
+      "locale": 0,
+      "offset": "0xb422d4",
+      "raw_hex": "43616e2774207475726e206f6e2063616c6c20666f7277617264696e672ea053494d206e756d6265727320636f756c64206e6f74206265207365742e",
+      "latin1": "Can't turn on call forwarding. SIM numbers could not be set.",
+      "windows1252": "Can't turn on call forwarding. SIM numbers could not be set.",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 0
+    }
+  ],
+  "identical_latin1_windows1252": 77,
+  "irrecoverable_original_text_records": [
+    {
+      "resource_id": "0x400009e8",
+      "locale": 0,
+      "offset": "0x20f6d8",
+      "raw_hex": "3f3fea3fed3f3f3f",
+      "latin1": "??ê?í???",
+      "windows1252": "??ê?í???",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 6
+    },
+    {
+      "resource_id": "0x400009e8",
+      "locale": 1,
+      "offset": "0x21835c",
+      "raw_hex": "3f3fea3fed3f3f3f",
+      "latin1": "??ê?í???",
+      "windows1252": "??ê?í???",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 6
+    },
+    {
+      "resource_id": "0x400009e8",
+      "locale": 2,
+      "offset": "0x220d4c",
+      "raw_hex": "3f3fea3fed3f3f3f",
+      "latin1": "??ê?í???",
+      "windows1252": "??ê?í???",
+      "both_decoders_identical": true,
+      "question_mark_bytes": 6
+    }
+  ],
+  "note": "The three ??ê?í??? records already contain literal 0x3f bytes. Intended lost characters cannot be inferred uniquely from this firmware. Codepage name remains unproven."
+}

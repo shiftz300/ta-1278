@@ -1,0 +1,32 @@
+[
+  {
+    "resource_id": "0x40000001",
+    "offset": "0x35cb68",
+    "left": 1,
+    "top": 2,
+    "right": 3,
+    "bottom": 4,
+    "valid": true,
+    "raw_hex": "010002000300040001000000"
+  },
+  {
+    "resource_id": "0x40000002",
+    "offset": "0x35cb74",
+    "left": 5,
+    "top": 6,
+    "right": 7,
+    "bottom": 8,
+    "valid": true,
+    "raw_hex": "050006000700080001000000"
+  },
+  {
+    "resource_id": "0x40000003",
+    "offset": "0x35cb80",
+    "left": 23,
+    "top": 23,
+    "right": 45,
+    "bottom": 45,
+    "valid": true,
+    "raw_hex": "170017002d002d0001000000"
+  }
+]

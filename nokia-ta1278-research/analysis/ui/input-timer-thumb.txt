@@ -1,0 +1,37 @@
+
+/Users/shiftz/dev/ta-1278/nokia-ta1278-research/analysis/ui/user.analysis-only.elf:	file format elf32-littlearm
+
+Disassembly of section .text:
+
+88000000 <.text>:
+88482ce4: b57c         	push	{r2, r3, r4, r5, r6, lr}
+88482ce6: 4604         	mov	r4, r0
+88482ce8: 7800         	ldrb	r0, [r0]
+88482cea: 4616         	mov	r6, r2
+88482cec: 460d         	mov	r5, r1
+88482cee: b110         	cbz	r0, 0x88482cf6 <.text+0x482cf6> @ imm = #0x4
+88482cf0: 2005         	movs	r0, #0x5
+88482cf2: f724 f819    	bl	0x883a6d28 <.text+0x3a6d28> @ imm = #-0xdbfce
+88482cf6: 215c         	movs	r1, #0x5c
+88482cf8: 4632         	mov	r2, r6
+88482cfa: a061         	adr	r0, #388 <.text+0x482d5f>
+88482cfc: 2300         	movs	r3, #0x0
+88482cfe: e9cd 0100    	strd	r0, r1, [sp]
+88482d02: 2105         	movs	r1, #0x5
+88482d04: 4628         	mov	r0, r5
+88482d06: f723 fe8e    	bl	0x883a6a26 <.text+0x3a6a26> @ imm = #-0xdc2e4
+88482d0a: 2001         	movs	r0, #0x1
+88482d0c: 7020         	strb	r0, [r4]
+88482d0e: bd7c         	pop	{r2, r3, r4, r5, r6, pc}
+88482d10: f240 22ee    	movw	r2, #0x2ee
+88482d14: e7e6         	b	0x88482ce4 <.text+0x482ce4> @ imm = #-0x34
+88482d16: b510         	push	{r4, lr}
+88482d18: 4604         	mov	r4, r0
+88482d1a: 7800         	ldrb	r0, [r0]
+88482d1c: 2800         	cmp	r0, #0x0
+88482d1e: d004         	beq	0x88482d2a <.text+0x482d2a> @ imm = #0x8
+88482d20: 2005         	movs	r0, #0x5
+88482d22: f724 f801    	bl	0x883a6d28 <.text+0x3a6d28> @ imm = #-0xdbffe
+88482d26: 2000         	movs	r0, #0x0
+88482d28: 7020         	strb	r0, [r4]
+88482d2a: bd10         	pop	{r4, pc}

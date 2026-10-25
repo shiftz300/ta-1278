@@ -1,15 +1,9 @@
 {
-  "scope": "name-based inventory; overlaps are intentional and names do not prove feature availability",
+  "scope": "Messages/browser/music use native window ID groups 7+8/6/14, including unnamed windows. Other families remain name-based and overlap. Descriptors do not prove runtime feature availability.",
   "families": {
     "messages": {
-      "count": 70,
+      "count": 69,
       "windows": [
-        {
-          "id": "0xf0018",
-          "name": "MMICC_SMS_REJECT_CALL_WIN_ID",
-          "handler": "0x8858c733",
-          "offset": "0x1fe494"
-        },
         {
           "id": "0x80028",
           "name": "MMISMS_SHOWCLASS0_WIN_ID",
@@ -427,13 +421,420 @@
       ]
     },
     "browser": {
-      "count": 1,
+      "count": 40,
       "windows": [
         {
-          "id": "0x8004b",
-          "name": "MMISMS_BROWSER_SETTING_MENUWIN_ID",
-          "handler": "0x88098a5f",
-          "offset": "0x727ed0"
+          "id": "0x6003b",
+          "name": null,
+          "handler": "0x88b467b7",
+          "offset": "0x4c3e7c"
+        },
+        {
+          "id": "0x60015",
+          "name": null,
+          "handler": "0x88b4896f",
+          "offset": "0x4c3ed4"
+        },
+        {
+          "id": "0x60015",
+          "name": null,
+          "handler": "0x88b48a77",
+          "offset": "0x4c3f00"
+        },
+        {
+          "id": "0x60014",
+          "name": null,
+          "handler": "0x88b48351",
+          "offset": "0x4c3f2c"
+        },
+        {
+          "id": "0x60014",
+          "name": null,
+          "handler": "0x88b487c5",
+          "offset": "0x4c3f58"
+        },
+        {
+          "id": "0x60004",
+          "name": null,
+          "handler": "0x88b61ff3",
+          "offset": "0x73eb44"
+        },
+        {
+          "id": "0x60007",
+          "name": null,
+          "handler": "0x88b62a69",
+          "offset": "0x73eb94"
+        },
+        {
+          "id": "0x60008",
+          "name": null,
+          "handler": "0x88b62ce1",
+          "offset": "0x73ebcc"
+        },
+        {
+          "id": "0x60010",
+          "name": null,
+          "handler": "0x88b6313f",
+          "offset": "0x73ec00"
+        },
+        {
+          "id": "0x6001d",
+          "name": null,
+          "handler": "0x88b63195",
+          "offset": "0x73ec2c"
+        },
+        {
+          "id": "0x60006",
+          "name": null,
+          "handler": "0x88b6361d",
+          "offset": "0x73ec64"
+        },
+        {
+          "id": "0x60016",
+          "name": null,
+          "handler": "0x88b639b5",
+          "offset": "0x73ec98"
+        },
+        {
+          "id": "0x60017",
+          "name": null,
+          "handler": "0x88b63a95",
+          "offset": "0x73ecd0"
+        },
+        {
+          "id": "0x6001e",
+          "name": null,
+          "handler": "0x88b61525",
+          "offset": "0x73ed00"
+        },
+        {
+          "id": "0x6001c",
+          "name": null,
+          "handler": "0x88b64375",
+          "offset": "0x73ed90"
+        },
+        {
+          "id": "0x6001c",
+          "name": null,
+          "handler": "0x88b644fb",
+          "offset": "0x73ee40"
+        },
+        {
+          "id": "0x60001",
+          "name": null,
+          "handler": "0x88b6483d",
+          "offset": "0x73ef20"
+        },
+        {
+          "id": "0x60002",
+          "name": null,
+          "handler": "0x88b649c5",
+          "offset": "0x73ef98"
+        },
+        {
+          "id": "0x60040",
+          "name": null,
+          "handler": "0x88b64e57",
+          "offset": "0x73efcc"
+        },
+        {
+          "id": "0x60041",
+          "name": null,
+          "handler": "0x88b65231",
+          "offset": "0x73f07c"
+        },
+        {
+          "id": "0x60042",
+          "name": null,
+          "handler": "0x88b65537",
+          "offset": "0x73f0ac"
+        },
+        {
+          "id": "0x60043",
+          "name": null,
+          "handler": "0x88b656f5",
+          "offset": "0x73f0f0"
+        },
+        {
+          "id": "0x60044",
+          "name": null,
+          "handler": "0x88b6575b",
+          "offset": "0x73f11c"
+        },
+        {
+          "id": "0x6002a",
+          "name": null,
+          "handler": "0x88b9ec6d",
+          "offset": "0x73f160"
+        },
+        {
+          "id": "0x6002b",
+          "name": null,
+          "handler": "0x88b9f201",
+          "offset": "0x73f198"
+        },
+        {
+          "id": "0x6002c",
+          "name": null,
+          "handler": "0x88b9f791",
+          "offset": "0x73f240"
+        },
+        {
+          "id": "0x6002d",
+          "name": null,
+          "handler": "0x88b9fb4f",
+          "offset": "0x73f284"
+        },
+        {
+          "id": "0x6002e",
+          "name": null,
+          "handler": "0x88b9fbf9",
+          "offset": "0x73f2b0"
+        },
+        {
+          "id": "0x6000d",
+          "name": null,
+          "handler": "0x8842c307",
+          "offset": "0xc3ec74"
+        },
+        {
+          "id": "0x6000e",
+          "name": null,
+          "handler": "0x8842c659",
+          "offset": "0xc3ecac"
+        },
+        {
+          "id": "0x60011",
+          "name": null,
+          "handler": "0x8842cd73",
+          "offset": "0xc3ed50"
+        },
+        {
+          "id": "0x60018",
+          "name": null,
+          "handler": "0x8842d01d",
+          "offset": "0xc3ed94"
+        },
+        {
+          "id": "0x60019",
+          "name": null,
+          "handler": "0x8842c9e9",
+          "offset": "0xc3edcc"
+        },
+        {
+          "id": "0x60036",
+          "name": null,
+          "handler": "0x88ba1f07",
+          "offset": "0xc6af60"
+        },
+        {
+          "id": "0x60037",
+          "name": null,
+          "handler": "0x88ba1be1",
+          "offset": "0xc6af94"
+        },
+        {
+          "id": "0x6001a",
+          "name": null,
+          "handler": "0x883fc221",
+          "offset": "0xc6afe8"
+        },
+        {
+          "id": "0x6003c",
+          "name": null,
+          "handler": "0x883fc359",
+          "offset": "0xc6b020"
+        },
+        {
+          "id": "0x6003d",
+          "name": null,
+          "handler": "0x883fc55d",
+          "offset": "0xc6b058"
+        },
+        {
+          "id": "0x6003e",
+          "name": null,
+          "handler": "0x883fc403",
+          "offset": "0xc6b098"
+        },
+        {
+          "id": "0x6003f",
+          "name": null,
+          "handler": "0x883fc5f9",
+          "offset": "0xc6b0d0"
+        }
+      ]
+    },
+    "music": {
+      "count": 28,
+      "windows": [
+        {
+          "id": "0xe0002",
+          "name": "MMIMP3_MAIN_PLAY_WIN_ID",
+          "handler": "0x88acf2df",
+          "offset": "0x203268"
+        },
+        {
+          "id": "0xe0001",
+          "name": "MMIMP3_PRE_MAIN_PLAY_WIN_ID",
+          "handler": "0x88aced87",
+          "offset": "0x203284"
+        },
+        {
+          "id": "0xe0005",
+          "name": "MMIMP3_ALARM_RING_SET_WIN_ID",
+          "handler": "0x8868997d",
+          "offset": "0x2292cc"
+        },
+        {
+          "id": "0xe0006",
+          "name": "MMIMP3_DISPLAY_SET_WIN_ID",
+          "handler": "0x88689bf7",
+          "offset": "0x229308"
+        },
+        {
+          "id": "0xe0008",
+          "name": "MMIMP3_REPEAT_MODE_WIN_ID",
+          "handler": "0x88689a9d",
+          "offset": "0x229344"
+        },
+        {
+          "id": "0xe0009",
+          "name": "MMIMP3_SHUFFLE_MODE_WIN_ID",
+          "handler": "0x88689b4d",
+          "offset": "0x229380"
+        },
+        {
+          "id": "0xe000a",
+          "name": "MMIMP3_BT_SET_WIN_ID",
+          "handler": "0x88689caf",
+          "offset": "0x2293bc"
+        },
+        {
+          "id": "0xe000b",
+          "name": "MMIMP3_BT_HEADSET_WIN_ID",
+          "handler": "0x88689e3b",
+          "offset": "0x2293f8"
+        },
+        {
+          "id": "0xe000c",
+          "name": "MMIMP3_SET_CODE_TYPE_WIN_ID",
+          "handler": "0x88689ecf",
+          "offset": "0x229448"
+        },
+        {
+          "id": "0xe004c",
+          "name": "MMIMP3_SETTINGS_WIN_ID",
+          "handler": "0x8868825b",
+          "offset": "0x229484"
+        },
+        {
+          "id": "0xe003f",
+          "name": "MMIMP3_QUEUE_MODE_WIN_ID",
+          "handler": "0x8868960d",
+          "offset": "0x2294b8"
+        },
+        {
+          "id": "0xe004a",
+          "name": "MMIMP3_QUEUE_MOVE_MODE_WIN_ID",
+          "handler": "0x88688f41",
+          "offset": "0x2294ec"
+        },
+        {
+          "id": "0xe0014",
+          "name": "MMIMP3_PLAY_LIST_LIST_WIN_ID",
+          "handler": "0x88ad1f55",
+          "offset": "0x229a3c"
+        },
+        {
+          "id": "0xe0029",
+          "name": "MMIMP3_ADD_TO_LIST_WIN_ID",
+          "handler": "0x88ad6d43",
+          "offset": "0x229a78"
+        },
+        {
+          "id": "0xe002c",
+          "name": "MMIMP3_CREATE_NEW_LIST_WIN_ID",
+          "handler": "0x88ad274d",
+          "offset": "0x229ab0"
+        },
+        {
+          "id": "0xe002d",
+          "name": "MMIMP3_RENAME_LIST_WIN_ID",
+          "handler": "0x88ad237b",
+          "offset": "0x229ae8"
+        },
+        {
+          "id": "0xe000e",
+          "name": "MMIMP3_PLAY_LIST_WIN_ID",
+          "handler": "0x88ad3f97",
+          "offset": "0x229b1c"
+        },
+        {
+          "id": "0xe0018",
+          "name": "MMIMP3_SONG_ADD_TO_SELETION_WIN_ID",
+          "handler": "0x88ad6587",
+          "offset": "0x229b4c"
+        },
+        {
+          "id": "0xe0019",
+          "name": "MMIMP3_SET_AS_RING_SELETION_WIN_ID",
+          "handler": "0x88ad67c5",
+          "offset": "0x229b70"
+        },
+        {
+          "id": "0xe001a",
+          "name": "MMIMP3_SHARE_SELETION_WIN_ID",
+          "handler": "0x88ad68b5",
+          "offset": "0x229b94"
+        },
+        {
+          "id": "0xe001c",
+          "name": "MMIMP3_ARTISTS_WIN_ID",
+          "handler": "0x88ad46f1",
+          "offset": "0x229bb8"
+        },
+        {
+          "id": "0xe001d",
+          "name": "MMIMP3_ARTIST_WIN_ID",
+          "handler": "0x88ad4e25",
+          "offset": "0x229be8"
+        },
+        {
+          "id": "0xe001f",
+          "name": "MMIMP3_ALBUMS_WIN_ID",
+          "handler": "0x88ad4b21",
+          "offset": "0x229c18"
+        },
+        {
+          "id": "0xe0020",
+          "name": "MMIMP3_ALBUM_WIN_ID",
+          "handler": "0x88ad5313",
+          "offset": "0x229c48"
+        },
+        {
+          "id": "0xe0022",
+          "name": "MMIMP3_PLAYLISTS_WIN_ID",
+          "handler": "0x88ad5bed",
+          "offset": "0x229c78"
+        },
+        {
+          "id": "0xe0023",
+          "name": "MMIMP3_PLAYLIST_WIN_ID",
+          "handler": "0x88ad6297",
+          "offset": "0x229cd0"
+        },
+        {
+          "id": "0xe004d",
+          "name": "MMIMP3_MUSIC_LIST_WIN_ID",
+          "handler": "0x88ad72c3",
+          "offset": "0x229d28"
+        },
+        {
+          "id": "0xe004e",
+          "name": "MMIMP3_LOAD_WAIT_WIN_ID",
+          "handler": "0x88ad6ea5",
+          "offset": "0x229d58"
         }
       ]
     },

@@ -97,3 +97,14 @@
 - [公开 W19 MMI 框架](https://github.com/obaidi2005/ZW217_W19_V4.1_yisai/tree/d48d55e028c13b6f50c291cbb7ea29201c3c8432)，固定提交 d48d55e028c13b6f50c291cbb7ea29201c3c8432。35 个 C/头文件保存在 tools/upstream-reference/mmi-framework/，逐文件 URL、SHA-256 在 provenance.json。适用性：不同产品/版本的 Spreadtrum MMI 架构参考，不是 TA-1278 官方源码；没有确认全仓开源授权，保留原版权。仅阅读，不编译执行。可信度：名称/结构相关证据中等，必须与本机指令或资源交叉验证；已经发现 END_WIN 枚举版本差异。
 - [HMD 2020 指南机型范围](https://www.hmd.com/en_int/support/nokia-215-4g-user-guide/keys-and-parts)：明确包含 TA-1278；[键盘](https://www.hmd.com/en_int/support/nokia-215-4g-user-guide/keypad)、[信息](https://www.hmd.com/en_int/support/nokia-215-4g-user-guide/messages?locale=en-US)、[浏览器](https://www.hmd.com/en_int/support/nokia-215-4g-user-guide/browse-the-web)、[个性化](https://www.hmd.com/en_int/support/nokia-215-4g-user-guide/change-the-look-of-your-home-screen)。可信度：官方产品行为说明高；不覆盖 17.00.17.02 全部内部实现，浏览器明确存在地区差异。详细适用边界见 analysis/ui/official-behavior-baseline.md。
 - 本次没有获得新的官方 TA-1278 固件包或完整源代码。公开网络查询只请求网址/源码文本，没有上传固件、资源、硬件标识或私人信息。
+
+## 2026-10-25 应用流程增补
+
+新增 14 个参考文本，与此前 35 个合计 49 个，全部本地 SHA 验证通过。固定仓库/提交仍为 `obaidi2005/ZW217_W19_V4.1_yisai@d48d55e028c13b6f50c291cbb7ea29201c3c8432`，**不同机型/版本的公开源码参考，不是 TA-1278 原始源码**，也不代表仓库全体具备开放源代码许可证。没有编译/执行该源码。
+
+- [浏览器窗口实现](https://github.com/obaidi2005/ZW217_W19_V4.1_yisai/blob/d48d55e028c13b6f50c291cbb7ea29201c3c8432/MS_MMI_Main/source/mmi_app/app/browser/c/mmibrowser_wintable.c)：辅助关联菜单数组两列/三列差异、Dorado API 语义。菜单 ID 以本机 `user+73e80c` 表与 `b636a4` 跳表为准。
+- [消息共享编辑器](https://github.com/obaidi2005/ZW217_W19_V4.1_yisai/blob/d48d55e028c13b6f50c291cbb7ea29201c3c8432/MS_MMI_Main/source/mmi_app/app/mms/c/mmimms_editwin.c)：辅助命名保存/发送函数；本机正文动作编号与参考 enum 不同，关闭保存条件也不能照搬。
+- [音乐主窗口](https://github.com/obaidi2005/ZW217_W19_V4.1_yisai/blob/d48d55e028c13b6f50c291cbb7ea29201c3c8432/MS_MMI_Main/source/mmi_app/app/audioplayer/c/mmiapwin_main.c)：短按、长按、子视图先消费事件的跨版本关联；本机实际地址 `88acf2de` 起。
+- 新取回的音乐设置/菜单/头文件、浏览器 ID/导出头、短信菜单和 ID 头见 [新增路径清单](analysis/ui/app-reference-requests.json)，每份固定 URL、原始编码、保存字节数和 SHA 见 [provenance](tools/upstream-reference/mmi-framework/provenance.json)。未将参考文本重新发布到 Git。
+
+可信度：本机原始字节及可复核跳转为 A；公开不同版本源码只为 B。完整应用文档在 [apps](analysis/ui/apps/README.md) 中明确标出复刻策略 P，不能作为原机逆向证据。

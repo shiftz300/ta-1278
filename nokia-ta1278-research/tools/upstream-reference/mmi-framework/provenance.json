@@ -1,7 +1,7 @@
 {
   "retrieved_on": "2026-10-25",
   "commit": "d48d55e028c13b6f50c291cbb7ea29201c3c8432",
-  "scope": "Public framework reference from a different product/version; not Nokia TA-1278 source. Copyright notices retained. Repository-wide open-source licensing is not established. UTF-8 text fetched through connector; local hashes identify saved text, not Git blob object IDs. No upstream code compiled/executed.",
+  "scope": "Public framework reference from a different product/version; not Nokia TA-1278 source. Copyright notices retained. Repository-wide open-source licensing is not established. Saved texts are UTF-8/LF; source_encoding records GB18030 decoding where needed. Local hashes identify saved text, not Git blob object IDs. No upstream code compiled/executed.",
   "files": [
     {
       "file": "GlobalDef.h",
@@ -247,6 +247,117 @@
       "url": "https://github.com/obaidi2005/ZW217_W19_V4.1_yisai/blob/d48d55e028c13b6f50c291cbb7ea29201c3c8432/MS_MMI_Main/source/mmi_app/kernel/h/window_parse.h",
       "local_sha256": "2c597b059cc3f8a7cc298f8b89427db664bafd822c69814fe2dd03f322de675c",
       "bytes": 20325
+    },
+    {
+      "file": "mmiap_menutable.c",
+      "upstream_path": "MS_MMI_Main/source/mmi_app/app/audioplayer/c/mmiap_menutable.c",
+      "url": "https://github.com/obaidi2005/ZW217_W19_V4.1_yisai/blob/d48d55e028c13b6f50c291cbb7ea29201c3c8432/MS_MMI_Main/source/mmi_app/app/audioplayer/c/mmiap_menutable.c",
+      "local_sha256": "66ca18f2c96c08f0eb63414a5178619fcbf2d51db5e5068f61efa09e29f29754",
+      "bytes": 6130
+    },
+    {
+      "file": "mmiap_setting.c",
+      "upstream_path": "MS_MMI_Main/source/mmi_app/app/audioplayer/c/mmiap_setting.c",
+      "url": "https://github.com/obaidi2005/ZW217_W19_V4.1_yisai/blob/d48d55e028c13b6f50c291cbb7ea29201c3c8432/MS_MMI_Main/source/mmi_app/app/audioplayer/c/mmiap_setting.c",
+      "local_sha256": "2e2c7a74b84962325a93df71a3b4747f80f33034ccff54bae54c05262803f23b",
+      "bytes": 14333,
+      "download_encoding": "gb18030"
+    },
+    {
+      "file": "mmiapwin_main.c",
+      "upstream_path": "MS_MMI_Main/source/mmi_app/app/audioplayer/c/mmiapwin_main.c",
+      "url": "https://github.com/obaidi2005/ZW217_W19_V4.1_yisai/blob/d48d55e028c13b6f50c291cbb7ea29201c3c8432/MS_MMI_Main/source/mmi_app/app/audioplayer/c/mmiapwin_main.c",
+      "local_sha256": "661892a7c879283219031433f08ae046e07564635eb428d0fcc8ef6cf3c513c4",
+      "bytes": 136731,
+      "download_encoding": "gb18030"
+    },
+    {
+      "file": "mmiapwin_main_mini.c",
+      "upstream_path": "MS_MMI_Main/source/mmi_app/app/audioplayer/c/mmiapwin_main_mini.c",
+      "url": "https://github.com/obaidi2005/ZW217_W19_V4.1_yisai/blob/d48d55e028c13b6f50c291cbb7ea29201c3c8432/MS_MMI_Main/source/mmi_app/app/audioplayer/c/mmiapwin_main_mini.c",
+      "local_sha256": "2058213514c7d95fcd2bb0be9b38327c4a336fbfde8b5b292f4224a1be994385",
+      "bytes": 20726,
+      "download_encoding": "utf-8"
+    },
+    {
+      "file": "mmiapwin_menu.c",
+      "upstream_path": "MS_MMI_Main/source/mmi_app/app/audioplayer/c/mmiapwin_menu.c",
+      "url": "https://github.com/obaidi2005/ZW217_W19_V4.1_yisai/blob/d48d55e028c13b6f50c291cbb7ea29201c3c8432/MS_MMI_Main/source/mmi_app/app/audioplayer/c/mmiapwin_menu.c",
+      "local_sha256": "d347daa3625f7b0da75ee232bb95cd207e918eb3a87aefd8eeca33bc80164147",
+      "bytes": 66026,
+      "download_encoding": "gb18030"
+    },
+    {
+      "file": "mmimp3_export.h",
+      "upstream_path": "MS_MMI_Main/source/mmi_app/app/audioplayer/h/mmimp3_export.h",
+      "url": "https://github.com/obaidi2005/ZW217_W19_V4.1_yisai/blob/d48d55e028c13b6f50c291cbb7ea29201c3c8432/MS_MMI_Main/source/mmi_app/app/audioplayer/h/mmimp3_export.h",
+      "local_sha256": "a3a4a97cb4784c6001563e0218a756ea119e1798a82fb4c2188e5fcd818393cb",
+      "bytes": 41239,
+      "download_encoding": "gb18030"
+    },
+    {
+      "file": "mmimp3_id.h",
+      "upstream_path": "MS_MMI_Main/source/mmi_app/app/audioplayer/h/mmimp3_id.h",
+      "url": "https://github.com/obaidi2005/ZW217_W19_V4.1_yisai/blob/d48d55e028c13b6f50c291cbb7ea29201c3c8432/MS_MMI_Main/source/mmi_app/app/audioplayer/h/mmimp3_id.h",
+      "local_sha256": "05b4a0eb76ad161be543f3039ed356aadeb580f2046ef3031acb98d9c3fe497f",
+      "bytes": 6673,
+      "download_encoding": "gb18030"
+    },
+    {
+      "file": "mmimp3_menutable.h",
+      "upstream_path": "MS_MMI_Main/source/mmi_app/app/audioplayer/h/mmimp3_menutable.h",
+      "url": "https://github.com/obaidi2005/ZW217_W19_V4.1_yisai/blob/d48d55e028c13b6f50c291cbb7ea29201c3c8432/MS_MMI_Main/source/mmi_app/app/audioplayer/h/mmimp3_menutable.h",
+      "local_sha256": "b4765186c4df4d80d085d916f1960d7cbe09792b1311a228ea3f8463b65cb460",
+      "bytes": 8172,
+      "download_encoding": "gb18030"
+    },
+    {
+      "file": "mmibrowser_id.h",
+      "upstream_path": "MS_MMI_Main/source/mmi_app/app/browser/h/mmibrowser_id.h",
+      "url": "https://github.com/obaidi2005/ZW217_W19_V4.1_yisai/blob/d48d55e028c13b6f50c291cbb7ea29201c3c8432/MS_MMI_Main/source/mmi_app/app/browser/h/mmibrowser_id.h",
+      "local_sha256": "1bd1eaf57c8303c13ac49539176ff25cd630344261d2964bf9cb2b98b726d500",
+      "bytes": 10742,
+      "download_encoding": "utf-8"
+    },
+    {
+      "file": "mmibrowser_wintable.h",
+      "upstream_path": "MS_MMI_Main/source/mmi_app/app/browser/h/mmibrowser_wintable.h",
+      "url": "https://github.com/obaidi2005/ZW217_W19_V4.1_yisai/blob/d48d55e028c13b6f50c291cbb7ea29201c3c8432/MS_MMI_Main/source/mmi_app/app/browser/h/mmibrowser_wintable.h",
+      "local_sha256": "34be478404ced82acc37d5138afef82626a1437d6aa52398d99939a2669e95b8",
+      "bytes": 28106,
+      "download_encoding": "gb18030"
+    },
+    {
+      "file": "mmibrowser_export.h",
+      "upstream_path": "MS_MMI_Main/source/mmi_app/app/browser_manager/h/mmibrowser_export.h",
+      "url": "https://github.com/obaidi2005/ZW217_W19_V4.1_yisai/blob/d48d55e028c13b6f50c291cbb7ea29201c3c8432/MS_MMI_Main/source/mmi_app/app/browser_manager/h/mmibrowser_export.h",
+      "local_sha256": "b34e8e2a52e76a101cada5668c119fa8a5e0b3334aaa664d775e0f57b50a1494",
+      "bytes": 23304,
+      "download_encoding": "gb18030"
+    },
+    {
+      "file": "mmimms_menutable.h",
+      "upstream_path": "MS_MMI_Main/source/mmi_app/app/mms/h/mmimms_menutable.h",
+      "url": "https://github.com/obaidi2005/ZW217_W19_V4.1_yisai/blob/d48d55e028c13b6f50c291cbb7ea29201c3c8432/MS_MMI_Main/source/mmi_app/app/mms/h/mmimms_menutable.h",
+      "local_sha256": "8959ddea52055fe4246737e850e7142a86cd6a8b708533ad88351d9fe6eefd93",
+      "bytes": 5977,
+      "download_encoding": "gb18030"
+    },
+    {
+      "file": "mmisms_menutable.c",
+      "upstream_path": "MS_MMI_Main/source/mmi_app/app/sms/c/mmisms_menutable.c",
+      "url": "https://github.com/obaidi2005/ZW217_W19_V4.1_yisai/blob/d48d55e028c13b6f50c291cbb7ea29201c3c8432/MS_MMI_Main/source/mmi_app/app/sms/c/mmisms_menutable.c",
+      "local_sha256": "b763a1968a5f7317a7fcc174cdfffd60b3504611245b5196fa0ad7cd09b5fa8f",
+      "bytes": 126814,
+      "download_encoding": "gb18030"
+    },
+    {
+      "file": "mmisms_id.h",
+      "upstream_path": "MS_MMI_Main/source/mmi_app/app/sms/h/mmisms_id.h",
+      "url": "https://github.com/obaidi2005/ZW217_W19_V4.1_yisai/blob/d48d55e028c13b6f50c291cbb7ea29201c3c8432/MS_MMI_Main/source/mmi_app/app/sms/h/mmisms_id.h",
+      "local_sha256": "eacf7dd5822f1bb24b56ed661f67a4925ed7285bc118776b9798871f1df38fa6",
+      "bytes": 18308,
+      "download_encoding": "gb18030"
     }
   ]
 }

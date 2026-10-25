@@ -1,0 +1,134 @@
+{
+  "source_sha256": "8f0db2dc82f9e763cb700c2e5781b7ca7125a4d250f4c075dbec793eb549c1ca",
+  "handler": "0x88398dd0",
+  "scope": "Display-helper operation codes, NOT modem/network error numbers. Code 0 is progress, not failure. No claim about subsequent transport outcome.",
+  "rows": [
+    {
+      "native_code": 0,
+      "target": "0x88398e0a",
+      "status": "native label branch",
+      "label_id": "0x400008ca",
+      "text": {
+        "0": "Sending…",
+        "1": "正在发送…",
+        "2": "正在傳送"
+      },
+      "literal_offset": "0x399154",
+      "literal_adjustment": 0
+    },
+    {
+      "native_code": 1,
+      "target": "0x88398e24",
+      "status": "native label branch",
+      "label_id": "0x40080055",
+      "text": {
+        "0": "Go to Settings and enter a message centre number",
+        "1": "转至“设置”并输入信息中心号码",
+        "2": "前往「設定」並輸入訊息中心號碼"
+      },
+      "literal_offset": "0x399158",
+      "literal_adjustment": 0
+    },
+    {
+      "native_code": 2,
+      "target": "0x88398e28",
+      "status": "native label branch",
+      "label_id": "0x40080092",
+      "text": {
+        "0": "To send this message, add the correct message centre number to the fixed dialling number list.",
+        "1": "要发送此信息，请将正确的信息中心号码添加到固定拨号表。",
+        "2": "若要傳送此訊息，請將正確的訊息中心號碼增加到固定撥號號碼清單。"
+      },
+      "literal_offset": "0x399158",
+      "literal_adjustment": 61
+    },
+    {
+      "native_code": 3,
+      "target": "0x88398e30",
+      "status": "native label branch",
+      "label_id": "0x40000776",
+      "text": {
+        "0": "Can't do this as you're using fixed dialling.",
+        "1": "您正在使用固定拨号，无法执行此操作。",
+        "2": "您正在使用固定撥號，無法執行此操作。"
+      },
+      "literal_offset": "0x39915c",
+      "literal_adjustment": 0
+    },
+    {
+      "native_code": 4,
+      "target": "0x88398e60",
+      "status": "native label branch",
+      "label_id": "0x4000094d",
+      "text": {
+        "0": "Phone number is empty",
+        "1": "电话号码为空",
+        "2": "電話號碼空白"
+      },
+      "literal_offset": "0x399154",
+      "literal_adjustment": 131
+    },
+    {
+      "native_code": 5,
+      "target": "0x88398e6a",
+      "status": "log-only/default branch in this display helper"
+    },
+    {
+      "native_code": 6,
+      "target": "0x88398e6a",
+      "status": "log-only/default branch in this display helper"
+    },
+    {
+      "native_code": 7,
+      "target": "0x88398e50",
+      "status": "native label branch",
+      "label_id": "0x40000361",
+      "text": {
+        "0": "No space",
+        "1": "无空间",
+        "2": "無空間"
+      },
+      "literal_offset": "0x399160",
+      "literal_adjustment": 0
+    },
+    {
+      "native_code": 8,
+      "target": "0x88398e6a",
+      "status": "log-only/default branch in this display helper"
+    },
+    {
+      "native_code": 9,
+      "target": "0x88398e6a",
+      "status": "log-only/default branch in this display helper"
+    },
+    {
+      "native_code": 10,
+      "target": "0x88398e6a",
+      "status": "log-only/default branch in this display helper"
+    },
+    {
+      "native_code": 11,
+      "target": "0x88398e6a",
+      "status": "log-only/default branch in this display helper"
+    },
+    {
+      "native_code": 12,
+      "target": "0x88398e54",
+      "status": "native label branch",
+      "label_id": "0x4000001d",
+      "text": {
+        "0": "Working on something else right now – try again later.",
+        "1": "目前正在处理其他内容–请稍后再试。",
+        "2": "目前正在處理其他內容–請稍後再試。"
+      },
+      "literal_offset": "0x39914c",
+      "literal_adjustment": -174
+    },
+    {
+      "native_code": 13,
+      "target": "0x88398e5a",
+      "status": "delegated helper",
+      "callee": "0x8858c61c"
+    }
+  ]
+}

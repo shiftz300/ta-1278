@@ -84,7 +84,8 @@ def main():
   if sc:node['named_arguments']=dict(zip(sc['operands'],node['parameters']+[node['node'],node['parent']]))
  interaction['compose_layout']['interpretation']='Child types/operand names correlated with window_parse.h. FORM layout 0=vertical order, 1=side by side. Capacity is construction-time, not proven final SMS limit.'
  interaction['cursor_directions']={'1':'up','2':'down','3':'left','4':'right','confidence':'native four-way dispatch and error literal match BASEFLEX_MoveCursor; source conditionals differ','native':'0x882ffe3c','source':'ctrlbaseflex_cursor.c'}
- interaction['known_gaps']=[x for x in interaction['known_gaps'] if x!='Event ID names and complete handler side effects']+['All handler side effects not fully recovered; cross-version event names require runtime acceptance']
+ gap='All handler side effects not fully recovered; cross-version event names require runtime acceptance'
+ interaction['known_gaps']=[x for x in interaction['known_gaps'] if x not in ('Event ID names and complete handler side effects',gap)]+[gap]
  save('interaction-map.json',interaction)
  # This exact contiguous native sequence matches the public indexed table.
  at=0x4acb58;keytable=b[at:at+0x69]
@@ -113,10 +114,11 @@ def main():
  save('single-byte-text-audit.json',{'records':odd,'identical_latin1_windows1252':sum(x['both_decoders_identical'] for x in odd),'irrecoverable_original_text_records':[x for x in odd if x['raw_hex']=='3f3fea3fed3f3f3f'],'note':'The three ??ê?í??? records already contain literal 0x3f bytes. Intended lost characters cannot be inferred uniquely from this firmware. Codepage name remains unproven.'})
  # Inventory per app family, not a fabricated complete transition graph.
  families={}
- for family,pat in [('messages','SMS|MMS'),('browser','BROWSER|WWW|WAP'),('home','IDLE|MAINMENU'),('settings','SET|PROFILE'),('input','IM_|INPUT|PINYIN')]:
-  ww=[x for x in annotated if re.search(pat,x.get('name') or '')]
+ for family,pat in [('messages','SMS|MMS'),('browser','BROWSER|WWW|WAP'),('music','MP3|AUDIOPLAYER'),('home','IDLE|MAINMENU'),('settings','SET|PROFILE'),('input','IM_|INPUT|PINYIN')]:
+  groups={'messages':(7,8),'browser':(6,),'music':(14,)}.get(family)
+  ww=[x for x in annotated if (int(x['window_id'],16)>>16 in groups if groups else re.search(pat,x.get('name') or ''))]
   families[family]={'count':len(ww),'windows':[{'id':x['window_id'],'name':x.get('name'),'handler':x['handler_thumb'],'offset':x['offset']} for x in ww]}
- save('application-window-index.json',{'scope':'name-based inventory; overlaps are intentional and names do not prove feature availability','families':families})
+ save('application-window-index.json',{'scope':'Messages/browser/music use native window ID groups 7+8/6/14, including unnamed windows. Other families remain name-based and overlap. Descriptors do not prove runtime feature availability.','families':families})
  save('framework-semantics-validation.json',{'status':'passed','named_compose_events':sum(bool(x['framework_names']) for x in interaction['compose_dispatch']['branches']),'compose_events':25,'window_count':len(annotated),'annotated_attributes':sum('framework_opcode' in a for w in annotated for a in w['attributes']),'keytable_bytes':len(keytable),'physical_matrix_keys_mapped':len(physical),'single_byte_records':len(odd),'firmware_executed':False})
  print('Framework annotation:',len(annotated),'windows;',sum(bool(x['framework_names']) for x in interaction['compose_dispatch']['branches']),'of 25 events named')
 if __name__=='__main__':main()

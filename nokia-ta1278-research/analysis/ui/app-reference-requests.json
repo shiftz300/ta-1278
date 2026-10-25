@@ -1,0 +1,16 @@
+[
+  "MS_MMI_Main/source/mmi_app/app/audioplayer/c/mmiap_menutable.c",
+  "MS_MMI_Main/source/mmi_app/app/audioplayer/c/mmiap_setting.c",
+  "MS_MMI_Main/source/mmi_app/app/audioplayer/c/mmiapwin_main.c",
+  "MS_MMI_Main/source/mmi_app/app/audioplayer/c/mmiapwin_main_mini.c",
+  "MS_MMI_Main/source/mmi_app/app/audioplayer/c/mmiapwin_menu.c",
+  "MS_MMI_Main/source/mmi_app/app/audioplayer/h/mmimp3_export.h",
+  "MS_MMI_Main/source/mmi_app/app/audioplayer/h/mmimp3_id.h",
+  "MS_MMI_Main/source/mmi_app/app/audioplayer/h/mmimp3_menutable.h",
+  "MS_MMI_Main/source/mmi_app/app/browser/h/mmibrowser_id.h",
+  "MS_MMI_Main/source/mmi_app/app/browser/h/mmibrowser_wintable.h",
+  "MS_MMI_Main/source/mmi_app/app/browser_manager/h/mmibrowser_export.h",
+  "MS_MMI_Main/source/mmi_app/app/mms/h/mmimms_menutable.h",
+  "MS_MMI_Main/source/mmi_app/app/sms/c/mmisms_menutable.c",
+  "MS_MMI_Main/source/mmi_app/app/sms/h/mmisms_id.h"
+]

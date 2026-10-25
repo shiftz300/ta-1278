@@ -1,0 +1,36 @@
+{
+  "source_sha256": "8f0db2dc82f9e763cb700c2e5781b7ca7125a4d250f4c075dbec793eb549c1ca",
+  "builder": "0x8868a1aa",
+  "selection_read": "0x886861f8",
+  "selection_write": "0x8865c9a0",
+  "rows": [
+    {
+      "native_value": 0,
+      "label_id": "0x40000b14",
+      "text": {
+        "0": "Off",
+        "1": "关",
+        "2": "關"
+      }
+    },
+    {
+      "native_value": 1,
+      "label_id": "0x400009ad",
+      "text": {
+        "0": "Repeat all",
+        "1": "Repeat all",
+        "2": "Repeat all"
+      }
+    },
+    {
+      "native_value": 2,
+      "label_id": "0x4000092b",
+      "text": {
+        "0": "Repeat one",
+        "1": "Repeat one",
+        "2": "Repeat one"
+      }
+    }
+  ],
+  "scope": "Three native list entries, getter 0/1/2 maps directly to row 0/1/2, OK handler writes selected row. Transport repeat behavior is not proven by labels alone."
+}

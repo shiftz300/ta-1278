@@ -1,0 +1,681 @@
+{
+  "source_sha256": "8f0db2dc82f9e763cb700c2e5781b7ca7125a4d250f4c075dbec793eb549c1ca",
+  "resource_source": "mmi.bin",
+  "resource_source_sha256": "14c573027f375ea6b5f8ead2c6c432f2773f373faaa3c8a33261d0de9737886c",
+  "assets": [
+    {
+      "id": "0x40170020",
+      "resource_offset": "0xaba4bc",
+      "resource_sha256": "d24b046d84e8d222e014707dc4daff739ba3d878eed3f722e3c82dbae45697a5",
+      "png": "nokia-ta1278-research/analysis/extracted/png/02509-icon-00aba4bc.png",
+      "png_sha256": "c4e18c5318eedf8ee703ffa01db23c43626b158bc9a09be69a234b2e925f67d7",
+      "width": 26,
+      "height": 26
+    },
+    {
+      "id": "0x40170027",
+      "resource_offset": "0xababf4",
+      "resource_sha256": "c81aaa3052b7e5cb23cb989bff4c081272dc3dcd246282da8077933e009db0da",
+      "png": "nokia-ta1278-research/analysis/extracted/png/02516-icon-00ababf4.png",
+      "png_sha256": "c3e77b748d7d8b717fead82384ef4e69ab72a59d9e53e5d9dada92e2ce0a6891",
+      "width": 50,
+      "height": 62
+    },
+    {
+      "id": "0x40170028",
+      "resource_offset": "0xabb01c",
+      "resource_sha256": "36ff4d214948f708881ba2ec21d5486f165615373c43ab0b67a9f6625ca777fd",
+      "png": "nokia-ta1278-research/analysis/extracted/png/02517-icon-00abb01c.png",
+      "png_sha256": "5a2d06ebf0768f5c821d0db680926d42bc4fbb3e365f793bb93a451c1ed3dcf2",
+      "width": 50,
+      "height": 62
+    },
+    {
+      "id": "0x40170029",
+      "resource_offset": "0xabb444",
+      "resource_sha256": "6b363c4333fe52dd46a32e8a65cca47c561a57a030026541e6ad8642326efd5c",
+      "png": "nokia-ta1278-research/analysis/extracted/png/02518-icon-00abb444.png",
+      "png_sha256": "586be6a6f5fa20adfbb7a2e93b501277d895322d532fccdee09894ec7296a395",
+      "width": 50,
+      "height": 62
+    },
+    {
+      "id": "0x4017002a",
+      "resource_offset": "0xabb86c",
+      "resource_sha256": "f2fa5489ca26f1049a0d3c79dbf7f2dfa5fd26e94fe851b76ba7012599c62fbb",
+      "png": "nokia-ta1278-research/analysis/extracted/png/02519-icon-00abb86c.png",
+      "png_sha256": "e9eeeb77acd5598b0e3f73b53e150490d8ba30c3a9d5240a99448894c73ecf15",
+      "width": 50,
+      "height": 62
+    },
+    {
+      "id": "0x4017002b",
+      "resource_offset": "0xabbc94",
+      "resource_sha256": "1ec690df396267a2c6f0bba0e55259d2bf91439d7a3968437e8ed56f56829eef",
+      "png": "nokia-ta1278-research/analysis/extracted/png/02520-icon-00abbc94.png",
+      "png_sha256": "8f744cee73fd54e6fba0f9c93ef5979b03d08f0077cb8c8b883628642d995551",
+      "width": 50,
+      "height": 62
+    },
+    {
+      "id": "0x4017002c",
+      "resource_offset": "0xabc0bc",
+      "resource_sha256": "a712ddce448a80fe4edcf3bda6dc3998c3cdcde663b93dd5007283e264018249",
+      "png": "nokia-ta1278-research/analysis/extracted/png/02521-icon-00abc0bc.png",
+      "png_sha256": "445b9a0c02be1607200f7cd536b095df6a1ff36495468c04affe2d52d4f53359",
+      "width": 50,
+      "height": 62
+    },
+    {
+      "id": "0x4017002d",
+      "resource_offset": "0xabc4e4",
+      "resource_sha256": "fd6878c3a75d24552e9e532a6dfa1c3c61288fec44320d7259b9380f9bea9c01",
+      "png": "nokia-ta1278-research/analysis/extracted/png/02522-icon-00abc4e4.png",
+      "png_sha256": "924e8560fbce99d155112475dcfc2eae0a23f83309f37100f7c84af3de8956e4",
+      "width": 50,
+      "height": 62
+    }
+  ],
+  "windows": [
+    {
+      "offset": "0x71d950",
+      "size": 224,
+      "sha256": "a2986b3e778bca68a653126cfcfb15329dc1afc3fae3325afcca25125896161d",
+      "window_id": "0x110011",
+      "name": "MMIPB_ADD_IN_NV_WIN_ID",
+      "handler_thumb": "0x8830880f",
+      "attributes": [
+        {
+          "opcode": "0xf025",
+          "arguments": [
+            "0x0",
+            "0x1101c3"
+          ],
+          "strings": {},
+          "framework_opcode": "MMK_CREATE_FORM",
+          "framework_macro": "CREATE_FORM_CTRL",
+          "operand_schema_match": true,
+          "named_arguments": {
+            "_LAYOUT_": "0x0",
+            "_CTRL_ID_": "0x1101c3"
+          }
+        },
+        {
+          "opcode": "0xf111",
+          "arguments": [
+            "0x1",
+            "0x3",
+            "0x1101c4",
+            "0x1101c3"
+          ],
+          "strings": {},
+          "framework_opcode": "CREATE_CHILD_LIST",
+          "framework_macro": "CHILD_LIST_CTRL",
+          "operand_schema_match": true,
+          "named_arguments": {
+            "_IS_GET_ACTIVE_": "0x1",
+            "_LIST_TYPE_": "0x3",
+            "_CTRL_ID_": "0x1101c4",
+            "_PARENT_CTRL_ID_": "0x1101c3"
+          }
+        },
+        {
+          "opcode": "0xf101",
+          "arguments": [
+            "0x1",
+            "0x28",
+            "0x1101c5",
+            "0x1101c3"
+          ],
+          "strings": {},
+          "framework_opcode": "CREATE_CHILD_EDIT_TEXT",
+          "framework_macro": "CHILD_EDIT_TEXT_CTRL",
+          "operand_schema_match": true,
+          "named_arguments": {
+            "_IS_GET_ACTIVE_": "0x1",
+            "_STR_MAX_LEN_": "0x28",
+            "_CTRL_ID_": "0x1101c5",
+            "_PARENT_CTRL_ID_": "0x1101c3"
+          }
+        },
+        {
+          "opcode": "0xf101",
+          "arguments": [
+            "0x1",
+            "0x28",
+            "0x1101c6",
+            "0x1101c3"
+          ],
+          "strings": {},
+          "framework_opcode": "CREATE_CHILD_EDIT_TEXT",
+          "framework_macro": "CHILD_EDIT_TEXT_CTRL",
+          "operand_schema_match": true,
+          "named_arguments": {
+            "_IS_GET_ACTIVE_": "0x1",
+            "_STR_MAX_LEN_": "0x28",
+            "_CTRL_ID_": "0x1101c6",
+            "_PARENT_CTRL_ID_": "0x1101c3"
+          }
+        },
+        {
+          "opcode": "0xf102",
+          "arguments": [
+            "0x1",
+            "0x28",
+            "0x1101c7",
+            "0x1101c3"
+          ],
+          "strings": {},
+          "framework_opcode": "CREATE_CHILD_EDIT_PHONENUM",
+          "framework_macro": "CHILD_EDIT_PHONENUM_CTRL",
+          "operand_schema_match": true,
+          "named_arguments": {
+            "_IS_GET_ACTIVE_": "0x1",
+            "_STR_MAX_LEN_": "0x28",
+            "_CTRL_ID_": "0x1101c7",
+            "_PARENT_CTRL_ID_": "0x1101c3"
+          }
+        },
+        {
+          "opcode": "0xf102",
+          "arguments": [
+            "0x1",
+            "0x28",
+            "0x1101c9",
+            "0x1101c3"
+          ],
+          "strings": {},
+          "framework_opcode": "CREATE_CHILD_EDIT_PHONENUM",
+          "framework_macro": "CHILD_EDIT_PHONENUM_CTRL",
+          "operand_schema_match": true,
+          "named_arguments": {
+            "_IS_GET_ACTIVE_": "0x1",
+            "_STR_MAX_LEN_": "0x28",
+            "_CTRL_ID_": "0x1101c9",
+            "_PARENT_CTRL_ID_": "0x1101c3"
+          }
+        },
+        {
+          "opcode": "0xf102",
+          "arguments": [
+            "0x1",
+            "0x28",
+            "0x1101c8",
+            "0x1101c3"
+          ],
+          "strings": {},
+          "framework_opcode": "CREATE_CHILD_EDIT_PHONENUM",
+          "framework_macro": "CHILD_EDIT_PHONENUM_CTRL",
+          "operand_schema_match": true,
+          "named_arguments": {
+            "_IS_GET_ACTIVE_": "0x1",
+            "_STR_MAX_LEN_": "0x28",
+            "_CTRL_ID_": "0x1101c8",
+            "_PARENT_CTRL_ID_": "0x1101c3"
+          }
+        },
+        {
+          "opcode": "0xf106",
+          "arguments": [
+            "0x1",
+            "0x1101cb",
+            "0x1101c3"
+          ],
+          "strings": {},
+          "framework_opcode": "CREATE_CHILD_EDIT_DATE",
+          "framework_macro": "CHILD_EDIT_DATE_CTRL",
+          "operand_schema_match": true,
+          "named_arguments": {
+            "_IS_GET_ACTIVE_": "0x1",
+            "_CTRL_ID_": "0x1101cb",
+            "_PARENT_CTRL_ID_": "0x1101c3"
+          }
+        },
+        {
+          "opcode": "0xf111",
+          "arguments": [
+            "0x1",
+            "0x3",
+            "0x1101cc",
+            "0x1101c3"
+          ],
+          "strings": {},
+          "framework_opcode": "CREATE_CHILD_LIST",
+          "framework_macro": "CHILD_LIST_CTRL",
+          "operand_schema_match": true,
+          "named_arguments": {
+            "_IS_GET_ACTIVE_": "0x1",
+            "_LIST_TYPE_": "0x3",
+            "_CTRL_ID_": "0x1101cc",
+            "_PARENT_CTRL_ID_": "0x1101c3"
+          }
+        },
+        {
+          "opcode": "0xf111",
+          "arguments": [
+            "0x1",
+            "0x3",
+            "0x1101cd",
+            "0x1101c3"
+          ],
+          "strings": {},
+          "framework_opcode": "CREATE_CHILD_LIST",
+          "framework_macro": "CHILD_LIST_CTRL",
+          "operand_schema_match": true,
+          "named_arguments": {
+            "_IS_GET_ACTIVE_": "0x1",
+            "_LIST_TYPE_": "0x3",
+            "_CTRL_ID_": "0x1101cd",
+            "_PARENT_CTRL_ID_": "0x1101c3"
+          }
+        },
+        {
+          "opcode": "0xf020",
+          "arguments": [
+            "0x40000489",
+            "0x40000001",
+            "0x40000480"
+          ],
+          "strings": {
+            "0x40000489": {
+              "0": "SPM AMERIS",
+              "1": "SPM AMERIS",
+              "2": "SPM AMERIS"
+            },
+            "0x40000001": {
+              "0": "",
+              "1": "",
+              "2": ""
+            },
+            "0x40000480": {
+              "0": "Freedom",
+              "1": "Freedom",
+              "2": "Freedom"
+            }
+          },
+          "framework_opcode": "MMK_CREATE_SOFTKEY",
+          "framework_macro": "WIN_SOFTKEY",
+          "operand_schema_match": true,
+          "named_arguments": {
+            "_LEFT_SOFT_ID_": "0x40000489",
+            "_MID_SOFT_ID_": "0x40000001",
+            "_RIGHT_SOFT_ID_": "0x40000480"
+          }
+        }
+      ]
+    },
+    {
+      "offset": "0x71da30",
+      "size": 224,
+      "sha256": "5af05f06bdd2391e3a83fb2da36fd327336bf19685d6be95e9c8ae806a1ffad6",
+      "window_id": "0x110011",
+      "name": "MMIPB_ADD_IN_NV_WIN_ID",
+      "handler_thumb": "0x8830880f",
+      "attributes": [
+        {
+          "opcode": "0xf025",
+          "arguments": [
+            "0x0",
+            "0x1101c3"
+          ],
+          "strings": {},
+          "framework_opcode": "MMK_CREATE_FORM",
+          "framework_macro": "CREATE_FORM_CTRL",
+          "operand_schema_match": true,
+          "named_arguments": {
+            "_LAYOUT_": "0x0",
+            "_CTRL_ID_": "0x1101c3"
+          }
+        },
+        {
+          "opcode": "0xf111",
+          "arguments": [
+            "0x1",
+            "0x3",
+            "0x1101c4",
+            "0x1101c3"
+          ],
+          "strings": {},
+          "framework_opcode": "CREATE_CHILD_LIST",
+          "framework_macro": "CHILD_LIST_CTRL",
+          "operand_schema_match": true,
+          "named_arguments": {
+            "_IS_GET_ACTIVE_": "0x1",
+            "_LIST_TYPE_": "0x3",
+            "_CTRL_ID_": "0x1101c4",
+            "_PARENT_CTRL_ID_": "0x1101c3"
+          }
+        },
+        {
+          "opcode": "0xf101",
+          "arguments": [
+            "0x1",
+            "0x28",
+            "0x1101c6",
+            "0x1101c3"
+          ],
+          "strings": {},
+          "framework_opcode": "CREATE_CHILD_EDIT_TEXT",
+          "framework_macro": "CHILD_EDIT_TEXT_CTRL",
+          "operand_schema_match": true,
+          "named_arguments": {
+            "_IS_GET_ACTIVE_": "0x1",
+            "_STR_MAX_LEN_": "0x28",
+            "_CTRL_ID_": "0x1101c6",
+            "_PARENT_CTRL_ID_": "0x1101c3"
+          }
+        },
+        {
+          "opcode": "0xf101",
+          "arguments": [
+            "0x1",
+            "0x28",
+            "0x1101c5",
+            "0x1101c3"
+          ],
+          "strings": {},
+          "framework_opcode": "CREATE_CHILD_EDIT_TEXT",
+          "framework_macro": "CHILD_EDIT_TEXT_CTRL",
+          "operand_schema_match": true,
+          "named_arguments": {
+            "_IS_GET_ACTIVE_": "0x1",
+            "_STR_MAX_LEN_": "0x28",
+            "_CTRL_ID_": "0x1101c5",
+            "_PARENT_CTRL_ID_": "0x1101c3"
+          }
+        },
+        {
+          "opcode": "0xf102",
+          "arguments": [
+            "0x1",
+            "0x28",
+            "0x1101c7",
+            "0x1101c3"
+          ],
+          "strings": {},
+          "framework_opcode": "CREATE_CHILD_EDIT_PHONENUM",
+          "framework_macro": "CHILD_EDIT_PHONENUM_CTRL",
+          "operand_schema_match": true,
+          "named_arguments": {
+            "_IS_GET_ACTIVE_": "0x1",
+            "_STR_MAX_LEN_": "0x28",
+            "_CTRL_ID_": "0x1101c7",
+            "_PARENT_CTRL_ID_": "0x1101c3"
+          }
+        },
+        {
+          "opcode": "0xf102",
+          "arguments": [
+            "0x1",
+            "0x28",
+            "0x1101c9",
+            "0x1101c3"
+          ],
+          "strings": {},
+          "framework_opcode": "CREATE_CHILD_EDIT_PHONENUM",
+          "framework_macro": "CHILD_EDIT_PHONENUM_CTRL",
+          "operand_schema_match": true,
+          "named_arguments": {
+            "_IS_GET_ACTIVE_": "0x1",
+            "_STR_MAX_LEN_": "0x28",
+            "_CTRL_ID_": "0x1101c9",
+            "_PARENT_CTRL_ID_": "0x1101c3"
+          }
+        },
+        {
+          "opcode": "0xf102",
+          "arguments": [
+            "0x1",
+            "0x28",
+            "0x1101c8",
+            "0x1101c3"
+          ],
+          "strings": {},
+          "framework_opcode": "CREATE_CHILD_EDIT_PHONENUM",
+          "framework_macro": "CHILD_EDIT_PHONENUM_CTRL",
+          "operand_schema_match": true,
+          "named_arguments": {
+            "_IS_GET_ACTIVE_": "0x1",
+            "_STR_MAX_LEN_": "0x28",
+            "_CTRL_ID_": "0x1101c8",
+            "_PARENT_CTRL_ID_": "0x1101c3"
+          }
+        },
+        {
+          "opcode": "0xf106",
+          "arguments": [
+            "0x1",
+            "0x1101cb",
+            "0x1101c3"
+          ],
+          "strings": {},
+          "framework_opcode": "CREATE_CHILD_EDIT_DATE",
+          "framework_macro": "CHILD_EDIT_DATE_CTRL",
+          "operand_schema_match": true,
+          "named_arguments": {
+            "_IS_GET_ACTIVE_": "0x1",
+            "_CTRL_ID_": "0x1101cb",
+            "_PARENT_CTRL_ID_": "0x1101c3"
+          }
+        },
+        {
+          "opcode": "0xf111",
+          "arguments": [
+            "0x1",
+            "0x3",
+            "0x1101cc",
+            "0x1101c3"
+          ],
+          "strings": {},
+          "framework_opcode": "CREATE_CHILD_LIST",
+          "framework_macro": "CHILD_LIST_CTRL",
+          "operand_schema_match": true,
+          "named_arguments": {
+            "_IS_GET_ACTIVE_": "0x1",
+            "_LIST_TYPE_": "0x3",
+            "_CTRL_ID_": "0x1101cc",
+            "_PARENT_CTRL_ID_": "0x1101c3"
+          }
+        },
+        {
+          "opcode": "0xf111",
+          "arguments": [
+            "0x1",
+            "0x3",
+            "0x1101cd",
+            "0x1101c3"
+          ],
+          "strings": {},
+          "framework_opcode": "CREATE_CHILD_LIST",
+          "framework_macro": "CHILD_LIST_CTRL",
+          "operand_schema_match": true,
+          "named_arguments": {
+            "_IS_GET_ACTIVE_": "0x1",
+            "_LIST_TYPE_": "0x3",
+            "_CTRL_ID_": "0x1101cd",
+            "_PARENT_CTRL_ID_": "0x1101c3"
+          }
+        },
+        {
+          "opcode": "0xf020",
+          "arguments": [
+            "0x40000489",
+            "0x40000001",
+            "0x40000480"
+          ],
+          "strings": {
+            "0x40000489": {
+              "0": "SPM AMERIS",
+              "1": "SPM AMERIS",
+              "2": "SPM AMERIS"
+            },
+            "0x40000001": {
+              "0": "",
+              "1": "",
+              "2": ""
+            },
+            "0x40000480": {
+              "0": "Freedom",
+              "1": "Freedom",
+              "2": "Freedom"
+            }
+          },
+          "framework_opcode": "MMK_CREATE_SOFTKEY",
+          "framework_macro": "WIN_SOFTKEY",
+          "operand_schema_match": true,
+          "named_arguments": {
+            "_LEFT_SOFT_ID_": "0x40000489",
+            "_MID_SOFT_ID_": "0x40000001",
+            "_RIGHT_SOFT_ID_": "0x40000480"
+          }
+        }
+      ]
+    },
+    {
+      "offset": "0x7a9b68",
+      "size": 36,
+      "sha256": "0dfefc6c7e01ea739d7fc301a48f0df4b63d67a2b82a91430a8d528c8723dec6",
+      "window_id": "0x170025",
+      "name": "MMIACC_FLASHLIGHT_WIN_ID",
+      "handler_thumb": "0x8842c091",
+      "attributes": [
+        {
+          "opcode": "0xf020",
+          "arguments": [
+            "0x40170020",
+            "0x40000b2e",
+            "0x40000480"
+          ],
+          "strings": {
+            "0x40170020": {
+              "0": "Celsius:",
+              "1": "摄氏：",
+              "2": "攝氏："
+            },
+            "0x40000b2e": {
+              "0": "Turn on",
+              "1": "打开",
+              "2": "開啟"
+            },
+            "0x40000480": {
+              "0": "Freedom",
+              "1": "Freedom",
+              "2": "Freedom"
+            }
+          },
+          "framework_opcode": "MMK_CREATE_SOFTKEY",
+          "framework_macro": "WIN_SOFTKEY",
+          "operand_schema_match": true,
+          "named_arguments": {
+            "_LEFT_SOFT_ID_": "0x40170020",
+            "_MID_SOFT_ID_": "0x40000b2e",
+            "_RIGHT_SOFT_ID_": "0x40000480"
+          }
+        }
+      ]
+    },
+    {
+      "offset": "0xc2376c",
+      "size": 36,
+      "sha256": "d00c627995a73bac428234624842a0f11f6ae8c9299e0b87d8da726045df1ca2",
+      "window_id": "0x110064",
+      "name": "MMIPB_ENTRY_LIST_WITH_SEARCH_WIN_ID",
+      "handler_thumb": "0x88108c4d",
+      "attributes": [
+        {
+          "opcode": "0xf020",
+          "arguments": [
+            "0x40000489",
+            "0x40000001",
+            "0x40000480"
+          ],
+          "strings": {
+            "0x40000489": {
+              "0": "SPM AMERIS",
+              "1": "SPM AMERIS",
+              "2": "SPM AMERIS"
+            },
+            "0x40000001": {
+              "0": "",
+              "1": "",
+              "2": ""
+            },
+            "0x40000480": {
+              "0": "Freedom",
+              "1": "Freedom",
+              "2": "Freedom"
+            }
+          },
+          "framework_opcode": "MMK_CREATE_SOFTKEY",
+          "framework_macro": "WIN_SOFTKEY",
+          "operand_schema_match": true,
+          "named_arguments": {
+            "_LEFT_SOFT_ID_": "0x40000489",
+            "_MID_SOFT_ID_": "0x40000001",
+            "_RIGHT_SOFT_ID_": "0x40000480"
+          }
+        }
+      ]
+    }
+  ],
+  "torch": {
+    "power_off": "0x40170027",
+    "power_on_by_theme": [
+      "0x4017002c",
+      "0x4017002b",
+      "0x4017002d",
+      "0x4017002a",
+      "0x40170029",
+      "0x40170028"
+    ],
+    "theme_table_offset": "0x7a9b50",
+    "draw_handler": "0x8842bf2a",
+    "event_handler": "0x8842c090",
+    "placement": [
+      94,
+      100
+    ],
+    "placement_source": "Measured public off/on captures; draw code centers the image in the available rectangle."
+  },
+  "captures": [
+    "torch-off",
+    "torch-on",
+    "contacts-options",
+    "contact-new",
+    "contact-phone-fields",
+    "contact-birthday",
+    "contact-ringtone",
+    "contact-group",
+    "test-contact-details",
+    "test-contact-options",
+    "test-contact-delete-dialog"
+  ],
+  "local_policies": [
+    "Phone calling and speed dial stay grey/inert by owner instruction.",
+    "The empty-store caption is unobserved; the local empty list is blank with a search underline and root menu.",
+    "Search is a local case-insensitive substring filter; exact native matching is unresolved.",
+    "New-form save uses a one-item local menu; its native popup has not been sampled.",
+    "Picture assignment, contact sharing, group management and ringtone selection are unavailable.",
+    "Only previously reviewed synthetic test contacts are used in public comparisons."
+  ],
+  "ranges": [
+    {
+      "start": "0x8842bf2a",
+      "end_exclusive": "0x8842c08a",
+      "sha256": "ba9439cb66cc458fadfc6be3030a871930df27f9cb700c8634f07060b9d9ecd1",
+      "hex": "2de9f0418cb0804609a8f5f28df405a8f5f2dbf40024079408940294adf80c40adf8104078f770fbbdf816100a39adf81610864951f82060183151f82050183151f820708348007800284ff003001ad078f773fb00944ff6ff740222014623464046fbf27cf7dde9051207a823460ff318f20123294600224046fbf21ff70123314602221be078f758fb0546062078f76efb022201462b4640460094fbf25ff70023dde9051207a80ff3fbf16a49012300224046fbf202f76849012302224046fbf2fcf6d4f41eea4ff001031a4628b163494046fbf206f73c4606e060494046491cfbf2fff65b4ce41d434604a9224603a80af539f8bdf918000022bdf914104346401abdf80c1000ebd0704010a0eb5100adf80800bdf91a00bdf91610401abdf8101000ebd0704010a0eb5100adf80a0007a81146cde9004002a80af56ffa0cb0bde8f0817047704710b530b1012802d0d4f4d6e908b1002000e00120bde8"
+    },
+    {
+      "start": "0x8842c090",
+      "end_exclusive": "0x8842c176",
+      "sha256": "549c8253ba6749e221a42dd05fb637d72c388b3b079c7d528a042959fde945e6",
+      "hex": "2de9f0413c4f4ff2240c384a012500230446f13f4ff225066145a1eb0c0024d015dc4ef2040c6145a1eb0c0035d006dc6ff46040081824d0012812d131e000f6e370b0f500500fd001280ad10ae0012813d0a0f51060f23813d0012821d005281bd000252846b9e71370384665f7b9ff0028f7d0fcf2eef0f4e72046fff70dfff0e7107808b1137001e0012010700022314620460bf3ecf5e4e70220fff7a2fff5e720460af369f7dce70f48002110b5483060f797f9012010bd10a010b5d4f486ec0120fff78eff174c204661f726f8002807d020464ff22501bde8104000220bf3c6b510bd"
+    },
+    {
+      "start": "0x887a9b20",
+      "end_exclusive": "0x887a9b68",
+      "sha256": "5545d479c9d39483c299d4fc72c0a282ca9a556c83d84dc8ca702bd86cca388e",
+      "hex": "1e0017401d0017401f0017401c0017401b0017401a0017402500174024001740260017402300174022001740210017402c0017402b0017402d0017402a0017402900174028001740"
+    }
+  ]
+}

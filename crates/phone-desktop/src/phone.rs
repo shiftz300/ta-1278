@@ -1,6 +1,8 @@
 pub mod alarm;
 mod browser;
 pub mod browser_data;
+pub mod contacts;
+pub mod conversation;
 pub mod files;
 pub mod mail;
 mod music;
@@ -26,14 +28,15 @@ pub enum Screen {
     Home,
     Menu,
     Messages,
+    Conversation,
     Drafts,
+    Inbox,
     Outbox,
     Mail(mail::MailPage),
     Compose,
     Browser,
     Music,
     Snake,
-    Dial,
     Contacts,
     Settings,
     Tools(tools::ToolPage),
@@ -90,6 +93,7 @@ pub struct Compose {
     pub body: Editor,
     pub recipient: bool,
     pub draft: Option<usize>,
+    pub time: u64,
 }
 impl Default for Compose {
     fn default() -> Self {
@@ -103,6 +107,7 @@ impl Default for Compose {
             body,
             recipient: true,
             draft: None,
+            time: phone_core::sms::timestamp(),
         }
     }
 }
@@ -118,6 +123,7 @@ pub struct Phone {
     pub mailbox: Mailbox,
     pub compose: Compose,
     pub mail_ui: mail::MailUi,
+    pub chat: conversation::ChatUi,
     pub browser: Browser,
     pub music: Music,
     pub snake: phone_core::snake::Snake,
@@ -132,7 +138,6 @@ pub struct Phone {
     last_tick: Option<u64>,
     pub music_view: MusicView,
     pub music_started: bool,
-    pub dial: Editor,
     pub status: String,
     pub pending_url: Option<String>,
     pub editor_lines: Vec<VisualRow>,
@@ -155,8 +160,6 @@ pub struct Phone {
 }
 impl Phone {
     pub fn new(mailbox: Mailbox) -> Self {
-        let mut dial = Editor::new("", 40);
-        dial.numeric = true;
         Self {
             features: Default::default(),
             files: Default::default(),
@@ -169,6 +172,7 @@ impl Phone {
             mailbox,
             compose: Compose::default(),
             mail_ui: mail::MailUi::default(),
+            chat: Default::default(),
             browser: Browser::new(phone_core::browser::Page {
                 flow: vec![],
                 url: String::new(),
@@ -189,7 +193,6 @@ impl Phone {
             last_tick: None,
             music_view: MusicView::Root,
             music_started: false,
-            dial,
             status: String::new(),
             pending_url: None,
             editor_lines: vec![VisualRow {
@@ -214,6 +217,9 @@ impl Phone {
         }
     }
     pub fn go(&mut self, s: Screen) {
+        if crate::menu::phone_disabled(s) {
+            return;
+        }
         if (s == Screen::Music && !self.features.music)
             || (s == Screen::Tools(tools::ToolPage::Files) && !self.features.files)
         {
@@ -246,6 +252,9 @@ impl Phone {
         self.overlay = None;
     }
     pub fn launch(&mut self, screen: Screen) {
+        if crate::menu::phone_disabled(screen) {
+            return;
+        }
         if screen == Screen::Music {
             self.music_return_file = false;
         }
@@ -373,7 +382,19 @@ impl Phone {
                 } else {
                     &self.compose.body
                 }),
-                Screen::Dial => Some(&self.dial),
+                Screen::Conversation
+                    if self.chat.focus.is_none()
+                        && self.chat.popup == conversation::Popup::None =>
+                {
+                    Some(&self.compose.body)
+                }
+                Screen::Contacts | Screen::Organizer(_) if self.contact_editor_active() => Some(
+                    if self.organizer.page == organizer::OrganizerPage::Contacts {
+                        &self.organizer.contact.query
+                    } else {
+                        &self.organizer.contact.input
+                    },
+                ),
                 Screen::Organizer(_) if self.alarm_name_active() => {
                     Some(&self.organizer.alarm.name)
                 }
@@ -394,7 +415,25 @@ impl Phone {
                 } else {
                     &mut self.compose.body
                 }),
-                Screen::Dial => Some(&mut self.dial),
+                Screen::Conversation
+                    if self.chat.focus.is_none()
+                        && self.chat.popup == conversation::Popup::None =>
+                {
+                    Some(&mut self.compose.body)
+                }
+                Screen::Contacts | Screen::Organizer(_)
+                    if self.organizer.page == organizer::OrganizerPage::Contacts
+                        || (self.organizer.page == organizer::OrganizerPage::ContactForm
+                            && (1..=5).contains(&self.index)) =>
+                {
+                    Some(
+                        if self.organizer.page == organizer::OrganizerPage::Contacts {
+                            &mut self.organizer.contact.query
+                        } else {
+                            &mut self.organizer.contact.input
+                        },
+                    )
+                }
                 Screen::Organizer(_)
                     if self.organizer.page == organizer::OrganizerPage::AlarmForm
                         && self.index == 2 =>
@@ -477,9 +516,8 @@ impl Phone {
         if self.snake.over && self.snake_view == snake::SnakeView::Game {
             self.snake_data.record(self.snake.kind, self.snake.score);
             self.snake_dirty = true;
-            self.snake_view = snake::SnakeView::Menu;
+            self.snake_view = snake::SnakeView::GameOver;
             self.index = 0;
-            self.notice(format!("游戏结束\n得分 {}", self.snake.score));
         }
         self.tools.stopwatch.tick(elapsed);
         self.tools.timer.tick(elapsed);
@@ -556,15 +594,25 @@ impl Phone {
             self.overlay_event(key, now);
             return;
         }
+        if key == Key::End
+            && matches!(self.screen, Screen::Conversation | Screen::Messages)
+            && self.chat.popup != conversation::Popup::None
+        {
+            self.chat.popup = conversation::Popup::None;
+            return;
+        }
         if key == Key::End {
-            if self.screen == Screen::Compose {
+            if matches!(self.screen, Screen::Compose | Screen::Conversation) {
                 self.close_compose();
             } else {
                 self.go(Screen::Home);
             }
             return;
         }
-        if self.screen == Screen::Compose && self.overlay.is_none() {
+        if self.screen == Screen::Conversation && self.chat_event(key) {
+            return;
+        }
+        if matches!(self.screen, Screen::Compose | Screen::Conversation) && self.overlay.is_none() {
             if key == Key::Star && !self.compose.recipient {
                 self.overlay = Some(Overlay::Menu {
                     kind: MenuKind::Symbols,
@@ -577,6 +625,7 @@ impl Phone {
                 return;
             }
             if key == Key::Up
+                && self.screen == Screen::Compose
                 && !self.compose.recipient
                 && self.editor_lines.first().is_some_and(|r| {
                     r.stops
@@ -589,7 +638,8 @@ impl Phone {
             }
         }
         if self.editor().is_some()
-            && !(self.alarm_name_active() && matches!(key, Key::Up | Key::Down))
+            && !((self.alarm_name_active() || self.contact_editor_active())
+                && matches!(key, Key::Up | Key::Down))
             && self.edit_key(key, now)
         {
             return;
@@ -599,11 +649,7 @@ impl Phone {
                 Key::Center => self.go(Screen::Menu),
                 Key::SoftLeft => self.shortcut(true),
                 Key::SoftRight => self.shortcut(false),
-                Key::Call => self.launch(Screen::Dial),
-                Key::Digit(d) => {
-                    self.launch(Screen::Dial);
-                    self.dial.digit(d, now);
-                }
+                Key::Call | Key::Digit(_) => {}
                 _ => {}
             },
             Screen::Menu => match key {
@@ -629,23 +675,10 @@ impl Phone {
                 Key::SoftRight => self.go(Screen::Home),
                 _ => {}
             },
-            Screen::Messages => match key {
-                Key::Up => self.index = self.index.saturating_sub(1),
-                Key::Down => self.index = (self.index + 1).min(2),
-                Key::Center | Key::SoftLeft => match self.index {
-                    0 => {
-                        self.compose = Compose::default();
-                        self.go(Screen::Compose);
-                    }
-                    1 => self.go(Screen::Drafts),
-                    _ => self.go(Screen::Outbox),
-                },
-                Key::SoftRight => self.leave_app(),
-                _ => {}
-            },
-            Screen::Drafts | Screen::Outbox => self.mail_list_key(key),
+            Screen::Messages => self.messages_key(key),
+            Screen::Drafts | Screen::Outbox | Screen::Inbox => self.mail_list_key(key),
             Screen::Mail(page) => self.mail_key(page, key),
-            Screen::Compose => match key {
+            Screen::Compose | Screen::Conversation => match key {
                 Key::Center if self.compose.recipient => self.compose.recipient = false,
                 Key::Center => self.queue_message(),
                 Key::SoftLeft => {
@@ -671,19 +704,6 @@ impl Phone {
             Screen::Browser => self.browser_key(key),
             Screen::Music => self.music_key(key),
             Screen::Snake => self.snake_key(key),
-            Screen::Dial => match key {
-                Key::Call | Key::Center | Key::SoftLeft => {
-                    self.notice("Phone service is not connected. No call was made.")
-                }
-                Key::SoftRight => {
-                    if self.dial.units.is_empty() {
-                        self.leave_app();
-                    } else {
-                        self.dial.backspace();
-                    }
-                }
-                _ => {}
-            },
             Screen::Contacts | Screen::Organizer(_) => self.organizer_key(key),
             Screen::Settings => self.settings_key(key),
             Screen::Tools(_) => self.tools_key(key),
@@ -740,6 +760,8 @@ impl Phone {
     }
 }
 
+#[cfg(test)]
+mod conversation_tests;
 #[cfg(test)]
 #[path = "phone_tests.rs"]
 mod tests;

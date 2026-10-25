@@ -14,10 +14,10 @@ cargo run --release --locked -p phone-desktop
 
 生成优化版 macOS 应用：`sh scripts/package-macos.sh`，然后打开 `target/TA1278.app`。
 
-- **短信：** 拼音、笔画、Abc/abc/ABC 多击和直接输入、光标移动、换行、字符计数、草稿和本地待发箱。
+- **短信：** 拼音、笔画、Abc/abc/ABC 多击和直接输入、光标移动、换行、字符计数、草稿、会话列表、收发气泡、底部续写、转发、确认删除和本地待发记录。
 - **浏览器：** HTTP(S) 文本网页、链接、输入框、单选/复选框、选择框及 GET 表单；书签、历史和离线页面可保存。内置演示无需联网。
 - **音乐：** 从虚拟手机存储和存储卡真实播放 MP3/WAV，支持暂停、切歌、长按快进退、音量、循环和随机播放。
-- 日历、闹钟、本地联系人、计算器、定时器、秒表和使用原机地图与素材的贪吃蛇已可操作。电话未接入服务。**不会拨号或发送短信。**
+- 日历、闹钟、本地联系人、计算器、定时器、秒表和使用原机地图与素材的贪吃蛇已可操作。电话及通话记录入口置灰并禁用。**桌面程序不会拨号或发送真实短信。**
 
 方向键导航，Enter 确认，F1/F2 为软键，Escape 也可作右软键。鼠标**左/右/中键**分别触发**左软键/右软键/确认键**，不看点击位置。Home 返回主屏或提示保存短信。
 
@@ -35,7 +35,7 @@ cargo run --release --locked -p phone-desktop -- --mount-card /你的/存储卡�
 
 `--mount-card` 直接使用指定目录，手机内的文件操作会影响该目录。只读开关只限制媒体卷写入，不影响短信和设置保存。[存储、开关与边界](docs/storage.md)。
 
-[贪吃蛇代码依据](docs/snake-recovery.md) · [闹钟代码证据](docs/alarm-recovery.md) · [短信读写流程](docs/sms-lifecycle.md) · [体积与优化检查](docs/build-size.md)
+[贪吃蛇代码依据](docs/snake-recovery.md) · [闹钟代码证据](docs/alarm-recovery.md) · [短信读写流程](docs/sms-lifecycle.md) · [本地收件测试](docs/sms-inbox.md) · [体积与优化检查](docs/build-size.md)
 
 [交付范围](docs/remaining-work.md)
 

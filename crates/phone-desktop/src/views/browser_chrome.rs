@@ -29,31 +29,28 @@ pub(super) fn menu(c: &mut Canvas, p: &Phone, kind: MenuKind, index: usize) {
         );
     }
     c.rect(0, top, 240, count as i32 * row, [0, 0, 0, 255]);
-    for (i, label) in labels.iter().enumerate().skip(start).take(count) {
-        let y = top + (i - start) as i32 * row;
-        if i == index {
-            c.rect(
-                0,
-                y,
-                if labels.len() > 6 { 234 } else { 240 },
-                row,
-                c.accent(3),
-            );
-        }
-        c.fit(
-            6,
-            y + 7,
-            label,
-            20,
-            if p.menu_enabled(kind, i) {
-                WHITE
-            } else {
-                MUTED
-            },
-            214,
-        );
-        if kind == MenuKind::Browser && i < 3 {
-            c.text(216, y + 5, "›", 26, WHITE);
+    list::draw(
+        c,
+        labels.len(),
+        index,
+        list::ListStyle {
+            top,
+            row_height: row,
+            visible: count,
+            text_y: 7,
+            row_width: if labels.len() > 6 { 234 } else { 240 },
+            text_width: 214,
+            ..list::ListStyle::STANDARD
+        },
+        |i| list::Row {
+            label: &labels[i],
+            enabled: p.menu_enabled(kind, i),
+            marker: list::Marker::None,
+        },
+    );
+    if kind == MenuKind::Browser {
+        for i in start..(start + count).min(3) {
+            c.text(216, top + (i - start) as i32 * row + 5, "›", 26, WHITE);
         }
     }
     if labels.len() > 6 {
@@ -67,7 +64,7 @@ pub(super) fn menu(c: &mut Canvas, p: &Phone, kind: MenuKind, index: usize) {
         );
     }
     c.rect(0, 282, 240, 38, [0, 0, 0, 255]);
-    super::softkeys::browser(c, false, "选择", false);
+    Softkeys::back("选择").draw(c);
 }
 pub(super) fn editor(c: &mut Canvas, p: &mut Phone, target: TextTarget, e: &Editor) {
     status(c);
@@ -94,21 +91,24 @@ pub(super) fn editor(c: &mut Canvas, p: &mut Phone, target: TextTarget, e: &Edit
     if hidden {
         let mut masked = Editor::new(&text, e.limit);
         masked.cursor = e.cursor;
-        p.editor_lines = editor_sized(c, &masked, 6, 27, 228, height, 16, 23);
+        p.editor_lines = Edit::new([6, 27, 228, height])
+            .sized(16, 23)
+            .draw(c, &masked);
     } else {
-        p.editor_lines = editor_sized(c, e, 6, 27, 228, height, 16, 23);
+        p.editor_lines = Edit::new([6, 27, 228, height]).sized(16, 23).draw(c, e);
     }
     c.rect(6, 27 + height, 228, 3, c.accent(3));
     c.text(188, 34 + height, &format!("✎{}", mode(e)), 16, c.accent(3));
-    footer(
-        c,
-        "确认",
+    Softkeys::new(
+        Button::Text("确认"),
+        Button::None,
         if e.units.is_empty() {
-            "取消"
+            Button::Text("取消")
         } else {
-            "删除"
+            Button::Delete
         },
-    );
+    )
+    .draw(c);
 }
 pub(super) fn settings(c: &mut Canvas, p: &Phone) {
     let modal = matches!(
@@ -220,10 +220,10 @@ pub(super) fn settings(c: &mut Canvas, p: &Phone) {
         }
     }
     c.rect(0, 0, 240, 24, [0, 0, 0, 255]);
-    c.text(6, 1, "设置", 14, WHITE);
+    chrome::title(c, "设置");
     status(c);
     c.rect(0, 282, 240, 38, [0, 0, 0, 255]);
-    super::softkeys::browser(c, false, "选择", false);
+    Softkeys::back("选择").draw(c);
     if modal {
         c.dim();
         // Native picker owns an opaque panel beyond its highlighted rows.

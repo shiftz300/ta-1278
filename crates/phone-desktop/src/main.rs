@@ -11,6 +11,7 @@ mod smoke;
 mod snake_art;
 mod storage;
 mod theme;
+mod ui;
 mod views;
 mod web;
 use phone_core::input::{Event, Input};
@@ -140,11 +141,17 @@ impl App {
             self.save_retry_at = Instant::now();
             self.flush();
             // Failed queue writes roll back and leave the original editor open.
-            if self.phone.screen == phone::Screen::Compose {
+            if matches!(
+                self.phone.screen,
+                phone::Screen::Compose | phone::Screen::Conversation
+            ) {
                 return;
             }
         }
-        if self.phone.screen == phone::Screen::Compose {
+        if matches!(
+            self.phone.screen,
+            phone::Screen::Compose | phone::Screen::Conversation
+        ) {
             if !self.phone.compose.body.accept_prediction()
                 || !self.phone.compose.to.accept_prediction()
             {
@@ -152,12 +159,7 @@ impl App {
                     .notice("Text limit reached. Confirm or cancel the candidate before closing.");
                 return;
             }
-            let m = self.phone.message();
-            if !m.to.is_empty() || !m.body.is_empty() {
-                let index = self.phone.mailbox.save(self.phone.compose.draft, m);
-                self.phone.compose.draft = Some(index);
-                self.phone.dirty = true;
-            }
+            self.phone.save_draft();
         }
         self.save_retry_at = Instant::now();
         self.flush();
@@ -452,7 +454,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             }
             "--help" => {
                 println!(
-                    "cargo run -p phone-desktop -- [--data-dir PATH] [--mount-card DIRECTORY | --no-card] [--read-only-storage] [--disable music,files,network] [--smoke-test OUTPUT]\nArrows: navigate; Enter: center; F1/F2: softkeys; F3: call; Home: end/home; Tab: recipient/body; F4: input mode. Mouse left/right/middle = left/right/center key."
+                    "cargo run -p phone-desktop -- [--data-dir PATH] [--mount-card DIRECTORY | --no-card] [--read-only-storage] [--disable music,files,network] [--smoke-test OUTPUT]\nArrows: navigate; Enter: center; F1/F2: softkeys; F3: disabled; Home: end/home; Tab: recipient/body; F4: input mode. Mouse left/right/middle = left/right/center key."
                 );
                 return Ok(());
             }
@@ -468,9 +470,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     phone.apply_preferences(storage::load_preferences(&data_dir)?);
     phone.browser_data = storage::load_browser(&data_dir)?;
     phone.local_data = storage::load_organizer(&data_dir)?;
-    phone.snake_data = storage::load_snake(&data_dir)?;
-    phone.snake.level = phone.snake_data.level;
-    phone.snake.kind = phone.snake_data.kind;
+    phone.apply_snake_data(storage::load_snake(&data_dir)?);
     if smoke.is_some() {
         phone.accent = 4;
     }

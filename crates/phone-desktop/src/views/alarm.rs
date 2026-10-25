@@ -18,12 +18,14 @@ pub(super) fn render(c: &mut Canvas, p: &mut Phone) {
         14,
         WHITE,
     );
-    let mut left = "";
+    let mut left = Button::None;
     let mut center = "选择";
-    let mut right = "←";
+    let mut right = Button::Back;
     match p.organizer.page {
         Alarms => {
-            (left, center) = root(c, p, p.index);
+            let actions = root(c, p, p.index);
+            left = actions.0;
+            center = actions.1;
         }
         AlarmForm => {
             let offset = ((p.index + 1) as i32 * 69 - 257).max(0);
@@ -58,8 +60,9 @@ pub(super) fn render(c: &mut Canvas, p: &mut Phone) {
                 }
                 if y + 34 >= 24 {
                     if i == 2 && selected {
-                        p.editor_lines =
-                            editor_sized(c, &p.organizer.alarm.name, 7, y + 34, 224, 26, 20, 26);
+                        p.editor_lines = Edit::new([7, y + 34, 224, 26])
+                            .sized(20, 26)
+                            .draw(c, &p.organizer.alarm.name);
                         c.text(215, y + 8, mode(&p.organizer.alarm.name), 14, MUTED);
                     } else {
                         if i == 0 && selected {
@@ -113,72 +116,56 @@ pub(super) fn render(c: &mut Canvas, p: &mut Phone) {
             }
             c.rect(235, 25, 4, 256, [35, 40, 37, 255]);
             c.rect(235, 25 + offset * 256 / 345, 4, 190, MUTED);
-            left = "≡";
+            left = Button::Menu;
             if matches!(p.index, 0 | 2) {
                 center = "保存";
             }
             if p.index == 2 && !p.organizer.alarm.name.units.is_empty() {
-                right = "⌫";
+                right = Button::Delete;
             }
         }
         AlarmDays => {
-            let start = p.index.saturating_sub(5);
-            for i in start..(start + 6).min(7) {
-                let y = 24 + (i - start) as i32 * 42;
-                if i == p.index {
-                    c.rect(0, y, 240, 42, c.accent(3));
-                }
-                let selected = p.organizer.alarm.days & tables().weekday_bits[i] != 0;
-                if selected {
-                    c.rect(6, y + 12, 18, 18, c.accent(6));
-                    for d in 0..4 {
-                        c.rect(9 + d, y + 20 + d, 2, 2, WHITE);
-                    }
-                    for d in 0..7 {
-                        c.rect(12 + d, y + 23 - d, 2, 2, WHITE);
-                    }
-                } else {
-                    c.rect(6, y + 12, 18, 18, WHITE);
-                    c.rect(8, y + 14, 14, 14, BLACK);
-                }
-                c.text(36, y + 10, &tables().weekday_labels[i], 20, WHITE);
-            }
+            list::draw(c, 7, p.index, list::ListStyle::STANDARD, |i| list::Row {
+                label: &tables().weekday_labels[i],
+                enabled: true,
+                marker: list::Marker::Check(p.organizer.alarm.days & tables().weekday_bits[i] != 0),
+            });
             if p.organizer.alarm.days & tables().weekday_bits[p.index] != 0 {
                 center = "取消选择";
             }
         }
         AlarmSnooze => {
-            super::tools::native_list(c, &tables().snooze_labels, p.index);
             let selected = alarm::snooze_index(&p.organizer.draft[4]);
-            for i in 0..5 {
-                let y = 45 + i as i32 * 42;
-                let color = c.accent(if i == p.index { 6 } else { 3 });
-                c.ring(225, y, 7, color);
-                if i == selected {
-                    c.rect(222, y - 3, 6, 6, color);
-                }
-            }
+            list::draw(
+                c,
+                5,
+                p.index,
+                list::ListStyle {
+                    marker_shades: Some((6, 3)),
+                    ..list::ListStyle::STANDARD
+                },
+                |i| list::Row {
+                    label: &tables().snooze_labels[i],
+                    enabled: true,
+                    marker: list::Marker::Radio(i == selected),
+                },
+            );
         }
         AlarmMenu => {
             root(c, p, p.organizer.selected + 1);
             c.dim();
-            popup(c, &["编辑", "删除", "全部删除"], p.index);
+            list::popup(c, 3, p.index, |i| {
+                list::Row::text(["编辑", "删除", "全部删除"][i])
+            });
         }
-        AlarmFormMenu => popup(c, &["保存"], 0),
+        AlarmFormMenu => list::popup(c, 1, 0, |_| list::Row::text("保存")),
         DeleteAllAlarms => {
             c.text(24, 220, "删除全部闹钟？", 20, WHITE);
             center = "确认";
         }
         _ => {}
     }
-    c.rect(0, 282, 240, 38, BLACK);
-    super::softkeys::icons(c, left == "≡", false);
-    if right == "⌫" {
-        c.rect(208, 284, 32, 36, BLACK);
-        c.text(211, 290, "⌫", 22, WHITE);
-    }
-    let width = c.width(center, 20);
-    c.text((240 - width) / 2, 290, center, 20, WHITE);
+    Softkeys::new(left, Button::Text(center), right).draw(c);
 }
 
 pub(super) fn alert(c: &mut Canvas, p: &Phone) {
@@ -186,16 +173,20 @@ pub(super) fn alert(c: &mut Canvas, p: &Phone) {
         c.caret = None;
         c.background();
         status(c);
-        c.text(6, 1, "闹钟", 14, WHITE);
+        chrome::title(c, "闹钟");
         let w = c.width(&a.time, 40);
         c.text((240 - w) / 2, 100, &a.time, 40, WHITE);
         c.fit(12, 164, &a.name, 24, WHITE, 216);
-        footer(c, "贪睡", "停止");
-        c.text(100, 296, "停止", 20, WHITE);
+        Softkeys::new(
+            Button::Text("贪睡"),
+            Button::Text("停止"),
+            Button::Text("停止"),
+        )
+        .draw(c);
     }
 }
 
-fn root(c: &mut Canvas, p: &Phone, index: usize) -> (&'static str, &'static str) {
+fn root(c: &mut Canvas, p: &Phone, index: usize) -> (Button<'static>, &'static str) {
     let first = index.saturating_sub(3);
     if first == 0 {
         c.rect(1, 25, 238, 34, c.accent(if index == 0 { 3 } else { 6 }));
@@ -235,20 +226,8 @@ fn root(c: &mut Canvas, p: &Phone, index: usize) -> (&'static str, &'static str)
         .checked_sub(1)
         .and_then(|i| p.local_data.alarms.get(i))
     {
-        return ("≡", if a.enabled { "关闭" } else { "打开" });
+        return (Button::Menu, if a.enabled { "关闭" } else { "打开" });
     }
 
-    ("", "选择")
-}
-
-fn popup(c: &mut Canvas, labels: &[&str], index: usize) {
-    let top = 276 - labels.len() as i32 * 38;
-    c.rect(0, top, 240, labels.len() as i32 * 38, BLACK);
-    for (i, label) in labels.iter().enumerate() {
-        let y = top + i as i32 * 38;
-        if i == index {
-            c.rect(0, y, 240, 38, c.accent(3));
-        }
-        c.text(6, y + 7, label, 20, WHITE);
-    }
+    (Button::None, "选择")
 }

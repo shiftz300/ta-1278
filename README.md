@@ -14,10 +14,10 @@ cargo run --release --locked -p phone-desktop
 
 For an optimized local macOS app: `sh scripts/package-macos.sh`, then open `target/TA1278.app`.
 
-- **Messages:** Chinese pinyin/stroke, Abc/abc/ABC multi-tap and direct typing, cursor movement, line breaks, character counts, drafts and a local outbox with read, forward and delete.
+- **Messages:** Chinese pinyin/stroke, Abc/abc/ABC multi-tap and direct typing, cursor movement, line breaks, character counts, drafts, conversations with incoming/outgoing bubbles, inline replies, forwarding, confirmed deletion and an unsent queue.
 - **Browser:** HTTP(S) text pages, links, fields, radios/checkboxes, selects and GET forms; saved bookmarks/history/offline pages. The demo works offline.
 - **Music:** real MP3/WAV playback from virtual phone storage and memory card; pause, track changes, long-press seek, volume, repeat and shuffle.
-- Calendar, alarms, local contacts, calculator, timer, stopwatch and Snake with recovered maps/artwork are available. Calls have no backend. **No calls or SMS are sent.**
+- Calendar, alarms, local contacts, calculator, timer, stopwatch and Snake with recovered maps/artwork are available. Phone/call-history entries are grey and disabled. **The desktop app makes no calls and sends no real SMS.**
 
 Arrow keys navigate. Enter confirms. F1/F2 are the softkeys; Escape is also F2. Mouse **left/right/middle** map to **left softkey/right softkey/confirm**, anywhere in the window. Home returns home or asks to save a message.
 
@@ -35,7 +35,7 @@ cargo run --release --locked -p phone-desktop -- --mount-card /path/to/card
 
 `--mount-card` uses that directory directly: file operations affect its contents. Read-only storage still allows app preferences and messages to save. [Storage, flags and limits](docs/storage.md).
 
-[Snake code evidence](docs/snake-recovery.md) · [Alarm code evidence](docs/alarm-recovery.md) · [SMS lifecycle](docs/sms-lifecycle.md) · [Build size and checks](docs/build-size.md)
+[Snake code evidence](docs/snake-recovery.md) · [Alarm code evidence](docs/alarm-recovery.md) · [SMS lifecycle](docs/sms-lifecycle.md) · [SMS conversations](docs/sms-conversations.md) · [Build size and checks](docs/build-size.md)
 
 [Delivery scope](docs/remaining-work.md)
 

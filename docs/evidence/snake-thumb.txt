@@ -669,6 +669,30 @@ Disassembly of section .text:
 Disassembly of section .text:
 
 88000000 <.text>:
+88690a36: b5fe         	push	{r1, r2, r3, r4, r5, r6, r7, lr}
+88690a38: 4c94         	ldr	r4, [pc, #0x250]        @ 0x88690c8c <.text+0x690c8c>
+88690a3a: 4605         	mov	r5, r0
+88690a3c: 3c34         	subs	r4, #0x34
+88690a3e: 7820         	ldrb	r0, [r4]
+88690a40: b118         	cbz	r0, 0x88690a4a <.text+0x690a4a> @ imm = #0x6
+88690a42: f516 f971    	bl	0x883a6d28 <.text+0x3a6d28> @ imm = #-0x2e9d1e
+88690a46: 2000         	movs	r0, #0x0
+88690a48: 7020         	strb	r0, [r4]
+88690a4a: 6325         	str	r5, [r4, #0x30]
+88690a4c: 69e0         	ldr	r0, [r4, #0x1c]
+88690a4e: 2801         	cmp	r0, #0x1
+88690a50: d00b         	beq	0x88690a6a <.text+0x690a6a> @ imm = #0x16
+88690a52: 2614         	movs	r6, #0x14
+88690a54: f240 1527    	movw	r5, #0x127
+88690a58: 2804         	cmp	r0, #0x4
+88690a5a: f64f 0700    	movw	r7, #0xf800
+88690a5e: d012         	beq	0x88690a86 <.text+0x690a86> @ imm = #0x24
+88690a60: 2802         	cmp	r0, #0x2
+88690a62: d025         	beq	0x88690ab0 <.text+0x690ab0> @ imm = #0x4a
+88690a64: 2803         	cmp	r0, #0x3
+88690a66: d023         	beq	0x88690ab0 <.text+0x690ab0> @ imm = #0x46
+88690a68: e001         	b	0x88690a6e <.text+0x690a6e> @ imm = #0x2
+88690a6a: f7ff ffc1    	bl	0x886909f0 <.text+0x6909f0> @ imm = #-0x7e
 88690a6e: 4887         	ldr	r0, [pc, #0x21c]        @ 0x88690c8c <.text+0x690c8c>
 88690a70: a289         	adr	r2, #548 <.text+0x690afd>
 88690a72: 69a1         	ldr	r1, [r4, #0x18]
@@ -677,6 +701,42 @@ Disassembly of section .text:
 88690a7c: 2100         	movs	r1, #0x0
 88690a7e: f516 f85c    	bl	0x883a6b3a <.text+0x3a6b3a> @ imm = #-0x2e9f48
 88690a82: 7020         	strb	r0, [r4]
+88690a84: bdfe         	pop	{r1, r2, r3, r4, r5, r6, r7, pc}
+88690a86: f000 f8eb    	bl	0x88690c60 <.text+0x690c60> @ imm = #0x1d6
+88690a8a: f7ff ff7d    	bl	0x88690988 <.text+0x690988> @ imm = #-0x106
+88690a8e: f7ff ff37    	bl	0x88690900 <.text+0x690900> @ imm = #-0x192
+88690a92: f7ff fef4    	bl	0x8869087e <.text+0x69087e> @ imm = #-0x218
+88690a96: f7ff fed3    	bl	0x88690840 <.text+0x690840> @ imm = #-0x25a
+88690a9a: f7ff fb64    	bl	0x88690166 <.text+0x690166> @ imm = #-0x938
+88690a9e: 2332         	movs	r3, #0x32
+88690aa0: 9500         	str	r5, [sp]
+88690aa2: 22b4         	movs	r2, #0xb4
+88690aa4: 2146         	movs	r1, #0x46
+88690aa6: 201e         	movs	r0, #0x1e
+88690aa8: f7ff fda7    	bl	0x886905fa <.text+0x6905fa> @ imm = #-0x4b2
+88690aac: 4889         	ldr	r0, [pc, #0x224]        @ 0x88690cd4 <.text+0x690cd4>
+88690aae: e013         	b	0x88690ad8 <.text+0x690ad8> @ imm = #0x26
+88690ab0: f000 f8d6    	bl	0x88690c60 <.text+0x690c60> @ imm = #0x1ac
+88690ab4: f7ff ff68    	bl	0x88690988 <.text+0x690988> @ imm = #-0x130
+88690ab8: f7ff ff22    	bl	0x88690900 <.text+0x690900> @ imm = #-0x1bc
+88690abc: f7ff fedf    	bl	0x8869087e <.text+0x69087e> @ imm = #-0x242
+88690ac0: f7ff febe    	bl	0x88690840 <.text+0x690840> @ imm = #-0x284
+88690ac4: f7ff fb4f    	bl	0x88690166 <.text+0x690166> @ imm = #-0x962
+88690ac8: 2332         	movs	r3, #0x32
+88690aca: 9500         	str	r5, [sp]
+88690acc: 22b4         	movs	r2, #0xb4
+88690ace: 2146         	movs	r1, #0x46
+88690ad0: 201e         	movs	r0, #0x1e
+88690ad2: f7ff fd92    	bl	0x886905fa <.text+0x6905fa> @ imm = #-0x4dc
+88690ad6: 4880         	ldr	r0, [pc, #0x200]        @ 0x88690cd8 <.text+0x690cd8>
+88690ad8: 2332         	movs	r3, #0x32
+88690ada: e9cd 0700    	strd	r0, r7, [sp]
+88690ade: 22b4         	movs	r2, #0xb4
+88690ae0: 9602         	str	r6, [sp, #0x8]
+88690ae2: 2146         	movs	r1, #0x46
+88690ae4: 201e         	movs	r0, #0x1e
+88690ae6: f7ff fd4b    	bl	0x88690580 <.text+0x690580> @ imm = #-0x56a
+88690aea: bdfe         	pop	{r1, r2, r3, r4, r5, r6, r7, pc}
 
 
 <user.bin ELF wrapper>:	file format elf32-littlearm

@@ -24,7 +24,7 @@ pub(super) fn render(c: &mut Canvas, p: &mut Phone) {
             BrowserView::Offline => "离线页面",
             _ => "互联网",
         };
-        c.text(6, 1, name, 14, WHITE);
+        chrome::title(c, name);
         let labels = p.browser_items();
         if labels.is_empty() {
             c.text(8, 120, "这里没有可显示的内容。", 17, WHITE);
@@ -49,7 +49,7 @@ pub(super) fn render(c: &mut Canvas, p: &mut Phone) {
                 c.fit(6, y + 8, label, 20, WHITE, 228);
             }
         }
-        super::softkeys::browser(c, true, "选择", false);
+        Softkeys::menu("选择").draw(c);
         return;
     }
     let font = [12, 14][p.browser_data.settings.font_size.min(1)];
@@ -63,7 +63,7 @@ pub(super) fn render(c: &mut Canvas, p: &mut Phone) {
     // Clip content by repainting the fixed chrome, including glyphs above/below the viewport.
     c.rect(0, 0, 240, 64, [0, 0, 0, 255]);
     c.rect(0, 24, 240, 40, PAPER);
-    c.text(6, 1, "互联网", 14, WHITE);
+    chrome::title(c, "互联网");
     status(c);
     let address = if p.browser.loading && !p.requested_url.is_empty() {
         &p.requested_url
@@ -76,7 +76,16 @@ pub(super) fn render(c: &mut Canvas, p: &mut Phone) {
     c.rect(25, 31, 211, 24, PAPER);
     c.fit(27, 34, address, 14, INK, 205);
     c.rect(0, 280, 240, 40, [0, 0, 0, 255]);
-    super::softkeys::browser(c, true, "选择", p.browser.loading);
+    Softkeys::new(
+        Button::Menu,
+        Button::Text("选择"),
+        if p.browser.loading {
+            Button::Close
+        } else {
+            Button::Back
+        },
+    )
+    .draw(c);
     if top > 216 {
         c.rect(236, 64, 3, 216, [190, 196, 190, 255]);
         c.rect(

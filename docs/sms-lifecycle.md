@@ -47,3 +47,6 @@ Compiled conversation candidates for the next trace: `MMISMS_CHATBOX_CHILD_WIN_I
 The final forward fixture exposed an existing renderer bug: a long inactive body could grow to y=24 and cover the recipient input. The reviewed handset image `sms-recipient-focus.png` has the inactive body limited to y=91..254. The renderer now enforces that 163-pixel bound, paints six visible body rows without an inactive caret, and preserves recipient cursor metrics. A pixel-region test verifies that long text cannot change the recipient header. The new comparison uses different synthetic bodies in the same focus state; it verifies a layout constraint, not the native forward command.
 
 The empty recipient caret also starts at x=6 before its placeholder, matching the same capture. The header test checks this position.
+
+
+The later [local received-message implementation](sms-inbox.md) adds an optional persisted inbox and reply actions. Native conversation geometry remains unknown; that work does not change the native evidence claims above.

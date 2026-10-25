@@ -7,6 +7,8 @@ pub struct Date {
     pub day: u32,
 }
 impl Date {
+    /// Editable digits in the fixed YYYY-MM-DD display format.
+    pub const DIGIT_OFFSETS: [usize; 8] = [0, 1, 2, 3, 5, 6, 8, 9];
     pub fn new(year: i32, month: u32, day: u32) -> Option<Self> {
         let d = Self { year, month, day };
         if (1900..=9999).contains(&year)

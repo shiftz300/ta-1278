@@ -1,11 +1,35 @@
+pub mod conversation;
+
+/// Host event timestamp in milliseconds. Zero in older stores means unknown.
+pub fn timestamp() -> u64 {
+    std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .unwrap_or_default()
+        .as_millis() as u64
+}
 use serde::{Deserialize, Serialize};
 #[derive(Clone, Debug, Default, Serialize, Deserialize, PartialEq)]
 pub struct Message {
     pub to: String,
     pub body: String,
+    #[serde(default)]
+    pub time: u64,
+    #[serde(default)]
+    pub sent: bool,
+}
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
+pub struct ReceivedMessage {
+    pub from: String,
+    pub body: String,
+    #[serde(default)]
+    pub read: bool,
+    #[serde(default)]
+    pub time: u64,
 }
 #[derive(Default, Serialize, Deserialize)]
 pub struct Mailbox {
+    #[serde(default)]
+    pub inbox: Vec<ReceivedMessage>,
     pub drafts: Vec<Message>,
     pub outbox: Vec<Message>,
 }
@@ -17,6 +41,25 @@ pub struct QueueChange {
     removed_draft: Option<(usize, Message)>,
 }
 impl Mailbox {
+    /// Local service input. This method does not poll a modem or invent delivery.
+    pub fn receive(&mut self, from: String, body: String) -> Result<usize, &'static str> {
+        if from.trim().is_empty() || from.encode_utf16().count() > 64 {
+            return Err("Invalid sender");
+        }
+        if body.is_empty() || body.encode_utf16().count() > 4096 {
+            return Err("Received message exceeds local limits or is empty");
+        }
+        self.inbox.push(ReceivedMessage {
+            from,
+            body,
+            read: false,
+            time: timestamp(),
+        });
+        Ok(self.inbox.len() - 1)
+    }
+    pub fn unread(&self) -> usize {
+        self.inbox.iter().filter(|m| !m.read).count()
+    }
     pub fn save(&mut self, index: Option<usize>, message: Message) -> usize {
         if let Some(i) = index.filter(|i| *i < self.drafts.len()) {
             self.drafts[i] = message;
@@ -33,7 +76,7 @@ impl Mailbox {
     pub fn stage_queue(
         &mut self,
         index: Option<usize>,
-        message: Message,
+        mut message: Message,
     ) -> Result<QueueChange, &'static str> {
         if message.to.is_empty()
             || !message
@@ -48,6 +91,7 @@ impl Mailbox {
         if message.body.is_empty() {
             return Err("Message is empty");
         }
+        message.sent = false;
         let change = QueueChange {
             index: self.outbox.len(),
             queued: message.clone(),
@@ -180,6 +224,7 @@ mod tests {
             Message {
                 to: "123".into(),
                 body: "a".into(),
+                ..Default::default()
             },
         );
         m.save(
@@ -187,6 +232,7 @@ mod tests {
             Message {
                 to: "123".into(),
                 body: "b".into(),
+                ..Default::default()
             },
         );
         assert_eq!(m.drafts.len(), 1);
@@ -209,6 +255,7 @@ mod transaction_tests {
                 Message {
                     to: "123".into(),
                     body: body.into(),
+                    ..Default::default()
                 },
             );
         }
@@ -219,6 +266,7 @@ mod transaction_tests {
                 Message {
                     to: "123".into(),
                     body: "edited middle".into(),
+                    ..Default::default()
                 },
             )
             .unwrap();
@@ -229,6 +277,7 @@ mod transaction_tests {
         m.outbox.push(Message {
             to: "456".into(),
             body: "newer".into(),
+            ..Default::default()
         });
         assert!(m.rollback_queue(change).is_err());
         assert_eq!(m.outbox.len(), 2);

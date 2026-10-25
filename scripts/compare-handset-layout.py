@@ -30,6 +30,16 @@ PAIRS = [
     ('alarm-monday-checked', 'alarm-days-selected'),
     ('alarm-snooze-picker', 'alarm-snooze-picker'),
     ('alarm-snooze-preview', 'alarm-snooze-preview'),
+    ('torch-off', 'torch-off'),
+    ('torch-on', 'torch-on'),
+    ('contact-new', 'contact-new'),
+    ('contact-phone-fields', 'contact-phone-fields'),
+    ('contact-birthday', 'contact-birthday'),
+    ('contact-ringtone', 'contact-ringtone'),
+    ('contact-group', 'contact-group'),
+    ('test-contact-details', 'contact-details'),
+    ('test-contact-options', 'contact-options'),
+    ('test-contact-delete-dialog', 'contact-delete'),
 ]
 
 def main():

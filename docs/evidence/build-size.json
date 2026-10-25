@@ -14,13 +14,13 @@
     },
     {
       "path": "target/release/phone-desktop",
-      "bytes": 37594144,
-      "sha256": "f097aa5a05805048fc351fc36cfe1fd5d47ed7f9bbf0615707bbd1f5f77ce951"
+      "bytes": 37693920,
+      "sha256": "0f35e13e16d89e9c346fc2fbc709add4c11fe60170cdb5b2ebb0a39604fa37c8"
     },
     {
       "path": "target/TA1278.app/Contents/MacOS/phone-desktop",
-      "bytes": 37375680,
-      "sha256": "1248e9baba6e1419a7a5d0acd08bec659f3be8d9a8170cab80edd9d53d6d76ee"
+      "bytes": 37474880,
+      "sha256": "fca87ad42fd7a68fd82617ec690017cc329a95d1a2d5926a50c5ac8cc593bcbb"
     }
   ],
   "resource_bytes": {
@@ -293,7 +293,7 @@
       "changed_bbox": null
     }
   ],
-  "limits": "Optimization-only comparison predates Snake/alarm/SMS/VFS/audio/Home changes. Current release hashes include these follow-ups. No CPU or memory benchmark claimed.",
+  "limits": "Optimization-only comparison predates later features. Current executable hashes include corrected phonebook and torch controls. No CPU or memory benchmark claimed.",
   "previous_snake_build_executables": [
     {
       "path": "target/release/phone-desktop",
@@ -306,7 +306,7 @@
       "sha256": "bcdb8ba2a760fdfe8fc498995f9b88da2b9e2adf5125614dff0edd91ebf4f46b"
     }
   ],
-  "signed_bundle_bytes": 37475252,
+  "signed_bundle_bytes": 37574452,
   "baseline_note": "The first debug executable entry is the recorded pre-optimization baseline; its path may now contain a newer build.",
   "previous_alarm_build_executables": [
     {
@@ -342,6 +342,66 @@
       "path": "target/TA1278.app/Contents/MacOS/phone-desktop",
       "bytes": 37375664,
       "sha256": "d72026ffeb6236c4f5025ea3b50dc7c8b389308a2096c39c893f1f07e91e66eb"
+    }
+  ],
+  "previous_local_mail_build_executables": [
+    {
+      "path": "target/release/phone-desktop",
+      "bytes": 37594144,
+      "sha256": "f097aa5a05805048fc351fc36cfe1fd5d47ed7f9bbf0615707bbd1f5f77ce951"
+    },
+    {
+      "path": "target/TA1278.app/Contents/MacOS/phone-desktop",
+      "bytes": 37375680,
+      "sha256": "1248e9baba6e1419a7a5d0acd08bec659f3be8d9a8170cab80edd9d53d6d76ee"
+    }
+  ],
+  "previous_inbox_build_executables": [
+    {
+      "path": "target/release/phone-desktop",
+      "bytes": 37594256,
+      "sha256": "61a6c6915e5f94dd1408031a9d6d319c202420b7f81809d06bc60e4856b6e206"
+    },
+    {
+      "path": "target/TA1278.app/Contents/MacOS/phone-desktop",
+      "bytes": 37375792,
+      "sha256": "0004c81a9c15e96c6c18f6dd5bfb412584ce4eef0041bc5d8a573efd15676237"
+    }
+  ],
+  "previous_conversation_snake_executables": [
+    {
+      "path": "target/release/phone-desktop",
+      "bytes": 37644256,
+      "sha256": "5a639b824dd962388da4dd48678d43a738c81b4f5d5c4882954bf06a1f5112ed"
+    },
+    {
+      "path": "target/TA1278.app/Contents/MacOS/phone-desktop",
+      "bytes": 37425504,
+      "sha256": "c5467a8f1134c8df2f62f85f98ab7306f338386444a9527d8b1ab5e502c5f8c0"
+    }
+  ],
+  "previous_composer_layout_executables": [
+    {
+      "path": "target/release/phone-desktop",
+      "bytes": 37644256,
+      "sha256": "82ef5c51b6235e602a899f0e367874b43df20039da517fb0cc47e4a3bd5aef14"
+    },
+    {
+      "path": "target/TA1278.app/Contents/MacOS/phone-desktop",
+      "bytes": 37425504,
+      "sha256": "56d1d04487a298b8587dc212c6428a32c9f3ca95bf7156fe996165717c435b03"
+    }
+  ],
+  "previous_shared_ui_executables": [
+    {
+      "path": "target/release/phone-desktop",
+      "bytes": 37660768,
+      "sha256": "31fb33aef6759d3c2f86b39ec37391014bf78d8f129332a5aa087ce63024b08f"
+    },
+    {
+      "path": "target/TA1278.app/Contents/MacOS/phone-desktop",
+      "bytes": 37441920,
+      "sha256": "db2b28cb7e831383f65cb20cd47114ebfa3782cd302a20453fd0d3e80589f064"
     }
   ]
 }

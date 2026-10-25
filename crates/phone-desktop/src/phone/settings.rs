@@ -136,6 +136,7 @@ impl Phone {
                     self.settings_open(Theme, 0);
                 }
                 (Personalization, 4) => self.settings_open(Keyboard, 0),
+                (Keyboard, 0) => {}
                 (Keyboard, 1) => self.settings_open(Shortcuts, 0),
                 (Shortcuts, index) => {
                     let left = index == 1;
@@ -147,6 +148,9 @@ impl Phone {
                     self.settings_open(Shortcut { left }, assigned);
                 }
                 (Shortcut { left }, index) => {
+                    if index == 2 {
+                        return;
+                    }
                     if left {
                         self.preferences.left_shortcut = index;
                     } else {

@@ -5,6 +5,8 @@ pub enum SnakeView {
     #[default]
     Menu,
     Game,
+    GameOver,
+    Saved,
     Types,
     Level,
     Scores,
@@ -48,9 +50,16 @@ impl SnakeData {
 }
 pub const GAME_TYPES: [&str; 6] = ["经典", "盒子", "隧道", "磨坊", "铁轨", "公寓"];
 impl Phone {
+    /// Install validated host settings in both the model and the picker.
+    pub fn apply_snake_data(&mut self, data: SnakeData) {
+        self.snake.level = data.level;
+        self.snake.kind = data.kind;
+        self.snake_level_preview = data.level;
+        self.snake_data = data;
+    }
     pub fn snake_items(&self) -> Vec<String> {
         match self.snake_view {
-            SnakeView::Menu => {
+            SnakeView::Menu | SnakeView::Saved => {
                 let mut v = vec![];
                 if self.snake_can_resume() {
                     v.push("继续".into());
@@ -72,6 +81,18 @@ impl Phone {
     }
     pub(super) fn snake_key(&mut self, key: Key) {
         match self.snake_view {
+            SnakeView::GameOver => {
+                if key == Key::SoftRight {
+                    self.snake_menu(0);
+                }
+                return;
+            }
+            SnakeView::Saved => {
+                if key == Key::Center {
+                    self.snake_menu(0);
+                }
+                return;
+            }
             SnakeView::Game => {
                 if key == Key::SoftRight {
                     self.snake.running = false;
@@ -94,6 +115,7 @@ impl Phone {
                         self.snake_dirty = true;
                         self.snake.discard();
                         self.snake_menu(0);
+                        self.snake_view = SnakeView::Saved;
                     }
                     Key::SoftRight => self.snake_menu(1),
                     _ => {}
@@ -123,8 +145,8 @@ impl Phone {
                     self.snake.kind = self.index;
                     self.snake_data.kind = self.index;
                     self.snake_dirty = true;
-                    self.snake.discard();
-                    self.snake_menu(0);
+                    // The native picker retains the paused game and this row.
+                    self.snake_menu(2);
                 }
                 SnakeView::Sound => {
                     self.snake_data.sound = self.index == 1;
@@ -139,16 +161,18 @@ impl Phone {
                     } else {
                         match self.index - usize::from(resume) {
                             0 => {
+                                self.snake.level = self.snake_data.level;
+                                self.snake.kind = self.snake_data.kind;
                                 self.snake.start();
                                 self.snake_view = SnakeView::Game;
                             }
                             1 => {
-                                self.snake_level_preview = self.snake.level;
+                                self.snake_level_preview = self.snake_data.level;
                                 self.snake_view = SnakeView::Level;
                             }
                             2 => {
                                 self.snake_view = SnakeView::Types;
-                                self.index = self.snake.kind;
+                                self.index = self.snake_data.kind;
                             }
                             3 => self.snake_view = SnakeView::Scores,
                             4 => {

@@ -15,51 +15,46 @@ pub(super) fn render(c: &mut Canvas, p: &Phone) {
             WHITE,
         );
         let labels = p.music_items();
-        if labels.is_empty() {
-            c.text(12, 120, "这里没有可显示的内容。", 17, WHITE);
-        }
         let root = p.music_view == MusicView::Root;
-        let start = if root { 0 } else { p.index.saturating_sub(5) };
-        for (i, label) in labels.iter().enumerate().skip(start).take(6) {
-            let y = if root && i > 0 {
-                108 + (i - 1) as i32 * 42
-            } else {
-                24 + (i - start) as i32 * 42
-            };
-            let height = if root && i == 0 { 84 } else { 42 };
-            if i == p.index {
-                c.rect(0, y, 240, height, c.accent(3));
-            }
-            let text_y = if root && i == 0 { 54 } else { y + 10 };
-            c.fit(
-                6,
-                text_y,
-                label,
-                20,
-                WHITE,
-                if root && i == 0 { 196 } else { 228 },
-            );
-            if root && i == 0 {
-                // Triangle measured in the native empty-library Home capture.
-                for row in 0_i32..22 {
-                    let width = 19 * (11 - (row - 10).abs()) / 11;
-                    c.rect(214, 55 + row, width.max(1), 1, WHITE);
+        if root {
+            // Native library Home has an 84px first row, then standard rows.
+            for (i, label) in labels.iter().take(6).enumerate() {
+                let y = if i == 0 {
+                    24
+                } else {
+                    108 + (i - 1) as i32 * 42
+                };
+                if i == p.index {
+                    c.rect(0, y, 240, if i == 0 { 84 } else { 42 }, c.accent(3));
+                }
+                c.fit(
+                    6,
+                    if i == 0 { 54 } else { y + 10 },
+                    label,
+                    20,
+                    WHITE,
+                    if i == 0 { 196 } else { 228 },
+                );
+                if i == 0 {
+                    for row in 0_i32..22 {
+                        let width = 19 * (11 - (row - 10).abs()) / 11;
+                        c.rect(214, 55 + row, width.max(1), 1, WHITE);
+                    }
                 }
             }
+        } else {
+            list::plain(c, &labels, p.index);
         }
-        footer(c, "≡", "←");
-        softkeys::center(
-            c,
-            if root && p.index == 0 {
-                "播放"
-            } else {
-                "选择"
-            },
-        );
+        Softkeys::menu(if root && p.index == 0 {
+            "播放"
+        } else {
+            "选择"
+        })
+        .draw(c);
         return;
     }
 
-    c.text(6, 1, "音乐", 14, WHITE);
+    chrome::title(c, "音乐");
     c.rect(0, 24, 240, 216, [66, 66, 66, 255]);
     c.ring(116, 143, 25, [28, 32, 28, 255]);
     c.rect(139, 59, 4, 85, [28, 32, 28, 255]);
@@ -96,15 +91,5 @@ pub(super) fn render(c: &mut Canvas, p: &Phone) {
         12,
         c.accent(1),
     );
-    footer(c, "≡", "←");
-    c.text(76, 290, "◀", 20, WHITE);
-    c.rect(77, 296, 2, 14, WHITE);
-    c.text(160, 290, "▶", 20, WHITE);
-    c.rect(178, 296, 2, 14, WHITE);
-    if p.music.playing {
-        c.rect(113, 296, 5, 14, WHITE);
-        c.rect(122, 296, 5, 14, WHITE);
-    } else {
-        c.text(112, 290, "▶", 20, WHITE);
-    }
+    softkeys::transport(c, p.music.playing);
 }

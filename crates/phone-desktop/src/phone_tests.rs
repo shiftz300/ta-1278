@@ -478,9 +478,13 @@ fn organizer_cancel_save_choose_recipient_and_persist() {
         },
         0,
     );
+    assert_eq!(p.organizer.page, O::ContactsMenu);
+    press(&mut p, Key::Down);
+    press(&mut p, Key::Center);
     assert_eq!(p.organizer.page, O::ContactForm);
-    p.organizer.draft[1] = "测试".into();
+    p.text("测试");
     p.organizer.draft[3] = "12345".into();
+    press(&mut p, Key::Up); // Back is available on the picture row; text fields show Delete.
     p.handle(
         Event {
             key: Key::SoftRight,
@@ -496,7 +500,9 @@ fn organizer_cancel_save_choose_recipient_and_persist() {
         },
         2,
     );
-    p.organizer.draft[1] = "测试".into();
+    press(&mut p, Key::Down);
+    press(&mut p, Key::Center);
+    p.text("测试");
     p.organizer.draft[3] = "12345".into();
     p.handle(
         Event {
@@ -505,6 +511,8 @@ fn organizer_cancel_save_choose_recipient_and_persist() {
         },
         3,
     );
+    assert_eq!(p.organizer.page, O::ContactFormMenu);
+    press(&mut p, Key::Center);
     assert_eq!(p.local_data.contacts.len(), 1);
     assert!(p.local_dirty);
     p.go(Screen::Compose);
@@ -608,7 +616,16 @@ fn all_enabled_menu_entries_have_routes_and_cancel_without_backend_actions() {
             },
             0,
         );
-        assert_eq!(p.screen, expected, "{}", entry.label);
+        assert_eq!(
+            p.screen,
+            if crate::menu::phone_disabled(expected) {
+                Screen::Menu
+            } else {
+                expected
+            },
+            "{}",
+            entry.label
+        );
         p.handle(
             Event {
                 key: Key::End,
@@ -671,7 +688,10 @@ fn snake_native_menu_preview_cancel_pause_and_settings_commit() {
         p.snake_items(),
         ["新游戏", "关卡", "游戏类型", "最高得分", "声音"]
     );
-    p.snake.level = 8;
+    p.apply_snake_data(snake::SnakeData {
+        level: 8,
+        ..Default::default()
+    });
     p.index = 1;
     press(&mut p, Key::Center);
     press(&mut p, Key::Left);
@@ -689,6 +709,9 @@ fn snake_native_menu_preview_cancel_pause_and_settings_commit() {
     press(&mut p, Key::Center);
     assert_eq!(p.snake_data.level, 1);
     assert!(p.snake_dirty);
+    assert_eq!(p.snake_view, SnakeView::Saved);
+    press(&mut p, Key::Center);
+    assert_eq!(p.snake_view, SnakeView::Menu);
     press(&mut p, Key::Center);
     assert!(p.snake.running);
     press(&mut p, Key::SoftRight);
@@ -704,9 +727,10 @@ fn snake_native_menu_preview_cancel_pause_and_settings_commit() {
     p.index = 4;
     press(&mut p, Key::Center);
     assert_eq!(p.snake.kind, 4);
-    assert!(p.snake.body.is_empty());
-    assert_eq!(p.snake_items()[0], "新游戏");
-    p.index = 4;
+    assert_eq!(p.snake.body, body);
+    assert_eq!(p.snake_items()[0], "继续");
+    assert_eq!(p.index, 3);
+    p.index = 5;
     press(&mut p, Key::Center);
     assert_eq!(p.snake_items(), ["关", "开"]);
     press(&mut p, Key::Up);
@@ -734,6 +758,30 @@ fn snake_scores_persist_per_map_and_invalid_settings_preserve_file() {
     let loaded = crate::storage::load_snake(&dir).unwrap();
     assert_eq!(loaded.scores, data.scores);
     assert_eq!((loaded.level, loaded.kind, loaded.sound), (8, 2, false));
+    let mut p = phone();
+    p.apply_snake_data(loaded);
+    assert_eq!(p.snake_level_preview, 8);
+    p.launch(Screen::Snake);
+    p.index = 1;
+    press(&mut p, Key::Center);
+    assert_eq!(p.snake_level_preview, 8);
+    press(&mut p, Key::Left);
+    press(&mut p, Key::SoftRight);
+    assert_eq!(p.snake_data.level, 8);
+    press(&mut p, Key::Center);
+    press(&mut p, Key::Left);
+    press(&mut p, Key::Center);
+    crate::storage::save_json(&dir, "snake.json", &p.snake_data, 4096).unwrap();
+    let mut reloaded = phone();
+    reloaded.apply_snake_data(crate::storage::load_snake(&dir).unwrap());
+    reloaded.launch(Screen::Snake);
+    reloaded.index = 1;
+    press(&mut reloaded, Key::Center);
+    assert_eq!(reloaded.snake_level_preview, 7);
+    press(&mut reloaded, Key::SoftRight);
+    reloaded.index = 0;
+    press(&mut reloaded, Key::Center);
+    assert_eq!(reloaded.snake.level, 7);
     data.level = 0;
     crate::storage::save_json(&dir, "snake.json", &data, 4096).unwrap();
     let raw = std::fs::read(dir.join("snake.json")).unwrap();
@@ -966,6 +1014,7 @@ fn sms_queue_disk_failure_rolls_back_and_success_waits_for_persistence() {
     let original = Message {
         to: "12345".into(),
         body: "old draft".into(),
+        ..Default::default()
     };
     p.mailbox.save(None, original.clone());
     crate::storage::save(&dir, &p.mailbox).unwrap();
@@ -1015,6 +1064,7 @@ fn sms_reader_retry_forward_edit_copy_and_delete_cancel() {
     let message = Message {
         to: "12345".into(),
         body: "第一行\n第二行\n测试正文".into(),
+        ..Default::default()
     };
     p.mailbox.outbox.push(message.clone());
     p.go(Screen::Outbox);
@@ -1067,6 +1117,7 @@ fn sms_reader_scroll_clamps_and_returns_to_same_folder_row() {
         p.mailbox.outbox.push(Message {
             to: format!("1234{i}"),
             body: (0..18).map(|i| format!("测试第{i}行\n")).collect(),
+            ..Default::default()
         });
     }
     p.go(Screen::Outbox);
@@ -1084,7 +1135,7 @@ fn sms_reader_scroll_clamps_and_returns_to_same_folder_row() {
     press(&mut p, Key::SoftRight);
     assert_eq!((p.screen, p.index), (Screen::Outbox, 2));
     press(&mut p, Key::SoftRight);
-    assert_eq!((p.screen, p.index), (Screen::Messages, 2));
+    assert_eq!((p.screen, p.index), (Screen::Messages, 3));
 }
 
 #[test]
@@ -1107,6 +1158,7 @@ fn reopening_an_older_long_draft_does_not_silently_drop_the_body() {
     let message = Message {
         to: "1".repeat(41),
         body: "中".repeat(5000),
+        ..Default::default()
     };
     p.mailbox.drafts.push(message.clone());
     p.go(Screen::Drafts);
@@ -1145,4 +1197,295 @@ fn long_sms_recipient_focus_keeps_header_visible_and_only_recipient_caret() {
     p.compose.to.clear();
     crate::views::render(&mut c, &mut p);
     assert_eq!(c.caret.map(|v| v.0), Some(6));
+}
+
+#[test]
+fn inbox_read_reply_forward_and_delete_are_local_and_persistent() {
+    let mut p = phone();
+    p.receive_message("12345".into(), "本地收件测试\n第二行".into())
+        .unwrap();
+    assert!(p.dirty);
+    assert_eq!(p.mailbox.unread(), 1);
+    p.go(Screen::Inbox);
+    press(&mut p, Key::Center);
+    assert_eq!(p.screen, Screen::Mail(mail::MailPage::Read));
+    assert_eq!(p.mailbox.unread(), 0);
+    press(&mut p, Key::SoftLeft);
+    assert_eq!(
+        p.mail_actions()
+            .iter()
+            .map(|a| a.label())
+            .collect::<Vec<_>>(),
+        ["回复", "转发", "删除"]
+    );
+    press(&mut p, Key::Center);
+    assert_eq!(p.screen, Screen::Compose);
+    assert_eq!(p.compose.to.text(), "12345");
+    assert!(p.compose.body.text().is_empty());
+    assert!(!p.compose.recipient);
+    p.compose.body.insert("本地回复");
+    p.queue_message();
+    assert!(p.mail_ui.pending.is_some());
+    assert!(
+        p.receive_message("67890".into(), "等待保存".into())
+            .is_err()
+    );
+    assert_eq!(p.mailbox.inbox.len(), 1);
+    p.storage_saved();
+    assert_eq!(p.mailbox.outbox.len(), 1);
+    assert_eq!(p.mailbox.outbox[0].to, "12345");
+    p.go(Screen::Inbox);
+    press(&mut p, Key::Center);
+    press(&mut p, Key::SoftLeft);
+    press(&mut p, Key::Down);
+    press(&mut p, Key::Center);
+    assert_eq!(p.compose.body.text(), "本地收件测试\n第二行");
+    assert!(p.compose.to.text().is_empty());
+    assert!(p.compose.recipient);
+    let dir = std::env::temp_dir().join(format!("ta1278-inbox-{}", std::process::id()));
+    crate::storage::save(&dir, &p.mailbox).unwrap();
+    let stored = crate::storage::load(&dir).unwrap();
+    assert_eq!(stored.inbox, p.mailbox.inbox);
+    assert_eq!(stored.unread(), 0);
+    p.go(Screen::Inbox);
+    press(&mut p, Key::Delete);
+    press(&mut p, Key::SoftRight);
+    assert_eq!(p.mailbox.inbox.len(), 1);
+    press(&mut p, Key::Delete);
+    press(&mut p, Key::Center);
+    assert!(p.mailbox.inbox.is_empty());
+    assert_eq!(p.mailbox.outbox.len(), 1);
+    crate::storage::save(&dir, &p.mailbox).unwrap();
+    assert!(crate::storage::load(&dir).unwrap().inbox.is_empty());
+    std::fs::remove_dir_all(dir).unwrap();
+}
+
+#[test]
+fn inbox_compatibility_limits_and_background_receive_preserve_editor() {
+    let old: Mailbox =
+        serde_json::from_str(r#"{"drafts":[],"outbox":[{"to":"12345","body":"old"}]}"#).unwrap();
+    assert!(old.inbox.is_empty());
+    assert_eq!(old.outbox[0].body, "old");
+    let mut p = phone();
+    p.go(Screen::Compose);
+    p.compose.to.insert("67890");
+    p.compose.body.insert("未保存正文");
+    p.receive_message("12345".into(), "新信息".into()).unwrap();
+    assert_eq!(p.screen, Screen::Compose);
+    assert_eq!(p.compose.body.text(), "未保存正文");
+    assert_eq!(p.mailbox.unread(), 1);
+    assert!(p.receive_message("".into(), "body".into()).is_err());
+    assert!(p.receive_message("12345".into(), "x".repeat(4097)).is_err());
+    assert_eq!(p.mailbox.inbox.len(), 1);
+    p.go(Screen::Inbox);
+    press(&mut p, Key::Delete);
+    assert_eq!(p.mailbox.unread(), 1); // Delete confirmation does not mark read.
+    press(&mut p, Key::SoftRight);
+    press(&mut p, Key::SoftRight);
+    assert_eq!((p.screen, p.index), (Screen::Messages, 1));
+}
+
+#[test]
+fn snake_death_keeps_board_records_once_and_only_back_returns() {
+    use snake::SnakeView;
+    let mut p = phone();
+    p.launch(Screen::Snake);
+    press(&mut p, Key::Center);
+    p.snake.kind = 3; // Mill: the row below the initial body is a wall.
+    p.snake.key(Key::Down);
+    p.snake.score = 15;
+    p.tick(0, 0.0);
+    for time in (250..=2000).step_by(250) {
+        p.tick(time, 0.25);
+    }
+    assert_eq!(p.snake_view, SnakeView::GameOver);
+    assert!(p.overlay.is_none());
+    assert_eq!(p.snake_data.scores[3], [15, 0, 0, 0, 0]);
+    let body = p.snake.body.clone();
+    press(&mut p, Key::Center);
+    p.tick(3000, 1.0);
+    assert_eq!(p.snake_view, SnakeView::GameOver);
+    assert_eq!(p.snake.body, body);
+    assert_eq!(p.snake_data.scores[3], [15, 0, 0, 0, 0]);
+    // An unread SMS must not paint its status icon over the full-screen board.
+    let mut canvas = crate::canvas::Canvas::new().unwrap();
+    crate::views::render(&mut canvas, &mut p);
+    let expected = canvas.pixels.clone();
+    p.receive_message("12345".into(), "test".into()).unwrap();
+    crate::views::render(&mut canvas, &mut p);
+    assert_eq!(canvas.pixels, expected);
+    let pixel = (71 * 240 + 31) * 4;
+    assert_eq!(
+        &canvas.pixels[pixel..pixel + 4],
+        &crate::theme::rgb565(0x0127)
+    );
+    press(&mut p, Key::SoftRight);
+    assert_eq!(p.snake_view, SnakeView::Menu);
+    assert_eq!(p.snake_items()[0], "新游戏");
+    assert_eq!(p.index, 0);
+}
+
+#[test]
+fn contact_native_routes_preserve_edits_and_disable_calling() {
+    use organizer::OrganizerPage as P;
+    let mut p = phone();
+    p.launch(Screen::Contacts);
+    press(&mut p, Key::Center);
+    assert_eq!(p.organizer.page, P::Contacts);
+    press(&mut p, Key::SoftLeft);
+    assert_eq!(p.organizer.page, P::ContactsMenu);
+    press(&mut p, Key::Center); // Unsupported group action is inert.
+    assert_eq!(p.organizer.page, P::ContactsMenu);
+    press(&mut p, Key::Down);
+    press(&mut p, Key::Center);
+    assert_eq!((p.organizer.page, p.index), (P::ContactForm, 1));
+    p.text("测试");
+    press(&mut p, Key::Down);
+    p.text("人");
+    press(&mut p, Key::Down);
+    assert_eq!(p.organizer.draft[1], "测试");
+    assert_eq!(p.organizer.draft[2], "人");
+    p.text("12345");
+    press(&mut p, Key::SoftLeft);
+    assert_eq!(p.organizer.page, P::ContactFormMenu);
+    press(&mut p, Key::SoftRight);
+    assert_eq!(
+        (p.index, p.organizer.contact.input.text()),
+        (3, "12345".into())
+    );
+    press(&mut p, Key::SoftLeft);
+    press(&mut p, Key::Center);
+    assert_eq!(p.local_data.contacts.len(), 1);
+    assert_eq!(p.local_data.contacts[0][3], "12345");
+    p.text("测试"); // Search input is separate from the saved record.
+    assert_eq!(p.contact_ids(), [0]);
+    press(&mut p, Key::Center);
+    assert_eq!(p.organizer.page, P::ContactDetail);
+    press(&mut p, Key::Center);
+    press(&mut p, Key::Call);
+    assert_eq!(p.organizer.page, P::ContactDetail);
+    assert_eq!(p.screen, Screen::Contacts);
+    press(&mut p, Key::SoftLeft);
+    press(&mut p, Key::Center);
+    assert_eq!(p.organizer.page, P::ContactForm);
+    p.text("discarded");
+    let before = p.organizer.contact.input.text();
+    press(&mut p, Key::SoftRight);
+    assert_eq!(p.organizer.page, P::ContactForm);
+    assert!(p.organizer.contact.input.text().len() < before.len());
+    press(&mut p, Key::Up);
+    press(&mut p, Key::SoftRight);
+    assert_eq!(p.local_data.contacts[0][1], "测试");
+    press(&mut p, Key::Down);
+    press(&mut p, Key::Center);
+    assert_eq!(p.screen, Screen::Compose);
+    assert_eq!(p.compose.to.text(), "12345");
+    p.launch(Screen::Contacts);
+    press(&mut p, Key::SoftLeft);
+    press(&mut p, Key::Down);
+    press(&mut p, Key::Down);
+    press(&mut p, Key::Center);
+    assert_eq!(p.organizer.page, P::DeleteContact);
+    press(&mut p, Key::SoftRight);
+    assert_eq!(p.local_data.contacts.len(), 1);
+    press(&mut p, Key::SoftLeft);
+    press(&mut p, Key::Down);
+    press(&mut p, Key::Center);
+    press(&mut p, Key::Center);
+    assert!(p.local_data.contacts.is_empty());
+}
+
+#[test]
+fn flashlight_uses_original_power_art_and_colored_shared_bar() {
+    let mut p = phone();
+    p.launch(Screen::Tools(tools::ToolPage::Flashlight));
+    let mut c = crate::canvas::Canvas::new().unwrap();
+    crate::views::render(&mut c, &mut p);
+    let off = c.pixels.clone();
+    let at = |x: usize, y: usize| (y * 240 + x) * 4;
+    assert_eq!(&off[at(0, 300)..at(0, 300) + 4], &c.accent(3));
+    assert_eq!(&off[at(90, 165)..at(90, 165) + 4], &[0, 0, 0, 255]);
+    assert_ne!(&off[at(118, 101)..at(118, 101) + 3], &[0, 0, 0]);
+    press(&mut p, Key::Center);
+    assert!(p.tools.torch);
+    crate::views::render(&mut c, &mut p);
+    assert_ne!(
+        &off[100 * 240 * 4..155 * 240 * 4],
+        &c.pixels[100 * 240 * 4..155 * 240 * 4]
+    );
+    press(&mut p, Key::Center);
+    crate::views::render(&mut c, &mut p);
+    assert_eq!(c.pixels, off);
+}
+
+#[test]
+fn filtered_contact_delete_cannot_target_a_hidden_record() {
+    use organizer::OrganizerPage as P;
+    let mut p = phone();
+    for name in ["Alice", "Bob"] {
+        let mut row = vec![String::new(); 9];
+        row[1] = name.into();
+        row[3] = "12345".into();
+        p.local_data.contacts.push(row);
+    }
+    p.launch(Screen::Contacts);
+    p.text("missing");
+    press(&mut p, Key::SoftLeft);
+    press(&mut p, Key::Down);
+    press(&mut p, Key::Down);
+    press(&mut p, Key::Center);
+    assert_eq!(p.organizer.page, P::ContactsMenu);
+    assert_eq!(p.local_data.contacts.len(), 2);
+    press(&mut p, Key::SoftRight);
+    p.organizer.contact.query.clear();
+    p.text("bob");
+    assert_eq!(p.contact_ids(), [1]);
+    press(&mut p, Key::SoftLeft);
+    press(&mut p, Key::Down);
+    press(&mut p, Key::Down);
+    press(&mut p, Key::Center);
+    assert_eq!(p.organizer.selected, 1);
+    press(&mut p, Key::Center);
+    assert_eq!(p.local_data.contacts.len(), 1);
+    assert_eq!(p.local_data.contacts[0][1], "Alice");
+}
+
+#[test]
+fn contact_fields_use_measured_input_date_and_choice_geometry() {
+    use organizer::OrganizerPage as P;
+    let mut p = phone();
+    p.launch(Screen::Contacts);
+    p.organizer_form(P::ContactForm, None);
+    let mut c = crate::canvas::Canvas::new().unwrap();
+    for (field, x, y) in [(5, 10, 265), (6, 10, 269), (7, 0, 212), (8, 0, 212)] {
+        p.contact_load_field(field);
+        crate::views::render(&mut c, &mut p);
+        let offset = (y * 240 + x) * 4;
+        assert_eq!(
+            &c.pixels[offset..offset + 4],
+            &if field == 6 {
+                crate::canvas::MUTED
+            } else {
+                c.accent(3)
+            },
+            "field {field}"
+        );
+    }
+}
+
+#[test]
+fn birthday_uses_date_digits_without_text_mode_or_invalid_values() {
+    let mut p = phone();
+    p.launch(Screen::Contacts);
+    p.organizer_form(organizer::OrganizerPage::ContactForm, None);
+    p.contact_load_field(6);
+    assert!(p.editor().is_none());
+    press(&mut p, Key::Digit(2));
+    assert_eq!(p.organizer.draft[6], "2900-01-01");
+    p.organizer.contact.date_digit = 4;
+    press(&mut p, Key::Digit(9));
+    assert_eq!(p.organizer.draft[6], "2900-01-01");
+    press(&mut p, Key::SoftRight);
+    assert_eq!(p.organizer.page, organizer::OrganizerPage::Contacts);
+    assert!(p.local_data.contacts.is_empty());
 }

@@ -77,6 +77,39 @@ impl App {
             64 => "sms-forward",
             65 => "sms-outbox",
             66 => "sms-delete-confirm",
+            67 => "sms-inbox",
+            68 => "sms-incoming-read",
+            69 => "sms-incoming-options",
+            70 => "sms-reply",
+            71 => "sms-conversations",
+            72 => "sms-thread",
+            73 => "sms-thread-bubble-menu",
+            74 => "sms-thread-number-menu",
+            75 => "phone-disabled",
+            76 => "sms-thread-long",
+            77 => "snake-game-over",
+            78 => "snake-level-persisted",
+            79 => "snake-level-saved",
+            80 => "snake-type-return",
+            81 => "sms-native-one",
+            82 => "sms-native-newline",
+            83 => "sms-native-wrap",
+            84 => "sms-native-scrolled",
+            85 => "torch-off",
+            86 => "torch-on",
+            87 => "contacts-empty",
+            88 => "contacts-root-options",
+            89 => "contact-new",
+            90 => "contact-phone-fields",
+            91 => "contact-birthday",
+            92 => "contact-ringtone",
+            93 => "contact-group",
+            94 => "contact-details",
+            95 => "contact-options",
+            96 => "contact-delete",
+            97 => "contacts-list",
+            98 => "contacts-search",
+            99 => "contact-form-filled",
             _ => {
                 eprintln!(
                     "SMOKE PASS: {} presented frames",
@@ -552,6 +585,207 @@ impl App {
                 key: Key::Delete,
                 phase: Phase::Down,
             }),
+            66 => {
+                self.phone.receive_message("12345".into(), "这是一条本地测试信息。\n没有连接短信服务。\n回复、转发和删除均在本机完成。".into()).unwrap();
+                self.phone.go(Screen::Inbox);
+            }
+            67 => self.dispatch(Event {
+                key: Key::Center,
+                phase: Phase::Down,
+            }),
+            68 => self.dispatch(Event {
+                key: Key::SoftLeft,
+                phase: Phase::Down,
+            }),
+            69 => self.dispatch(Event {
+                key: Key::Center,
+                phase: Phase::Down,
+            }),
+            70 => {
+                self.phone.mailbox = Default::default();
+                self.phone.mailbox.outbox.push(phone_core::sms::Message {
+                    to: "12345".into(),
+                    body: "明天见。".into(),
+                    time: 1_792_944_000_000,
+                    sent: true,
+                });
+                self.phone
+                    .receive_message("12345".into(), "好的，联系 67890。".into())
+                    .unwrap();
+                self.phone.mailbox.inbox[0].time = 1_792_944_060_000;
+                self.phone.chat = Default::default();
+                self.phone.go(Screen::Messages);
+            }
+            71 => self.phone.open_thread("12345".into()),
+            72 => {
+                self.phone.chat.focus = Some(1);
+                self.phone.chat.popup = phone::conversation::Popup::Bubble;
+            }
+            73 => {
+                self.phone.chat.number_focus = true;
+                self.phone.chat.popup = phone::conversation::Popup::Number;
+            }
+            74 => {
+                self.phone.chat.popup = phone::conversation::Popup::None;
+                self.phone.go(Screen::Menu);
+                self.phone.index = 7;
+            }
+            75 => {
+                self.phone
+                    .receive_message("12345".into(), "长信息滚动测试。\n".repeat(30))
+                    .unwrap();
+                self.phone.open_thread("12345".into());
+                self.phone.chat.focus = Some(2);
+                self.phone.chat.reveal = true;
+            }
+            76 => {
+                self.phone.launch(Screen::Snake);
+                self.phone.snake.kind = 3;
+                self.phone.snake.start();
+                self.phone.snake.food = (4, 14);
+                self.phone.snake.key(Key::Down);
+                self.phone.snake.tick(1000);
+                self.phone.snake.running = false;
+                self.phone.snake_view = phone::snake::SnakeView::GameOver;
+            }
+            77 => {
+                self.phone.apply_snake_data(phone::snake::SnakeData {
+                    level: 8,
+                    ..Default::default()
+                });
+                self.phone.snake_view = phone::snake::SnakeView::Menu;
+                self.phone.index = 1;
+                self.dispatch(Event {
+                    key: Key::Center,
+                    phase: Phase::Down,
+                });
+            }
+            78 => self.dispatch(Event {
+                key: Key::Center,
+                phase: Phase::Down,
+            }),
+            79 => {
+                self.dispatch(Event {
+                    key: Key::Center,
+                    phase: Phase::Down,
+                });
+                self.dispatch(Event {
+                    key: Key::Center,
+                    phase: Phase::Down,
+                });
+                self.dispatch(Event {
+                    key: Key::SoftRight,
+                    phase: Phase::Down,
+                });
+                self.phone.index = 3;
+                self.dispatch(Event {
+                    key: Key::Center,
+                    phase: Phase::Down,
+                });
+                self.phone.index = 3;
+                self.dispatch(Event {
+                    key: Key::Center,
+                    phase: Phase::Down,
+                });
+            }
+            80 => {
+                self.phone.compose = Compose::default();
+                self.phone.compose.recipient = false;
+                self.phone.compose.body.prediction.set_language(None);
+                self.phone.compose.body.titlecase = true;
+                self.phone.compose.body.insert("你");
+                self.phone.go(Screen::Compose);
+            }
+            81 => {
+                self.phone.compose.body.insert("\n");
+            }
+            82 => {
+                self.phone.compose.body.clear();
+                self.phone.compose.body.titlecase = false;
+                self.phone.compose.body.numeric = true;
+                self.phone
+                    .compose
+                    .body
+                    .insert(&format!("呢{}123456789", "1234567890".repeat(6)));
+            }
+            83 => {
+                self.phone.compose.body.clear();
+                self.phone
+                    .compose
+                    .body
+                    .insert(&format!("{}1", "1234567890".repeat(16)));
+            }
+            84 => {
+                self.phone
+                    .launch(Screen::Tools(phone::tools::ToolPage::Flashlight));
+                self.phone.tools.torch = false;
+            }
+            85 => self.dispatch(Event {
+                key: Key::Center,
+                phase: Phase::Down,
+            }),
+            86 => {
+                self.phone.tools.torch = false;
+                self.phone.local_data.contacts.clear();
+                self.phone.organizer.contact = Default::default();
+                self.phone.launch(Screen::Contacts);
+            }
+            87 => self.dispatch(Event {
+                key: Key::SoftLeft,
+                phase: Phase::Down,
+            }),
+            88 => {
+                self.phone.index = 1;
+                self.dispatch(Event {
+                    key: Key::Center,
+                    phase: Phase::Down,
+                });
+            }
+            89 => self.phone.contact_load_field(5),
+            90 => self.phone.contact_load_field(6),
+            91 => self.phone.contact_load_field(7),
+            92 => self.phone.contact_load_field(8),
+            93 => {
+                // Verified test-mode fixture from the reviewed handset capture.
+                self.phone.local_data.contacts.push(
+                    [
+                        "",
+                        "a0000",
+                        "",
+                        "1230000",
+                        "",
+                        "",
+                        "1900-01-01",
+                        "预设",
+                        "无",
+                    ]
+                    .map(str::to_owned)
+                    .to_vec(),
+                );
+                self.phone.organizer.selected = 0;
+                self.phone.organizer.page = phone::organizer::OrganizerPage::ContactDetail;
+                self.phone.index = 0;
+            }
+            94 => self.dispatch(Event {
+                key: Key::SoftLeft,
+                phase: Phase::Down,
+            }),
+            95 => {
+                self.phone.index = 1;
+                self.dispatch(Event {
+                    key: Key::Center,
+                    phase: Phase::Down,
+                });
+            }
+            96 => self.phone.launch(Screen::Contacts),
+            97 => {
+                self.phone.organizer.contact.query.insert("no-match");
+            }
+            98 => {
+                self.phone
+                    .organizer_form(phone::organizer::OrganizerPage::ContactForm, None);
+                self.phone.text("测试联系人");
+            }
             _ => {}
         }
         self.smoke_stage += 1;

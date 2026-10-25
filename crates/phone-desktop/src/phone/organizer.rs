@@ -32,6 +32,8 @@ pub enum OrganizerPage {
     AlarmFormMenu,
     DeleteAllAlarms,
     Contacts,
+    ContactsMenu,
+    ContactFormMenu,
     ContactForm,
     ContactDetail,
     ContactMenu,
@@ -42,6 +44,7 @@ pub enum OrganizerPage {
 }
 pub struct Organizer {
     pub page: OrganizerPage,
+    pub contact: super::contacts::ContactUi,
     pub alarm: super::alarm::AlarmUi,
     pub date: Date,
     pub draft: Vec<String>,
@@ -54,6 +57,7 @@ impl Default for Organizer {
     fn default() -> Self {
         Self {
             page: OrganizerPage::Calendar,
+            contact: Default::default(),
             alarm: super::alarm::AlarmUi::default(),
             date: Date::default(),
             draft: vec![],
@@ -68,12 +72,12 @@ pub const CONTACT_FIELDS: [&str; 9] = [
     "图片",
     "姓",
     "名",
-    "手机号码",
-    "住宅号码",
-    "办公号码",
+    "移动电话",
+    "住宅",
+    "单位",
     "生日",
     "铃声",
-    "群组",
+    "组",
 ];
 pub const EVENT_FIELDS: [&str; 7] = ["标题", "时间", "提醒", "位置", "铃声", "重复", "备注"];
 impl Phone {
@@ -81,7 +85,7 @@ impl Phone {
         use OrganizerPage::*;
         match self.organizer.page {
             Calendar => "日历",
-            CalendarMenu | ContactMenu => "选项",
+            CalendarMenu | ContactMenu | ContactsMenu | ContactFormMenu => "选项",
             Events => "日程",
             EventForm => "添加事件",
             Alarms => "闹钟",
@@ -91,7 +95,7 @@ impl Phone {
             AlarmMenu | AlarmFormMenu => "选项",
             DeleteAllAlarms => "确认",
             Contacts => "通讯录",
-            ContactForm => "添加联系人",
+            ContactForm => "新联系人",
             ContactDetail => "详情",
             DeleteContact | DeleteEvent | DeleteAlarm | DeletePast => "确认",
         }
@@ -108,7 +112,9 @@ impl Phone {
                 .iter()
                 .map(|c| contact_name(c))
                 .collect(),
-            ContactMenu => ["发送信息", "编辑", "删除"].map(str::to_owned).to_vec(),
+            ContactMenu => super::contacts::DETAIL_MENU.map(str::to_owned).to_vec(),
+            ContactsMenu => super::contacts::ROOT_MENU.map(str::to_owned).to_vec(),
+            ContactFormMenu => vec!["保存".into()],
             Events => self
                 .local_data
                 .events
@@ -173,6 +179,14 @@ impl Phone {
                 }),
             _ => vec![],
         };
+        if page == ContactForm {
+            if editing.is_none() {
+                self.organizer.draft[6] = "1900-01-01".into();
+                self.organizer.draft[7] = "预设".into();
+                self.organizer.draft[8] = "无".into();
+            }
+            self.contact_load_field(1);
+        }
         if page == AlarmForm {
             self.organizer.alarm.name = Editor::new(&self.organizer.draft[2], 20);
             self.organizer.alarm.digit = 0;
@@ -183,18 +197,6 @@ impl Phone {
         let fields = self.organizer.draft.clone();
         let editing = self.organizer.editing;
         match self.organizer.page {
-            ContactForm => {
-                if fields.iter().skip(1).take(5).all(|s| s.is_empty()) {
-                    self.notice("请输入姓名或号码。");
-                    return;
-                }
-                if let Some(i) = editing {
-                    self.local_data.contacts[i] = fields;
-                } else {
-                    self.local_data.contacts.push(fields);
-                }
-                self.organizer.page = Contacts;
-            }
             EventForm => {
                 if fields[0].trim().is_empty() || !valid_time(&fields[1]) {
                     self.notice("请输入标题和有效时间（HH:MM）。");
@@ -219,6 +221,9 @@ impl Phone {
     pub(super) fn organizer_key(&mut self, key: Key) {
         use OrganizerPage::*;
         let page = self.organizer.page;
+        if self.contacts_key(key) {
+            return;
+        }
         if self.alarm_key(key) {
             return;
         }
@@ -251,8 +256,6 @@ impl Phone {
                 self.organizer.page = match page {
                     CalendarMenu | Events | EventForm | DeletePast => Calendar,
                     DeleteAlarm => Alarms,
-                    ContactForm | ContactDetail => Contacts,
-                    ContactMenu | DeleteContact => ContactDetail,
                     DeleteEvent => Events,
                     _ => {
                         if self.organizer.pick_recipient {
@@ -266,32 +269,18 @@ impl Phone {
                 };
                 self.index = 0;
             }
-            Key::SoftLeft if matches!(page, EventForm | ContactForm) => self.organizer_save(),
-            Key::SoftLeft if page == Contacts => self.organizer_form(ContactForm, None),
+            Key::SoftLeft if page == EventForm => self.organizer_save(),
             Key::SoftLeft if page == Events => self.organizer_form(EventForm, None),
-            Key::SoftLeft if page == ContactDetail => {
-                self.organizer.page = ContactMenu;
-                self.index = 0;
-            }
-            Key::Delete if n > 0 && matches!(page, Contacts | Alarms | Events) => {
+            Key::Delete if n > 0 && matches!(page, Alarms | Events) => {
                 self.organizer.selected = self.index;
                 self.organizer.page = match page {
-                    Contacts => DeleteContact,
                     Alarms => DeleteAlarm,
                     _ => DeleteEvent,
                 };
             }
-            Key::Center
-                if matches!(page, DeleteContact | DeleteAlarm | DeleteEvent | DeletePast) =>
-            {
+            Key::Center if matches!(page, DeleteAlarm | DeleteEvent | DeletePast) => {
                 let i = self.organizer.selected;
                 self.organizer.page = match page {
-                    DeleteContact => {
-                        if i < self.local_data.contacts.len() {
-                            self.local_data.contacts.remove(i);
-                        }
-                        Contacts
-                    }
                     DeleteAlarm => {
                         if i < self.local_data.alarms.len() {
                             self.local_data.alarms.remove(i);
@@ -323,31 +312,11 @@ impl Phone {
                     ),
                     _ => self.organizer.page = DeletePast,
                 },
-                EventForm | ContactForm => self.open_local_text(
+                EventForm => self.open_local_text(
                     TextTarget::Organizer(self.index),
                     self.organizer.draft[self.index].clone(),
-                    page == ContactForm && (3..=5).contains(&self.index),
+                    false,
                 ),
-                Contacts => {
-                    self.organizer.selected = self.index;
-                    if self.organizer.pick_recipient {
-                        self.choose_recipient();
-                    } else {
-                        self.organizer.page = ContactDetail;
-                        self.index = 0;
-                    }
-                }
-                ContactMenu => match self.index {
-                    0 => {
-                        self.compose = Compose::default();
-                        self.compose.to = Editor::new(&self.contact_number(), 40);
-                        self.compose.to.numeric = true;
-                        self.compose.recipient = false;
-                        self.go(Screen::Compose);
-                    }
-                    1 => self.organizer_form(ContactForm, Some(self.organizer.selected)),
-                    _ => self.organizer.page = DeleteContact,
-                },
                 Events => {
                     let id = self.day_events()[self.index];
                     self.organizer_form(EventForm, Some(id));
@@ -366,26 +335,6 @@ impl Phone {
             .map(|(i, _)| i)
             .collect()
     }
-    fn contact_number(&self) -> String {
-        self.local_data
-            .contacts
-            .get(self.organizer.selected)
-            .and_then(|c| c.iter().skip(3).take(3).find(|n| !n.is_empty()))
-            .cloned()
-            .unwrap_or_default()
-    }
-    fn choose_recipient(&mut self) {
-        let n = self.contact_number();
-        if n.is_empty() {
-            self.notice("此联系人没有号码。");
-            return;
-        }
-        self.compose.to = Editor::new(&n, 40);
-        self.compose.to.numeric = true;
-        self.compose.recipient = false;
-        self.organizer.pick_recipient = false;
-        self.go(Screen::Compose);
-    }
     pub(super) fn organizer_text(&mut self, field: usize, value: String) {
         if field == 100 {
             match Date::parse(&value) {
@@ -396,14 +345,25 @@ impl Phone {
                 None => self.notice("日期格式：YYYY-MM-DD"),
             }
         } else if let Some(v) = self.organizer.draft.get_mut(field) {
-            *v = value;
+            *v = value.clone();
+            if self.organizer.page == OrganizerPage::ContactForm
+                && self.organizer.contact.field == field
+            {
+                self.organizer.contact.input = Editor::new(&value, 40);
+                self.organizer.contact.input.numeric = (3..=6).contains(&field);
+            }
         }
     }
 }
 pub fn contact_name(c: &[String]) -> String {
     let name = c.iter().skip(1).take(2).cloned().collect::<String>();
     if name.is_empty() {
-        c.get(3).cloned().unwrap_or_else(|| "无姓名".into())
+        c.iter()
+            .skip(3)
+            .take(3)
+            .find(|s| !s.is_empty())
+            .cloned()
+            .unwrap_or_else(|| "无姓名".into())
     } else {
         name
     }

@@ -14,7 +14,8 @@ Run `python3 scripts/recover-snake.py` to check the two source hashes, selected 
 | Food | `0x886902ce..0x886902fa`; score addition at `0x88690794` | x=0–11, y=2–15; grows one cell and adds 1 point. Random sequence is a local replacement |
 | Bonus | `0x886907a2..0x886907e8`, `0x8869087e..0x886908fe` | Positive score divisible by six can spawn a bonus; collection adds countdown ×3 without growth. Countdown uses native tick arithmetic |
 | Speed | `0x88690a6e..0x88690a82`, table at initialized RAM `0x81c3bedc` | Levels 1–8 pass **225, 200, 175, 150, 125, 100, 90, 88** to the timer. Host treats these as milliseconds; physical scheduler timing has not been measured |
-| Level | `0x88099e04..0x88099f90` | Eight bars; ends clamp. Back cancels; Center saves and discards the paused game |
+| Level | `0x88099e04..0x88099f90` | Eight bars; ends clamp. Back cancels; Center saves and discards the paused game, then shows the sampled completion sheet |
+| Game over | `0x88690a36..0x88690aec`: states 2/3; resource `0x401c002c` | Board retained; box (30,70,180,50), fill `0x0127`, red `0xf800`, font 20. Center inert; Back returns to New game |
 | Scores | `0x8869062c..0x886906a8` | Five descending entries per exposed map, saved in host `snake.json` |
 | Digits | `0x886907f6..0x8869087a` | Ones at (105,3), further digits extend left in 16-pixel steps |
 | Art | Resource group `0x401f`, draw calls listed in the manifest | Original background, body/head strips, food, wall tile and numeric sprites |
@@ -29,6 +30,14 @@ Public references: [level preview](handset-samples/20261025/snake-level-seven.pn
 
 [Game comparison](comparisons/snake-native-matched-comparison.png) uses a deliberately positioned test fruit and one movement step to match the sampled frame. This checks artwork and geometry; it does not prove matching random sequences. Native references are lossy JPEG captures, while replica PNGs are CPU framebuffers presented through wgpu.
 
+## Display follow-up — 2026-10-26
+
+[Eight new public captures](evidence/snake-display.json) verify the static game-over overlay, its Center/Back behavior, level confirmation and game-type menu behavior. The generic full-screen “提示 / 游戏结束 / 得分” dialog was incorrect and is removed. Accepting a type retains the Continue entry and focuses 游戏类型. The type picker title is 贪吃蛇. Accepting a level displays 全部完成！ with center 确认 before returning to New game.
+
+Level selection now reads the validated saved setting; loading initializes the runtime and picker together, and a new game uses that same setting. A disk round-trip test checks level 8, cancelled preview, committed level 7, reload, displayed preview and new-game speed. The existing desktop file already held level 8; the reported mismatch was not reproduced as lost storage. No handset preferences or scores are copied to desktop storage.
+
+The unread-SMS status icon is suppressed on the full-screen playfield. Center softkey labels in Snake, settings, organizer and tools use the shared measured footer placement. This audit does not establish all-screen pixel parity. Other generic notices for unavailable hardware and invalid input remain local substitutes.
+
 ## Remaining gaps
 
-Native PRNG, sound playback, death/win effects, extreme signed score overflow, full-board completion, and all suspend/interruption paths are not reproduced. The host sound preference is saved but currently makes no sound. Five-score persistence is tested locally; exact native NV timing is not claimed. Window scheduling can differ from the phone even with the recovered interval table.
+Native PRNG, sound playback, transient death/win effects, extreme signed score overflow, full-board completion, and all suspend/interruption paths are not reproduced. The host sound preference is saved but currently makes no sound. Five-score persistence is tested locally; exact native NV timing is not claimed. Window scheduling can differ from the phone even with the recovered interval table.

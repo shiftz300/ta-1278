@@ -114,7 +114,8 @@
     "body_head": "0x88690166..0x8869023c: body 0x401f0003, head 0x401f0006.",
     "turns": "0x88099b88..0x88099bea rejects either direction on current axis before writing pending turn. Same-axis key does not cancel a queued perpendicular turn.",
     "timer": "0x88690a6e..0x88690a82 indexes signed halfwords directly by level (1..8) and passes interval to timer helper.",
-    "bonus": "0x886907a2..0x886907e8: positive score multiple of six spawns bonus; countdown *3 on collection without growth. 0x8869087e..0x886908fe counts rendered ticks modulo floor(1000/interval), clears one interval after reaching zero."
+    "bonus": "0x886907a2..0x886907e8: positive score multiple of six spawns bonus; countdown *3 on collection without growth. 0x8869087e..0x886908fe counts rendered ticks modulo floor(1000/interval), clears one interval after reaching zero.",
+    "game_over": "0x88690a36..0x88690aec: states 2/3 redraw board then draw (30,70,180,50), fill 0x0127, text 0xf800 at font20. Literal 0x690cd8 is 0x401c002c (游戏结束). State4 draws 暂停 via 0x40000b25."
   },
   "initial_data": {
     "path": "nokia-ta1278-research/analysis/extracted/kernel/init_81c20000.bin",
@@ -141,7 +142,7 @@
   "limits": [
     "PRNG sequence is a local replacement; no claim of native food sequence.",
     "Timer table and call arguments are verified; wall-clock scheduler timing is not measured.",
-    "Sound output, death animation and complete frame parity still require work.",
+    "Sound output, transient death/win effects and complete frame parity still require work; static game-over overlay verified.",
     "Seventh map is compiled but not exposed by the six-item native picker; not enabled in replica."
   ],
   "reviewed_code_ranges": [
@@ -182,10 +183,10 @@
       "hex": "2de9ff41bf4c0025c04e343c25814ff01408bd4f65817f1cb4f9081001eb410006eb8002b4f90a00125c7ab101eb810100eb800089000ab28000cde90085cde9025701b2206b1423fff79afb6089401c00b260810c28dfdb2089401c00b220811028d4dbbde8"
     },
     {
-      "start": "0x88690a6e",
-      "end_exclusive": "0x88690a84",
-      "sha256": "4024f6bce0ad51fab6fd66a6738527cc1d4e395300f8b822c09dc3c4bdfa3e63",
-      "hex": "874889a2a16940f2de4330f91100002116f55cf82070"
+      "start": "0x88690a36",
+      "end_exclusive": "0x88690aec",
+      "sha256": "b8f7456722c6c3dd06511f00ee7d7ca2a7c34441579a99b42bf0dc809931dd85",
+      "hex": "feb5944c0546343c207818b116f571f9002020702563e06901280bd0142640f2271504284ff6000712d0022825d0032823d001e0fff7c1ff874889a2a16940f2de4330f91100002116f55cf82070febd00f0ebf8fff77dfffff737fffff7f4fefff7d3fefff764fb32230095b42246211e20fff7a7fd894813e000f0d6f8fff768fffff722fffff7dffefff7befefff74ffb32230095b42246211e20fff792fd80483223cde90007b422029646211e20fff74bfdfebd"
     },
     {
       "start": "0x88690bbc",

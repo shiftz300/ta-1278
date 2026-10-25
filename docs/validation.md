@@ -138,3 +138,57 @@ All four temporary SMS validation runs were SHA-256 checked into `../ta-1278-sou
 - Music Home uses the captured 全部播放 label, 84px first row, play triangle and 播放 center action. The triangle is a measured drawing; menu/back icons are recovered assets. The smoke fixture may show a current-track row absent from the empty native library.
 - Configurable Home shortcuts other than Opera/Messages still use fallback menu artwork. A targeted literal lookup did not establish their native mapping, so no additional mapping is claimed recovered.
 - The previous explicit WAV/MP3 CoreAudio evidence remains separate; the audio decoder/output module did not change in this follow-up.
+
+## Local inbox follow-up (2026-10-25)
+
+The preceding checkpoint was committed and pushed as `38a1930`. The following inbox work is a separate local continuation.
+
+90 default Rust tests pass (29 core, 58 desktop, 3 VFS). The two new interaction tests cover old mailbox JSON, input limits, background receipt without replacing the editor, read state, reply and forward fields, pending-save rejection, persistence, deletion and cancellation. Formatting, warnings-denied Clippy and signed release packaging pass.
+
+The real winit/Metal smoke run completed with 71 saved scenes and 72 presented frames. The four new inbox/reader/options/reply scenes were visually inspected; published images and hashes are in `docs/images/`. These are synthetic CPU framebuffers presented through wgpu. No handset or private mailbox was accessed, and native conversation layout remains unverified.
+
+The synthetic fixture script refuses to overwrite `messages.json`; a second invocation exited with an error and left its SHA-256 unchanged. [Validation manifest](evidence/sms-inbox-validation.json) records this batch. [Received-message boundaries](sms-inbox.md) describe the implementation and remaining gaps.
+
+The 75 temporary fixture, smoke and log files were SHA-256 verified into `../ta-1278-source/replica-validation/20261025-local-inbox/` before removing their temporary copies. This inbox continuation is not committed or pushed.
+
+## Conversation and Snake display follow-up — 2026-10-26
+
+The signed release passes **96 Rust tests** (29 core, 64 desktop, 3 VFS); one opt-in audio hardware test is excluded from this run. Format, warnings-denied Clippy, asset/font hashes, recovered keypad rows and diff checks pass. `recover-snake.py --disassemble` checks the original firmware hash and game-over drawing operands/resource pointer. A real winit/wgpu Metal run produces **81 scenes / 82 presented frames**; these remain CPU framebuffers uploaded to the GPU, not GPU readbacks.
+
+New coverage includes legacy mailbox loading, conversation projection/ordering, draft rollback, reply/receive interleaving, bubble/number actions, disabled calls, long-message clipping, Snake game-over score insertion exactly once, ignored Center, Back return, unread icon isolation, and saved-level load/preview/cancel/commit/reload/new-game consistency. The game-type regression now preserves Continue and menu focus. New display previews and the normal-profile level window are recorded in [image hashes](images/SHA256.json).
+
+[Snake display evidence](evidence/snake-display.json) lists eight reviewed handset captures. Static death rendering is checked against code and the handset; transient animation, PRNG, sound and all interruption paths remain open. Original handset type Classic and level 8 were restored/verified; sound was unchanged. The desktop's existing saved level was already 8; no file-loss failure was reproduced. Normal app restart visibly restores all eight green level bars. The prior generic death notice was a confirmed mismatch and is removed.
+
+[SMS conversations](sms-conversations.md) records the local send/receive UI and explicit parity limits. No real modem backend was added. The extra center label on the application grid is removed, and calling is grey/inert. Settings, organizer, tools and Snake center-footer labels use the shared measured placement. Generic notices for unavailable services and invalid input remain local replacements, not recovered native layouts.
+
+The completed conversation/Snake sessions, previews, logs and fixtures were archived outside Git at `../ta-1278-source/replica-validation/20261026-conversation-snake/`: **689 files, 14,723,361 bytes**, verified individually by SHA-256 before temporary copies were removed. Only reviewed public captures and synthetic previews are retained in the repository.
+
+## Equal-content SMS layout follow-up — 2026-10-26
+
+Four public handset captures now have equal-content replica fixtures: one Chinese character, newline, 70-unit mixed text and 161 digits. These expose the old body-font, inset, caret, count-baseline and scroll-row mismatches. [Layout report and comparison links](sms-composer-layout.md) distinguish measured geometry from unrecovered native rasterization. No new handset access was needed.
+
+**98 Rust tests** pass (29 core, 66 desktop, 3 VFS); one audio hardware test remains opt-in. The new tests check stable editor baselines through wrapping and scrolling, footer separation, the caret, scrollbar and UTF-16 stops. Warnings-denied Clippy, formatting and resource checks pass. The signed release produces **85 scenes / 86 presented frames** through Metal. PNGs are CPU framebuffers presented through wgpu, not GPU readbacks. Four equal-content comparisons and the existing 22 comparison pairs were regenerated and reviewed for the changed SMS layouts.
+
+All 448 temporary files from this SMS layout pass (8,719,256 bytes) were archived to `../ta-1278-source/replica-validation/20261026-sms-composer/` and SHA-256 verified before temporary copies were removed. The latest signed app was reopened. Public comparisons and synthetic frames remain in the repository.
+
+## Shared UI controls — 2026-10-26
+
+The renderer now has one typed three-softkey control, one list/popup control, one configurable editor and shared typography/geometry. [Architecture and native correlation](shared-ui.md) distinguish the host implementation from original MMK execution. `check-ui-framework.py` verifies all **751 indexed native window byte slices** against the original firmware hash.
+
+**100 Rust tests** pass (29 core, 68 desktop, 3 VFS; one audio hardware test remains opt-in). New cross-app tests require the same center Select slot across five apps, the same Delete control in message/browser editors, and a blank center slot on the app grid. Format, warnings-denied Clippy, resource/glyph hashes, recovered keypad rows, whitespace and ad-hoc signature checks pass.
+
+The final Metal run produces **85 scenes / 86 presented frames**. Comparing the pre-refactor frames shows **80 unchanged content regions above y=284**. The five exceptions are the live Home clock and four SMS popup labels moving to the common 6px inset. Thirteen full frames are identical. Footer changes are intentional: all center labels share y=289, side labels use the same alignment, and editors share a fitted Delete icon. [The manifest](evidence/shared-ui-framework.json) retains before/after hashes and pixel bounds. These are replica regression checks, not complete handset acceptance.
+
+![Shared softkeys](images/shared-softkeys.png)
+
+The 184 temporary files from this shared-control pass (3,499,618 bytes) were archived at `../ta-1278-source/replica-validation/20261026-shared-ui/`, SHA-256 verified before removing temporary copies. The latest signed app was reopened. Public previews, native descriptor evidence and regression hashes remain in the project.
+
+## Phonebook and flashlight correction — 2026-10-26
+
+The flashlight now uses eight verified original control resources and the theme image table. Phonebook root/search/menu, inline new/edit form, date control, details/options and delete dialog replace the generic list/form views. New Input/Date/Choice field profiles and the accent footer use the shared UI layer. [Layout evidence and limits](contact-torch-layout.md) distinguish code/table verification, measured geometry and local behavior. No new handset operation or original contact import was performed.
+
+**105 Rust tests** pass (29 core, 73 desktop, 3 VFS; one audio hardware test remains opt-in). New checks cover menu/add/save/cancel, right-softkey deletion, preserved SMS body during recipient selection, disabled calls, filtered-delete identity, field/date/choice geometry, valid date digits and reversible torch state/art. Warnings-denied Clippy, format, font/asset hashes, keypad rows, whitespace and ad-hoc signature checks pass.
+
+The final signed Metal run produces **100 scenes / 101 presented frames**. Fifteen new scenes include both torch states, empty/list/filter contact states, form fields, details, options and delete. The full comparison collection now contains 32 native/replica pairs; ten new phonebook/torch pairs were inspected, plus the four existing equal-content SMS pairs. PNGs remain CPU framebuffers presented through wgpu, not GPU readbacks. Disabled calls/share/group actions intentionally differ from native references. Empty-store caption, exact native search/date behavior and photo/group/ringtone selection remain unverified or unavailable.
+
+The 529 temporary files from this pass (10,033,315 bytes), including private derived chrome references, were archived outside Git at `../ta-1278-source/replica-validation/20261026-contact-torch/` and verified by SHA-256 before temporary copies were removed. The final app was reopened; its actual flashlight page and empty new-contact form were checked with keyboard navigation. No contact was saved in the normal profile during that UI check.

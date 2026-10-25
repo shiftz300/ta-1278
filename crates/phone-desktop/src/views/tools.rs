@@ -7,9 +7,9 @@ pub(super) fn render(c: &mut Canvas, p: &Phone) {
         super::files::render(c, p);
         return;
     }
-    c.text(6, 1, p.tools_title(), 14, WHITE);
+    chrome::title(c, p.tools_title());
     let t = &p.tools;
-    let mut left = "";
+    let mut left = Button::None;
     let mut center = "选择";
     match t.page {
         Calculator => {
@@ -26,7 +26,7 @@ pub(super) fn render(c: &mut Canvas, p: &Phone) {
             }
             c.text(8, 270, "* ±", 16, MUTED);
             c.text(185, 270, "# .", 16, MUTED);
-            left = "←";
+            left = Button::Back;
             center = "";
         }
         Stopwatch => {
@@ -52,11 +52,11 @@ pub(super) fn render(c: &mut Canvas, p: &Phone) {
                     WHITE,
                 );
             }
-            left = if t.stopwatch.running {
+            left = Button::Text(if t.stopwatch.running {
                 "计次"
             } else {
                 "重置"
-            };
+            });
             center = if t.stopwatch.running {
                 "停止"
             } else if t.stopwatch.elapsed_ms > 0 {
@@ -74,7 +74,7 @@ pub(super) fn render(c: &mut Canvas, p: &Phone) {
                 32,
                 WHITE,
             );
-            left = "重置";
+            left = Button::Text("重置");
             center = if t.timer.running { "暂停" } else { "继续" };
         }
         Conversion(_) => {
@@ -87,13 +87,19 @@ pub(super) fn render(c: &mut Canvas, p: &Phone) {
                 c.text(8, y + 8, unit, 18, WHITE);
                 c.fit(8, y + 38, number, 24, WHITE, 224);
             }
-            left = "←";
+            left = Button::Back;
             center = "";
         }
         Flashlight => {
-            c.icon(13, 82, 60, 76);
-            c.text(90, 165, if t.torch { "开启" } else { "关闭" }, 24, WHITE);
-            center = if t.torch { "关闭" } else { "开启" };
+            crate::ui::art::power(c, t.torch);
+            Softkeys::new(
+                Button::Phone,
+                Button::Text(if t.torch { "关闭" } else { "打开" }),
+                Button::Back,
+            )
+            .accent_panel()
+            .draw(c);
+            return;
         }
         Radio => {
             c.text(
@@ -117,13 +123,13 @@ pub(super) fn render(c: &mut Canvas, p: &Phone) {
             );
             c.text(8, 238, "87.5", 14, MUTED);
             c.text(185, 238, "108.0", 14, MUTED);
-            left = "≡";
+            left = Button::Menu;
             center = if t.radio_on { "停止" } else { "开始" };
         }
         Recorder => {
             c.icon(14, 82, 58, 76);
             c.text(20, 166, &clock(t.record_ms), 32, WHITE);
-            left = "列表";
+            left = Button::Text("列表");
             center = if t.recording { "停止" } else { "录音" };
         }
         Counter | Video | Gallery | Calls => {
@@ -132,35 +138,20 @@ pub(super) fn render(c: &mut Canvas, p: &Phone) {
         }
         _ => {
             let labels = p.tools_items();
-            native_list(c, &labels, p.index);
+            list::plain(c, &labels, p.index);
             if t.page == Timer {
-                left = "开始";
+                left = Button::Text("开始");
             }
         }
     }
-    footer(
-        c,
+    Softkeys::new(
         left,
+        Button::Text(center),
         if t.page == Calculator {
-            "清除"
+            Button::Text("清除")
         } else {
-            "←"
+            Button::Back
         },
-    );
-    if !center.is_empty() {
-        c.text(98, 296, center, 20, WHITE);
-    }
-}
-pub(super) fn native_list(c: &mut Canvas, labels: &[String], index: usize) {
-    if labels.is_empty() {
-        c.text(8, 120, "这里没有可显示的内容。", 17, WHITE);
-    }
-    let start = index.saturating_sub(5);
-    for (i, label) in labels.iter().enumerate().skip(start).take(6) {
-        let y = 24 + (i - start) as i32 * 42;
-        if i == index {
-            c.rect(0, y, 240, 42, c.accent(3));
-        }
-        c.fit(6, y + 10, label, 20, WHITE, 228);
-    }
+    )
+    .draw(c);
 }

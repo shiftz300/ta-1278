@@ -173,6 +173,7 @@ mod tests {
             phone_core::sms::Message {
                 to: "123".into(),
                 body: "中文".into(),
+                ..Default::default()
             },
         );
         save(&dir, &m).unwrap();

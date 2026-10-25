@@ -11,6 +11,7 @@ impl Compose {
             to,
             body,
             draft,
+            time: message.time,
             recipient: false,
         }
     }
@@ -20,6 +21,8 @@ impl Phone {
         Message {
             to: self.compose.to.text(),
             body: self.compose.body.text(),
+            time: self.compose.time,
+            ..Default::default()
         }
     }
     pub(super) fn queue_message(&mut self) {
@@ -63,6 +66,9 @@ impl Phone {
             self.mail_ui.item = pending.change.index;
             self.mail_ui.folder = Screen::Outbox;
             self.compose.draft = None;
+            if self.chat.route {
+                self.chat.peer = self.compose.to.text();
+            }
             self.go(Screen::Mail(mail::MailPage::Result));
             return;
         }
@@ -84,8 +90,20 @@ impl Phone {
             }
         }
     }
-    pub(super) fn save_draft(&mut self) {
+    pub fn save_draft(&mut self) {
         let message = self.message();
+        if self.screen == Screen::Conversation && message.body.is_empty() {
+            if let Some(i) = self
+                .compose
+                .draft
+                .take()
+                .filter(|i| *i < self.mailbox.drafts.len())
+            {
+                self.mailbox.drafts.remove(i);
+                self.dirty = true;
+            }
+            return;
+        }
         if message.to.is_empty() && message.body.is_empty() {
             return;
         }
@@ -94,7 +112,10 @@ impl Phone {
         self.dirty = true;
     }
     pub(super) fn close_compose(&mut self) {
-        if self.compose.to.units.is_empty() && self.compose.body.units.is_empty() {
+        if self.screen == Screen::Conversation && self.compose.body.units.is_empty() {
+            self.save_draft();
+            self.go(Screen::Messages);
+        } else if self.compose.to.units.is_empty() && self.compose.body.units.is_empty() {
             self.go(Screen::Messages);
         } else {
             self.compose.to.commit();
@@ -107,17 +128,24 @@ impl Phone {
     }
     pub(super) fn mail_list_key(&mut self, key: Key) {
         let drafts = self.screen == Screen::Drafts;
-        let count = if drafts {
-            self.mailbox.drafts.len()
-        } else {
-            self.mailbox.outbox.len()
-        };
+        let folder = self.screen;
+        let count = self.mail_count(folder);
         match key {
             Key::Up => self.index = self.index.saturating_sub(1),
             Key::Down => self.index = (self.index + 1).min(count.saturating_sub(1)),
             Key::SoftRight => {
+                let peer = self
+                    .mail_content(folder, self.index)
+                    .map(|m| m.peer.to_owned());
                 self.go(Screen::Messages);
-                self.index = if drafts { 1 } else { 2 };
+                self.index = peer
+                    .and_then(|peer| {
+                        self.mailbox
+                            .conversations()
+                            .iter()
+                            .position(|c| c.peer == peer)
+                    })
+                    .map_or(0, |i| i + 1);
             }
             Key::Delete if count > 0 => {
                 self.mail_ui.item = self.index;

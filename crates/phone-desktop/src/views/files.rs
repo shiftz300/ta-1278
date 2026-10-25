@@ -25,7 +25,7 @@ pub(super) fn render(c: &mut Canvas, p: &Phone) {
                 c.fit(8, 64, &e.name, 20, WHITE, 224);
                 if p.files.view == FileView::Delete {
                     c.text(8, 120, "确认删除？", 20, WHITE);
-                    footer(c, "删除", "取消");
+                    Softkeys::new(Button::Text("删除"), Button::None, Button::Text("取消")).draw(c);
                 } else {
                     c.text(
                         8,
@@ -37,14 +37,13 @@ pub(super) fn render(c: &mut Canvas, p: &Phone) {
                     if !e.directory {
                         c.fit(8, 158, &format!("{} 字节", e.len), 18, WHITE, 224);
                     }
-                    footer(c, "", "←");
+                    Softkeys::back("").draw(c);
                 }
             }
         }
         _ => {
-            tools::native_list(c, &p.file_labels(), p.index);
-            footer(c, "≡", "←");
-            softkeys::center(c, "选择");
+            list::plain(c, &p.file_labels(), p.index);
+            Softkeys::menu("选择").draw(c);
         }
     }
 }

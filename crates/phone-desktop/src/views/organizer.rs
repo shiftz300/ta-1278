@@ -7,8 +7,12 @@ pub(super) fn render(c: &mut Canvas, p: &mut Phone) {
         return;
     }
     let page = p.organizer.page;
-    c.text(6, 1, p.organizer_title(), 14, WHITE);
-    let mut left = "";
+    if crate::phone::contacts::is_contact(page) {
+        super::contacts::render(c, p);
+        return;
+    }
+    chrome::title(c, p.organizer_title());
+    let mut left = Button::None;
     let mut center = "选择";
     if page == Calendar {
         let date = p.organizer.date;
@@ -45,7 +49,7 @@ pub(super) fn render(c: &mut Canvas, p: &mut Phone) {
             }
         }
         c.text(8, 276, &date.iso(), 12, MUTED);
-        left = "≡";
+        left = Button::Menu;
     } else if matches!(page, DeleteContact | DeleteEvent | DeleteAlarm | DeletePast) {
         c.text(
             16,
@@ -61,14 +65,13 @@ pub(super) fn render(c: &mut Canvas, p: &mut Phone) {
         center = "确认";
     } else {
         let items = p.organizer_items();
-        super::tools::native_list(c, &items, p.index);
+        list::plain(c, &items, p.index);
         left = match page {
-            Contacts | Alarms | Events => "新增",
-            EventForm | AlarmForm | ContactForm => "保存",
-            ContactDetail => "≡",
-            _ => "",
+            Contacts | Alarms | Events => Button::Text("新增"),
+            EventForm | AlarmForm | ContactForm => Button::Text("保存"),
+            ContactDetail => Button::Menu,
+            _ => Button::None,
         };
     }
-    footer(c, left, "←");
-    c.text(98, 296, center, 20, WHITE);
+    Softkeys::new(left, Button::Text(center), Button::Back).draw(c);
 }

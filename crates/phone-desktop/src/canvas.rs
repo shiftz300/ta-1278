@@ -212,9 +212,10 @@ impl Canvas {
     pub fn text(&mut self, x: i32, y: i32, text: &str, size: u16, c: Color) {
         let mut cursor = x as f32;
         for ch in text.chars() {
-            self.glyph(ch, size);
-            let (m, bitmap) = &self.glyphs[&(ch, size)];
-            let top = y + size as i32 - m.height as i32 - m.ymin;
+            let glyph_size = size;
+            self.glyph(ch, glyph_size);
+            let (m, bitmap) = &self.glyphs[&(ch, glyph_size)];
+            let top = y + glyph_size as i32 - m.height as i32 - m.ymin;
             for yy in 0..m.height {
                 for xx in 0..m.width {
                     Self::blend_into(
@@ -278,6 +279,11 @@ impl Canvas {
         });
         out
     }
+    pub fn image(&mut self, image: &image::RgbaImage, x: i32, y: i32) {
+        for (dx, dy, pixel) in image.enumerate_pixels() {
+            Self::blend_into(&mut self.pixels, x + dx as i32, y + dy as i32, pixel.0, 255);
+        }
+    }
     pub fn icon(&mut self, index: usize, x: i32, y: i32, size: u32) {
         if size == 0 {
             return;
@@ -307,6 +313,9 @@ impl Canvas {
             let icons = [0, 4, 3, 0, 2, 7, 11, 9, 12, 21, 6, 15, 1, 14, 5, 16, 17, 18];
             if let Some(icon) = icons.get(shortcut) {
                 self.icon(*icon, x, y, 26);
+                if shortcut == 2 {
+                    self.grey(x, y, 26, 26);
+                }
             }
         }
     }
@@ -336,6 +345,18 @@ impl Canvas {
     }
     pub fn accent(&self, shade: usize) -> Color {
         self.theme.color(self.accent, shade)
+    }
+    pub fn grey(&mut self, x: i32, y: i32, w: i32, h: i32) {
+        for yy in y.max(0)..(y + h).min(H as i32) {
+            for xx in x.max(0)..(x + w).min(W as i32) {
+                let i = ((yy * W as i32 + xx) * 4) as usize;
+                let v = ((self.pixels[i] as u16
+                    + self.pixels[i + 1] as u16
+                    + self.pixels[i + 2] as u16)
+                    / 5) as u8;
+                self.pixels[i..i + 3].fill(v);
+            }
+        }
     }
     pub fn dim(&mut self) {
         for px in self.pixels.chunks_exact_mut(4) {

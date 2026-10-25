@@ -55,8 +55,14 @@ fn game(c: &mut Canvas, s: &Snake) {
     }
 }
 pub(super) fn render(c: &mut Canvas, p: &Phone) {
-    if p.snake_view == SnakeView::Game {
+    if matches!(p.snake_view, SnakeView::Game | SnakeView::GameOver) {
         game(c, &p.snake);
+        if p.snake_view == SnakeView::GameOver {
+            // Native 0x88690ac8..0x88690ae6; resource 0x401c002c.
+            c.rect(30, 70, 180, 50, crate::theme::rgb565(0x0127));
+            let x = (240 - c.width("游戏结束", 20)) / 2;
+            c.text(x, 85, "游戏结束", 20, crate::theme::rgb565(0xf800));
+        }
         return;
     }
     c.text(
@@ -64,7 +70,6 @@ pub(super) fn render(c: &mut Canvas, p: &Phone) {
         1,
         match p.snake_view {
             SnakeView::Level => "关卡",
-            SnakeView::Types => "游戏类型",
             SnakeView::Scores => "最高得分",
             SnakeView::Sound => "声音",
             _ => "贪吃蛇",
@@ -89,7 +94,10 @@ pub(super) fn render(c: &mut Canvas, p: &Phone) {
             }
         }
         SnakeView::Scores => {
-            for (i, score) in p.snake_data.scores[p.snake.kind.min(5)].iter().enumerate() {
+            for (i, score) in p.snake_data.scores[p.snake_data.kind.min(5)]
+                .iter()
+                .enumerate()
+            {
                 c.text(
                     10,
                     30 + i as i32 * 24,
@@ -100,19 +108,38 @@ pub(super) fn render(c: &mut Canvas, p: &Phone) {
             }
         }
         _ => {
-            super::tools::native_list(c, &p.snake_items(), p.index);
-            if p.snake_view == SnakeView::Sound {
-                for i in 0..2 {
-                    c.ring(225, 45 + i * 42, 7, c.accent(2));
-                    if i == i32::from(p.snake_data.sound) {
-                        c.rect(222, 42 + i * 42, 6, 6, c.accent(2));
-                    }
-                }
-            }
+            let labels = p.snake_items();
+            list::draw(
+                c,
+                labels.len(),
+                p.index,
+                list::ListStyle {
+                    marker_shades: Some((2, 2)),
+                    ..list::ListStyle::STANDARD
+                },
+                |i| list::Row {
+                    label: &labels[i],
+                    enabled: true,
+                    marker: if p.snake_view == SnakeView::Sound {
+                        list::Marker::Radio(i == usize::from(p.snake_data.sound))
+                    } else {
+                        list::Marker::None
+                    },
+                },
+            );
         }
     }
-    footer(c, "", "←");
-    if p.snake_view != SnakeView::Scores {
-        c.text(98, 296, "选择", 20, WHITE);
+    if p.snake_view == SnakeView::Saved {
+        c.dim();
+        let x = (240 - c.width("全部完成！", 20)) / 2;
+        c.text(x, 241, "全部完成！", 20, WHITE);
+        Softkeys::new(Button::None, Button::Text("确认"), Button::None).draw(c);
+    } else {
+        Softkeys::back(if p.snake_view == SnakeView::Scores {
+            ""
+        } else {
+            "选择"
+        })
+        .draw(c);
     }
 }

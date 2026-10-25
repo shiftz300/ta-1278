@@ -3,18 +3,19 @@ use super::*;
 use crate::phone::mail::MailPage;
 const BLACK: Color = [0, 0, 0, 255];
 pub(super) fn folder(c: &mut Canvas, p: &Phone) {
-    let drafts = p.screen == Screen::Drafts;
-    c.text(6, 1, if drafts { "草稿" } else { "发件箱" }, 14, WHITE);
-    let messages = if drafts {
-        &p.mailbox.drafts
-    } else {
-        &p.mailbox.outbox
+    let title = match p.screen {
+        Screen::Drafts => "草稿",
+        Screen::Inbox => "收件箱",
+        _ => "发件箱",
     };
-    if messages.is_empty() {
+    chrome::title(c, title);
+    let count = p.mail_count(p.screen);
+    if count == 0 {
         c.text(70, 132, "没有信息", 20, MUTED);
     }
     let start = p.index.saturating_sub(3);
-    for (i, m) in messages.iter().enumerate().skip(start).take(4) {
+    for i in start..(start + 4).min(count) {
+        let m = p.mail_content(p.screen, i).unwrap();
         let y = 24 + (i - start) as i32 * 64;
         if i == p.index {
             c.rect(0, y, 240, 64, c.accent(3));
@@ -22,15 +23,18 @@ pub(super) fn folder(c: &mut Canvas, p: &Phone) {
         c.fit(
             7,
             y + 8,
-            if m.to.is_empty() {
+            if m.peer.is_empty() {
                 "无收件人"
             } else {
-                &m.to
+                m.peer
             },
             20,
             WHITE,
-            226,
+            if m.unread { 205 } else { 226 },
         );
+        if m.unread {
+            c.ring(226, y + 18, 4, WHITE);
+        }
         c.fit(
             7,
             y + 36,
@@ -41,20 +45,23 @@ pub(super) fn folder(c: &mut Canvas, p: &Phone) {
         );
     }
     c.rect(0, 282, 240, 38, BLACK);
-    super::softkeys::browser(
-        c,
-        false,
-        if messages.is_empty() { "" } else { "打开" },
-        false,
-    );
+    Softkeys::back(if count == 0 { "" } else { "打开" }).draw(c);
 }
 fn read(c: &mut Canvas, p: &mut Phone) {
-    let Some(m) = p.mail_message().cloned() else {
+    let Some(m) = p.mail_message() else {
         return;
     };
-    c.text(6, 1, "未发送", 14, WHITE);
-    c.fit(7, 29, &format!("至：{}", m.to), 18, MUTED, 225);
-    let lines = c.wrap(&m.body, 20, 216);
+    let incoming = p.mail_ui.folder == Screen::Inbox;
+    chrome::title(c, if incoming { "信息" } else { "未发送" });
+    c.fit(
+        7,
+        29,
+        &format!("{}：{}", if incoming { "来自" } else { "至" }, m.peer),
+        18,
+        MUTED,
+        225,
+    );
+    let lines = c.wrap(m.body, 20, 216);
     p.mail_ui.lines = lines.len();
     p.mail_ui.scroll = p.mail_ui.scroll.min(lines.len().saturating_sub(7));
     for (i, line) in lines.iter().skip(p.mail_ui.scroll).take(7).enumerate() {
@@ -72,38 +79,29 @@ pub(super) fn render(c: &mut Canvas, p: &mut Phone, page: MailPage) {
     match page {
         Read => {
             read(c, p);
-            super::softkeys::browser(c, true, "", false);
+            Softkeys::menu("").draw(c);
         }
         Options => {
             read(c, p);
             c.dim();
-            let labels = ["重新发送", "编辑为新信息", "转发", "删除"];
-            for (i, label) in labels.iter().enumerate() {
-                let y = 124 + i as i32 * 38;
-                c.rect(
-                    0,
-                    y,
-                    240,
-                    38,
-                    if i == p.index { c.accent(3) } else { BLACK },
-                );
-                c.text(7, y + 7, label, 20, WHITE);
-            }
+            let actions = p.mail_actions();
+            list::popup(c, actions.len(), p.index, |i| {
+                list::Row::text(actions[i].label())
+            });
             c.rect(0, 282, 240, 38, BLACK);
-            super::softkeys::browser(c, false, "选择", false);
+            Softkeys::back("选择").draw(c);
         }
         Delete => {
-            c.text(6, 1, "信息", 14, WHITE);
+            chrome::title(c, "信息");
             c.text(44, 190, "删除此信息？", 20, WHITE);
-            super::softkeys::browser(c, false, "确认", false);
+            Softkeys::back("确认").draw(c);
         }
         Result => {
-            c.text(6, 1, "信息", 14, WHITE);
+            chrome::title(c, "信息");
             c.text(84, 91, "未发送", 24, WHITE);
             c.text(22, 141, "短信服务未连接", 20, WHITE);
             c.text(22, 172, "信息已保存在本机", 18, MUTED);
-            super::softkeys::browser(c, false, "查看", false);
-            c.text(7, 290, "重试", 20, WHITE);
+            Softkeys::new(Button::Text("重试"), Button::Text("查看"), Button::Back).draw(c);
         }
     }
 }

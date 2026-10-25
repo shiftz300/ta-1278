@@ -72,6 +72,8 @@ Every action gets a fresh pre-action screenshot. Its selected image region must 
 - Image guards are exact. Select meaningful stable regions that exclude the clock/cursor. Animations or JPEG differences can cause a conservative stop; no permissive matcher is silently substituted.
 - Image matching is not semantic safety. Only reviewed routes may select actions. Do not build routes that make calls, send messages, pay, erase, reset or delete existing data. Removing the call key alone cannot prevent such actions through menus.
 
+The owner later explicitly authorized a bounded SMS test to their own specified number on 2026-10-26. [That test](sms-handset-loopback.md) sent once and inspected only its new thread. This is a narrow exception to the sampling restriction above, not authorization for arbitrary recipients, repeated sends, calls or payments.
+
 ## Sampling scope
 
 [Coverage ledger](handset-coverage.json) starts with all 30 compiled app registrations plus 48 cross-cutting cases. The ledger distinguishes partial sampling from completed cases. Runtime visibility is recorded only when observed; compiled registrations alone are not proof of a visible app. 喜马拉雅 and 支付宝 are owner exclusions; other entries stay included unless absence or a further exclusion is established.

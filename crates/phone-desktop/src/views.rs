@@ -3,6 +3,8 @@ mod browser;
 mod browser_chrome;
 mod browser_layout;
 mod compose;
+mod contacts;
+mod conversation;
 mod files;
 mod mail;
 mod music;
@@ -10,14 +12,12 @@ mod organizer;
 mod pickers;
 mod settings;
 mod snake;
-mod softkeys;
 mod tools;
+use crate::ui::chrome::status;
+use crate::ui::softkeys::{Button, Softkeys};
+use crate::ui::{chrome, editor::Edit, list, softkeys, text};
 use crate::{canvas::*, phone::*};
-use phone_core::{
-    browser::Element,
-    editor::{Editor, VisualRow},
-    sms,
-};
+use phone_core::{browser::Element, editor::Editor, sms};
 pub fn render(c: &mut Canvas, p: &mut Phone) {
     c.accent = if p.screen == Screen::Settings
         && p.settings_page == crate::phone::settings::SettingsPage::Theme
@@ -48,11 +48,29 @@ pub fn render(c: &mut Canvas, p: &mut Phone) {
             );
             let w = c.width(&s, 18);
             c.text((240 - w) / 2, 153, &s, 18, WHITE);
-            softkeys::home(c, p.preferences.left_shortcut, p.preferences.right_shortcut);
+            Softkeys::new(
+                Button::Shortcut(p.preferences.left_shortcut),
+                Button::Text("功能表"),
+                Button::Shortcut(p.preferences.right_shortcut),
+            )
+            .draw(c);
         }
         Screen::Menu => {
             let entries = &crate::menu::ENTRIES;
-            c.text(6, 1, entries[p.index].label, 14, WHITE);
+            c.text(
+                6,
+                1,
+                entries[p.index].label,
+                14,
+                if entries[p.index]
+                    .screen
+                    .is_some_and(crate::menu::phone_disabled)
+                {
+                    MUTED
+                } else {
+                    WHITE
+                },
+            );
             let first_row = (p.index / 3).saturating_sub(2);
             for (i, entry) in entries.iter().enumerate().skip(first_row * 3).take(12) {
                 let x = 38 + (i % 3) as i32 * 81;
@@ -61,52 +79,37 @@ pub fn render(c: &mut Canvas, p: &mut Phone) {
                     c.ring(x, y, 31, c.accent(2));
                 }
                 c.icon(entry.icon, x - 38, y - 38, 76);
+                if entry.screen.is_some_and(crate::menu::phone_disabled) {
+                    c.grey(x - 38, y - 38, 76, 76);
+                }
             }
             c.rect(0, 288, 240, 32, [0, 0, 0, 255]);
-            footer(c, "≡", "←");
-            c.text(104, 298, "选择", 14, WHITE);
+            Softkeys::menu("").draw(c);
         }
-        Screen::Messages => {
-            c.text(6, 1, "信息", 14, WHITE);
-            let labels = [
-                "+ 新建信息".to_owned(),
-                format!("草稿 ({})", p.mailbox.drafts.len()),
-                format!("发件箱 ({})", p.mailbox.outbox.len()),
-            ];
-            for (i, label) in labels.iter().enumerate() {
-                let y = 24 + i as i32 * 46;
-                if i == p.index {
-                    c.rect(0, y, 240, 46, c.accent(3));
-                }
-                let w = c.width(label, 20);
-                c.text((240 - w) / 2, y + 13, label, 20, WHITE);
-            }
-            footer(c, "", "←");
-            c.text(98, 296, "确认", 20, WHITE);
-        }
-        Screen::Drafts | Screen::Outbox => mail::folder(c, p),
+        Screen::Messages => conversation::root(c, p),
+        Screen::Conversation => conversation::render(c, p),
+        Screen::Drafts | Screen::Outbox | Screen::Inbox => mail::folder(c, p),
         Screen::Mail(page) => mail::render(c, p, page),
         Screen::Compose => compose::render(c, p),
         Screen::Browser => browser::render(c, p),
         Screen::Music => music::render(c, p),
         Screen::Snake => snake::render(c, p),
-        Screen::Dial => {
-            title(c, "Phone");
-            p.editor_lines = editor(c, &p.dial, 10, 84, 220, 140);
-            c.text(10, 252, "No phone service", 15, MUTED);
-            footer(
-                c,
-                "Call",
-                if p.dial.units.is_empty() {
-                    "返回"
-                } else {
-                    "Clear"
-                },
-            );
-        }
         Screen::Contacts | Screen::Organizer(_) => organizer::render(c, p),
         Screen::Settings => settings::render(c, p),
         Screen::Tools(_) => tools::render(c, p),
+    }
+    if p.mailbox.unread() > 0
+        && !(p.screen == Screen::Snake
+            && matches!(
+                p.snake_view,
+                crate::phone::snake::SnakeView::Game
+                    | crate::phone::snake::SnakeView::GameOver
+                    | crate::phone::snake::SnakeView::Saved
+            ))
+    {
+        c.rect(136, 5, 11, 8, WHITE);
+        c.rect(138, 7, 7, 4, [0, 0, 0, 255]);
+        c.rect(137, 12, 3, 3, WHITE);
     }
     if !p.status.is_empty() {
         c.rect(0, 274, 240, 22, [83, 30, 32, 255]);
@@ -131,7 +134,7 @@ pub fn render(c: &mut Canvas, p: &mut Phone) {
                 for (i, l) in lines.iter().skip(p.notice_scroll).take(11).enumerate() {
                     c.text(12, 86 + i as i32 * 18, &l.text, 15, WHITE);
                 }
-                footer(c, "确定", "关闭");
+                Softkeys::new(Button::Text("确定"), Button::None, Button::Text("关闭")).draw(c);
             }
             Overlay::Menu { kind, index } => {
                 if p.screen == Screen::Browser {
@@ -139,29 +142,16 @@ pub fn render(c: &mut Canvas, p: &mut Phone) {
                 } else if matches!(kind, MenuKind::Symbols | MenuKind::Smileys) {
                     pickers::render(c, p, kind, index);
                 } else {
-                    c.text(6, 1, "选项", 14, WHITE);
+                    chrome::title(c, "选项");
                     let labels = p.menu_labels(kind);
-                    let start = index.saturating_sub(5);
-                    for (i, label) in labels.iter().enumerate().skip(start).take(6) {
-                        let y = 24 + (i - start) as i32 * 42;
-                        if i == index {
-                            c.rect(0, y, 240, 42, c.accent(3));
+                    list::draw(c, labels.len(), index, list::ListStyle::STANDARD, |i| {
+                        list::Row {
+                            label: &labels[i],
+                            enabled: p.menu_enabled(kind, i),
+                            marker: list::Marker::None,
                         }
-                        c.fit(
-                            6,
-                            y + 10,
-                            label,
-                            20,
-                            if p.menu_enabled(kind, i) {
-                                WHITE
-                            } else {
-                                MUTED
-                            },
-                            228,
-                        );
-                    }
-                    footer(c, "", "←");
-                    c.text(98, 296, "选择", 20, WHITE);
+                    });
+                    Softkeys::back("选择").draw(c);
                 }
             }
             Overlay::Text { target, editor: e } => {
@@ -183,20 +173,21 @@ pub fn render(c: &mut Canvas, p: &mut Phone) {
                     if hidden {
                         let mut masked = Editor::new(&"*".repeat(e.units.len()), e.limit);
                         masked.cursor = e.cursor;
-                        p.editor_lines = editor(c, &masked, 6, 28, 228, 234);
+                        p.editor_lines = Edit::new([6, 28, 228, 234]).draw(c, &masked);
                     } else {
-                        p.editor_lines = editor(c, &e, 6, 28, 228, 234);
+                        p.editor_lines = Edit::new([6, 28, 228, 234]).draw(c, &e);
                     }
                     c.text(12, 270, mode(&e), 12, MUTED);
-                    footer(
-                        c,
-                        "确认",
+                    Softkeys::new(
+                        Button::Text("确认"),
+                        Button::None,
                         if e.units.is_empty() {
-                            "返回"
+                            Button::Back
                         } else {
-                            "删除"
+                            Button::Delete
                         },
-                    );
+                    )
+                    .draw(c);
                 }
             }
             Overlay::Select {
@@ -205,39 +196,36 @@ pub fn render(c: &mut Canvas, p: &mut Phone) {
                 selected,
                 ..
             } => {
-                c.text(6, 1, "选择", 14, WHITE);
+                chrome::title(c, "选择");
                 if let Some(Element::Select { options, .. }) = p.browser.page.elements.get(element)
                 {
-                    let start = index.saturating_sub(5);
-                    for (i, (label, _)) in options.iter().enumerate().skip(start).take(6) {
-                        let y = 24 + (i - start) as i32 * 42;
-                        if index == i {
-                            c.rect(0, y, 240, 42, c.accent(3));
-                        }
-                        c.fit(6, y + 10, label, 18, WHITE, 204);
-                        c.ring(225, y + 21, 7, if index == i { WHITE } else { c.accent(3) });
-                        if selected.get(i) == Some(&true) {
-                            c.rect(
-                                222,
-                                y + 18,
-                                6,
-                                6,
-                                if index == i { WHITE } else { c.accent(3) },
-                            );
-                        }
-                    }
+                    list::draw(
+                        c,
+                        options.len(),
+                        index,
+                        list::ListStyle {
+                            font: 18,
+                            text_width: 204,
+                            ..list::ListStyle::STANDARD
+                        },
+                        |i| list::Row {
+                            label: &options[i].0,
+                            enabled: true,
+                            marker: list::Marker::Radio(selected.get(i) == Some(&true)),
+                        },
+                    );
                 }
-                softkeys::browser(c, false, "选择", false);
+                Softkeys::back("选择").draw(c);
             }
             Overlay::ClosePage => {
                 c.rect(0, 282, 240, 38, [0, 0, 0, 255]);
                 c.text(90, 247, "关闭当前页面？", 18, WHITE);
-                softkeys::browser(c, false, "确认", true);
+                Softkeys::new(Button::None, Button::Text("确认"), Button::Close).draw(c);
             }
             Overlay::CloseBrowser => {
                 c.rect(0, 282, 240, 38, [0, 0, 0, 255]);
                 c.text(30, 239, "是否要关闭浏览器？", 20, WHITE);
-                softkeys::browser(c, false, "确认", true);
+                Softkeys::new(Button::None, Button::Text("确认"), Button::Close).draw(c);
             }
         }
     }
@@ -246,122 +234,8 @@ pub fn render(c: &mut Canvas, p: &mut Phone) {
     }
     alarm::alert(c, p);
 }
-fn status(c: &mut Canvas) {
-    c.text(184, 1, "离线", 12, WHITE);
-    c.rect(218, 4, 17, 9, WHITE);
-    c.rect(220, 6, 12, 5, [30, 30, 30, 255]);
-    c.rect(235, 7, 2, 3, WHITE);
-}
 fn mode(e: &Editor) -> &'static str {
     e.mode_label()
-}
-fn title(c: &mut Canvas, s: &str) {
-    c.fit(6, 23, s, 18, WHITE, 228);
-}
-fn footer(c: &mut Canvas, left: &str, right: &str) {
-    match left {
-        "≡" => c.softkey_symbol(false, 5, 287),
-        "←" => c.softkey_symbol(true, 5, 287),
-        _ => c.text(6, 294, left, 20, WHITE),
-    }
-    if right == "←" {
-        c.softkey_symbol(true, 208, 287);
-    } else {
-        let width = c.width(right, 20);
-        c.text(234 - width, 294, right, 20, WHITE);
-    }
-}
-fn editor(c: &mut Canvas, e: &Editor, x: i32, y: i32, width: i32, height: i32) -> Vec<VisualRow> {
-    editor_sized(c, e, x, y, width, height, 20, 26)
-}
-#[allow(clippy::too_many_arguments)]
-fn editor_sized(
-    c: &mut Canvas,
-    e: &Editor,
-    x: i32,
-    y: i32,
-    width: i32,
-    height: i32,
-    size: u16,
-    line_height: i32,
-) -> Vec<VisualRow> {
-    let (units, composing) = e.preview();
-    let text = String::from_utf16_lossy(&units);
-    let lines = c.wrap(&text, size, width);
-    let cursor = composing.as_ref().map_or(e.cursor, |r| r.start);
-    let row = lines
-        .partition_point(|l| l.start <= cursor)
-        .saturating_sub(1);
-    let visible = (height / line_height).max(1) as usize;
-    let start = row.saturating_sub(visible.saturating_sub(1));
-    for (i, line) in lines.iter().enumerate().skip(start).take(visible) {
-        let yy = y + (i - start) as i32 * line_height;
-        let highlight = composing.as_ref().map(|r| (r.start, r.end)).or(e.selection);
-        if let Some((a, b)) = highlight {
-            let (a, b) = (a.min(b).max(line.start), a.max(b).min(line.end));
-            if a < b {
-                let prefix = String::from_utf16_lossy(&units[line.start..a]);
-                let sel = String::from_utf16_lossy(&units[a..b]);
-                let xx = c.width(&prefix, size);
-                let w = c.width(&sel, size);
-                c.rect(
-                    x + xx,
-                    yy,
-                    w,
-                    line_height,
-                    if composing.is_some() {
-                        WHITE
-                    } else {
-                        c.accent(3)
-                    },
-                );
-            }
-        }
-        c.text(x, yy, &line.text, size, WHITE);
-        if let Some(r) = &composing {
-            let (a, b) = (r.start.max(line.start), r.end.min(line.end));
-            if a < b {
-                let prefix = String::from_utf16_lossy(&units[line.start..a]);
-                let xx = c.width(&prefix, size);
-                c.text(
-                    x + xx,
-                    yy,
-                    &String::from_utf16_lossy(&units[a..b]),
-                    17,
-                    [0, 8, 0, 255],
-                );
-            }
-        }
-        if i == row {
-            let end = cursor.clamp(line.start, line.end);
-            let prefix = String::from_utf16_lossy(&units[line.start..end]);
-            let xx = c.width(&prefix, size);
-            if composing.is_none() {
-                c.rect(x + xx, yy + 1, 1, line_height - 3, WHITE);
-            }
-            c.caret = Some((x + xx, yy, line_height));
-        }
-    }
-    lines
-        .iter()
-        .enumerate()
-        .map(|(i, line)| {
-            let mut stops = vec![(line.start, 0)];
-            let mut offset = line.start;
-            let mut prefix = String::new();
-            for ch in line.text.chars() {
-                offset += ch.len_utf16();
-                prefix.push(ch);
-                stops.push((offset, c.width(&prefix, size)));
-            }
-            // One UTF-16 offset belongs to the next row at a soft wrap. Do not
-            // offer it as an upward target, which would appear not to move.
-            if stops.len() > 1 && lines.get(i + 1).is_some_and(|next| next.start == line.end) {
-                stops.pop();
-            }
-            VisualRow { stops }
-        })
-        .collect()
 }
 
 #[cfg(test)]
@@ -377,10 +251,11 @@ mod tests {
             Screen::Messages,
             Screen::Drafts,
             Screen::Outbox,
+            Screen::Inbox,
             Screen::Compose,
             Screen::Browser,
             Screen::Music,
-            Screen::Dial,
+            Screen::Conversation,
             Screen::Contacts,
             Screen::Settings,
         ] {
@@ -409,5 +284,131 @@ mod tests {
         p.overlay = None;
         render(&mut c, &mut p);
         assert_eq!(c.pixels.len(), 240 * 320 * 4);
+    }
+}
+
+#[cfg(test)]
+mod sms_geometry_tests {
+    use super::*;
+    #[test]
+    fn native_sms_rows_share_baseline_and_keep_counter_and_footer_clear() {
+        let mut c = Canvas::new().unwrap();
+        let mut p = Phone::new(Default::default());
+        p.go(Screen::Compose);
+        p.compose.recipient = false;
+        p.compose.body.prediction.set_language(None);
+        p.compose.body.insert("你");
+        render(&mut c, &mut p);
+        assert_eq!(c.caret.unwrap().1, 224);
+        let fill = c.accent(3);
+        let pixel = |c: &Canvas, x: usize, y: usize| {
+            c.pixels[(y * 240 + x) * 4..(y * 240 + x) * 4 + 4].to_vec()
+        };
+        assert_eq!(pixel(&c, 199, 220), fill);
+        assert_eq!(pixel(&c, 199, 219), [0, 0, 0, 255]);
+        let chrome = c.pixels[254 * 240 * 4..].to_vec();
+        p.compose.body.insert("\n");
+        render(&mut c, &mut p);
+        assert_eq!(c.caret.unwrap().1, 224);
+        assert_eq!(pixel(&c, 199, 194), fill);
+        assert_eq!(pixel(&c, 199, 193), [0, 0, 0, 255]);
+        // Count changes, but the softkey row does not move.
+        assert_eq!(&c.pixels[286 * 240 * 4..], &chrome[(286 - 254) * 240 * 4..]);
+        p.compose.body.clear();
+        p.compose
+            .body
+            .insert(&format!("{}1", "1234567890".repeat(16)));
+        render(&mut c, &mut p);
+        assert_eq!(p.editor_lines.len(), 11);
+        assert_eq!(c.caret.unwrap().1, 224);
+        assert_eq!(pixel(&c, 199, 24), fill);
+        assert_eq!(pixel(&c, 199, 23), [0, 0, 0, 255]);
+        assert_eq!(pixel(&c, 238, 30), [38, 43, 37, 255]);
+        assert_eq!(pixel(&c, 238, 100), [112, 117, 111, 255]);
+        let (_, top, height) = c.caret.unwrap();
+        assert_eq!(
+            pixel(&c, c.caret.unwrap().0 as usize, (top + height + 1) as usize),
+            WHITE
+        );
+    }
+    #[test]
+    fn sms_integer_advances_word_wrap_and_utf16_stops_agree() {
+        let mut c = Canvas::new().unwrap();
+        let rows = text::MESSAGE.wrap(
+            &mut c,
+            &format!("呢{}123456789", "1234567890".repeat(6)),
+            20,
+            200,
+        );
+        assert_eq!(rows[0].text, "呢");
+        assert_eq!(rows[1].text, "1234567890123456");
+        assert_eq!(rows.len(), 6);
+        assert_eq!(text::MESSAGE.width(&mut c, &rows[1].text, 20), 192);
+        let mut p = Phone::new(Default::default());
+        p.go(Screen::Compose);
+        p.compose.recipient = false;
+        p.compose.body.insert("中😀\n12");
+        render(&mut c, &mut p);
+        assert_eq!(p.editor_lines[1].stops, [(4, 0), (5, 12), (6, 24)]);
+    }
+}
+
+#[cfg(test)]
+mod shared_controls_tests {
+    use super::*;
+    fn region(c: &Canvas, x: usize, y: usize, width: usize, height: usize) -> Vec<u8> {
+        (y..y + height)
+            .flat_map(|row| {
+                c.pixels[(row * 240 + x) * 4..(row * 240 + x + width) * 4]
+                    .iter()
+                    .copied()
+            })
+            .collect()
+    }
+    #[test]
+    fn select_softkey_is_identical_across_apps() {
+        let mut c = Canvas::new().unwrap();
+        let mut p = Phone::new(Default::default());
+        let mut expected = None;
+        for screen in [
+            Screen::Settings,
+            Screen::Snake,
+            Screen::Tools(crate::phone::tools::ToolPage::Other),
+            Screen::Browser,
+        ] {
+            p.launch(screen);
+            render(&mut c, &mut p);
+            let actual = region(&c, 82, 284, 76, 36);
+            if let Some(expected) = &expected {
+                assert_eq!(&actual, expected, "{screen:?}");
+            } else {
+                expected = Some(actual);
+            }
+        }
+    }
+    #[test]
+    fn message_and_browser_editors_share_delete_control() {
+        let mut c = Canvas::new().unwrap();
+        let mut p = Phone::new(Default::default());
+        p.go(Screen::Compose);
+        p.compose.recipient = false;
+        p.compose.body.insert("你");
+        render(&mut c, &mut p);
+        let message_delete = region(&c, 208, 284, 32, 36);
+        p.go(Screen::Browser);
+        p.overlay = Some(Overlay::Text {
+            target: TextTarget::Address,
+            editor: Box::new(Editor::new("test", 4096)),
+        });
+        render(&mut c, &mut p);
+        assert_eq!(region(&c, 208, 284, 32, 36), message_delete);
+        // A grid without a center action must not inherit the editor's label.
+        p.go(Screen::Menu);
+        render(&mut c, &mut p);
+        assert!(
+            region(&c, 82, 284, 76, 36)
+                .chunks_exact(4)
+                .all(|pixel| pixel == [0, 0, 0, 255])
+        );
     }
 }

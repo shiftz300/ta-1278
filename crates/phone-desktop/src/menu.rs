@@ -99,6 +99,9 @@ pub const ENTRIES: [Entry; 18] = [
     },
 ];
 pub const INITIAL_FOCUS: usize = 4;
+pub fn phone_disabled(screen: Screen) -> bool {
+    matches!(screen, Screen::Tools(ToolPage::Calls))
+}
 pub fn navigate(index: usize, key: Key) -> usize {
     match key {
         Key::Left => (index + ENTRIES.len() - 1) % ENTRIES.len(),

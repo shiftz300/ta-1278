@@ -1,7 +1,7 @@
 use super::*;
 use crate::phone::settings::{SHORTCUTS, SettingsPage};
 pub(super) fn render(c: &mut Canvas, p: &Phone) {
-    c.text(6, 1, p.settings_title(), 14, WHITE);
+    chrome::title(c, p.settings_title());
     if p.settings_page == SettingsPage::Theme {
         for i in 0..6 {
             let x = i as i32 * 41;
@@ -23,8 +23,7 @@ pub(super) fn render(c: &mut Canvas, p: &Phone) {
             c.icon(*icon, x - 38, y - 38, 76);
         }
         c.rect(0, 290, 240, 30, [0, 0, 0, 255]);
-        footer(c, "", "←");
-        c.text(98, 296, "选择", 20, WHITE);
+        Softkeys::back("选择").draw(c);
         return;
     }
     if p.settings_page == SettingsPage::Shortcuts {
@@ -44,37 +43,35 @@ pub(super) fn render(c: &mut Canvas, p: &Phone) {
         }
     } else {
         let labels = p.settings_labels();
-        let start = p.index.saturating_sub(5);
-        for (i, label) in labels.iter().enumerate().skip(start).take(6) {
-            let y = 24 + (i - start) as i32 * 42;
-            if p.index == i {
-                c.rect(0, y, 240, 42, c.accent(3));
-            }
-            c.fit(6, y + 10, label, 20, WHITE, 203);
-            if let SettingsPage::Shortcut { left } = p.settings_page {
-                let selected = if left {
-                    p.preferences.left_shortcut
+        list::draw(
+            c,
+            labels.len(),
+            p.index,
+            list::ListStyle {
+                text_width: 203,
+                ..list::ListStyle::STANDARD
+            },
+            |i| {
+                let marker = if let SettingsPage::Shortcut { left } = p.settings_page {
+                    list::Marker::Radio(
+                        i == if left {
+                            p.preferences.left_shortcut
+                        } else {
+                            p.preferences.right_shortcut
+                        },
+                    )
                 } else {
-                    p.preferences.right_shortcut
+                    list::Marker::None
                 };
-                c.ring(
-                    225,
-                    y + 21,
-                    7,
-                    if p.index == i { WHITE } else { c.accent(3) },
-                );
-                if selected == i {
-                    c.rect(
-                        222,
-                        y + 18,
-                        6,
-                        6,
-                        if p.index == i { WHITE } else { c.accent(3) },
-                    );
+                list::Row {
+                    label: &labels[i],
+                    marker,
+                    enabled: !((matches!(p.settings_page, SettingsPage::Shortcut { .. })
+                        && i == 2)
+                        || (p.settings_page == SettingsPage::Keyboard && i == 0)),
                 }
-            }
-        }
+            },
+        );
     }
-    footer(c, "", "←");
-    c.text(98, 296, "选择", 20, WHITE);
+    Softkeys::back("选择").draw(c);
 }

@@ -8,19 +8,20 @@
 |---|---|
 | `phone-core/input.rs` | Key sources, holds, repeat and cancellation |
 | `editor.rs`, `predict.rs` | UTF-16 edits, multi-tap, pinyin/stroke replacements |
-| `sms.rs`, `sms_retry.rs` | Recovered count/error rules and local draft/outbox transactions |
+| `sms.rs`, `sms/conversation.rs`, `sms_retry.rs` | Recovered count/error rules, mailbox projection and local queue transactions |
 | `browser.rs` | Pages, request generations, history/forward, focus/scroll and forms |
 | `music.rs` | Playback controls, seek and repeat; external audio clock in normal runs |
 | `utilities.rs`, `calendar.rs`, `snake.rs` | Local utility models, date arithmetic and replacement game rules |
 | `phone-desktop/main.rs`, `host_input.rs`, `smoke.rs` | Window lifecycle, events, clocks, adapter scheduling and smoke run |
 | `phone.rs`, `phone/overlays.rs` | Top-level routes and shared editor/menu overlays |
-| `phone/sms.rs`, `mail.rs`, `browser.rs`, `browser_data.rs`, `music.rs` | App routes, local mailbox reading and browser persistence |
-| `phone/settings.rs`, `organizer.rs`, `tools.rs`, `snake.rs` | Separate settings, organizer, utility and game routes |
-| `views/` | Per-app rendering; no network or storage operations |
+| `phone/sms.rs`, `conversation.rs`, `mail.rs`, `browser.rs`, `browser_data.rs`, `music.rs` | App routes, local mailbox reading and browser persistence |
+| `phone/settings.rs`, `organizer.rs`, `contacts.rs`, `tools.rs`, `snake.rs` | Separate settings, organizer, utility and game routes |
+| `ui/` | Shared title, status, softkeys, list/popup, edit/form controls, original control art and typography profiles |
+| `views/` | App content and control declarations; no network or storage operations |
 | `canvas.rs`, `candidate_view.rs`, `theme.rs`, `menu.rs` | Fonts, pixels, prediction panels, recovered colors and observed menu order |
 | `gpu.rs`, `display.wgsl` | Surface and texture presentation |
 | `web.rs`, `web/flow.rs`, `phone-core/web_flow.rs` | Bounded HTTP worker, DOM control mapping and ordered HTML layout tokens |
-| `views/browser_layout.rs`, `browser_chrome.rs`, `softkeys.rs` | Shared paint/focus geometry, measured native overlays and key labels |
+| `views/browser_layout.rs`, `browser_chrome.rs` | Browser document paint/focus geometry and measured native panel styles |
 | `phone-vfs` | Virtual mount table, stream/volume interface and directory adapter |
 | `media.rs`, `audio.rs`, `phone/files.rs`, `views/files.rs` | Shared file/library service, audio output and separate file-manager UI |
 | `config.rs` | Host capability flags, separate from native settings |
@@ -36,7 +37,7 @@ Core code has no USB, modem, network or filesystem access. The browser worker re
 | Enter / middle mouse | Center |
 | F1 / left mouse | Left softkey |
 | F2 / Escape / right mouse | Right softkey |
-| F3 | Call key, without a telephony backend |
+| F3 | Disabled call key |
 | Home | End/home; asks about a nonempty draft |
 | Digits | Current input mode; hold inserts a digit |
 | F4 / hash in an editor | 拼 → 笔 → Abc → abc → ABC → 123 |
@@ -50,7 +51,7 @@ Mouse buttons apply anywhere in the client area, including first activation clic
 
 ## App boundaries
 
-SMS supports one recipient, drafts and a local unsent queue. Contacts are created locally; no device contacts are imported. Body Save closes only after successful storage. A failed save keeps editing active, including after a later retry. No call or SMS is sent.
+SMS supports one recipient, peer conversations with an inline composer, drafts, received records and a local unsent queue. Received-message input is an explicit local service method; normal startup generates no incoming traffic. Contacts are created locally; no device contacts are imported. Body Save closes only after successful storage. A failed save keeps editing active, including after a later retry. Calling is disabled; SMS stays in the local unsent queue.
 
 Browser opens its four-entry start page. `about:demo` is an offline test document. Text pages, links, fields, radios, checkboxes, single/multiple selects and GET forms work. Single-select reopens focused on row zero, separately from its selected marker. A text editor's right softkey deletes until empty, then cancels. Back/Forward restore in-session focus and scroll. Closing a page and exiting the app are separate confirmations. History URLs survive either action and app restart.
 
@@ -62,7 +63,7 @@ Music decodes MP3/WAV from the VFS. Playback time comes from the audio sink and 
 
 macOS data directory: `~/Library/Application Support/TA1278 Replica/`. Override with `--data-dir PATH`. Run one instance per directory.
 
-- `messages.json`: drafts and unsent queue.
+- `messages.json`: drafts, received records/read state and outgoing queue; optional timestamps and explicit synthetic sent state.
 - `preferences.json`: accent and side shortcuts.
 - `browser.json`: bookmarks, history, offline documents and browser preferences.
 - `organizer.json`: local contacts, calendar entries and alarms.
@@ -72,3 +73,5 @@ macOS data directory: `~/Library/Application Support/TA1278 Replica/`. Override 
 Writes use a temporary file, sync and rename. Corrupt/oversized existing files are retained and startup fails rather than overwriting them. All dirty stores block normal window close on save failure. App data is separate from firmware, acquisition archives and public screenshots.
 
 The prototype's 750 ms multi-tap, 500 ms long press, 120 ms repeat, 4096-unit SMS limit, extra local folder routes, utility formulas, game rules and host persistence are implementation choices. See [fidelity status](fidelity.md) and [asset licenses](../assets/README.md).
+
+[Shared UI controls](shared-ui.md) describe the native framework correlation and the common host implementation. Pages supply actions and control data; they do not own softkey baselines or edit metrics.

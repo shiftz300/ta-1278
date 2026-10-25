@@ -1,0 +1,74 @@
+{
+  "date_local": "2026-10-26",
+  "timezone": "Asia/Shanghai",
+  "firmware": "17.00.17.02",
+  "usb": "2e04:0019 interface 1",
+  "authorization": "Owner explicitly allowed test messages to their own specified handset number; full recipient retained only in private session files.",
+  "recipient": "177****2597",
+  "test_body": "127810260001",
+  "send_action_count": 1,
+  "key_ack_count": 43,
+  "guard_stops": [
+    {
+      "session": "ta1278-sms-20261026-011",
+      "reason": "Pre-action state mismatch: send-once; key not sent"
+    }
+  ],
+  "observations": [
+    "One CENTER send tap returned to the message list.",
+    "A new thread with the test recipient and body appeared, along with a message status icon.",
+    "Opening only that new thread displayed two copies of the test body with opposing tails and minute timestamps.",
+    "Message status icon was absent after opening the test thread.",
+    "UP focused a bubble and then its recognized numeric text; numeric focus changed the center softkey to Save.",
+    "Bubble options showed Delete and Forward; recognized-number options showed Call number and Send message. Neither action was activated.",
+    "Returned to the app menu; test messages retained."
+  ],
+  "limits": [
+    "Self-send sample establishes a UI loopback observation, not modem delivery-report or PDU validation.",
+    "Sent/received tail-direction assignment is not yet verified independently.",
+    "No raw frames exported: root message list included unrelated existing previews.",
+    "No duplicate send, call, forward, delete or real-message backend added to the replica."
+  ],
+  "private_frames": [
+    {
+      "private_session": "ta1278-sms-20261026-012",
+      "frame": "send-once.png",
+      "sha256": "0ad8b872c55e95334c76edc91d0a71d86c160346ad8c9de73d1b1464f985a8bf"
+    },
+    {
+      "private_session": "ta1278-sms-20261026-013",
+      "frame": "baseline.png",
+      "sha256": "be31bd72d3fc1c806a115b0a27cd8a9507af34f4f8b98103f280fee881f550fb"
+    },
+    {
+      "private_session": "ta1278-sms-20261026-015",
+      "frame": "test-conversation.png",
+      "sha256": "849ea0b36afef5681fd4ab2a50089af1ad54a4cdf5e34cb0d3932c23f95582d8"
+    },
+    {
+      "private_session": "ta1278-sms-20261026-016",
+      "frame": "select-test-bubble.png",
+      "sha256": "3aa3874698ceaa39411115115870886f9e91441a202130892b7701358bbd958f"
+    },
+    {
+      "private_session": "ta1278-sms-20261026-017",
+      "frame": "bubble-options.png",
+      "sha256": "ecd2813301adeeb9d461e6316037978669597bc9d100c7820c42aee41c5b2c09"
+    },
+    {
+      "private_session": "ta1278-sms-20261026-019",
+      "frame": "select-first-bubble.png",
+      "sha256": "ad70b5378cc5b37d654392acf515858d81eb43c6a461adbb52a408be74792d08"
+    },
+    {
+      "private_session": "ta1278-sms-20261026-021",
+      "frame": "first-bubble-options.png",
+      "sha256": "7d935ad47764800ea1695c4f80824a97db5f48b8362982d4afea176641c387d0"
+    },
+    {
+      "private_session": "ta1278-sms-20261026-024",
+      "frame": "back-to-menu.png",
+      "sha256": "d6fec4fcca6c1cd0d97e697c15f09975374496072b20a4bf70217d1fa606db7c"
+    }
+  ]
+}

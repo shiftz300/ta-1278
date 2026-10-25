@@ -44,3 +44,5 @@ The form and CERN fixtures are reduced local examples based on public test pages
 This is still a small HTML adapter, not the original browser engine. CSS, JavaScript, WML, images, downloads, POST and complete network/error flows are missing. Font hinting, round controls, some spacing and icon details still differ. Native radio icons are not copied into the host's offline status bar. Cache state, APN values, current homepage and active theme are observed device settings, not proven factory defaults.
 
 The 43-scene smoke test and unit tests check the replica. They do not establish full handset parity. See [remaining work](fidelity.md).
+
+The later [equal-content SMS check](sms-composer-layout.md) corrects body font metrics, count baseline, caret height and scrolling. Its four fixtures are a more precise editor comparison than the earlier empty/different-text pairs above.

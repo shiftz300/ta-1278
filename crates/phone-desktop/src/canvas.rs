@@ -1,0 +1,195 @@
+use fontdue::{Font, FontSettings, Metrics};
+use std::collections::HashMap;
+pub const W: u32 = 240;
+pub const H: u32 = 320;
+pub type Color = [u8; 4];
+pub const WHITE: Color = [242, 246, 253, 255];
+pub const MUTED: Color = [159, 180, 202, 255];
+pub const BG: Color = [13, 23, 38, 255];
+pub const BLUE: Color = [30, 91, 164, 255];
+#[derive(Clone)]
+pub struct Line {
+    pub text: String,
+    pub start: usize,
+    pub end: usize,
+}
+pub struct Canvas {
+    pub pixels: Vec<u8>,
+    fonts: Vec<Font>,
+    glyphs: HashMap<(char, u16), (Metrics, Vec<u8>)>,
+    pub icons: Vec<image::RgbaImage>,
+}
+impl Canvas {
+    pub fn new() -> Result<Self, String> {
+        let fonts = [
+            include_bytes!("../../../nokia-ta1278-research/analysis/ui/fonts/font-0-latn.otf")
+                .as_slice(),
+            include_bytes!("../../../nokia-ta1278-research/analysis/ui/fonts/font-1-hani.otf")
+                .as_slice(),
+        ]
+        .iter()
+        .map(|b| Font::from_bytes(*b, FontSettings::default()).map_err(str::to_owned))
+        .collect::<Result<Vec<_>, _>>()?;
+        let icons = [
+            include_bytes!(
+                "../../../nokia-ta1278-research/analysis/extracted/png/00436-icon-0006f368.png"
+            )
+            .as_slice(),
+            include_bytes!(
+                "../../../nokia-ta1278-research/analysis/extracted/png/00439-icon-0006fe40.png"
+            )
+            .as_slice(),
+            include_bytes!(
+                "../../../nokia-ta1278-research/analysis/extracted/png/00437-icon-0006f7fc.png"
+            )
+            .as_slice(),
+            include_bytes!(
+                "../../../nokia-ta1278-research/analysis/extracted/png/00441-icon-00070b98.png"
+            )
+            .as_slice(),
+            include_bytes!(
+                "../../../nokia-ta1278-research/analysis/extracted/png/00429-icon-0006d64c.png"
+            )
+            .as_slice(),
+            include_bytes!(
+                "../../../nokia-ta1278-research/analysis/extracted/png/00444-icon-00071be0.png"
+            )
+            .as_slice(),
+        ]
+        .iter()
+        .map(|b| {
+            image::load_from_memory(b)
+                .map(|i| i.to_rgba8())
+                .map_err(|e| e.to_string())
+        })
+        .collect::<Result<Vec<_>, _>>()?;
+        Ok(Self {
+            pixels: vec![0; (W * H * 4) as usize],
+            fonts,
+            glyphs: HashMap::new(),
+            icons,
+        })
+    }
+    fn glyph(&mut self, ch: char, size: u16) -> &(Metrics, Vec<u8>) {
+        self.glyphs.entry((ch, size)).or_insert_with(|| {
+            let font = self
+                .fonts
+                .iter()
+                .find(|f| f.lookup_glyph_index(ch) != 0)
+                .unwrap_or(&self.fonts[0]);
+            font.rasterize(ch, size as f32)
+        })
+    }
+    pub fn width(&mut self, text: &str, size: u16) -> i32 {
+        text.chars()
+            .map(|c| self.glyph(c, size).0.advance_width)
+            .sum::<f32>()
+            .ceil() as i32
+    }
+    pub fn clear(&mut self, c: Color) {
+        for px in self.pixels.chunks_exact_mut(4) {
+            px.copy_from_slice(&c);
+        }
+    }
+    pub fn rect(&mut self, x: i32, y: i32, w: i32, h: i32, c: Color) {
+        for yy in y.max(0)..(y + h).min(H as i32) {
+            for xx in x.max(0)..(x + w).min(W as i32) {
+                let i = ((yy * W as i32 + xx) * 4) as usize;
+                self.pixels[i..i + 4].copy_from_slice(&c);
+            }
+        }
+    }
+    fn blend(&mut self, x: i32, y: i32, c: Color, alpha: u8) {
+        if x < 0 || y < 0 || x >= W as i32 || y >= H as i32 {
+            return;
+        }
+        let i = ((y * W as i32 + x) * 4) as usize;
+        let a = alpha as u32 * c[3] as u32 / 255;
+        for (j, channel) in c.iter().enumerate().take(3) {
+            self.pixels[i + j] =
+                ((self.pixels[i + j] as u32 * (255 - a) + *channel as u32 * a) / 255) as u8;
+        }
+        self.pixels[i + 3] = 255;
+    }
+    pub fn text(&mut self, x: i32, y: i32, text: &str, size: u16, c: Color) {
+        let mut cursor = x as f32;
+        for ch in text.chars() {
+            let (m, bitmap) = self.glyph(ch, size).clone();
+            let top = y + size as i32 - m.height as i32 - m.ymin;
+            for yy in 0..m.height {
+                for xx in 0..m.width {
+                    self.blend(
+                        cursor.round() as i32 + m.xmin + xx as i32,
+                        top + yy as i32,
+                        c,
+                        bitmap[yy * m.width + xx],
+                    );
+                }
+            }
+            cursor += m.advance_width;
+            if cursor > W as f32 {
+                break;
+            }
+        }
+    }
+    pub fn fit(&mut self, x: i32, y: i32, text: &str, size: u16, c: Color, max: i32) {
+        let mut s = String::new();
+        for ch in text.chars() {
+            let next = format!("{s}{ch}");
+            if self.width(&next, size) > max - 10 {
+                s.push('…');
+                break;
+            }
+            s.push(ch);
+        }
+        self.text(x, y, &s, size, c);
+    }
+    pub fn wrap(&mut self, text: &str, size: u16, width: i32) -> Vec<Line> {
+        let mut out = vec![];
+        let mut s = String::new();
+        let mut start = 0;
+        let mut offset = 0;
+        for ch in text.chars() {
+            if ch == '\n' {
+                out.push(Line {
+                    text: std::mem::take(&mut s),
+                    start,
+                    end: offset,
+                });
+                offset += 1;
+                start = offset;
+                continue;
+            }
+            if !s.is_empty() && self.width(&format!("{s}{ch}"), size) > width {
+                out.push(Line {
+                    text: std::mem::take(&mut s),
+                    start,
+                    end: offset,
+                });
+                start = offset;
+            }
+            s.push(ch);
+            offset += ch.len_utf16();
+        }
+        out.push(Line {
+            text: s,
+            start,
+            end: offset,
+        });
+        out
+    }
+    pub fn icon(&mut self, index: usize, x: i32, y: i32, size: u32) {
+        let img = image::imageops::resize(
+            &self.icons[index],
+            size,
+            size,
+            image::imageops::FilterType::Nearest,
+        );
+        for (ox, oy, p) in img.enumerate_pixels() {
+            self.blend(x + ox as i32, y + oy as i32, [p[0], p[1], p[2], 255], p[3]);
+        }
+    }
+    pub fn save(&self, path: &std::path::Path) -> Result<(), image::ImageError> {
+        image::save_buffer(path, &self.pixels, W, H, image::ColorType::Rgba8)
+    }
+}

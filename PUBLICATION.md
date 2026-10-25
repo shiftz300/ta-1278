@@ -1,6 +1,6 @@
 # 发布范围与复现
 
-2026-10-25。仓库保持原研究目录结构，避免改动采集原件或使偏移索引失效。Git 采用白名单管理；本地完整档案仍在原路径。
+2026-10-25。仓库保持原研究目录结构，避免改动采集原件或使偏移索引失效。Git 采用白名单管理；私人采集文件和临时分析文件现已归档到工作区外的同级 `ta-1278-source/workspace/`，保留相对路径。公开系统原件仍在仓库。
 
 ## 包含
 
@@ -29,7 +29,7 @@ python3 tools/analyze_system.py
 
 `prepare_offline_workspace.py` 校验发布清单后复制五个系统文件到既有脚本约定的工作目录；已有不同内容会拒绝覆盖。仅操作本地文件。
 
-框架语义步骤需要 `tools/upstream-reference/mmi-framework/` 中的 59 个参考文本。清单 `provenance.json` 指向固定提交，版权保留。显式运行以下命令会联网下载这些文本并校验，不会编译或执行它们：
+框架语义步骤需要 `tools/upstream-reference/mmi-framework/` 中的 63 个参考文本。清单 `provenance.json` 指向固定提交，版权保留。显式运行以下命令会联网下载这些文本并校验，不会编译或执行它们：
 
 ```sh
 python3 tools/fetch_framework_reference.py
@@ -48,3 +48,9 @@ python3 tools/rebuild_app_analysis.py
 本轮新增应用逆向：本地已核验全部 63 个参考文本哈希，7 步应用流水线及 75 项检查通过；隔离重建的 79 个确定性输出一致。具体状态见 `analysis/ui/apps/rebuild-log.json` 和 `contract-validation.json`。历史发布验证记录保持原样，不冒充本轮重新联网下载记录。
 
 隔离复现：`python3 tools/verify_app_reproduction.py`。它从 Git 可见文件创建临时副本，使用已核验的本地参考文本，准备公开系统原件并重建应用分析；不读取私人 NAND/NV，不联网。结果写入 `analysis/ui/apps/reproduction-validation.json`。
+
+## 桌面程序阶段
+
+Rust 源码在 `crates/`，运行及模块说明见根 README 和 `docs/architecture.md`。运行程序不需要 Python、LLVM、私人备份或参考源码。旧 `refresh_checksums.py` 用于采集阶段的完整本地树；归档后应分别验证仓库 `PUBLIC_SHA256SUMS` 与外部 `archive-manifest.json`，不要重写旧采集基线。
+
+参考文本已归档。本机可运行 `python3 tools/restore_framework_reference.py` 从外部档案仅恢复清单中 63 个公开参考文本（逐文件核验）；新机器仍使用 `fetch_framework_reference.py`。两者均不执行这些参考代码。

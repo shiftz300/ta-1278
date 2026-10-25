@@ -1,0 +1,17 @@
+[package]
+name = "phone-desktop"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+phone-core = { path = "../phone-core" }
+serde.workspace = true
+serde_json.workspace = true
+winit = "0.30.13"
+wgpu = "30.0.1"
+pollster = "0.4"
+fontdue = "0.9"
+image = { version = "0.25", default-features = false, features = ["png"] }
+ureq = "3"
+url = "2"
+scraper = "0.29"

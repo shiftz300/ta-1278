@@ -1,0 +1,193 @@
+{
+  "source": "nokia-ta1278-research/firmware/original/system-20261025T054301+0800/user.bin",
+  "source_sha256": "8f0db2dc82f9e763cb700c2e5781b7ca7125a4d250f4c075dbec793eb549c1ca",
+  "dial_table": [
+    {
+      "offset": "0x6f8d94",
+      "code": "*#67248#",
+      "option": 1,
+      "control": 5,
+      "handler": "0x88317397"
+    },
+    {
+      "offset": "0x6f8da4",
+      "code": "####1111#",
+      "option": 2,
+      "control": 5,
+      "handler": "0x88315975"
+    },
+    {
+      "offset": "0x6f8db4",
+      "code": "#*8378#3#",
+      "option": 3,
+      "control": 5,
+      "handler": "0x8806f84b"
+    },
+    {
+      "offset": "0x6f8dc4",
+      "code": "#*8378#4#",
+      "option": 4,
+      "control": 5,
+      "handler": "0x8806f869"
+    },
+    {
+      "offset": "0x6f8dd4",
+      "code": "####2222#",
+      "option": 6,
+      "control": 5,
+      "handler": "0x8806f859"
+    },
+    {
+      "offset": "0x6f8de4",
+      "code": "####1040#",
+      "option": 7,
+      "control": 5,
+      "handler": "0x8806f877"
+    },
+    {
+      "offset": "0x6f8df4",
+      "code": "*#0000#",
+      "option": 9,
+      "control": 11,
+      "handler": "0x882dd5cf"
+    },
+    {
+      "offset": "0x6f8e04",
+      "code": "*#6774#",
+      "option": 10,
+      "control": 11,
+      "handler": "0x882dd61d"
+    },
+    {
+      "offset": "0x6f8e14",
+      "code": "*#07#",
+      "option": 11,
+      "control": 11,
+      "handler": "0x882dd6df"
+    },
+    {
+      "offset": "0x6f8e24",
+      "code": "*#2820#",
+      "option": 12,
+      "control": 11,
+      "handler": "0x882dd859"
+    },
+    {
+      "offset": "0x6f8e34",
+      "code": "#*8378#2#",
+      "option": 14,
+      "control": 11,
+      "handler": "0x8802e935"
+    },
+    {
+      "offset": "0x6f8e44",
+      "code": "####0000#",
+      "option": 15,
+      "control": 11,
+      "handler": "0x8802e935"
+    },
+    {
+      "offset": "0x6f8e54",
+      "code": "#*8378#5#",
+      "option": 16,
+      "control": 11,
+      "handler": "0x8807046d"
+    },
+    {
+      "offset": "0x6f8e64",
+      "code": "#*786646468#",
+      "option": 20,
+      "control": 11,
+      "handler": "0x88074331"
+    },
+    {
+      "offset": "0x6f8e74",
+      "code": "#*2663448378#",
+      "option": 21,
+      "control": 11,
+      "handler": "0x886c8615"
+    },
+    {
+      "offset": "0x6f8e84",
+      "code": "#*8378#8#",
+      "option": 18,
+      "control": 11,
+      "handler": "0x882ddc3d"
+    },
+    {
+      "offset": "0x6f8e94",
+      "code": "#*8378#9#",
+      "option": 19,
+      "control": 11,
+      "handler": "0x8807047d"
+    },
+    {
+      "offset": "0x6f8ea4",
+      "code": "#*1234#",
+      "option": 22,
+      "control": 11,
+      "handler": "0x885e2e53"
+    },
+    {
+      "offset": "0x6f8eb4",
+      "code": "#*9999#",
+      "option": 23,
+      "control": 11,
+      "handler": "0x8859be7b"
+    },
+    {
+      "offset": "0x6f8ec4",
+      "code": "#*5678#",
+      "option": 24,
+      "control": 11,
+      "handler": "0x880b570d"
+    }
+  ],
+  "usblog_nv_id": "0x130006",
+  "ranges": [
+    {
+      "name": "runtime-entry-open",
+      "start": "0x2ddc3c",
+      "end_exclusive": "0x2ddc4a",
+      "sha256": "9d5c85fa9474c27c110c0253807db750ea4ca6d9c0275349a0502e9f9064f142"
+    },
+    {
+      "name": "runtime-test-setting",
+      "start": "0x2df902",
+      "end_exclusive": "0x2dfa78",
+      "sha256": "d45ac22624246a4667f63e548b5e827d24672ba2264caabcf295c55b5a66e208"
+    },
+    {
+      "name": "runtime-usblog-nv",
+      "start": "0x6d152",
+      "end_exclusive": "0x6d186",
+      "sha256": "7b6c311884b073429f157ede720fb7a276df3f09bbd0123634d4d48cdc0850d6"
+    },
+    {
+      "name": "runtime-usblog-window",
+      "start": "0x6d31c",
+      "end_exclusive": "0x6d39c",
+      "sha256": "1add925dd16e40d229edc7d97ed66c544e50f3ee6ae9bbf9a864975082ca8ed1"
+    },
+    {
+      "name": "runtime-contact-fill",
+      "start": "0x5ea9c4",
+      "end_exclusive": "0x5eaaca",
+      "sha256": "58b2f0864e95d02dae353b62ce0c54b24ae22a377c490ceb0dc19ce7a8af8e35"
+    }
+  ],
+  "generated_contact_formats": {
+    "number": {
+      "adr_instruction": "0x5eaa46",
+      "offset": "0x5ead98",
+      "format": "123%04d"
+    },
+    "name": {
+      "adr_instruction": "0x5eaa80",
+      "offset": "0x5eada0",
+      "format": "a%04d"
+    }
+  },
+  "status": "Static entry and side effects recovered. This script does not test runtime USB; see docs/handset-observations.md for separate live results.",
+  "limits": "Opening the menu only constructs a list. Selecting Open also changes sound, call restrictions, lock/backlight and fills contacts. Close is not a complete rollback. No device command was sent by this script."
+}

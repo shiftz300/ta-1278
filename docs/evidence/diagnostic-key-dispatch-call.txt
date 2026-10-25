@@ -1,0 +1,12 @@
+
+kernel.analysis-only.elf:	file format elf32-littlearm
+
+Disassembly of section .text:
+
+80e65e00 <.text>:
+80e853b8: 465b         	mov	r3, r11
+80e853ba: 462a         	mov	r2, r5
+80e853bc: 4649         	mov	r1, r9
+80e853be: 4620         	mov	r0, r4
+80e853c0: f7ff fea4    	bl	0x80e8510c <.text+0x1f30c> @ imm = #-0x2b8
+80e853c4: e78d         	b	0x80e852e2 <.text+0x1f4e2> @ imm = #-0xe6

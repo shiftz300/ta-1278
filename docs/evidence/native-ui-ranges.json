@@ -1,0 +1,47 @@
+{
+  "source_sha256": "8f0db2dc82f9e763cb700c2e5781b7ca7125a4d250f4c075dbec793eb549c1ca",
+  "ranges": [
+    {
+      "name": "accent-selection",
+      "start": "0x883a45d8",
+      "end_exclusive": "0x883a4692",
+      "sha256": "ad705f60301b462b0164f6576d4ce5b9f28ad62d78b98d468c023597adb9e314"
+    },
+    {
+      "name": "chinese-popup-geometry",
+      "start": "0x881c9ccc",
+      "end_exclusive": "0x881c9e8e",
+      "sha256": "9fbff78a6154b10d4810f8e3ecda1c55de5ae8b9090f0f4f99d33e531fac9675"
+    },
+    {
+      "name": "chinese-draw-dispatch",
+      "start": "0x881cb856",
+      "end_exclusive": "0x881cb8c2",
+      "sha256": "89f044730d81be312c432d162f53e08ece6b61a61248b9cbb353217e4b30c24f"
+    },
+    {
+      "name": "candidate-draw-setup",
+      "start": "0x88a79d26",
+      "end_exclusive": "0x88a79db0",
+      "sha256": "cb3956c066ee27716589514793eada4826c79a6a4eba9d52a5b8499990160d37"
+    },
+    {
+      "name": "candidate-draw-rows",
+      "start": "0x88a79e3c",
+      "end_exclusive": "0x88a79f5c",
+      "sha256": "0393f9c805dda2c40ddd7b83722a88c24d691cd620a60d74d72ffbe63bdf4a65"
+    },
+    {
+      "name": "candidate-pair-setup",
+      "start": "0x88a79f5c",
+      "end_exclusive": "0x88a79fe4",
+      "sha256": "d06ef909ec6d254d304be95776cda4833af311a5aa214729a6415b13acafe02a"
+    },
+    {
+      "name": "candidate-pair-paint",
+      "start": "0x88a7a0ea",
+      "end_exclusive": "0x88a7a19e",
+      "sha256": "ac7220d906c994aa2236254e56cf6cc671f65f0982c56438bdc6a3fa55cae9ea"
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+
+kernel.analysis-only.elf:	file format elf32-littlearm
+
+Disassembly of section .text:
+
+80e65e00 <.text>:
+80e85256: e92d 4ff0    	push.w	{r4, r5, r6, r7, r8, r9, r10, r11, lr}
+80e8525a: 7997         	ldrb	r7, [r2, #0x6]
+80e8525c: b08b         	sub	sp, #0x2c
+80e8525e: 79d6         	ldrb	r6, [r2, #0x7]
+80e85260: 4615         	mov	r5, r2
+80e85262: 4689         	mov	r9, r1
+80e85264: 4604         	mov	r4, r0
+80e85266: 48d8         	ldr	r0, [pc, #0x360]        @ 0x80e855c8 <.text+0x1f7c8>
+80e85268: 469b         	mov	r11, r3
+80e8526a: 4632         	mov	r2, r6
+80e8526c: 4639         	mov	r1, r7
+80e8526e: f2e8 f4a0    	bl	0x8156dbb2 <.text+0x707db2> @ imm = #0x6e8940
+80e85272: 2f64         	cmp	r7, #0x64
+80e85274: f04f 0a00    	mov.w	r10, #0x0
+80e85278: d211         	bhs	0x80e8529e <.text+0x1f49e> @ imm = #0x22
+80e8527a: 48d4         	ldr	r0, [pc, #0x350]        @ 0x80e855cc <.text+0x1f7cc>
+80e8527c: f850 c027    	ldr.w	r12, [r0, r7, lsl #2]
+80e85280: f1bc 0f00    	cmp.w	r12, #0x0
+80e85284: d007         	beq	0x80e85296 <.text+0x1f496> @ imm = #0xe
+80e85286: 465b         	mov	r3, r11
+80e85288: 462a         	mov	r2, r5
+80e8528a: 4649         	mov	r1, r9
+80e8528c: 4620         	mov	r0, r4
+80e8528e: 47e0         	blx	r12
+80e85290: 2800         	cmp	r0, #0x0
+80e85292: d126         	bne	0x80e852e2 <.text+0x1f4e2> @ imm = #0x4c
+80e85294: e003         	b	0x80e8529e <.text+0x1f49e> @ imm = #0x6
+80e85296: 2f5e         	cmp	r7, #0x5e
+80e85298: d01c         	beq	0x80e852d4 <.text+0x1f4d4> @ imm = #0x38
+80e8529a: 2f5f         	cmp	r7, #0x5f
+80e8529c: d01a         	beq	0x80e852d4 <.text+0x1f4d4> @ imm = #0x34
+80e8529e: 2010         	movs	r0, #0x10
+80e852a0: a27e         	adr	r2, #504 <.text+0x1f522>
+80e852a2: a1cb         	adr	r1, #812 <.text+0x1f571>
+80e852a4: f2e8 f4b7    	bl	0x8156dc16 <.text+0x707e16> @ imm = #0x6e896e
+80e852a8: f105 0008    	add.w	r0, r5, #0x8
+80e852ac: 9003         	str	r0, [sp, #0xc]
+80e852ae: 2f0d         	cmp	r7, #0xd
+80e852b0: f04f 0801    	mov.w	r8, #0x1
+80e852b4: f1ab 0008    	sub.w	r0, r11, #0x8
+80e852b8: 9002         	str	r0, [sp, #0x8]
+80e852ba: d071         	beq	0x80e853a0 <.text+0x1f5a0> @ imm = #0xe2
+80e852bc: dc14         	bgt	0x80e852e8 <.text+0x1f4e8> @ imm = #0x28
+80e852be: 2f0d         	cmp	r7, #0xd
+80e852c0: d26f         	bhs	0x80e853a2 <.text+0x1f5a2> @ imm = #0xde
+80e852c2: e8df f007    	tbb	[pc, r7]

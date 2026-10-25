@@ -3,10 +3,9 @@ use std::collections::HashMap;
 pub const W: u32 = 240;
 pub const H: u32 = 320;
 pub type Color = [u8; 4];
-pub const WHITE: Color = [242, 246, 253, 255];
-pub const MUTED: Color = [159, 180, 202, 255];
-pub const BG: Color = [13, 23, 38, 255];
-pub const BLUE: Color = [30, 91, 164, 255];
+pub const WHITE: Color = crate::theme::rgb565(0xef9d);
+pub const MUTED: Color = crate::theme::rgb565(0x9cd3);
+
 #[derive(Clone)]
 pub struct Line {
     pub text: String,
@@ -18,6 +17,9 @@ pub struct Canvas {
     fonts: Vec<Font>,
     glyphs: HashMap<(char, u16), (Metrics, Vec<u8>)>,
     pub icons: Vec<image::RgbaImage>,
+    pub theme: crate::theme::Theme,
+    pub accent: usize,
+    pub caret: Option<(i32, i32, i32)>,
 }
 impl Canvas {
     pub fn new() -> Result<Self, String> {
@@ -26,6 +28,11 @@ impl Canvas {
                 .as_slice(),
             include_bytes!("../../../nokia-ta1278-research/analysis/ui/fonts/font-1-hani.otf")
                 .as_slice(),
+            include_bytes!("../../../nokia-ta1278-research/analysis/ui/fonts/font-2-hani.otf")
+                .as_slice(),
+            include_bytes!("../../../assets/fonts/NotoSansCJKsc-Regular.otf").as_slice(),
+            include_bytes!("../../../assets/fonts/NotoSansSymbols2-Regular.ttf").as_slice(),
+            include_bytes!("../../../assets/fonts/NotoEmoji.ttf").as_slice(),
         ]
         .iter()
         .map(|b| Font::from_bytes(*b, FontSettings::default()).map_err(str::to_owned))
@@ -55,6 +62,74 @@ impl Canvas {
                 "../../../nokia-ta1278-research/analysis/extracted/png/00444-icon-00071be0.png"
             )
             .as_slice(),
+            include_bytes!(
+                "../../../nokia-ta1278-research/analysis/extracted/png/00420-icon-00056684.png"
+            )
+            .as_slice(),
+            include_bytes!(
+                "../../../nokia-ta1278-research/analysis/extracted/png/00442-icon-0007117c.png"
+            )
+            .as_slice(),
+            include_bytes!(
+                "../../../nokia-ta1278-research/analysis/extracted/png/00441-icon-00070b98.png"
+            )
+            .as_slice(),
+            include_bytes!(
+                "../../../nokia-ta1278-research/analysis/extracted/png/00418-icon-00055de8.png"
+            )
+            .as_slice(),
+            include_bytes!(
+                "../../../nokia-ta1278-research/analysis/extracted/png/00448-icon-000733fc.png"
+            )
+            .as_slice(),
+            include_bytes!(
+                "../../../nokia-ta1278-research/analysis/extracted/png/00435-icon-0006f020.png"
+            )
+            .as_slice(),
+            include_bytes!(
+                "../../../nokia-ta1278-research/analysis/extracted/png/00434-icon-0006ede0.png"
+            )
+            .as_slice(),
+            include_bytes!(
+                "../../../nokia-ta1278-research/analysis/extracted/png/00449-icon-000737dc.png"
+            )
+            .as_slice(),
+            include_bytes!(
+                "../../../nokia-ta1278-research/analysis/extracted/png/00443-icon-00071564.png"
+            )
+            .as_slice(),
+            include_bytes!(
+                "../../../nokia-ta1278-research/analysis/extracted/png/00419-icon-000562e4.png"
+            )
+            .as_slice(),
+            include_bytes!(
+                "../../../nokia-ta1278-research/analysis/extracted/png/00432-icon-0006e214.png"
+            )
+            .as_slice(),
+            include_bytes!(
+                "../../../nokia-ta1278-research/analysis/extracted/png/00430-icon-0006d9f0.png"
+            )
+            .as_slice(),
+            include_bytes!(
+                "../../../nokia-ta1278-research/analysis/extracted/png/01340-icon-000ddcd0.png"
+            )
+            .as_slice(),
+            include_bytes!(
+                "../../../nokia-ta1278-research/analysis/extracted/png/01341-icon-000de0f4.png"
+            )
+            .as_slice(),
+            include_bytes!(
+                "../../../nokia-ta1278-research/analysis/extracted/png/00421-icon-00056b70.png"
+            )
+            .as_slice(),
+            include_bytes!(
+                "../../../nokia-ta1278-research/analysis/extracted/png/00447-icon-00072ddc.png"
+            )
+            .as_slice(),
+            include_bytes!(
+                "../../../nokia-ta1278-research/analysis/extracted/png/00292-icon-00049e5c.png"
+            )
+            .as_slice(),
         ]
         .iter()
         .map(|b| {
@@ -63,7 +138,11 @@ impl Canvas {
                 .map_err(|e| e.to_string())
         })
         .collect::<Result<Vec<_>, _>>()?;
+        let theme = crate::theme::Theme::load();
         Ok(Self {
+            accent: theme.startup_fallback_accent,
+            theme,
+            caret: None,
             pixels: vec![0; (W * H * 4) as usize],
             fonts,
             glyphs: HashMap::new(),
@@ -85,11 +164,6 @@ impl Canvas {
             .map(|c| self.glyph(c, size).0.advance_width)
             .sum::<f32>()
             .ceil() as i32
-    }
-    pub fn clear(&mut self, c: Color) {
-        for px in self.pixels.chunks_exact_mut(4) {
-            px.copy_from_slice(&c);
-        }
     }
     pub fn rect(&mut self, x: i32, y: i32, w: i32, h: i32, c: Color) {
         for yy in y.max(0)..(y + h).min(H as i32) {
@@ -189,7 +263,51 @@ impl Canvas {
             self.blend(x + ox as i32, y + oy as i32, [p[0], p[1], p[2], 255], p[3]);
         }
     }
+    pub fn accent(&self, shade: usize) -> Color {
+        self.theme.color(self.accent, shade)
+    }
+    pub fn dim(&mut self) {
+        for px in self.pixels.chunks_exact_mut(4) {
+            for v in &mut px[..3] {
+                *v = (*v as u16 / 5) as u8;
+            }
+        }
+    }
+    pub fn background(&mut self) {
+        // Handset owner confirmed black. Available wallpaper assets do not prove defaults.
+        self.rect(0, 0, W as i32, H as i32, [0, 0, 0, 255]);
+    }
+    pub fn ring(&mut self, x: i32, y: i32, radius: i32, color: Color) {
+        for dy in -radius..=radius {
+            for dx in -radius..=radius {
+                let d = dx * dx + dy * dy;
+                if d <= radius * radius && d >= (radius - 2) * (radius - 2) {
+                    self.rect(x + dx, y + dy, 1, 1, color);
+                }
+            }
+        }
+    }
     pub fn save(&self, path: &std::path::Path) -> Result<(), image::ImageError> {
         image::save_buffer(path, &self.pixels, W, H, image::ColorType::Rgba8)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn fallback_has_outlines_for_expanded_scripts_and_emoji() {
+        let mut c = Canvas::new().unwrap();
+        for ch in "龘喆髙𠮷繁體かなカナ한글✓♫★→😀🙂🤔👍ΩЖ".chars() {
+            assert!(
+                c.fonts.iter().any(|f| f.lookup_glyph_index(ch) != 0),
+                "Missing {ch}"
+            );
+            let (metrics, pixels) = c.glyph(ch, 17);
+            assert!(
+                metrics.width > 0 && pixels.iter().any(|p| *p > 0),
+                "Blank {ch}"
+            );
+        }
     }
 }

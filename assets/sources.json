@@ -1,0 +1,107 @@
+[
+  {
+    "file": "fonts/NotoSansCJKsc-Regular.otf",
+    "url": "https://raw.githubusercontent.com/notofonts/noto-cjk/f8d157532fbfaeda587e826d4cd5b21a49186f7c/Sans/OTF/SimplifiedChinese/NotoSansCJKsc-Regular.otf",
+    "revision": "f8d157532fbfaeda587e826d4cd5b21a49186f7c",
+    "size": 16437364,
+    "sha256": "2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b"
+  },
+  {
+    "file": "fonts/NotoSansCJK-LICENSE.txt",
+    "url": "https://raw.githubusercontent.com/notofonts/noto-cjk/f8d157532fbfaeda587e826d4cd5b21a49186f7c/Sans/LICENSE",
+    "revision": "f8d157532fbfaeda587e826d4cd5b21a49186f7c",
+    "size": 4301,
+    "sha256": "6a73f9541c2de74158c0e7cf6b0a58ef774f5a780bf191f2d7ec9cc53efe2bf2"
+  },
+  {
+    "file": "input/rime-LICENSE.txt",
+    "url": "https://raw.githubusercontent.com/rime/rime-pinyin-simp/0c6861ef7420ee780270ca6d993d18d4101049d0/LICENSE",
+    "revision": "0c6861ef7420ee780270ca6d993d18d4101049d0",
+    "size": 11358,
+    "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+  },
+  {
+    "file": "input/rime-AUTHORS.txt",
+    "url": "https://raw.githubusercontent.com/rime/rime-pinyin-simp/0c6861ef7420ee780270ca6d993d18d4101049d0/AUTHORS",
+    "revision": "0c6861ef7420ee780270ca6d993d18d4101049d0",
+    "size": 177,
+    "sha256": "f4cff0fcbca4668ac449c24a53be547e162bc60cce63fdc5d5906801a452edc4"
+  },
+  {
+    "file": "input/pinyin_simp.dict.yaml",
+    "url": "https://raw.githubusercontent.com/rime/rime-pinyin-simp/0c6861ef7420ee780270ca6d993d18d4101049d0/pinyin_simp.dict.yaml",
+    "revision": "0c6861ef7420ee780270ca6d993d18d4101049d0",
+    "size": 1266216,
+    "sha256": "e341598343a0f0f2035bb1aafc34a7f3bb7887deeecb3f60796262aaa2983e6b"
+  },
+  {
+    "file": "input/en_50k.txt",
+    "url": "https://raw.githubusercontent.com/hermitdave/FrequencyWords/525f9b560de45753a5ea01069454e72e9aa541c6/content/2018/en/en_50k.txt",
+    "revision": "525f9b560de45753a5ea01069454e72e9aa541c6",
+    "size": 622749,
+    "sha256": "5351ff405b1126ef555791dd4d9798a48e3e9a501a9fc481a9da957752cfb458"
+  },
+  {
+    "file": "input/FrequencyWords-README.md",
+    "url": "https://raw.githubusercontent.com/hermitdave/FrequencyWords/525f9b560de45753a5ea01069454e72e9aa541c6/README.md",
+    "revision": "525f9b560de45753a5ea01069454e72e9aa541c6",
+    "size": 913,
+    "sha256": "a92fcc50e27f7b2d5860ec1c1ce794dc4c892d945bfa4c8c3136cdfd213ee710"
+  },
+  {
+    "file": "fonts/NotoSansSymbols2-Regular.ttf",
+    "url": "https://raw.githubusercontent.com/google/fonts/e7db6ca603fd4862010383ff17ffd6cc4ffac1c0/ofl/notosanssymbols2/NotoSansSymbols2-Regular.ttf",
+    "revision": "e7db6ca603fd4862010383ff17ffd6cc4ffac1c0",
+    "size": 1233128,
+    "sha256": "7d5fb73b7ca67a6798101741f5d280a3d016a56a197afcd4199dbb57b4b82a21"
+  },
+  {
+    "file": "fonts/NotoSansSymbols2-OFL.txt",
+    "url": "https://raw.githubusercontent.com/google/fonts/e7db6ca603fd4862010383ff17ffd6cc4ffac1c0/ofl/notosanssymbols2/OFL.txt",
+    "revision": "e7db6ca603fd4862010383ff17ffd6cc4ffac1c0",
+    "size": 4383,
+    "sha256": "b118dd41337806a5d4797052c77caf3bd096aed783e5eb21b4d11154351e1ac0"
+  },
+  {
+    "file": "fonts/NotoEmoji.ttf",
+    "url": "https://raw.githubusercontent.com/google/fonts/e7db6ca603fd4862010383ff17ffd6cc4ffac1c0/ofl/notoemoji/NotoEmoji%5Bwght%5D.ttf",
+    "revision": "e7db6ca603fd4862010383ff17ffd6cc4ffac1c0",
+    "size": 1982596,
+    "sha256": "de6c18832938afc99caf132b39d6a30a19bac7f2e812e28db2535b4608d27551"
+  },
+  {
+    "file": "fonts/NotoEmoji-OFL.txt",
+    "url": "https://raw.githubusercontent.com/google/fonts/e7db6ca603fd4862010383ff17ffd6cc4ffac1c0/ofl/notoemoji/OFL.txt",
+    "revision": "e7db6ca603fd4862010383ff17ffd6cc4ffac1c0",
+    "size": 4330,
+    "sha256": "500bb1ccf43df7bbb522112f9133a52b16e1c35e809632f5d8609b179152de5b"
+  },
+  {
+    "file": "input/CC-BY-SA-4.0.txt",
+    "url": "https://raw.githubusercontent.com/spdx/license-list-data/31ba1a50e5397e00a304dbadc76531740e89ee48/text/CC-BY-SA-4.0.txt",
+    "revision": "31ba1a50e5397e00a304dbadc76531740e89ee48",
+    "size": 18375,
+    "sha256": "cde7883b9050a1104f4ac19a1572aafd6e5d7323b68351aaf51fbf4beba54966"
+  },
+  {
+    "file": "input/stroke.dict.yaml",
+    "url": "https://raw.githubusercontent.com/rime/rime-stroke/1e8fff9b9494ddec23b0cbc526bcfd8171a6fd48/stroke.dict.yaml",
+    "revision": "1e8fff9b9494ddec23b0cbc526bcfd8171a6fd48",
+    "size": 3396330,
+    "sha256": "b3e93dce89c185f45c3d6e189b86b3a8626913352cc85e1094c786579a665791"
+  },
+  {
+    "file": "input/rime-stroke-LICENSE.txt",
+    "url": "https://raw.githubusercontent.com/rime/rime-stroke/1e8fff9b9494ddec23b0cbc526bcfd8171a6fd48/LICENSE",
+    "revision": "1e8fff9b9494ddec23b0cbc526bcfd8171a6fd48",
+    "size": 7651,
+    "sha256": "da7eabb7bafdf7d3ae5e9f223aa5bdc1eece45ac569dc21b3b037520b4464768"
+  },
+  {
+    "file": "input/rime-stroke-AUTHORS.txt",
+    "url": "https://raw.githubusercontent.com/rime/rime-stroke/1e8fff9b9494ddec23b0cbc526bcfd8171a6fd48/AUTHORS",
+    "revision": "1e8fff9b9494ddec23b0cbc526bcfd8171a6fd48",
+    "size": 273,
+    "sha256": "f0cbba217e049471ccb40751b7d2e1c98144bb2ad4ec15b9f5af057121ec99d6"
+  }
+]

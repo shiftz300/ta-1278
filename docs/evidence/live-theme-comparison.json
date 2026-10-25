@@ -1,0 +1,164 @@
+{
+  "source_kind": "native JPEG compared with firmware RGB565 table",
+  "palette_sha256": "efac8d11c0e7b80396bfe3eeba90b400bf2489994f4eb09429f949bff3599dae",
+  "frame_sha256": "a3138ecc2c6b9d3cc15e958b9d91d754932b248918dadd39ffbc065ed0da2b53",
+  "rows": [
+    {
+      "accent": 0,
+      "sample_roi": [
+        10,
+        32,
+        26,
+        48
+      ],
+      "jpeg_median_rgb": [
+        175,
+        1,
+        152
+      ],
+      "closest_palette_shade": 3,
+      "rgb565": 45075,
+      "expanded_rgb": [
+        180,
+        0,
+        156
+      ],
+      "channel_difference": [
+        -5,
+        1,
+        -4
+      ]
+    },
+    {
+      "accent": 1,
+      "sample_roi": [
+        51,
+        32,
+        67,
+        48
+      ],
+      "jpeg_median_rgb": [
+        222,
+        64,
+        16
+      ],
+      "closest_palette_shade": 3,
+      "rgb565": 57858,
+      "expanded_rgb": [
+        230,
+        64,
+        16
+      ],
+      "channel_difference": [
+        -8,
+        0,
+        0
+      ]
+    },
+    {
+      "accent": 2,
+      "sample_roi": [
+        92,
+        32,
+        108,
+        48
+      ],
+      "jpeg_median_rgb": [
+        247,
+        140,
+        0
+      ],
+      "closest_palette_shade": 3,
+      "rgb565": 64608,
+      "expanded_rgb": [
+        255,
+        141,
+        0
+      ],
+      "channel_difference": [
+        -8,
+        -1,
+        0
+      ]
+    },
+    {
+      "accent": 3,
+      "sample_roi": [
+        133,
+        32,
+        149,
+        48
+      ],
+      "jpeg_median_rgb": [
+        6,
+        164,
+        7
+      ],
+      "closest_palette_shade": 3,
+      "rgb565": 3361,
+      "expanded_rgb": [
+        8,
+        165,
+        8
+      ],
+      "channel_difference": [
+        -2,
+        -1,
+        -1
+      ]
+    },
+    {
+      "accent": 4,
+      "sample_roi": [
+        174,
+        32,
+        190,
+        48
+      ],
+      "jpeg_median_rgb": [
+        78,
+        124,
+        111
+      ],
+      "closest_palette_shade": 3,
+      "rgb565": 21486,
+      "expanded_rgb": [
+        82,
+        125,
+        115
+      ],
+      "channel_difference": [
+        -4,
+        -1,
+        -4
+      ]
+    },
+    {
+      "accent": 5,
+      "sample_roi": [
+        215,
+        32,
+        231,
+        48
+      ],
+      "jpeg_median_rgb": [
+        0,
+        116,
+        206
+      ],
+      "closest_palette_shade": 3,
+      "rgb565": 954,
+      "expanded_rgb": [
+        0,
+        117,
+        213
+      ],
+      "channel_difference": [
+        0,
+        -1,
+        -7
+      ]
+    }
+  ],
+  "limits": "JPEG YUV conversion is lossy. Nearest palette shade is supporting evidence, not proof of exact LCD color conversion."
+}

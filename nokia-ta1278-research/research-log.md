@@ -288,3 +288,49 @@ analyze_ui_code.py 新增按键分发、转换器、T9加载/初始化和浏览�
 - Cargo 初次下载受到失效 127.0.0.1:7890 代理影响；仅该命令设置 CARGO_HTTP_PROXY 为空后成功下载 crates.io 声明依赖，没有改全局配置。
 - 原生 Metal 窗口启动并呈现页面。实际鼠标三键、短信输入和浏览器加载测试发现短信弹窗绘制 unwrap 崩溃；修复后增加全屏幕/弹窗绘制测试，重新完成保存、重开和待发箱 NOT SENT 路径。
 - 测试、Clippy、构建和窗口验证记录见仓库 docs/validation.md。没有访问实机、执行固件、发送短信或拨号。
+
+## 2026-10-25：运行中实机诊断与第一轮交互采样
+
+用户接受测试模式会填充联系人并修改使用设置后，选择原机 `#*8378#8#` 的 Open 并重新连接。USB `2e04:0019` 的接口 1（IN 83 / OUT 04）经原机 UCOM open 控制请求后返回 `17.00.17.02`；未发送 open 时版本请求超时。恢复了截图 type 0x33 / response 0xa0、按键 type 1 及 framing，未加载其他代码、刷写固件或执行从固件提取的二进制。
+
+- `python3 scripts/recover-runtime-entry.py`：验证测试入口、USB Log NV、设置副作用和联系人填充路径；新增校验生成号码 `123%04d`、姓名 `a%04d` 的原件偏移。
+- `python3 scripts/handset_capture.py step/run/capture --profile docs/handset-profiles/ta1278-17.00.17.02.json ...`：逐步截图守卫，错误立即停止，不自动重发按键。命令、生成的 plan、ACK 和哈希均在各会话中。
+- JPEG 的开头有时被覆盖。仅修复已验证元数据范围；量化表与本机 kernel 表一致，保留每份原始响应和哈希，不猜补像素。四次完整图像拒绝与其他守卫停止均保留。
+- 编号 001–200：200 次版本验证，2,055 张解码截图，927 个按键 ACK，183 个完成计划、6 个纯截图会话、11 个停止尝试。这不是功能完成比例。
+- 数字短信边界回归：172 步、7 个截图断言通过，清空测试正文并恢复拼音；另有一次菜单重入焦点断言通过。ASCII 160/161 为 0/1、145/2；Unicode 70/71 为 0/1、63/2。
+- 主菜单 18 个入口已核实；支付宝、喜马拉雅仅经过焦点，未打开。16 个其余入口及 Other 的四项工具均有不同程度采样，不能把入口覆盖称为完整应用采样。
+- 浏览器只提交一次公开测试网址 http://example.com；只得到无标题空白内容区。记录地址编辑、页面菜单和两种关闭确认，未把桌面浏览器行为当作原机网页渲染证据。
+- 通讯录被测试模式填满。核对 a0000 的号码确为 1230000 后，仅删除这一条本次生成的测试联系人，腾出一个槽位，成功打开并取消空白新联系人表单。其余原有记录未改动。
+- 有一条无收件人模板短信执行了另存草稿，退出编辑；持久化与重开尚未证明。公开网址可能进入历史；贪吃蛇测试局已暂停；音乐停在测试曲目暂停态。收音机、手电筒已关闭，秒表清零，最终回主屏。测试模式仍启用。
+- `PYTHONPATH=scripts python3 -m handset.archive_sessions --through 200 --out /Users/shiftz/dev/ta-1278-source/handset-sessions/20261025`：归档 5,677 个文件并核验复制；其中 5,647 个属于编号会话。私人/原始画面不进入 Git。
+- `PYTHONPATH=scripts python3 -m handset.export_samples`：明确白名单导出 112 张已审阅实机 PNG，附原始响应、PNG 和像素 SHA-256。`PYTHONPATH=scripts python3 -m handset.compare_theme` 对六个色块与固件表作可复现对照。
+- `PYTHONPATH=scripts python3 -m unittest handset.test_handset`：14 项通过。完整采样、桌面逐页对照、网页内容/表单、实际服务和多项边界仍未完成；详见仓库 docs/handset-observations.md 与覆盖清单。
+
+
+## 2026-10-25 — SIM insertion and live browser follow-up (201–270)
+
+- 用户装卡重启后重新核验 USB/固件；204 起屏幕显示 SIM 2 中国电信 4G/VoLTE，诊断接口无需重新 Open 即可使用。没有修改 APN。
+- 依次用公开 example.com、httpbin 表单、CERN 静态链接、Selenium web-form 做 GET 访问。成功采集文本、表单控件、换行、滚动、链接、前进/后退、HTTPS 跳转和单选下拉列表。只输入合成 test、test 加换行加 a；不提交表单或打开文件上传。
+- `python3 scripts/handset_capture.py step/run/capture --profile docs/handset-profiles/ta1278-17.00.17.02.json ...`：每次完整参数和生成计划保存在对应外部会话的 plan.json/events.jsonl。201–270 共 890 张解码截图、410 个按键 ACK、64 次完整计划、6 次纯截图；5 个图片断言通过。219 第一次 Down 未移动，220 再次 Down 才移动，原因未定；没有以 ACK 替代画面证据。
+- 261 执行 `docs/handset-plans/browser-select-cancel.json`：3 步、2 断言；263 执行 browser-link-back.json：2 步、2 断言。结果文件记录计划及事件日志 SHA-256。公共页面变化或网络延迟会使回放停止，不作任意初态全自动保证。
+- 主机首次请求 CERN/Selenium 因沙箱 DNS 不可用失败；使用获准网络访问重新读取成功。主机页面源保存到外部 public-test-pages/，哈希和 URL 在 docs/evidence/browser-test-pages.json；不把主机响应等同于手机网络抓包。
+- `PYTHONPATH=scripts python3 -m handset.archive_sessions --through 270 --out /Users/shiftz/dev/ta-1278-source/handset-sessions/20261025`：原始会话留在外部，逐文件校验。export_samples 白名单增至 136 张，新增 24 张均为审阅过的公共测试页面。没有复制私人主屏或上传设备数据。
+- 本轮纠正两处概括：有前页时右软键是 Back，无前页才提示关闭；下拉列表重开焦点与选中值分离。主屏左侧显示“功能表”，但注入键 8 打开浏览器，物理按键等价性仍待核对，不能据此直接改复刻键位。270 已退出浏览器返回主屏，测试模式保留。公共 URL 可能留在历史中，未清空历史。
+
+
+### User correction and settings verification (271–283)
+
+用户纠正：带大时钟页的左右快捷键可在设置配置，不是普通功能表键映射。只读进入 设置→个性化选项→键盘→锁定屏幕快捷操作，278 明确显示右键=信息、左键=互联网，解释了前述疑问。遍历左键 18 个候选，记录无、视频、多媒体资料等选项；没有启动候选应用或保存设置。282 取消后仍为原绑定，283 返回主屏。13 会话、97 截图、42 按键、12 完成计划、1 次纯截图。新增 6 张已审阅设置截图，公开总数 142。已修正文档，不再将当前绑定当作默认或诊断映射错误。
+
+
+## 2026-10-25 — Apply live observations to the desktop implementation
+
+No additional phone command in this pass. Firmware extraction/reverse-engineering completeness is unchanged. Corrected the observed 18-entry menu/order/return behavior, configurable Home side shortcuts, horizontal theme preview/cancel, original icon scale and preview resources, SMS grids/templates/modes and browser navigation/form behavior. Added local organizer and utility routes as explicitly bounded replica implementations. Rime stroke data is pinned and hash-recorded in `assets/sources.json`; no downloaded executable was run.
+
+Local validation: 51 Rust tests; strict Clippy; resource hashes; all ten multi-tap rows. Final real winit/wgpu run: 33 synthetic scenarios, 34 Metal-presented frames; captures and SHA-256 manifest in `docs/images/`. An occluded first run exposed a busy redraw/test-wait issue; corrected throttling, occlusion handling, per-frame progress and a 30-second timeout, then reran successfully. See `docs/fidelity.md` for unresolved native paths. Native sampling remains 283 sessions / 142 public reviewed images; implementation screenshots are separate.
+
+### 2026-10-25 — browser and SMS layout correction
+
+Continued actual runtime USB screenshots and guarded keys, sessions 284–312. Expanded public native samples from 142 to 160. Browser settings revealed one home type, two font sizes, inline image toggle, history/cache clear popup and a separate restore section. Image preference was temporarily toggled then restored OFF. No clear/reset was activated. Exit LSOFT did nothing; Center exited. Raw samples were archived outside Git with SHA-256 verification.
+
+Implementation now preserves inline HTML flow and shares painting/focus bounds; native chrome, settings/pickers, editor underline, softkey geometry and SMS inactive-body layout were corrected. Original T9, full browser engine and full UI parity are not claimed. See `../../docs/browser-layout.md` and `../../docs/evidence/browser-layout-20261025.json` for metrics, commands, tests and unresolved behavior.

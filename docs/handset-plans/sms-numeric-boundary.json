@@ -1,0 +1,2478 @@
+{
+  "schema": 1,
+  "purpose": "Native numeric SMS boundary regression; no recipient and no send. Ends with an empty body and pinyin input.",
+  "preconditions": "Firmware 17.00.17.02; green accent; new empty SMS, body focused, pinyin mode; unchanged Chinese language and font. Stop on mismatch.",
+  "steps": [
+    {
+      "name": "mode-1",
+      "key": "HASH",
+      "before": {
+        "roi": [
+          48,
+          32,
+          240,
+          280
+        ],
+        "sha256": "10ca9034f36373da286061d3df0948a48f77999acb01b0d8d5b86a32589a61d6"
+      },
+      "settle_ms": 150
+    },
+    {
+      "name": "mode-2",
+      "key": "HASH",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 150
+    },
+    {
+      "name": "mode-3",
+      "key": "HASH",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 150
+    },
+    {
+      "name": "mode-4",
+      "key": "HASH",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 150
+    },
+    {
+      "name": "mode-5",
+      "key": "HASH",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 150,
+      "after": {
+        "roi": [
+          48,
+          256,
+          224,
+          280
+        ],
+        "sha256": "e04e9298a0489838d37676ecdf582f72c261f81636b005a84310c7fdca398c34"
+      }
+    },
+    {
+      "name": "digits-001",
+      "key": "1",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100,
+      "after": {
+        "roi": [
+          48,
+          256,
+          144,
+          280
+        ],
+        "sha256": "293bb1f6ef371d7a5a900d373db75ff51ea497d97752fdf973e6092f06a385c0"
+      }
+    },
+    {
+      "name": "digits-002",
+      "key": "2",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-003",
+      "key": "3",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-004",
+      "key": "4",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-005",
+      "key": "5",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-006",
+      "key": "6",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-007",
+      "key": "7",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-008",
+      "key": "8",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-009",
+      "key": "9",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-010",
+      "key": "0",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-011",
+      "key": "1",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-012",
+      "key": "2",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-013",
+      "key": "3",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-014",
+      "key": "4",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-015",
+      "key": "5",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-016",
+      "key": "6",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-017",
+      "key": "7",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-018",
+      "key": "8",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-019",
+      "key": "9",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-020",
+      "key": "0",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-021",
+      "key": "1",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-022",
+      "key": "2",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-023",
+      "key": "3",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-024",
+      "key": "4",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-025",
+      "key": "5",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-026",
+      "key": "6",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-027",
+      "key": "7",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-028",
+      "key": "8",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-029",
+      "key": "9",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-030",
+      "key": "0",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-031",
+      "key": "1",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-032",
+      "key": "2",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-033",
+      "key": "3",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-034",
+      "key": "4",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-035",
+      "key": "5",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-036",
+      "key": "6",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-037",
+      "key": "7",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-038",
+      "key": "8",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-039",
+      "key": "9",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-040",
+      "key": "0",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-041",
+      "key": "1",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-042",
+      "key": "2",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-043",
+      "key": "3",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-044",
+      "key": "4",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-045",
+      "key": "5",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-046",
+      "key": "6",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-047",
+      "key": "7",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-048",
+      "key": "8",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-049",
+      "key": "9",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-050",
+      "key": "0",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-051",
+      "key": "1",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-052",
+      "key": "2",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-053",
+      "key": "3",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-054",
+      "key": "4",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-055",
+      "key": "5",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-056",
+      "key": "6",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-057",
+      "key": "7",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-058",
+      "key": "8",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-059",
+      "key": "9",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-060",
+      "key": "0",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-061",
+      "key": "1",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-062",
+      "key": "2",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-063",
+      "key": "3",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-064",
+      "key": "4",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-065",
+      "key": "5",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-066",
+      "key": "6",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-067",
+      "key": "7",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-068",
+      "key": "8",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-069",
+      "key": "9",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-070",
+      "key": "0",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-071",
+      "key": "1",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-072",
+      "key": "2",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-073",
+      "key": "3",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-074",
+      "key": "4",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-075",
+      "key": "5",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-076",
+      "key": "6",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-077",
+      "key": "7",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-078",
+      "key": "8",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-079",
+      "key": "9",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-080",
+      "key": "0",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-081",
+      "key": "1",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-082",
+      "key": "2",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-083",
+      "key": "3",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-084",
+      "key": "4",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-085",
+      "key": "5",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-086",
+      "key": "6",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-087",
+      "key": "7",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-088",
+      "key": "8",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-089",
+      "key": "9",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-090",
+      "key": "0",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-091",
+      "key": "1",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-092",
+      "key": "2",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-093",
+      "key": "3",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-094",
+      "key": "4",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-095",
+      "key": "5",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-096",
+      "key": "6",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-097",
+      "key": "7",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-098",
+      "key": "8",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-099",
+      "key": "9",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-100",
+      "key": "0",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-101",
+      "key": "1",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-102",
+      "key": "2",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-103",
+      "key": "3",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-104",
+      "key": "4",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-105",
+      "key": "5",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-106",
+      "key": "6",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-107",
+      "key": "7",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-108",
+      "key": "8",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-109",
+      "key": "9",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-110",
+      "key": "0",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-111",
+      "key": "1",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-112",
+      "key": "2",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-113",
+      "key": "3",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-114",
+      "key": "4",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-115",
+      "key": "5",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-116",
+      "key": "6",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-117",
+      "key": "7",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-118",
+      "key": "8",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-119",
+      "key": "9",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-120",
+      "key": "0",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-121",
+      "key": "1",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-122",
+      "key": "2",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-123",
+      "key": "3",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-124",
+      "key": "4",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-125",
+      "key": "5",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-126",
+      "key": "6",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-127",
+      "key": "7",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-128",
+      "key": "8",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-129",
+      "key": "9",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-130",
+      "key": "0",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-131",
+      "key": "1",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-132",
+      "key": "2",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-133",
+      "key": "3",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-134",
+      "key": "4",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-135",
+      "key": "5",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-136",
+      "key": "6",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-137",
+      "key": "7",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-138",
+      "key": "8",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-139",
+      "key": "9",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-140",
+      "key": "0",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-141",
+      "key": "1",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-142",
+      "key": "2",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-143",
+      "key": "3",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-144",
+      "key": "4",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-145",
+      "key": "5",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-146",
+      "key": "6",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-147",
+      "key": "7",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-148",
+      "key": "8",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-149",
+      "key": "9",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-150",
+      "key": "0",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-151",
+      "key": "1",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-152",
+      "key": "2",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-153",
+      "key": "3",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-154",
+      "key": "4",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-155",
+      "key": "5",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-156",
+      "key": "6",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-157",
+      "key": "7",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-158",
+      "key": "8",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100
+    },
+    {
+      "name": "digits-159",
+      "key": "9",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100,
+      "after": {
+        "roi": [
+          48,
+          256,
+          144,
+          280
+        ],
+        "sha256": "ed9ae74385e2293677e4ba31a66b2283d7e98ea91d75ec3ba4d7f5044bf9c5c7"
+      }
+    },
+    {
+      "name": "digits-160",
+      "key": "0",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100,
+      "after": {
+        "roi": [
+          48,
+          256,
+          144,
+          280
+        ],
+        "sha256": "9780c59d2275f184fc2afc9be1727b3dd6b736803457268231d8a62f70363c97"
+      }
+    },
+    {
+      "name": "digits-161",
+      "key": "1",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 100,
+      "after": {
+        "roi": [
+          48,
+          256,
+          144,
+          280
+        ],
+        "sha256": "8761066726bf2e38c62bfbc756d55cf6c29de3f93d4f7d19f8f02d92ec9080c2"
+      }
+    },
+    {
+      "name": "open-clear-menu",
+      "key": "LSOFT",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 200
+    },
+    {
+      "name": "clear-menu-down-1",
+      "key": "DOWN",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "82b60562843aca39f48d55ffeb86e7467c4d7d0192370d5df166e28b0919a410"
+      },
+      "settle_ms": 150
+    },
+    {
+      "name": "clear-menu-down-2",
+      "key": "DOWN",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "82b60562843aca39f48d55ffeb86e7467c4d7d0192370d5df166e28b0919a410"
+      },
+      "settle_ms": 150
+    },
+    {
+      "name": "clear-menu-down-3",
+      "key": "DOWN",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "82b60562843aca39f48d55ffeb86e7467c4d7d0192370d5df166e28b0919a410"
+      },
+      "settle_ms": 150
+    },
+    {
+      "name": "clear-test-body",
+      "key": "CENTER",
+      "before": {
+        "roi": [
+          0,
+          86,
+          240,
+          276
+        ],
+        "sha256": "098d710be420def987ccadb4d7166053f360f3b88f0881dc7adac45448f65e7a"
+      },
+      "settle_ms": 200,
+      "after": {
+        "roi": [
+          48,
+          256,
+          224,
+          280
+        ],
+        "sha256": "e04e9298a0489838d37676ecdf582f72c261f81636b005a84310c7fdca398c34"
+      }
+    },
+    {
+      "name": "restore-pinyin",
+      "key": "HASH",
+      "before": {
+        "roi": [
+          0,
+          0,
+          64,
+          16
+        ],
+        "sha256": "58d48f34e08995e7c74258edf833a7aca34f35fa895188d4de8a096e2cc21278"
+      },
+      "settle_ms": 200,
+      "after": {
+        "roi": [
+          48,
+          32,
+          240,
+          280
+        ],
+        "sha256": "10ca9034f36373da286061d3df0948a48f77999acb01b0d8d5b86a32589a61d6"
+      }
+    }
+  ]
+}

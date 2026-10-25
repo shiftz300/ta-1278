@@ -1,0 +1,55 @@
+{
+  "source_kind": "actual_handset_replay",
+  "firmware": "17.00.17.02",
+  "profile": "../handset-profiles/ta1278-17.00.17.02.json",
+  "session": "ta1278-native-093",
+  "private_archive": "ta-1278-source/handset-sessions/20261025",
+  "plan_sha256": "01c582b5a5c9ec82f998699e31e027162b9b23aa78fe331bf57e5c81e838cc52",
+  "event_log_sha256": "a236d55f6a8004790b3d00e2b21f9c06234298ba7ffd22053e478d9d14606c8b",
+  "started_utc": "2026-10-25T10:03:24Z",
+  "finished_utc": "2026-10-25T10:04:07Z",
+  "result": {
+    "time_utc": "2026-10-25T10:04:07Z",
+    "event": "plan_complete",
+    "steps": 172,
+    "assertions": 7
+  },
+  "assertions": [
+    {
+      "time_utc": "2026-10-25T10:03:26Z",
+      "event": "assertion_passed",
+      "step": "mode-5"
+    },
+    {
+      "time_utc": "2026-10-25T10:03:26Z",
+      "event": "assertion_passed",
+      "step": "digits-001"
+    },
+    {
+      "time_utc": "2026-10-25T10:04:04Z",
+      "event": "assertion_passed",
+      "step": "digits-159"
+    },
+    {
+      "time_utc": "2026-10-25T10:04:05Z",
+      "event": "assertion_passed",
+      "step": "digits-160"
+    },
+    {
+      "time_utc": "2026-10-25T10:04:05Z",
+      "event": "assertion_passed",
+      "step": "digits-161"
+    },
+    {
+      "time_utc": "2026-10-25T10:04:06Z",
+      "event": "assertion_passed",
+      "step": "clear-test-body"
+    },
+    {
+      "time_utc": "2026-10-25T10:04:07Z",
+      "event": "assertion_passed",
+      "step": "restore-pinyin"
+    }
+  ],
+  "limits": "Fixed Chinese/grey-green theme and empty-body precondition. These seven region assertions do not validate every pixel or the whole SMS app. No SMS was sent."
+}

@@ -1,0 +1,29 @@
+
+user.analysis-only.elf:	file format elf32-littlearm
+
+Disassembly of section .text:
+
+88000000 <.text>:
+8806d152: b570         	push	{r4, r5, r6, lr}
+8806d154: 4e2d         	ldr	r6, [pc, #0xb4]         @ 0x8806d20c <.text+0x6d20c>
+8806d156: 4605         	mov	r5, r0
+8806d158: 4601         	mov	r1, r0
+8806d15a: 3e2d         	subs	r6, #0x2d
+8806d15c: 4630         	mov	r0, r6
+8806d15e: f185 f22d    	bl	0x885f25bc <.text+0x5f25bc> @ imm = #0x58545a
+8806d162: 0004         	movs	r4, r0
+8806d164: d005         	beq	0x8806d172 <.text+0x6d172> @ imm = #0xa
+8806d166: 2000         	movs	r0, #0x0
+8806d168: 4629         	mov	r1, r5
+8806d16a: 7028         	strb	r0, [r5]
+8806d16c: 4630         	mov	r0, r6
+8806d16e: f185 f296    	bl	0x885f269e <.text+0x5f269e> @ imm = #0x58552c
+8806d172: 4620         	mov	r0, r4
+8806d174: bd70         	pop	{r4, r5, r6, pc}
+8806d176: b501         	push	{r0, lr}
+8806d178: 4824         	ldr	r0, [pc, #0x90]         @ 0x8806d20c <.text+0x6d20c>
+8806d17a: 4669         	mov	r1, sp
+8806d17c: 382d         	subs	r0, #0x2d
+8806d17e: f185 f28e    	bl	0x885f269e <.text+0x5f269e> @ imm = #0x58551c
+8806d182: 2000         	movs	r0, #0x0
+8806d184: bd08         	pop	{r3, pc}

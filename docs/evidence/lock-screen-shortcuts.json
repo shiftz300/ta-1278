@@ -1,0 +1,40 @@
+{
+  "evidence": "actual_handset_settings_read",
+  "firmware": "17.00.17.02",
+  "sessions": [
+    278,
+    279,
+    280,
+    281,
+    282
+  ],
+  "current": {
+    "right": "信息",
+    "left": "互联网"
+  },
+  "left_choices": [
+    "无",
+    "通讯录",
+    "通话历史记录",
+    "信息",
+    "音乐",
+    "视频",
+    "收音机",
+    "闹钟",
+    "文件",
+    "多媒体资料",
+    "日历",
+    "计算器",
+    "互联网",
+    "录音",
+    "设置",
+    "其他",
+    "计数器",
+    "支付宝"
+  ],
+  "down_wrap": true,
+  "picker_focus_on_open": "current assigned entry",
+  "cancel": "retains assignment despite focus changes",
+  "settings_changed": false,
+  "limits": "Only left-side choices traversed; right-side choice list and save/persistence not tested. Offered apps are not all launch-verified. Current values are not factory defaults."
+}

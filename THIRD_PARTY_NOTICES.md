@@ -7,3 +7,7 @@
 W19 MMI/T9 框架参考仅发布 URL、固定版本和文本哈希；不将整个参考仓库认定为开放许可，不再分发这些参考源码。取回的文件应保留其原有版权声明。其他资料、加载器和开源项目的来源及适用边界见 [sources.md](nokia-ta1278-research/sources.md)。
 
 仓库尚未为其余原创代码或文档指定统一开源许可证。
+
+桌面程序新增 Noto CJK / Symbols 2 / Emoji（SIL OFL）、Rime 简体拼音词库（Apache 2.0）和 FrequencyWords 英文词频数据（CC BY-SA 4.0，不是其代码的 MIT 许可）。来源固定版本、SHA-256、作者与完整许可见 [assets/README.md](assets/README.md) 和相邻许可文件。新九键算法是复刻程序实现，不是原机 T9 的恢复结果。
+
+- Rime stroke dictionary: rime/rime-stroke, revision `1e8fff9b9494ddec23b0cbc526bcfd8171a6fd48`. Original text, authors and LGPL-3.0 license retained under `assets/input/`. Used as replacement five-stroke data, not original Nokia input code. Runtime ranking also uses the existing pinyin frequencies.

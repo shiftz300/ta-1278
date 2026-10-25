@@ -1,3 +1,4 @@
+mod flow;
 use phone_core::browser::{Element, Form, Page};
 use scraper::{ElementRef, Html};
 use std::{sync::mpsc, thread, time::Duration};
@@ -29,6 +30,7 @@ pub fn parse(base: &str, html: &str) -> Page {
         .map(text)
         .unwrap_or_else(|| base.into());
     let mut page = Page {
+        flow: vec![],
         url: base.into(),
         title,
         elements: vec![],
@@ -38,7 +40,9 @@ pub fn parse(base: &str, html: &str) -> Page {
         .select(&scraper::Selector::parse("body").unwrap())
         .next()
         .unwrap_or_else(|| doc.root_element());
-    walk(body, &mut page, None, &mut String::new(), 0);
+    let mut controls = vec![];
+    walk(body, &mut page, None, &mut String::new(), 0, &mut controls);
+    page.flow = flow::build(body, &controls);
     if page.elements.is_empty() {
         page.elements.push(Element::Text("Empty page".into()));
     }
@@ -57,7 +61,48 @@ fn flush(p: &mut Page, s: &mut String) {
     }
     s.clear();
 }
-fn walk(e: ElementRef, p: &mut Page, form: Option<usize>, buffer: &mut String, depth: usize) {
+fn label_text(e: ElementRef) -> String {
+    fn visit(e: ElementRef, out: &mut String) {
+        for node in e.children() {
+            if let Some(t) = node.value().as_text() {
+                out.push_str(t);
+                out.push(' ');
+            } else if let Some(child) = ElementRef::wrap(node)
+                && !matches!(
+                    child.value().name(),
+                    "input" | "select" | "textarea" | "button"
+                )
+            {
+                visit(child, out);
+            }
+        }
+    }
+    let mut s = String::new();
+    visit(e, &mut s);
+    s.split_whitespace().collect::<Vec<_>>().join(" ")
+}
+fn associated_label(e: ElementRef) -> Option<String> {
+    if let Some(label) = e
+        .ancestors()
+        .filter_map(ElementRef::wrap)
+        .find(|a| a.value().name() == "label")
+    {
+        return Some(label_text(label));
+    }
+    let id = e.value().attr("id")?;
+    let root = e.ancestors().filter_map(ElementRef::wrap).last()?;
+    root.select(&scraper::Selector::parse("label").unwrap())
+        .find(|l| l.value().attr("for") == Some(id))
+        .map(label_text)
+}
+fn walk<'a>(
+    e: ElementRef<'a>,
+    p: &mut Page,
+    form: Option<usize>,
+    buffer: &mut String,
+    depth: usize,
+    controls: &mut Vec<(ElementRef<'a>, usize)>,
+) {
     if p.elements.len() >= 1200 || depth >= 128 {
         return;
     }
@@ -66,6 +111,9 @@ fn walk(e: ElementRef, p: &mut Page, form: Option<usize>, buffer: &mut String, d
     if matches!(tag, "script" | "style" | "head" | "template" | "noscript")
         || v.attr("hidden").is_some()
     {
+        return;
+    }
+    if matches!(tag, "input" | "textarea" | "select" | "button") && v.attr("disabled").is_some() {
         return;
     }
     let block = matches!(
@@ -87,10 +135,11 @@ fn walk(e: ElementRef, p: &mut Page, form: Option<usize>, buffer: &mut String, d
     let name = v.attr("name").unwrap_or("").to_owned();
     let label = v
         .attr("aria-label")
-        .or(v.attr("placeholder"))
-        .or(v.attr("name"))
-        .unwrap_or("Field")
-        .to_owned();
+        .map(str::to_owned)
+        .or_else(|| associated_label(e))
+        .or_else(|| v.attr("placeholder").map(str::to_owned))
+        .or_else(|| v.attr("name").map(str::to_owned))
+        .unwrap_or_default();
     let f = form.unwrap_or(usize::MAX);
     let element = match tag {
         "a" if v.attr("href").is_some() => Some(Element::Link {
@@ -100,7 +149,8 @@ fn walk(e: ElementRef, p: &mut Page, form: Option<usize>, buffer: &mut String, d
         "input" if v.attr("disabled").is_none() => {
             let value = v.attr("value").unwrap_or("").to_owned();
             match v.attr("type").unwrap_or("text") {
-                "checkbox" => Some(Element::Check {
+                "checkbox" | "radio" => Some(Element::Check {
+                    radio: v.attr("type") == Some("radio"),
                     label,
                     name,
                     checked: v.attr("checked").is_some(),
@@ -125,7 +175,7 @@ fn walk(e: ElementRef, p: &mut Page, form: Option<usize>, buffer: &mut String, d
                     }
                     None
                 }
-                "text" | "search" | "email" | "url" | "tel" | "number" | "password" => {
+                "text" | "search" | "email" | "url" | "tel" | "number" | "password" | "time" => {
                     Some(Element::Field {
                         label,
                         name,
@@ -138,6 +188,7 @@ fn walk(e: ElementRef, p: &mut Page, form: Option<usize>, buffer: &mut String, d
                             .unwrap_or(1024)
                             .min(1024),
                         password: v.attr("type") == Some("password"),
+                        read_only: v.attr("readonly").is_some(),
                         form: f,
                     })
                 }
@@ -158,6 +209,7 @@ fn walk(e: ElementRef, p: &mut Page, form: Option<usize>, buffer: &mut String, d
                     .unwrap_or(1024)
                     .min(1024),
                 password: false,
+                read_only: v.attr("readonly").is_some(),
                 form: f,
             })
         }
@@ -204,6 +256,9 @@ fn walk(e: ElementRef, p: &mut Page, form: Option<usize>, buffer: &mut String, d
     };
     if let Some(el) = element {
         flush(p, buffer);
+        if !matches!(el, Element::Text(_)) {
+            controls.push((e, p.elements.len()));
+        }
         p.elements.push(el);
         return;
     }
@@ -212,10 +267,13 @@ fn walk(e: ElementRef, p: &mut Page, form: Option<usize>, buffer: &mut String, d
     }
     for child in e.children() {
         if let Some(t) = child.value().as_text() {
+            if tag == "label" {
+                continue;
+            }
             buffer.push_str(t);
             buffer.push(' ');
         } else if let Some(c) = ElementRef::wrap(child) {
-            walk(c, p, form, buffer, depth + 1);
+            walk(c, p, form, buffer, depth + 1, controls);
         }
     }
     if block || tag == "body" {
@@ -270,6 +328,7 @@ fn fetch(agent: &ureq::Agent, address: &str) -> Result<Page, String> {
     }
     if url.scheme() == "about" && url.path() == "result" {
         return Ok(Page {
+            flow: vec![],
             url: address.into(),
             title: "Local form result".into(),
             elements: url
@@ -301,6 +360,7 @@ fn fetch(agent: &ureq::Agent, address: &str) -> Result<Page, String> {
         .map_err(|e| e.to_string())?;
     if content_type.starts_with("text/plain") {
         Ok(Page {
+            flow: vec![],
             url: final_url.clone(),
             title: "Text document".into(),
             elements: body
@@ -348,5 +408,46 @@ mod tests {
                 .iter()
                 .any(|e| matches!(e, Element::Field { limit: 1024, .. }))
         );
+    }
+    #[test]
+    fn radios_are_exclusive_only_inside_their_group_and_reset() {
+        let page = parse(
+            "https://example.com/",
+            "<form><input type=radio name=size value=s checked><input type=radio name=size value=m><input type=radio name=other value=x checked><input type=checkbox name=topping value=a><input type=checkbox name=topping value=b></form>",
+        );
+        let mut b = phone_core::browser::Browser::new(page);
+        b.toggle_check(1);
+        b.toggle_check(3);
+        b.toggle_check(4);
+        assert_eq!(
+            b.form_values(0, None),
+            vec![
+                ("size".into(), "m".into()),
+                ("other".into(), "x".into()),
+                ("topping".into(), "a".into()),
+                ("topping".into(), "b".into())
+            ]
+        );
+        b.reset(0);
+        assert_eq!(
+            b.form_values(0, None),
+            vec![("size".into(), "s".into()), ("other".into(), "x".into())]
+        );
+    }
+}
+
+#[cfg(test)]
+mod label_tests {
+    use super::*;
+    #[test]
+    fn html_labels_are_not_duplicated_and_disabled_controls_are_skipped() {
+        let p = parse(
+            "https://example.com/",
+            "<label>Customer name: <input name=custname></label><label><input type=radio name=size>Medium</label><label for=note>Note</label><textarea id=note></textarea><input disabled><textarea disabled>skip</textarea>",
+        );
+        assert_eq!(p.elements.len(), 3);
+        assert!(matches!(&p.elements[0],Element::Field{label,..} if label=="Customer name:"));
+        assert!(matches!(&p.elements[1],Element::Check{label,..} if label=="Medium"));
+        assert!(matches!(&p.elements[2],Element::Field{label,..} if label=="Note"));
     }
 }

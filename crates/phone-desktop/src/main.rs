@@ -1,8 +1,12 @@
+mod candidate_view;
 mod canvas;
 mod gpu;
 mod host_input;
+mod menu;
 mod phone;
+mod smoke;
 mod storage;
+mod theme;
 mod views;
 mod web;
 use phone_core::input::{Event, Input};
@@ -33,6 +37,8 @@ struct App {
     save_retry_at: Instant,
     start: Instant,
     last: Instant,
+    next_redraw: Instant,
+    occluded: bool,
     data_dir: PathBuf,
     smoke: Option<PathBuf>,
     smoke_stage: usize,
@@ -44,6 +50,15 @@ impl App {
     }
     fn dispatch(&mut self, e: Event) {
         self.phone.status.clear();
+        // Multiple key events can arrive before a redraw. Refresh visual row
+        // metrics before vertical motion instead of using stale wrap positions.
+        if matches!(
+            e.key,
+            phone_core::input::Key::Up | phone_core::input::Key::Down
+        ) && self.phone.editor().is_some()
+        {
+            views::render(&mut self.canvas, &mut self.phone);
+        }
         self.phone.handle(e, self.now());
     }
     fn press(&mut self, source: u32, key: phone_core::input::Key) {
@@ -57,14 +72,47 @@ impl App {
         }
     }
     fn flush(&mut self) {
+        if self.phone.local_dirty && Instant::now() >= self.save_retry_at {
+            match storage::save_json(
+                &self.data_dir,
+                "organizer.json",
+                &self.phone.local_data,
+                8 * 1024 * 1024,
+            ) {
+                Ok(()) => self.phone.local_dirty = false,
+                Err(e) => {
+                    self.save_retry_at = Instant::now() + Duration::from_secs(5);
+                    self.phone.status = format!("保存失败：{e}");
+                }
+            }
+        }
+        if self.phone.browser_dirty && Instant::now() >= self.save_retry_at {
+            match storage::save_browser(&self.data_dir, &self.phone.browser_data) {
+                Ok(()) => self.phone.browser_dirty = false,
+                Err(e) => {
+                    self.save_retry_at = Instant::now() + Duration::from_secs(5);
+                    self.phone.status = format!("浏览记录保存失败：{e}");
+                }
+            }
+        }
+        if self.phone.preferences_dirty && Instant::now() >= self.save_retry_at {
+            match storage::save_preferences(&self.data_dir, &self.phone.preferences) {
+                Ok(()) => self.phone.preferences_dirty = false,
+                Err(e) => {
+                    self.save_retry_at = Instant::now() + Duration::from_secs(5);
+                    self.phone.status = format!("设置保存失败：{e}");
+                }
+            }
+        }
         if self.phone.dirty && Instant::now() >= self.save_retry_at {
             self.save_retry_at = Instant::now() + Duration::from_secs(5);
             match storage::save(&self.data_dir, &self.phone.mailbox) {
                 Ok(()) => {
-                    self.phone.dirty = false;
+                    self.phone.storage_saved();
                     self.save_retry_at = Instant::now();
                 }
                 Err(e) => {
+                    self.phone.storage_failed();
                     self.phone.status = format!("Save failed: {e}");
                     eprintln!("{}", self.phone.status);
                     self.phone
@@ -75,6 +123,13 @@ impl App {
     }
     fn quit(&mut self, event_loop: &ActiveEventLoop) {
         if self.phone.screen == phone::Screen::Compose {
+            if !self.phone.compose.body.accept_prediction()
+                || !self.phone.compose.to.accept_prediction()
+            {
+                self.phone
+                    .notice("Text limit reached. Confirm or cancel the candidate before closing.");
+                return;
+            }
             let m = self.phone.message();
             if !m.to.is_empty() || !m.body.is_empty() {
                 let index = self.phone.mailbox.save(self.phone.compose.draft, m);
@@ -84,7 +139,11 @@ impl App {
         }
         self.save_retry_at = Instant::now();
         self.flush();
-        if self.phone.dirty {
+        if self.phone.dirty
+            || self.phone.preferences_dirty
+            || self.phone.browser_dirty
+            || self.phone.local_dirty
+        {
             self.phone
                 .notice("Save failed. Window stays open so you can keep your text.");
             return;
@@ -117,6 +176,9 @@ impl ApplicationHandler for App {
                 window.set_ime_allowed(false);
                 match pollster::block_on(gpu::Gpu::new(window.clone())) {
                     Ok(gpu) => {
+                        if self.smoke.is_some() {
+                            window.focus_window();
+                        }
                         self.gpu = Some(gpu);
                         self.window = Some(window);
                     }
@@ -132,6 +194,7 @@ impl ApplicationHandler for App {
         }
         match event {
             WindowEvent::CloseRequested => self.quit(event_loop),
+            WindowEvent::Occluded(value) => self.occluded = value,
             WindowEvent::Resized(size) => {
                 if let Some(gpu) = &mut self.gpu {
                     gpu.resize(size.width, size.height);
@@ -228,9 +291,13 @@ impl ApplicationHandler for App {
                 }
             }
             WindowEvent::RedrawRequested => {
+                if self.occluded {
+                    return;
+                }
+                let before = self.gpu.as_ref().map_or(0, |g| g.presented);
                 views::render(&mut self.canvas, &mut self.phone);
                 if !self.preedit.is_empty() {
-                    self.canvas.rect(4, 250, 232, 44, canvas::BLUE);
+                    self.canvas.rect(4, 250, 232, 44, self.canvas.accent(3));
                     self.canvas
                         .fit(10, 254, &self.preedit, 16, canvas::WHITE, 220);
                     self.canvas
@@ -242,7 +309,7 @@ impl ApplicationHandler for App {
                     self.fail(event_loop, e);
                     return;
                 }
-                if self.smoke.is_some() {
+                if self.smoke.is_some() && self.gpu.as_ref().is_some_and(|g| g.presented > before) {
                     self.smoke_frame(event_loop);
                 }
             }
@@ -251,6 +318,10 @@ impl ApplicationHandler for App {
     }
     fn about_to_wait(&mut self, event_loop: &ActiveEventLoop) {
         let now = Instant::now();
+        if self.smoke.is_some() && self.start.elapsed() > Duration::from_secs(30) {
+            self.fail(event_loop, "Window smoke test timed out before all frames were presented; ensure the window is visible.".into());
+            return;
+        }
         let dt = now.duration_since(self.last).as_secs_f32().min(0.25);
         self.last = now;
         for e in self.input.tick(self.now()) {
@@ -258,13 +329,19 @@ impl ApplicationHandler for App {
         }
         self.phone.tick(self.now(), dt);
         if let Some(url) = self.phone.pending_url.take() {
+            self.phone.requested_url = url.clone();
             let id = self.phone.browser.start();
             if let Err(e) = self.web.load(id, url) {
                 self.phone.browser.complete(id, Err(e));
             }
         }
         while let Ok((id, result)) = self.web.results.try_recv() {
-            if self.phone.browser.complete(id, result)
+            let updated = self.phone.browser.complete(id, result);
+            if updated {
+                self.phone.browser_data.visit(&self.phone.browser.page);
+                self.phone.browser_dirty = true;
+            }
+            if updated
                 && matches!(
                     self.phone.overlay,
                     Some(
@@ -292,67 +369,17 @@ impl ApplicationHandler for App {
                 winit::dpi::LogicalPosition::new(20., size.height * 0.8),
                 LogicalSize::new(200., 24.),
             );
-            w.request_redraw();
+            if now >= self.next_redraw {
+                self.next_redraw = now + Duration::from_millis(33);
+                if !self.occluded {
+                    w.request_redraw();
+                }
+            }
         }
-        event_loop.set_control_flow(ControlFlow::WaitUntil(now + Duration::from_millis(33)));
+        event_loop.set_control_flow(ControlFlow::WaitUntil(self.next_redraw));
     }
 }
-impl App {
-    /// Synthetic route checks on an actual winit/wgpu surface. Not physical-device QA.
-    fn smoke_frame(&mut self, event_loop: &ActiveEventLoop) {
-        use phone::{Compose, Screen};
-        use phone_core::input::{Key, Phase};
-        let dir = self.smoke.clone().unwrap();
-        if self.gpu.as_ref().is_none_or(|g| g.presented == 0) {
-            return;
-        }
-        let name = match self.smoke_stage {
-            0 => "home",
-            1 => "menu",
-            2 => "sms",
-            3 => "browser",
-            4 => "music",
-            _ => {
-                eprintln!(
-                    "SMOKE PASS: {} presented frames",
-                    self.gpu.as_ref().unwrap().presented
-                );
-                event_loop.exit();
-                return;
-            }
-        };
-        if let Err(e) = self.canvas.save(&dir.join(format!("{name}.png"))) {
-            self.fail(event_loop, e.to_string());
-            return;
-        }
-        match self.smoke_stage {
-            0 => self.dispatch(Event {
-                key: Key::SoftLeft,
-                phase: Phase::Down,
-            }),
-            1 => {
-                self.phone.compose = Compose::default();
-                self.phone.compose.to.insert("12345");
-                self.phone
-                    .compose
-                    .body
-                    .insert("Hello Nokia!\n短信编辑测试。\n240 × 320");
-                self.phone.compose.recipient = false;
-                self.phone.go(Screen::Compose);
-            }
-            2 => self.phone.go(Screen::Browser),
-            3 => {
-                self.phone.go(Screen::Music);
-                self.dispatch(Event {
-                    key: Key::Center,
-                    phase: Phase::Down,
-                });
-            }
-            _ => {}
-        }
-        self.smoke_stage += 1;
-    }
-}
+
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut data_dir = storage::default_dir();
     let mut smoke = None;
@@ -379,12 +406,19 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
     }
     let mailbox = storage::load(&data_dir)?;
+    let mut phone = phone::Phone::new(mailbox);
+    phone.apply_preferences(storage::load_preferences(&data_dir)?);
+    phone.browser_data = storage::load_browser(&data_dir)?;
+    phone.local_data = storage::load_organizer(&data_dir)?;
+    if smoke.is_some() {
+        phone.accent = 4;
+    }
     let now = Instant::now();
     let mut app = App {
         window: None,
         gpu: None,
         canvas: canvas::Canvas::new()?,
-        phone: phone::Phone::new(mailbox),
+        phone,
         input: Input::default(),
         web: web::Web::new(),
         modifiers: ModifiersState::empty(),
@@ -394,6 +428,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         save_retry_at: now,
         start: now,
         last: now,
+        next_redraw: now,
+        occluded: false,
         data_dir,
         smoke,
         smoke_stage: 0,

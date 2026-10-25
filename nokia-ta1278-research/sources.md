@@ -120,3 +120,25 @@
 没有取回新的固件包，没有上传固件或设备数据。本轮网络仅用于上述公开参考文本。
 
 2026-10-25 增补：同一固定提交新增 ctrltextedit.c、ctrlbaseflex.c、ctrlbaseflex_display.c 和 brw_input.c，合计 63 份。brw_input.c 仅提供输入历史线索，未拿它当表单处理证据。所有 URL、编码和本地 SHA 在 provenance.json；仅下载/阅读，无执行、无重新发布源码。
+
+
+## Runtime diagnostic sampling — 2026-10-25
+
+Primary evidence is this handset's original 17.00.17.02 images plus live version/key/screenshot exchanges. See [runtime entry](../docs/evidence/runtime-entry.json), [LCD/key transport](../docs/handset-capture.md), [observations](../docs/handset-observations.md) and [reviewed sample hashes](../docs/handset-samples/20261025/index.json). Local machine-code offsets and hashes take precedence over related-product source names.
+
+Related W19 platform reference, fixed commit `d48d55e028c13b6f50c291cbb7ea29201c3c8432` (different product; reference only, no code installed or executed):
+
+- [UCOM configuration](https://github.com/obaidi2005/ZW217_W19_V4.1_yisai/blob/d48d55e028c13b6f50c291cbb7ea29201c3c8432/MS_Ref/source/ucom/src/ucom_config.c) and [UCOM driver](https://github.com/obaidi2005/ZW217_W19_V4.1_yisai/blob/d48d55e028c13b6f50c291cbb7ea29201c3c8432/MS_Ref/source/ucom/src/ucom_drv.c): useful clues for port roles and opening the logical port. Actual interface/endpoint numbers came from this phone's descriptors.
+- [USB VCOM](https://github.com/obaidi2005/ZW217_W19_V4.1_yisai/blob/d48d55e028c13b6f50c291cbb7ea29201c3c8432/chip_drv/chip_module/usb/vcom_usb20.c): related control-request handling; native kernel `0x177bc4..0x177cbc` and actual open/close tests establish this device's applicability.
+
+Credibility: high for source-hash-checked native code and the specific observed live transitions; supporting only for W19 references. No compatibility is inferred merely from Unisoc/Spreadtrum branding. The test-mode entry has confirmed non-USB side effects and is not a general everyday-phone setup recommendation.
+
+
+## 2026-10-25 public browser fixtures
+
+These are test pages, not firmware sources. Host response hashes are in [browser-test-pages.json](../docs/evidence/browser-test-pages.json); snapshots remain in the external local archive. Host responses are not packet captures of the handset response.
+
+- <https://example.com> — public text page; successful native body rendering after SIM insertion.
+- <https://httpbin.org/forms/post> — HTTPBin's own demo form; native text, tel, textarea, radio and checkbox sampling. Dummy values stayed in the handset; no POST was sent.
+- <http://info.cern.ch/> — CERN's own static first-website page; link/focus, Back and Forward sampling.
+- <https://www.selenium.dev/selenium/web/web-form.html> — Selenium's own test fixture; loaded after HTTP-to-HTTPS redirection, native single-select and cancel behavior sampled. No submit or upload.

@@ -1,0 +1,93 @@
+{
+  "note": "Original pixels. Different radio/status, input values and host fixture URLs are intentional. This is a visual review aid, not an equivalence score.",
+  "pairs": [
+    {
+      "file": "browser-native-form-comparison.png",
+      "handset": "browser-live-form.png",
+      "replica": "browser-native-form.png",
+      "handset_sha256": "b35b2bbd93faea1298ea7c0a5cad7225d52d60579bfaea023ff1d6707ac05245",
+      "replica_sha256": "341a89215f67248f065b2698f92d0e063227e3a12fcba8a04fb2083a7d14d615",
+      "sha256": "e81ba39540a5f3959afb22adc69efaf803407d15f82614fb3f1865667fc7af5c"
+    },
+    {
+      "file": "browser-native-links-comparison.png",
+      "handset": "browser-links.png",
+      "replica": "browser-native-links.png",
+      "handset_sha256": "f21d91752fc161886f954769e0440a05878d841dfc7e69b83cfaf112593a27cc",
+      "replica_sha256": "62a04c12b6303f18a847bae7402699dd3c71b3fa9e81e5e00b58fea1a0bcc6b6",
+      "sha256": "a7c41ca9ebc16dd49778eeb23b16376af547bfa257e9fbe7bced67d88cc9d806"
+    },
+    {
+      "file": "browser-root-popup-comparison.png",
+      "handset": "browser-root-overlay.png",
+      "replica": "browser-root-popup.png",
+      "handset_sha256": "cc6bd7b3aaadf69f635af87d1caf47fe1854c00b67c6bba47351af3e7b137cbb",
+      "replica_sha256": "c611784517abaa04855d9cfcdf3902639c8c1c40af3911adf06a856c358216c4",
+      "sha256": "fa6a007a5fcd0f72a20b61eff9a015d4eb7e1cff45588e0e6beb0237835b8bea"
+    },
+    {
+      "file": "browser-page-popup-comparison.png",
+      "handset": "browser-page-options.png",
+      "replica": "browser-page-popup.png",
+      "handset_sha256": "c39fcf6b2028612bad5a8686d2b880209c48e0431a6f7c0bfb18f4b8698efa0a",
+      "replica_sha256": "9bfc6c1ce168f58b59b387c583ffbc47a7cef51f4b7f756dc998751dd52955dc",
+      "sha256": "a88abcb0b59ba473c8f2c67169f42551107f02c7c03802027bf6e9edf226b5da"
+    },
+    {
+      "file": "browser-font-picker-comparison.png",
+      "handset": "browser-font-size-picker.png",
+      "replica": "browser-font-picker.png",
+      "handset_sha256": "d457ab998621af15814ad0e1adafa7dfefffe3efa07a36f50fa2c4d68d4cc3d0",
+      "replica_sha256": "dcf7f7f6507105f71e2b6fcc90c52808327bfc406df4ac3fed27b0ff70e1267e",
+      "sha256": "50e59a60b9485c234ae8a2af1fe19d3d6bedab5608ac69dc93099b65938398a9"
+    },
+    {
+      "file": "browser-clear-picker-comparison.png",
+      "handset": "browser-clear-picker.png",
+      "replica": "browser-clear-picker.png",
+      "handset_sha256": "338076d944a3be13dd0dc374df7858b47e509cb1f3a09346615e053d584e0b56",
+      "replica_sha256": "d0e2f03de33a9530f6703e1eeae6665af308a6a69dd424cce8d6d41904031690",
+      "sha256": "049d102eb9478459d28402c7cec784a1f2ebca26add643d7bcc8f4fcb58ddb2e"
+    },
+    {
+      "file": "browser-settings-tail-comparison.png",
+      "handset": "browser-restore-focus.png",
+      "replica": "browser-settings-tail.png",
+      "handset_sha256": "ba6310cacf8eba53b0d7baaabbb3c221233e0661c469616644c5c9e86fd41368",
+      "replica_sha256": "e493f23b6c073b52954ff288aedc147e68f9d441781b19664314d645e4f8b82a",
+      "sha256": "a99f2da4a3cd41b111a2974e4c80845824b10bbdc48786e89df465216fafebc1"
+    },
+    {
+      "file": "browser-url-input-comparison.png",
+      "handset": "browser-url-editor.png",
+      "replica": "browser-url-input.png",
+      "handset_sha256": "b74a6f4e8fccf1fbc7d77f4df059a08a23b85b6c48c8f69cee43da55b073be6c",
+      "replica_sha256": "87bb9f6ec72cbb8a305769116cbdab062e17a1aed6bcd766116c94524d0b95b5",
+      "sha256": "12612cdca911bf610c585fc3a185e267dacc20e31257ac7a45451153a1763e36"
+    },
+    {
+      "file": "browser-exit-comparison.png",
+      "handset": "browser-exit-resampled.png",
+      "replica": "browser-exit.png",
+      "handset_sha256": "13e48089f89b2cb84a16db8ba930952d236dab67639d904c8ded0695e2f008e6",
+      "replica_sha256": "a0bc097fd3b5f3c515486af4973827e19b7cfe5ca9a996643848c1f5147e6ad9",
+      "sha256": "c02d4be46a0fa2f64aea81d4aa04f31321386d0ba789571e381b614815ae0a1e"
+    },
+    {
+      "file": "sms-empty-recipient-comparison.png",
+      "handset": "sms-new.png",
+      "replica": "sms-empty-recipient.png",
+      "handset_sha256": "d4f41f34f1b3b1db59f10ce82e1daaab2dc3b5175655cd0efaab9e69268873d5",
+      "replica_sha256": "9b9574d94e3e4baaca51082e962f4c3ea0c3c69a2651f4609acd2f418a248720",
+      "sha256": "105e3405e0e0d7362e099f6dd03e341b1e574a4b863baa2f1d1caf44ab97e899"
+    },
+    {
+      "file": "sms-empty-comparison.png",
+      "handset": "sms-body-focus.png",
+      "replica": "sms-empty.png",
+      "handset_sha256": "8cd12aa93b688732ddd086c8be10f16bbb88910dab168feb86a59499e9cd61db",
+      "replica_sha256": "0592584bddc1e33cc2da0930e144acca04e9a07ef6444e7dc6ac8a8385c80e4f",
+      "sha256": "8d99e0b31b3b5236820d68e24a103515525fd3f229448be0cef27d973c7c3830"
+    }
+  ]
+}

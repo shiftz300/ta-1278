@@ -1,0 +1,38 @@
+{
+  "method": "Unicode cmap union in renderer fallback order; not full shaping or emoji sequence support",
+  "before": 8744,
+  "after": 49332,
+  "added": 40588,
+  "fonts": [
+    {
+      "file": "nokia-ta1278-research/analysis/ui/fonts/font-0-latn.otf",
+      "characters": 1313,
+      "added": 1313
+    },
+    {
+      "file": "nokia-ta1278-research/analysis/ui/fonts/font-1-hani.otf",
+      "characters": 7479,
+      "added": 7431
+    },
+    {
+      "file": "nokia-ta1278-research/analysis/ui/fonts/font-2-hani.otf",
+      "characters": 13497,
+      "added": 8820
+    },
+    {
+      "file": "assets/fonts/NotoSansCJKsc-Regular.otf",
+      "characters": 44810,
+      "added": 28153
+    },
+    {
+      "file": "assets/fonts/NotoSansSymbols2-Regular.ttf",
+      "characters": 2955,
+      "added": 2545
+    },
+    {
+      "file": "assets/fonts/NotoEmoji.ttf",
+      "characters": 1489,
+      "added": 1070
+    }
+  ]
+}

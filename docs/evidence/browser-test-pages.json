@@ -1,0 +1,36 @@
+[
+  {
+    "name": "example",
+    "source_url": "https://example.com",
+    "host_fetch_date": "2026-10-25",
+    "bytes": 577,
+    "sha256": "25ddf2c883e0d1958ea971d279a7e4f0fd446724ee3db7db19dadabd4a62e484",
+    "limits": "Host HTTPS fetch; handset HTTP response may differ. No raw handset network payload captured."
+  },
+  {
+    "name": "form",
+    "source_url": "https://httpbin.org/forms/post",
+    "host_fetch_date": "2026-10-25",
+    "bytes": 1397,
+    "sha256": "d9cd9adbe7554d4e82a597d722dccdcea70c8dd918836670e3f9687531f54d74",
+    "limits": "Host HTTPS fetch; handset HTTP response may differ. No raw handset network payload captured."
+  },
+  {
+    "name": "cern",
+    "source_url": "http://info.cern.ch/",
+    "final_host_url": "http://info.cern.ch/",
+    "host_fetch_date": "2026-10-25",
+    "bytes": 646,
+    "sha256": "bc11566aa5572b5a79aba58917d78dad416d64041a82d7b5d0ff7e52c37a4540",
+    "limits": "Host fetch; handset response may differ. No handset network payload captured."
+  },
+  {
+    "name": "selenium",
+    "source_url": "https://www.selenium.dev/selenium/web/web-form.html",
+    "final_host_url": "https://www.selenium.dev/selenium/web/web-form.html",
+    "host_fetch_date": "2026-10-25",
+    "bytes": 4988,
+    "sha256": "fbf64bd0731a21f7e77abfde1b3bfc01377215783952facaccc8ed5eb105c6c3",
+    "limits": "Host fetch; handset response may differ. No handset network payload captured."
+  }
+]

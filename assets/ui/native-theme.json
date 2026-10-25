@@ -1,0 +1,74 @@
+{
+  "source": "nokia-ta1278-research/firmware/original/system-20261025T054301+0800/user.bin",
+  "source_sha256": "8f0db2dc82f9e763cb700c2e5781b7ca7125a4d250f4c075dbec793eb549c1ca",
+  "palette_offset": "0x6f73b4",
+  "palette_sha256": "85d81d624480c3ed55a2d0c50cc070e18575a5e260d4796ecbe6bd129a8b3060",
+  "accents_rgb565": [
+    [
+      56508,
+      52153,
+      49622,
+      45075,
+      38929,
+      32782,
+      22539
+    ],
+    [
+      62998,
+      60624,
+      58184,
+      57858,
+      47554,
+      41345,
+      26881
+    ],
+    [
+      65239,
+      65105,
+      64840,
+      64608,
+      54144,
+      45793,
+      31232
+    ],
+    [
+      38578,
+      28237,
+      13734,
+      3361,
+      3040,
+      672,
+      512
+    ],
+    [
+      46648,
+      38261,
+      29873,
+      21486,
+      17130,
+      10759,
+      8581
+    ],
+    [
+      36414,
+      26014,
+      11420,
+      954,
+      724,
+      493,
+      362
+    ]
+  ],
+  "startup_fallback_accent": 1,
+  "startup_note": "0x883a45d8 initializes preference to 1 before loading saved setting. The current handset setting was not read.",
+  "candidate_style_offset": "0x74cd5c",
+  "candidate_text_rgb565": 65535,
+  "candidate_background_shade": 5,
+  "candidate_selection_shade": 2,
+  "candidate_page_size": 4,
+  "candidate_row_height": 30,
+  "candidate_inset_row_height": 24,
+  "candidate_width_padding": 31,
+  "candidate_flip_threshold": 184,
+  "limits": "Native Chinese draw calls and geometry recovered. Dictionary, exact font rasterization, all mode/focus branches and current saved theme remain unresolved."
+}

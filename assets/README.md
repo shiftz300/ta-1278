@@ -1,0 +1,23 @@
+# Additional fonts and prediction dictionaries
+
+These are new replica resources. They are not extracted Nokia fonts or the original T9 engine. Downloads are fixed to commits and checked by SHA-256 in `sources.json`. No upstream executable code is run.
+
+| Resource | Source and license | Use |
+|---|---|---|
+| Noto Sans CJK SC Regular | [Noto CJK](https://github.com/notofonts/noto-cjk), SIL OFL 1.1; `fonts/NotoSansCJK-LICENSE.txt` | Missing Chinese, kana, Hangul and other glyphs |
+| Noto Sans Symbols 2 | [Google Fonts](https://github.com/google/fonts/tree/main/ofl/notosanssymbols2), SIL OFL 1.1; adjacent OFL text | Extra symbols |
+| Noto Emoji | [Google Fonts](https://github.com/google/fonts/tree/main/ofl/notoemoji), SIL OFL 1.1; adjacent OFL text | Single-codepoint monochrome emoji outlines |
+| pinyin_simp.dict.yaml | [Rime pinyin-simp](https://github.com/rime/rime-pinyin-simp), derived from Android Pinyin IME, Apache 2.0; `input/rime-LICENSE.txt` and `rime-AUTHORS.txt` | 65,125 Chinese word/pronunciation rows, including 48,078 phrase rows |
+| en_50k.txt | [FrequencyWords](https://github.com/hermitdave/FrequencyWords), **content CC BY-SA 4.0**, code MIT | Dave's 2018 OpenSubtitles English word frequencies; raw list unmodified, runtime filters non-ASCII/nonalphabetic words |
+
+Attribution for the English data: hermitdave / Dave, FrequencyWords, 2018 English list generated from OpenSubtitles2018. See `input/FrequencyWords-README.md`, the pinned source URL in `sources.json`, and `input/CC-BY-SA-4.0.txt`. The data remains under CC BY-SA 4.0; the upstream repository's MIT code license does not replace its content license. Redistribution of these resources must retain their license and attribution requirements. The macOS packaging script includes the notices.
+
+Fonts are included unmodified. The original three fonts retain first priority. This adds a fallback system to the app without altering the original firmware evidence. Current union: 49,332 Unicode codepoints, versus 8,744 in the earlier two-font renderer; this is cmap coverage, not a claim to support all Unicode scripts, shaping, emoji sequences or color emoji. See `font-coverage.json`. Unsupported codepoints can still show a missing-glyph box.
+
+The new prediction implementation maps letters/pinyin to keys 2–9, ranks exact matches before completions, then editor-session selections and frequency. It uses only these offline lists and is not the original T9 algorithm. It does not train on or import phone data, send text to a server, or save learned selections across restarts.
+
+## Recovered UI values
+
+`ui/native-theme.json` is generated from the acquired original system firmware by `scripts/recover-ui-style.py`. The script checks the source SHA-256 before reading the six accent palettes and candidate colors. See [native UI evidence](../docs/native-ui.md) for addresses and limits. This file is not a downloaded theme or proof of the handset's saved preferences.
+
+The stroke mode uses the unmodified Rime `stroke.dict.yaml` at the revision and SHA-256 in `sources.json`. The replica maps h/s/p/n/z to keys 1/2/3/4/5 (horizontal/vertical/left-falling/dot-or-right-falling/turn) and ranks candidates with the existing pinyin frequencies. This mapping/ranking is a replacement policy. The original Nokia stroke engine is not restored. The six short-Hash modes are pinyin, stroke, Abc, abc, ABC, 123; English prediction remains available for host tests but is not inserted in that native cycle.

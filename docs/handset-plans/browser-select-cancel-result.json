@@ -1,0 +1,30 @@
+{
+  "source_kind": "actual_handset_replay",
+  "firmware": "17.00.17.02",
+  "profile": "../handset-profiles/ta1278-17.00.17.02.json",
+  "session": "ta1278-native-261",
+  "private_archive": "ta-1278-source/handset-sessions/20261025",
+  "plan_sha256": "f5293abcd6a7a6ef1ba1da1e38f1b2473cbd15ea269b6a4293f32f475952991f",
+  "event_log_sha256": "2fbb5823a8e4b5eb19331b3f534cc530c958ae4064cd2b026bf88fff9dd26c78",
+  "started_utc": "2026-10-25T11:32:53Z",
+  "finished_utc": "2026-10-25T11:32:56Z",
+  "result": {
+    "time_utc": "2026-10-25T11:32:56Z",
+    "event": "plan_complete",
+    "steps": 3,
+    "assertions": 2
+  },
+  "assertions": [
+    {
+      "time_utc": "2026-10-25T11:32:54Z",
+      "event": "assertion_passed",
+      "step": "select-reopen-first-focus"
+    },
+    {
+      "time_utc": "2026-10-25T11:32:56Z",
+      "event": "assertion_passed",
+      "step": "select-cancel-keeps-two"
+    }
+  ],
+  "limits": "Specific loaded public page, focus, Chinese UI and grey-green theme. Page changes or network delay can fail image guards. No form submission. Not a full browser equivalence test."
+}

@@ -1,0 +1,40 @@
+{
+  "note": "Read via GitHub connector as UTF-8 text; saved text may include a final newline. Different product/version. Full reference text kept outside repo, not executed.",
+  "sources": [
+    {
+      "url": "https://github.com/obaidi2005/ZW217_W19_V4.1_yisai/blob/d48d55e028c13b6f50c291cbb7ea29201c3c8432/MS_Customize/source/product/driver/lcd/lcd_diag.c",
+      "saved_utf8_bytes": 13093,
+      "saved_utf8_sha256": "00da61ede9cecf59d77fd6a153a2be9c9fe7ebc8105285f5f305a31777ca8c34"
+    },
+    {
+      "url": "https://github.com/obaidi2005/ZW217_W19_V4.1_yisai/blob/d48d55e028c13b6f50c291cbb7ea29201c3c8432/MS_Customize/export/inc/lcd_diag.h",
+      "saved_utf8_bytes": 3349,
+      "saved_utf8_sha256": "0a55aff226e3610b05246682dd7b337077dbede1ccca4c82ea288ff41c64c6bb"
+    },
+    {
+      "url": "https://github.com/obaidi2005/ZW217_W19_V4.1_yisai/blob/d48d55e028c13b6f50c291cbb7ea29201c3c8432/MS_Ref/export/inc/cmddef.h",
+      "saved_utf8_bytes": 19715,
+      "saved_utf8_sha256": "1b1aa111bae2f0332563c597c5373aa78ba5a0ffe296124a92299adf9377c222"
+    },
+    {
+      "url": "https://github.com/obaidi2005/ZW217_W19_V4.1_yisai/blob/d48d55e028c13b6f50c291cbb7ea29201c3c8432/MS_Ref/export/inc/comm_def.h",
+      "saved_utf8_bytes": 3903,
+      "saved_utf8_sha256": "aa11d6913612a5325570796dec60ee08488f49d448384901df6490037ddae5f2"
+    },
+    {
+      "url": "https://github.com/obaidi2005/ZW217_W19_V4.1_yisai/blob/d48d55e028c13b6f50c291cbb7ea29201c3c8432/MS_Ref/source/base/src/diag.c",
+      "saved_utf8_bytes": 177887,
+      "saved_utf8_sha256": "460f7d3ac0b1a69165f334a5ab1808d645c64cba4efe7b2669a8c641b35d7380"
+    },
+    {
+      "url": "https://github.com/obaidi2005/ZW217_W19_V4.1_yisai/blob/d48d55e028c13b6f50c291cbb7ea29201c3c8432/MS_Ref/export/inc/diag.h",
+      "saved_utf8_bytes": 11259,
+      "saved_utf8_sha256": "1eddeeb51b956a50af2630ac65be56eeeaed7c7e5828267492f84e5c5b5c9471"
+    },
+    {
+      "url": "https://github.com/obaidi2005/ZW217_W19_V4.1_yisai/blob/d48d55e028c13b6f50c291cbb7ea29201c3c8432/chip_drv/chip_module/misc/sio.c",
+      "saved_utf8_bytes": 291397,
+      "saved_utf8_sha256": "1dcdf47b7c9f8b91ebc65a14b7d849ee44b63def638b2372f152c37ab0494afc"
+    }
+  ]
+}

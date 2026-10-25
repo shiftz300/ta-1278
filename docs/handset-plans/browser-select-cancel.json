@@ -1,0 +1,65 @@
+{
+  "schema": 1,
+  "steps": [
+    {
+      "name": "select-reopen-first-focus",
+      "key": "CENTER",
+      "before": {
+        "roi": [
+          0,
+          216,
+          232,
+          280
+        ],
+        "sha256": "54cf1925358aa1194350a17fade7fd1ee0a7789aaf8eee46ba9c6846745bfe11"
+      },
+      "settle_ms": 700,
+      "after": {
+        "roi": [
+          0,
+          24,
+          240,
+          192
+        ],
+        "sha256": "4de27f15e823a279dede64c51c3b5770bd9a1daddfdfa5427ce4518d7a0b0a84"
+      }
+    },
+    {
+      "name": "select-one-focus",
+      "key": "DOWN",
+      "before": {
+        "roi": [
+          0,
+          0,
+          48,
+          16
+        ],
+        "sha256": "bac16276b80734954536c7473ead449c15fa8bc013b049f7a0b07607833e0db9"
+      },
+      "settle_ms": 600
+    },
+    {
+      "name": "select-cancel-keeps-two",
+      "key": "RSOFT",
+      "before": {
+        "roi": [
+          0,
+          0,
+          48,
+          16
+        ],
+        "sha256": "bac16276b80734954536c7473ead449c15fa8bc013b049f7a0b07607833e0db9"
+      },
+      "settle_ms": 800,
+      "after": {
+        "roi": [
+          0,
+          216,
+          232,
+          280
+        ],
+        "sha256": "54cf1925358aa1194350a17fade7fd1ee0a7789aaf8eee46ba9c6846745bfe11"
+      }
+    }
+  ]
+}

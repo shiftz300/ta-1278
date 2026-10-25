@@ -1,0 +1,2123 @@
+{
+  "schema": 1,
+  "scope": "All handset functions except owner-excluded third-party services. Compiled entries are candidates, not a runtime menu.",
+  "owner_exclusions": [
+    "喜马拉雅",
+    "支付宝"
+  ],
+  "exclusion_rule": "Other apps remain included until explicitly excluded or proven absent. No silent exclusions.",
+  "source": "nokia-ta1278-research/analysis/ui/mainmenu-registry.json",
+  "source_sha256": "9efc364c2dd77cad3497b1f8cb6479bf59cf739a4df0a05b448ec56d863b5ac0",
+  "statuses": [
+    "not_sampled",
+    "partially_sampled",
+    "captured",
+    "transition_verified",
+    "implemented",
+    "replica_compared",
+    "blocked",
+    "not_present",
+    "excluded_by_owner"
+  ],
+  "completion_rule": "Every runtime-visible page/action needs handset evidence, a transition result and replica comparison. Blocked and firmware-only cases do not count as sampled. No global percentage from registry counts.",
+  "blocked_actions": [
+    "real_call",
+    "real_message_send",
+    "payment",
+    "erase_or_factory_reset",
+    "delete_existing_user_data"
+  ],
+  "applications": [
+    {
+      "registry_slot": 0,
+      "app_id": "0x95",
+      "label": "ZMAN HAYOM",
+      "handler_thumb": "0x88b99ec5",
+      "runtime_visibility": "unknown",
+      "scope": "include_if_present",
+      "cases": {
+        "entry_and_exit": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "page_layout_and_resources": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "focus_and_scrolling": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "softkeys_and_context_menus": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "dialogs_and_cancel": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "settings_and_persistence": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "empty_and_error_states": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "background_and_resume": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        }
+      }
+    },
+    {
+      "registry_slot": 1,
+      "app_id": "0x3",
+      "label": "通话历史记录",
+      "handler_thumb": "0x880bcf13",
+      "runtime_visibility": "observed_main_menu",
+      "scope": "include_if_present",
+      "cases": {
+        "entry_and_exit": {
+          "status": "partially_sampled",
+          "artifacts": [
+            "docs/handset-observations.md",
+            "docs/handset-samples/20261025/index.json"
+          ],
+          "note": "Root/options entered and exited."
+        },
+        "page_layout_and_resources": {
+          "status": "partially_sampled",
+          "artifacts": [
+            "docs/handset-observations.md",
+            "docs/handset-samples/20261025/index.json"
+          ],
+          "note": "Private local captures only; original history not exported."
+        },
+        "focus_and_scrolling": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "softkeys_and_context_menus": {
+          "status": "partially_sampled",
+          "artifacts": [
+            "docs/handset-observations.md",
+            "docs/handset-samples/20261025/index.json"
+          ],
+          "note": "Message/details/add contact/block/delete/delete all labels observed; none selected."
+        },
+        "dialogs_and_cancel": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "settings_and_persistence": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "empty_and_error_states": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "background_and_resume": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        }
+      }
+    },
+    {
+      "registry_slot": 2,
+      "app_id": "0x2",
+      "label": "通讯录",
+      "handler_thumb": "0x880bcf17",
+      "runtime_visibility": "observed_main_menu",
+      "scope": "include_if_present",
+      "cases": {
+        "entry_and_exit": {
+          "status": "partially_sampled",
+          "artifacts": [
+            "docs/handset-observations.md",
+            "docs/handset-samples/20261025/index.json"
+          ],
+          "note": "Root/options, generated fixture detail/delete, new form/cancel."
+        },
+        "page_layout_and_resources": {
+          "status": "partially_sampled",
+          "artifacts": [
+            "docs/handset-observations.md",
+            "docs/handset-samples/20261025/index.json"
+          ],
+          "note": "Generated test-contact details and nine-field new form captured. Original contacts excluded."
+        },
+        "focus_and_scrolling": {
+          "status": "partially_sampled",
+          "artifacts": [
+            "docs/handset-observations.md",
+            "docs/handset-samples/20261025/index.json"
+          ],
+          "note": "New form fields scroll and wrap."
+        },
+        "softkeys_and_context_menus": {
+          "status": "partially_sampled",
+          "artifacts": [
+            "docs/handset-observations.md",
+            "docs/handset-samples/20261025/index.json"
+          ],
+          "note": "Root and detail menus captured. No calls/messages/share invoked."
+        },
+        "dialogs_and_cancel": {
+          "status": "partially_sampled",
+          "artifacts": [
+            "docs/handset-observations.md",
+            "docs/handset-samples/20261025/index.json"
+          ],
+          "note": "Full-store error and generated-fixture single-record delete confirmation observed. Blank new form canceled."
+        },
+        "settings_and_persistence": {
+          "status": "partially_sampled",
+          "artifacts": [
+            "docs/handset-observations.md",
+            "docs/handset-samples/20261025/index.json"
+          ],
+          "note": "Exactly one test-generated fixture deleted; no new contact saved. Existing owner contacts unchanged."
+        },
+        "empty_and_error_states": {
+          "status": "partially_sampled",
+          "artifacts": [
+            "docs/handset-observations.md",
+            "docs/handset-samples/20261025/index.json"
+          ],
+          "note": "Store filled by test mode. Deleting verified a0000/1230000 fixture unblocked new form."
+        },
+        "background_and_resume": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        }
+      }
+    },
+    {
+      "registry_slot": 3,
+      "app_id": "0x4",
+      "label": "多媒体资料",
+      "handler_thumb": "0x880bcf1f",
+      "runtime_visibility": "unknown",
+      "scope": "include_if_present",
+      "cases": {
+        "entry_and_exit": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "page_layout_and_resources": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "focus_and_scrolling": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "softkeys_and_context_menus": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "dialogs_and_cancel": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "settings_and_persistence": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "empty_and_error_states": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "background_and_resume": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        }
+      }
+    },
+    {
+      "registry_slot": 4,
+      "app_id": "0x11",
+      "label": "互联网",
+      "handler_thumb": "0x880bce3f",
+      "runtime_visibility": "observed_main_menu",
+      "scope": "include_if_present",
+      "cases": {
+        "entry_and_exit": {
+          "status": "partially_sampled",
+          "artifacts": [
+            "docs/handset-observations.md"
+          ],
+          "note": "Entry, URL editor, cancel, exit confirmation and close observed."
+        },
+        "page_layout_and_resources": {
+          "status": "partially_sampled",
+          "artifacts": [
+            "docs/handset-observations.md"
+          ],
+          "note": "Start, URL editor, options, settings and exit prompt. Web content not yet sampled."
+        },
+        "focus_and_scrolling": {
+          "status": "partially_sampled",
+          "artifacts": [
+            "docs/handset-observations.md"
+          ],
+          "note": "Eight selectable settings rows wrap; headings skipped."
+        },
+        "softkeys_and_context_menus": {
+          "status": "partially_sampled",
+          "artifacts": [
+            "docs/handset-observations.md"
+          ],
+          "note": "Home, settings, close. URL delete becomes cancel when empty."
+        },
+        "dialogs_and_cancel": {
+          "status": "partially_sampled",
+          "artifacts": [
+            "docs/handset-observations.md"
+          ],
+          "note": "URL cancel and browser-close confirmation observed."
+        },
+        "settings_and_persistence": {
+          "status": "partially_sampled",
+          "artifacts": [
+            "docs/evidence/browser-layout-20261025.json"
+          ],
+          "note": "Grouped browser settings and picker entry/cancel now sampled; clear commit, reset and complete persistence still open."
+        },
+        "empty_and_error_states": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "background_and_resume": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        }
+      }
+    },
+    {
+      "registry_slot": 5,
+      "app_id": "0x1",
+      "label": "信息",
+      "handler_thumb": "0x880bcf0f",
+      "runtime_visibility": "observed_main_menu",
+      "scope": "include_if_present",
+      "cases": {
+        "entry_and_exit": {
+          "status": "partially_sampled",
+          "artifacts": [
+            "docs/handset-observations.md"
+          ],
+          "note": "Opened new message and returned after deleting synthetic content; existing previews excluded."
+        },
+        "page_layout_and_resources": {
+          "status": "partially_sampled",
+          "artifacts": [
+            "docs/handset-observations.md"
+          ],
+          "note": "Empty/Chinese/newline body, recipient, counter, bubble and candidate popup captured."
+        },
+        "focus_and_scrolling": {
+          "status": "partially_sampled",
+          "artifacts": [
+            "docs/handset-observations.md"
+          ],
+          "note": "Recipient/body focus, two-stage pinyin confirmation, symbol navigation. Long text and other boundaries pending."
+        },
+        "softkeys_and_context_menus": {
+          "status": "partially_sampled",
+          "artifacts": [
+            "docs/handset-observations.md"
+          ],
+          "note": "Insert, smiley, symbols, input-mode cycle; save flow pending."
+        },
+        "dialogs_and_cancel": {
+          "status": "partially_sampled",
+          "artifacts": [
+            "docs/handset-observations.md"
+          ],
+          "note": "Smiley cancel returns directly to editor. Other dialogs pending."
+        },
+        "settings_and_persistence": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "empty_and_error_states": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "background_and_resume": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        }
+      }
+    },
+    {
+      "registry_slot": 6,
+      "app_id": "0x12",
+      "label": "Mobile Store",
+      "handler_thumb": "0x880bcedb",
+      "runtime_visibility": "unknown",
+      "scope": "include_if_present",
+      "cases": {
+        "entry_and_exit": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "page_layout_and_resources": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "focus_and_scrolling": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "softkeys_and_context_menus": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "dialogs_and_cancel": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "settings_and_persistence": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "empty_and_error_states": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "background_and_resume": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        }
+      }
+    },
+    {
+      "registry_slot": 7,
+      "app_id": "0x18",
+      "label": "贪吃蛇",
+      "handler_thumb": "0x880bcf3f",
+      "runtime_visibility": "observed_main_menu",
+      "scope": "include_if_present",
+      "cases": {
+        "entry_and_exit": {
+          "status": "partially_sampled",
+          "artifacts": [
+            "docs/handset-observations.md",
+            "docs/handset-samples/20261025/index.json"
+          ],
+          "note": "Menu > new game > RSOFT pause > launcher."
+        },
+        "page_layout_and_resources": {
+          "status": "partially_sampled",
+          "artifacts": [
+            "docs/handset-observations.md",
+            "docs/handset-samples/20261025/index.json"
+          ],
+          "note": "Full-screen board, pause menu, six game types and level bars captured."
+        },
+        "focus_and_scrolling": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "softkeys_and_context_menus": {
+          "status": "partially_sampled",
+          "artifacts": [
+            "docs/handset-observations.md",
+            "docs/handset-samples/20261025/index.json"
+          ],
+          "note": "Pause adds Continue; type/level views inspected without changing selections."
+        },
+        "dialogs_and_cancel": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "settings_and_persistence": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "empty_and_error_states": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "background_and_resume": {
+          "status": "partially_sampled",
+          "artifacts": [
+            "docs/handset-observations.md",
+            "docs/handset-samples/20261025/index.json"
+          ],
+          "note": "Test game left paused; resume/persistence not verified."
+        }
+      }
+    },
+    {
+      "registry_slot": 8,
+      "app_id": "0x1a",
+      "label": "Ninja Up",
+      "handler_thumb": "0x880bcf5b",
+      "runtime_visibility": "unknown",
+      "scope": "include_if_present",
+      "cases": {
+        "entry_and_exit": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "page_layout_and_resources": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "focus_and_scrolling": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "softkeys_and_context_menus": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "dialogs_and_cancel": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "settings_and_persistence": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "empty_and_error_states": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "background_and_resume": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        }
+      }
+    },
+    {
+      "registry_slot": 9,
+      "app_id": "0x1c",
+      "label": "游戏",
+      "handler_thumb": "0x880bcf23",
+      "runtime_visibility": "unknown",
+      "scope": "include_if_present",
+      "cases": {
+        "entry_and_exit": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "page_layout_and_resources": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "focus_and_scrolling": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "softkeys_and_context_menus": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "dialogs_and_cancel": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "settings_and_persistence": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "empty_and_error_states": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "background_and_resume": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        }
+      }
+    },
+    {
+      "registry_slot": 10,
+      "app_id": "0x13",
+      "label": "Facebook",
+      "handler_thumb": "0x880bcedb",
+      "runtime_visibility": "unknown",
+      "scope": "include_if_present",
+      "cases": {
+        "entry_and_exit": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "page_layout_and_resources": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "focus_and_scrolling": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "softkeys_and_context_menus": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "dialogs_and_cancel": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "settings_and_persistence": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "empty_and_error_states": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "background_and_resume": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        }
+      }
+    },
+    {
+      "registry_slot": 11,
+      "app_id": "0x14",
+      "label": "Twitter",
+      "handler_thumb": "0x880bcedb",
+      "runtime_visibility": "unknown",
+      "scope": "include_if_present",
+      "cases": {
+        "entry_and_exit": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "page_layout_and_resources": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "focus_and_scrolling": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "softkeys_and_context_menus": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "dialogs_and_cancel": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "settings_and_persistence": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "empty_and_error_states": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "background_and_resume": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        }
+      }
+    },
+    {
+      "registry_slot": 12,
+      "app_id": "0x6",
+      "label": "设置",
+      "handler_thumb": "0x880bcfad",
+      "runtime_visibility": "observed_main_menu",
+      "scope": "include_if_present",
+      "cases": {
+        "entry_and_exit": {
+          "status": "partially_sampled",
+          "artifacts": [
+            "docs/handset-observations.md"
+          ],
+          "note": "Settings > personalization > theme / keyboard, then return."
+        },
+        "page_layout_and_resources": {
+          "status": "partially_sampled",
+          "artifacts": [
+            "docs/handset-observations.md"
+          ],
+          "note": "Root, personalization, theme previews and keyboard list captured."
+        },
+        "focus_and_scrolling": {
+          "status": "partially_sampled",
+          "artifacts": [
+            "docs/handset-observations.md"
+          ],
+          "note": "Six theme swatches clamp left/right; no wrap."
+        },
+        "softkeys_and_context_menus": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "dialogs_and_cancel": {
+          "status": "partially_sampled",
+          "artifacts": [
+            "docs/handset-observations.md"
+          ],
+          "note": "Cancel magenta preview preserves original green accent."
+        },
+        "settings_and_persistence": {
+          "status": "partially_sampled",
+          "artifacts": [
+            "docs/handset-observations.md"
+          ],
+          "note": "No theme confirmation; persistence after reboot not tested."
+        },
+        "empty_and_error_states": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "background_and_resume": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        }
+      }
+    },
+    {
+      "registry_slot": 13,
+      "app_id": "0x9",
+      "label": "音乐",
+      "handler_thumb": "0x880bcfdd",
+      "runtime_visibility": "observed_main_menu",
+      "scope": "include_if_present",
+      "cases": {
+        "entry_and_exit": {
+          "status": "partially_sampled",
+          "artifacts": [
+            "docs/handset-observations.md"
+          ],
+          "note": "Loading, root, songs, player and return observed. Player back returns to root, not songs."
+        },
+        "page_layout_and_resources": {
+          "status": "partially_sampled",
+          "artifacts": [
+            "docs/handset-observations.md"
+          ],
+          "note": "Root exported. Song list/player retained privately because of media names."
+        },
+        "focus_and_scrolling": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "softkeys_and_context_menus": {
+          "status": "partially_sampled",
+          "artifacts": [
+            "docs/handset-observations.md"
+          ],
+          "note": "Manual refresh; player repeat, shuffle, queue, playlist, ringtone and share options."
+        },
+        "dialogs_and_cancel": {
+          "status": "partially_sampled",
+          "artifacts": [
+            "docs/handset-observations.md"
+          ],
+          "note": "Repeat submenu cancel returns to options; player cancel returns to root."
+        },
+        "settings_and_persistence": {
+          "status": "partially_sampled",
+          "artifacts": [
+            "docs/handset-observations.md"
+          ],
+          "note": "Repeat choices inspected, not changed."
+        },
+        "empty_and_error_states": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "background_and_resume": {
+          "status": "partially_sampled",
+          "artifacts": [
+            "docs/handset-observations.md"
+          ],
+          "note": "Paused at 13 seconds before exit; return root has current-track card. Resume not yet sampled."
+        }
+      }
+    },
+    {
+      "registry_slot": 14,
+      "app_id": "0x8",
+      "label": "视频",
+      "handler_thumb": "0x880bcfe1",
+      "runtime_visibility": "unknown",
+      "scope": "include_if_present",
+      "cases": {
+        "entry_and_exit": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "page_layout_and_resources": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "focus_and_scrolling": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "softkeys_and_context_menus": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "dialogs_and_cancel": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "settings_and_persistence": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "empty_and_error_states": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "background_and_resume": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        }
+      }
+    },
+    {
+      "registry_slot": 15,
+      "app_id": "0xd",
+      "label": "日历",
+      "handler_thumb": "0x880bcea9",
+      "runtime_visibility": "observed_main_menu",
+      "scope": "include_if_present",
+      "cases": {
+        "entry_and_exit": {
+          "status": "partially_sampled",
+          "artifacts": [
+            "docs/handset-observations.md",
+            "docs/handset-samples/20261025/index.json"
+          ],
+          "note": "Month, add-event editor and cancel to month observed."
+        },
+        "page_layout_and_resources": {
+          "status": "partially_sampled",
+          "artifacts": [
+            "docs/handset-observations.md",
+            "docs/handset-samples/20261025/index.json"
+          ],
+          "note": "Month grid and seven new-event fields captured."
+        },
+        "focus_and_scrolling": {
+          "status": "partially_sampled",
+          "artifacts": [
+            "docs/handset-observations.md",
+            "docs/handset-samples/20261025/index.json"
+          ],
+          "note": "New-event fields scroll and wrap."
+        },
+        "softkeys_and_context_menus": {
+          "status": "partially_sampled",
+          "artifacts": [
+            "docs/handset-observations.md",
+            "docs/handset-samples/20261025/index.json"
+          ],
+          "note": "Add event, go to date, delete items before today menu viewed; delete not invoked."
+        },
+        "dialogs_and_cancel": {
+          "status": "partially_sampled",
+          "artifacts": [
+            "docs/handset-observations.md",
+            "docs/handset-samples/20261025/index.json"
+          ],
+          "note": "Blank new event canceled without saving."
+        },
+        "settings_and_persistence": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "empty_and_error_states": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "background_and_resume": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        }
+      }
+    },
+    {
+      "registry_slot": 16,
+      "app_id": "0x1d",
+      "label": "支付宝",
+      "handler_thumb": "0x88179c75",
+      "runtime_visibility": "observed_main_menu",
+      "scope": "excluded_by_owner",
+      "cases": {
+        "entry_and_exit": {
+          "status": "excluded_by_owner",
+          "artifacts": [],
+          "note": "Explicit owner exclusion; menu visibility only."
+        },
+        "page_layout_and_resources": {
+          "status": "excluded_by_owner",
+          "artifacts": [],
+          "note": "Explicit owner exclusion; menu visibility only."
+        },
+        "focus_and_scrolling": {
+          "status": "excluded_by_owner",
+          "artifacts": [],
+          "note": "Explicit owner exclusion; menu visibility only."
+        },
+        "softkeys_and_context_menus": {
+          "status": "excluded_by_owner",
+          "artifacts": [],
+          "note": "Explicit owner exclusion; menu visibility only."
+        },
+        "dialogs_and_cancel": {
+          "status": "excluded_by_owner",
+          "artifacts": [],
+          "note": "Explicit owner exclusion; menu visibility only."
+        },
+        "settings_and_persistence": {
+          "status": "excluded_by_owner",
+          "artifacts": [],
+          "note": "Explicit owner exclusion; menu visibility only."
+        },
+        "empty_and_error_states": {
+          "status": "excluded_by_owner",
+          "artifacts": [],
+          "note": "Explicit owner exclusion; menu visibility only."
+        },
+        "background_and_resume": {
+          "status": "excluded_by_owner",
+          "artifacts": [],
+          "note": "Explicit owner exclusion; menu visibility only."
+        }
+      }
+    },
+    {
+      "registry_slot": 17,
+      "app_id": "0x1e",
+      "label": "喜马拉雅",
+      "handler_thumb": "0x880bcff5",
+      "runtime_visibility": "observed_main_menu",
+      "scope": "excluded_by_owner",
+      "cases": {
+        "entry_and_exit": {
+          "status": "excluded_by_owner",
+          "artifacts": [],
+          "note": "Explicit owner exclusion; menu visibility only."
+        },
+        "page_layout_and_resources": {
+          "status": "excluded_by_owner",
+          "artifacts": [],
+          "note": "Explicit owner exclusion; menu visibility only."
+        },
+        "focus_and_scrolling": {
+          "status": "excluded_by_owner",
+          "artifacts": [],
+          "note": "Explicit owner exclusion; menu visibility only."
+        },
+        "softkeys_and_context_menus": {
+          "status": "excluded_by_owner",
+          "artifacts": [],
+          "note": "Explicit owner exclusion; menu visibility only."
+        },
+        "dialogs_and_cancel": {
+          "status": "excluded_by_owner",
+          "artifacts": [],
+          "note": "Explicit owner exclusion; menu visibility only."
+        },
+        "settings_and_persistence": {
+          "status": "excluded_by_owner",
+          "artifacts": [],
+          "note": "Explicit owner exclusion; menu visibility only."
+        },
+        "empty_and_error_states": {
+          "status": "excluded_by_owner",
+          "artifacts": [],
+          "note": "Explicit owner exclusion; menu visibility only."
+        },
+        "background_and_resume": {
+          "status": "excluded_by_owner",
+          "artifacts": [],
+          "note": "Explicit owner exclusion; menu visibility only."
+        }
+      }
+    },
+    {
+      "registry_slot": 18,
+      "app_id": "0xe",
+      "label": "计算器",
+      "handler_thumb": "0x880bcfa1",
+      "runtime_visibility": "observed_main_menu",
+      "scope": "include_if_present",
+      "cases": {
+        "entry_and_exit": {
+          "status": "partially_sampled",
+          "artifacts": [
+            "docs/handset-observations.md",
+            "docs/handset-samples/20261025/index.json"
+          ],
+          "note": "Entry, calculation and exit after reset observed."
+        },
+        "page_layout_and_resources": {
+          "status": "partially_sampled",
+          "artifacts": [
+            "docs/handset-observations.md",
+            "docs/handset-samples/20261025/index.json"
+          ],
+          "note": "Native operator cross and result/history display captured."
+        },
+        "focus_and_scrolling": {
+          "status": "partially_sampled",
+          "artifacts": [
+            "docs/handset-observations.md",
+            "docs/handset-samples/20261025/index.json"
+          ],
+          "note": "Up addition and Right multiplication executed."
+        },
+        "softkeys_and_context_menus": {
+          "status": "partially_sampled",
+          "artifacts": [
+            "docs/handset-observations.md",
+            "docs/handset-samples/20261025/index.json"
+          ],
+          "note": "Center equals; RSOFT resets completed result to zero."
+        },
+        "dialogs_and_cancel": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "settings_and_persistence": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "empty_and_error_states": {
+          "status": "partially_sampled",
+          "artifacts": [
+            "docs/handset-observations.md",
+            "docs/handset-samples/20261025/index.json"
+          ],
+          "note": "Zero state captured. Division-by-zero and bounds pending."
+        },
+        "background_and_resume": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        }
+      }
+    },
+    {
+      "registry_slot": 19,
+      "app_id": "0xa",
+      "label": "闹钟",
+      "handler_thumb": "0x880bcfed",
+      "runtime_visibility": "observed_main_menu",
+      "scope": "include_if_present",
+      "cases": {
+        "entry_and_exit": {
+          "status": "partially_sampled",
+          "artifacts": [
+            "docs/handset-observations.md",
+            "docs/handset-samples/20261025/index.json"
+          ],
+          "note": "Root, new alarm and cancel observed."
+        },
+        "page_layout_and_resources": {
+          "status": "partially_sampled",
+          "artifacts": [
+            "docs/handset-observations.md",
+            "docs/handset-samples/20261025/index.json"
+          ],
+          "note": "Five new-alarm fields captured; original alarms private."
+        },
+        "focus_and_scrolling": {
+          "status": "partially_sampled",
+          "artifacts": [
+            "docs/handset-observations.md",
+            "docs/handset-samples/20261025/index.json"
+          ],
+          "note": "Field scrolling and wrap observed."
+        },
+        "softkeys_and_context_menus": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "dialogs_and_cancel": {
+          "status": "partially_sampled",
+          "artifacts": [
+            "docs/handset-observations.md",
+            "docs/handset-samples/20261025/index.json"
+          ],
+          "note": "Blank new alarm canceled; none enabled or saved."
+        },
+        "settings_and_persistence": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "empty_and_error_states": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "background_and_resume": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        }
+      }
+    },
+    {
+      "registry_slot": 20,
+      "app_id": "0xf",
+      "label": "其他",
+      "handler_thumb": "0x880bd011",
+      "runtime_visibility": "observed_main_menu",
+      "scope": "include_if_present",
+      "cases": {
+        "entry_and_exit": {
+          "status": "partially_sampled",
+          "artifacts": [
+            "docs/handset-observations.md",
+            "docs/handset-samples/20261025/index.json"
+          ],
+          "note": "Other menu and timer, stopwatch, unit-converter and flashlight paths entered/exited."
+        },
+        "page_layout_and_resources": {
+          "status": "partially_sampled",
+          "artifacts": [
+            "docs/handset-observations.md",
+            "docs/handset-samples/20261025/index.json"
+          ],
+          "note": "Other lists Timer, Stopwatch, Flashlight and Unit converter with running/on state."
+        },
+        "focus_and_scrolling": {
+          "status": "partially_sampled",
+          "artifacts": [
+            "docs/handset-observations.md",
+            "docs/handset-samples/20261025/index.json"
+          ],
+          "note": "Unit categories and temperature field focus observed."
+        },
+        "softkeys_and_context_menus": {
+          "status": "partially_sampled",
+          "artifacts": [
+            "docs/handset-observations.md",
+            "docs/handset-samples/20261025/index.json"
+          ],
+          "note": "Stopwatch left soft key lap while running, reset when stopped; Center start/stop."
+        },
+        "dialogs_and_cancel": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "settings_and_persistence": {
+          "status": "partially_sampled",
+          "artifacts": [
+            "docs/handset-observations.md",
+            "docs/handset-samples/20261025/index.json"
+          ],
+          "note": "Stopwatch reset to zero; flashlight restored off. No timer or saved conversion."
+        },
+        "empty_and_error_states": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "background_and_resume": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        }
+      }
+    },
+    {
+      "registry_slot": 21,
+      "app_id": "0x7",
+      "label": "文件",
+      "handler_thumb": "0x880bceb1",
+      "runtime_visibility": "observed_main_menu",
+      "scope": "include_if_present",
+      "cases": {
+        "entry_and_exit": {
+          "status": "partially_sampled",
+          "artifacts": [
+            "docs/handset-observations.md",
+            "docs/handset-samples/20261025/index.json"
+          ],
+          "note": "Root > details > root > launcher."
+        },
+        "page_layout_and_resources": {
+          "status": "partially_sampled",
+          "artifacts": [
+            "docs/handset-observations.md",
+            "docs/handset-samples/20261025/index.json"
+          ],
+          "note": "Phone storage and capacity details captured."
+        },
+        "focus_and_scrolling": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "softkeys_and_context_menus": {
+          "status": "partially_sampled",
+          "artifacts": [
+            "docs/handset-observations.md",
+            "docs/handset-samples/20261025/index.json"
+          ],
+          "note": "Details and Format menu. Format not invoked."
+        },
+        "dialogs_and_cancel": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "settings_and_persistence": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "empty_and_error_states": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "background_and_resume": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        }
+      }
+    },
+    {
+      "registry_slot": 22,
+      "app_id": "0xc",
+      "label": "录音",
+      "handler_thumb": "0x880bcf83",
+      "runtime_visibility": "observed_main_menu",
+      "scope": "include_if_present",
+      "cases": {
+        "entry_and_exit": {
+          "status": "partially_sampled",
+          "artifacts": [
+            "docs/handset-observations.md",
+            "docs/handset-samples/20261025/index.json"
+          ],
+          "note": "Idle recorder opened and exited."
+        },
+        "page_layout_and_resources": {
+          "status": "partially_sampled",
+          "artifacts": [
+            "docs/handset-observations.md",
+            "docs/handset-samples/20261025/index.json"
+          ],
+          "note": "00:00:00 idle view captured."
+        },
+        "focus_and_scrolling": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "softkeys_and_context_menus": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "dialogs_and_cancel": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "settings_and_persistence": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "empty_and_error_states": {
+          "status": "partially_sampled",
+          "artifacts": [
+            "docs/handset-observations.md",
+            "docs/handset-samples/20261025/index.json"
+          ],
+          "note": "Idle only. No actual recording or existing recording list opened."
+        },
+        "background_and_resume": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        }
+      }
+    },
+    {
+      "registry_slot": 23,
+      "app_id": "0xb",
+      "label": "收音机",
+      "handler_thumb": "0x880bcfe9",
+      "runtime_visibility": "observed_main_menu",
+      "scope": "include_if_present",
+      "cases": {
+        "entry_and_exit": {
+          "status": "partially_sampled",
+          "artifacts": [
+            "docs/handset-observations.md",
+            "docs/handset-samples/20261025/index.json"
+          ],
+          "note": "Opened frequency view, explicitly selected Close radio and returned."
+        },
+        "page_layout_and_resources": {
+          "status": "partially_sampled",
+          "artifacts": [
+            "docs/handset-observations.md",
+            "docs/handset-samples/20261025/index.json"
+          ],
+          "note": "87.5 MHz scale, volume/mute controls and options captured."
+        },
+        "focus_and_scrolling": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "softkeys_and_context_menus": {
+          "status": "partially_sampled",
+          "artifacts": [
+            "docs/handset-observations.md",
+            "docs/handset-samples/20261025/index.json"
+          ],
+          "note": "Favorites/add, speaker, auto search, fine tune, frequency and close options viewed."
+        },
+        "dialogs_and_cancel": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "settings_and_persistence": {
+          "status": "partially_sampled",
+          "artifacts": [
+            "docs/handset-observations.md",
+            "docs/handset-samples/20261025/index.json"
+          ],
+          "note": "No station search/save or radio settings changed; radio closed."
+        },
+        "empty_and_error_states": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "background_and_resume": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        }
+      }
+    },
+    {
+      "registry_slot": 24,
+      "app_id": "0x10",
+      "label": "计数器",
+      "handler_thumb": "0x880bd015",
+      "runtime_visibility": "observed_main_menu",
+      "scope": "include_if_present",
+      "cases": {
+        "entry_and_exit": {
+          "status": "partially_sampled",
+          "artifacts": [
+            "docs/handset-observations.md",
+            "docs/handset-samples/20261025/index.json"
+          ],
+          "note": "Opened empty state and exited."
+        },
+        "page_layout_and_resources": {
+          "status": "partially_sampled",
+          "artifacts": [
+            "docs/handset-observations.md",
+            "docs/handset-samples/20261025/index.json"
+          ],
+          "note": "Current session shows no displayable content."
+        },
+        "focus_and_scrolling": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "softkeys_and_context_menus": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "dialogs_and_cancel": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "settings_and_persistence": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "empty_and_error_states": {
+          "status": "partially_sampled",
+          "artifacts": [
+            "docs/handset-observations.md",
+            "docs/handset-samples/20261025/index.json"
+          ],
+          "note": "Empty state only; dependence on SIM/radio unknown."
+        },
+        "background_and_resume": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        }
+      }
+    },
+    {
+      "registry_slot": 25,
+      "app_id": "0x17",
+      "label": "手电筒",
+      "handler_thumb": "0x880bcf89",
+      "runtime_visibility": "observed_main_menu",
+      "scope": "include_if_present",
+      "cases": {
+        "entry_and_exit": {
+          "status": "partially_sampled",
+          "artifacts": [
+            "docs/handset-observations.md",
+            "docs/handset-samples/20261025/index.json"
+          ],
+          "note": "Top-level action and Other > dedicated power page sampled."
+        },
+        "page_layout_and_resources": {
+          "status": "partially_sampled",
+          "artifacts": [
+            "docs/handset-observations.md",
+            "docs/handset-samples/20261025/index.json"
+          ],
+          "note": "On/off button and power symbol captured."
+        },
+        "focus_and_scrolling": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "softkeys_and_context_menus": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "dialogs_and_cancel": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "settings_and_persistence": {
+          "status": "partially_sampled",
+          "artifacts": [
+            "docs/handset-observations.md",
+            "docs/handset-samples/20261025/index.json"
+          ],
+          "note": "On state verified through Other, then closed and Other confirmed Off. Physical LED emission not measured."
+        },
+        "empty_and_error_states": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "background_and_resume": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        }
+      }
+    },
+    {
+      "registry_slot": 26,
+      "app_id": "0x19",
+      "label": "English with Oxford",
+      "handler_thumb": "0x880bcf77",
+      "runtime_visibility": "unknown",
+      "scope": "include_if_present",
+      "cases": {
+        "entry_and_exit": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "page_layout_and_resources": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "focus_and_scrolling": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "softkeys_and_context_menus": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "dialogs_and_cancel": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "settings_and_persistence": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "empty_and_error_states": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "background_and_resume": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        }
+      }
+    },
+    {
+      "registry_slot": 27,
+      "app_id": "0x1b",
+      "label": "Racing Attack",
+      "handler_thumb": "0x880bcf7b",
+      "runtime_visibility": "unknown",
+      "scope": "include_if_present",
+      "cases": {
+        "entry_and_exit": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "page_layout_and_resources": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "focus_and_scrolling": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "softkeys_and_context_menus": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "dialogs_and_cancel": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "settings_and_persistence": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "empty_and_error_states": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "background_and_resume": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        }
+      }
+    },
+    {
+      "registry_slot": 28,
+      "app_id": "0x2000",
+      "label": "Claro",
+      "handler_thumb": "0x880bd025",
+      "runtime_visibility": "unknown",
+      "scope": "include_if_present",
+      "cases": {
+        "entry_and_exit": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "page_layout_and_resources": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "focus_and_scrolling": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "softkeys_and_context_menus": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "dialogs_and_cancel": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "settings_and_persistence": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "empty_and_error_states": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "background_and_resume": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        }
+      }
+    },
+    {
+      "registry_slot": 29,
+      "app_id": "0x2001",
+      "label": "Telcel",
+      "handler_thumb": "0x880bd025",
+      "runtime_visibility": "unknown",
+      "scope": "include_if_present",
+      "cases": {
+        "entry_and_exit": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "page_layout_and_resources": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "focus_and_scrolling": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "softkeys_and_context_menus": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "dialogs_and_cancel": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "settings_and_persistence": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "empty_and_error_states": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        },
+        "background_and_resume": {
+          "status": "not_sampled",
+          "artifacts": [],
+          "note": ""
+        }
+      }
+    }
+  ],
+  "cross_cutting_cases": {
+    "home_and_lock": {
+      "startup": {
+        "status": "not_sampled",
+        "artifacts": [],
+        "note": ""
+      },
+      "status_bar": {
+        "status": "partially_sampled",
+        "artifacts": [
+          "docs/handset-observations.md"
+        ],
+        "note": "USB/test-mode status visible in samples; not a normal radio/lock baseline."
+      },
+      "idle_softkeys": {
+        "status": "partially_sampled",
+        "artifacts": [
+          "docs/handset-observations.md"
+        ],
+        "note": "Clock-page side actions are configurable. Owner clarification plus settings read in session 278 verifies current left=Internet/right=Messages; Center opens menu. Not a factory default or diagnostic key-code error."
+      },
+      "lock_unlock": {
+        "status": "not_sampled",
+        "artifacts": [],
+        "note": ""
+      },
+      "shortcuts": {
+        "status": "partially_sampled",
+        "artifacts": [
+          "docs/handset-observations.md",
+          "docs/evidence/lock-screen-shortcuts.json"
+        ],
+        "note": "Settings > Personalization > Keyboard > Lock-screen shortcuts sampled in 278–282. Left picker has 18 entries and wraps; selected marker differs from focus; cancel preserved Internet. Video/Multimedia entries offered but not launched. Shortcut configuration must drive replica Home actions."
+      },
+      "interrupt_and_resume": {
+        "status": "partially_sampled",
+        "artifacts": [
+          "docs/handset-observations.md"
+        ],
+        "note": "Menu reentry resets to Music after selecting Settings then returning Home, with session 192 assertion. Actual call/notification interrupts untested."
+      }
+    },
+    "input_and_sms": {
+      "recipient": {
+        "status": "partially_sampled",
+        "artifacts": [
+          "docs/handset-observations.md"
+        ],
+        "note": "Empty recipient and body focus observed; validation pending."
+      },
+      "body": {
+        "status": "partially_sampled",
+        "artifacts": [
+          "docs/handset-observations.md"
+        ],
+        "note": "Empty, synthetic Chinese and newline samples."
+      },
+      "input_mode_menu": {
+        "status": "partially_sampled",
+        "artifacts": [
+          "docs/handset-observations.md"
+        ],
+        "note": "Short hash cycle: pinyin, stroke, Abc, abc, ABC, 123. Long hash pending."
+      },
+      "chinese_spelling": {
+        "status": "partially_sampled",
+        "artifacts": [
+          "docs/handset-observations.md"
+        ],
+        "note": "64 gives ni; first center focuses candidates; second commits 你."
+      },
+      "candidate_paging": {
+        "status": "not_sampled",
+        "artifacts": [],
+        "note": ""
+      },
+      "english_prediction": {
+        "status": "not_sampled",
+        "artifacts": [],
+        "note": ""
+      },
+      "multitap": {
+        "status": "partially_sampled",
+        "artifacts": [
+          "docs/handset-observations.md"
+        ],
+        "note": "Three rapid 2 taps produce C in Abc; Right commits. Other keys/timing pending."
+      },
+      "symbols": {
+        "status": "partially_sampled",
+        "artifacts": [
+          "docs/handset-observations.md"
+        ],
+        "note": "7x6 picker; bottom-right newline inserted. Full wrap behavior pending."
+      },
+      "cursor_and_selection": {
+        "status": "partially_sampled",
+        "artifacts": [
+          "docs/handset-observations.md"
+        ],
+        "note": "Up beyond first body row focuses recipient; Down returns to body at prior first-row position. Selection pending."
+      },
+      "short_delete": {
+        "status": "partially_sampled",
+        "artifacts": [
+          "docs/handset-observations.md"
+        ],
+        "note": "Deleting newline and Chinese character restores corresponding counters."
+      },
+      "long_delete": {
+        "status": "partially_sampled",
+        "artifacts": [
+          "docs/handset-observations.md"
+        ],
+        "note": "Diagnostic RSOFT down/up held 1000 ms removed one character; physical repeat equivalence unknown."
+      },
+      "newlines": {
+        "status": "partially_sampled",
+        "artifacts": [
+          "docs/handset-observations.md"
+        ],
+        "note": "One newline expands bubble upward by 26 pixels. Multiline scrolling pending."
+      },
+      "character_counts": {
+        "status": "partially_sampled",
+        "artifacts": [
+          "docs/handset-observations.md",
+          "docs/handset-plans/sms-numeric-boundary-result.json"
+        ],
+        "note": "Numeric 160=0/1, 161=145/2; Unicode 70=0/1, 71=63/2. Numeric route replay passed seven image assertions in session 093. Extension cases pending."
+      },
+      "scrolling": {
+        "status": "partially_sampled",
+        "artifacts": [
+          "docs/handset-observations.md"
+        ],
+        "note": "161 digits grows body upward and scrolls beyond visible height. Full caret edge/wrap cases pending."
+      },
+      "insert_menus": {
+        "status": "partially_sampled",
+        "artifacts": [
+          "docs/handset-observations.md"
+        ],
+        "note": "Smiley/symbol/template observed. Fixed Chinese template inserted. Clear text is immediate. Disabled rows remain focusable."
+      },
+      "save_reopen": {
+        "status": "partially_sampled",
+        "artifacts": [
+          "docs/handset-observations.md"
+        ],
+        "note": "Template-only/no-recipient Save as draft exits asynchronously; New opens empty. Durable save and reopening not verified."
+      },
+      "discard_cancel": {
+        "status": "not_sampled",
+        "artifacts": [],
+        "note": ""
+      },
+      "drafts": {
+        "status": "not_sampled",
+        "artifacts": [],
+        "note": ""
+      },
+      "outbox": {
+        "status": "not_sampled",
+        "artifacts": [],
+        "note": ""
+      },
+      "send_confirmation_without_send": {
+        "status": "not_sampled",
+        "artifacts": [],
+        "note": ""
+      }
+    },
+    "browser": {
+      "entry_engine": {
+        "status": "partially_sampled",
+        "artifacts": [
+          "docs/handset-observations.md"
+        ],
+        "note": "Native start page observed; runtime engine internals still require static correlation."
+      },
+      "home": {
+        "status": "partially_sampled",
+        "artifacts": [
+          "docs/handset-observations.md"
+        ],
+        "note": "Start entries: URL, bookmarks, history, offline pages."
+      },
+      "address_edit": {
+        "status": "partially_sampled",
+        "artifacts": [
+          "docs/handset-observations.md",
+          "docs/handset-samples/20261025/index.json"
+        ],
+        "note": "http://example.com entered using multi-tap with 1500 ms character settle; Right/Left wrap at ends. Earlier malformed test text was cleared without submitting."
+      },
+      "links": {
+        "status": "partially_sampled",
+        "artifacts": [
+          "docs/handset-observations.md",
+          "docs/handset-samples/20261025/index.json",
+          "docs/handset-plans/browser-link-back-result.json"
+        ],
+        "note": "CERN public page: blue underlined links, orange/white focus, Center opens first link, wrapped highlight, Back restores parent focus; sessions 242–244. Two-step link/Back replay with two image assertions passed in session 263."
+      },
+      "scroll": {
+        "status": "partially_sampled",
+        "artifacts": [
+          "docs/handset-observations.md",
+          "docs/handset-samples/20261025/index.json"
+        ],
+        "note": "After SIM insertion, httpbin form scrolls while moving focus. Some Down presses scroll without moving off the current control until the next control is visible. Sessions 227,229,231–233."
+      },
+      "forms": {
+        "status": "partially_sampled",
+        "artifacts": [
+          "docs/handset-observations.md",
+          "docs/handset-samples/20261025/index.json",
+          "docs/handset-plans/browser-select-cancel-result.json"
+        ],
+        "note": "Sessions 216–236: text/tel/textarea editors, commit/cancel, newline, radio mutual exclusion, independent checkboxes and scrolling. Sessions 254–261: HTTPS form and single-select; reopening focuses first row, keeps selected Two; cancel keeps Two. Three-step replay has two image assertions. Multi-select, validation and submission untested; no form submitted."
+      },
+      "history": {
+        "status": "partially_sampled",
+        "artifacts": [
+          "docs/handset-observations.md",
+          "docs/handset-samples/20261025/index.json"
+        ],
+        "note": "Sessions 237 and 244: right soft key follows in-session Back without close dialog when a prior page exists. Session 249: Navigation > Forward restores child. Existing history not opened; persistence and history manager remain untested."
+      },
+      "bookmarks": {
+        "status": "not_sampled",
+        "artifacts": [],
+        "note": ""
+      },
+      "load_cancel": {
+        "status": "partially_sampled",
+        "artifacts": [
+          "docs/handset-observations.md",
+          "docs/handset-samples/20261025/index.json"
+        ],
+        "note": "One public URL attempt produced an empty near-white page. Stop later disabled; no explicit error captured. Page-close confirmed back to start."
+      },
+      "errors": {
+        "status": "partially_sampled",
+        "artifacts": [
+          "docs/handset-observations.md",
+          "docs/evidence/browser-layout-20261025.json"
+        ],
+        "note": "Early pre-SIM empty page and disabled Stop observed. Later post-SIM HTML and HTTPS loaded. Explicit network error, auth and redirect edge cases remain untested."
+      },
+      "options": {
+        "status": "partially_sampled",
+        "artifacts": [
+          "docs/handset-observations.md",
+          "docs/evidence/browser-layout-20261025.json"
+        ],
+        "note": "Root and page overlays retain the dimmed underlying page; 38 px rows and opaque picker panels measured. Settings continuation recorded in sessions 284-312."
+      },
+      "exit_resume": {
+        "status": "partially_sampled",
+        "artifacts": [
+          "docs/handset-observations.md",
+          "docs/evidence/browser-layout-20261025.json"
+        ],
+        "note": "Separate browser-exit prompt: left softkey no visible effect in 303, Center exits in 304/312. Reentry returns to start. Mid-page resume and lifecycle remain untested."
+      },
+      "settings": {
+        "status": "partially_sampled",
+        "artifacts": [
+          "docs/handset-observations.md",
+          "docs/evidence/browser-layout-20261025.json"
+        ],
+        "note": "Sessions 290-299,308-311: grouped form; one home type; small/normal text; images direct toggle restored OFF; clear history/cache popup cancelled; restore only focused. Initial APN/homepage/checkbox values are current state, not factory defaults. Clear commit/restore remain untested."
+      }
+    },
+    "music": {
+      "empty_library": {
+        "status": "not_sampled",
+        "artifacts": [],
+        "note": ""
+      },
+      "library": {
+        "status": "partially_sampled",
+        "artifacts": [
+          "docs/handset-observations.md"
+        ],
+        "note": "Root and songs list observed; private names not exported."
+      },
+      "play_pause": {
+        "status": "partially_sampled",
+        "artifacts": [
+          "docs/handset-observations.md"
+        ],
+        "note": "First track started, then Center paused at 13 seconds. No audio copied."
+      },
+      "track_change": {
+        "status": "not_sampled",
+        "artifacts": [],
+        "note": ""
+      },
+      "seek": {
+        "status": "not_sampled",
+        "artifacts": [],
+        "note": ""
+      },
+      "volume": {
+        "status": "not_sampled",
+        "artifacts": [],
+        "note": ""
+      },
+      "repeat_shuffle": {
+        "status": "partially_sampled",
+        "artifacts": [
+          "docs/handset-observations.md"
+        ],
+        "note": "Repeat choices off/all/current inspected; shuffle not toggled."
+      },
+      "options": {
+        "status": "partially_sampled",
+        "artifacts": [
+          "docs/handset-observations.md"
+        ],
+        "note": "Player options and repeat submenu inspected."
+      },
+      "background_resume": {
+        "status": "partially_sampled",
+        "artifacts": [
+          "docs/handset-observations.md"
+        ],
+        "note": "Paused player returns to root current-track card. Reentry not yet tested."
+      },
+      "end_of_track": {
+        "status": "not_sampled",
+        "artifacts": [],
+        "note": ""
+      }
+    }
+  },
+  "last_observed": "2026-10-25",
+  "runtime_main_menu": {
+    "test_mode_enabled": true,
+    "order": [
+      "日历",
+      "闹钟",
+      "贪吃蛇",
+      "互联网",
+      "音乐",
+      "收音机",
+      "信息",
+      "通话历史记录",
+      "文件",
+      "手电筒",
+      "设置",
+      "通讯录",
+      "录音",
+      "计算器",
+      "其他",
+      "计数器",
+      "支付宝",
+      "喜马拉雅"
+    ],
+    "navigation": "RIGHT traverses row-major order and wraps after the 18th entry. Observed twice. Three columns, vertical viewport scrolling.",
+    "evidence": "Private local archive: ta1278-native-058 and ta1278-native-059; full images excluded because wallpaper is personal.",
+    "limits": "Other may contain more applications. Not seeing a compiled registration at top level does not prove it is absent."
+  },
+  "nested_runtime_entries": [
+    {
+      "parent": "其他",
+      "label": "定时器",
+      "status": "partially_sampled",
+      "artifacts": [
+        "docs/handset-observations.md"
+      ]
+    },
+    {
+      "parent": "其他",
+      "label": "秒表",
+      "status": "partially_sampled",
+      "artifacts": [
+        "docs/handset-observations.md"
+      ]
+    },
+    {
+      "parent": "其他",
+      "label": "手电筒",
+      "status": "partially_sampled",
+      "artifacts": [
+        "docs/handset-observations.md"
+      ]
+    },
+    {
+      "parent": "其他",
+      "label": "单位转换",
+      "status": "partially_sampled",
+      "artifacts": [
+        "docs/handset-observations.md"
+      ]
+    }
+  ]
+}

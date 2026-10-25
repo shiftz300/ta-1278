@@ -1,0 +1,12 @@
+
+user.analysis-only.elf:	file format elf32-littlearm
+
+Disassembly of section .text:
+
+88000000 <.text>:
+882ddc3c: 48fe         	ldr	r0, [pc, #0x3f8]        @ 0x882de038 <.text+0x2de038>
+882ddc3e: 2100         	movs	r1, #0x0
+882ddc40: b510         	push	{r4, lr}
+882ddc42: f0ae fc17    	bl	0x8838c474 <.text+0x38c474> @ imm = #0xae82e
+882ddc46: 2001         	movs	r0, #0x1
+882ddc48: bd10         	pop	{r4, pc}

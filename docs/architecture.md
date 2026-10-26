@@ -25,7 +25,7 @@
 | `phone-vfs` | Virtual mount table, stream/volume interface and directory adapter |
 | `media.rs`, `media/files.rs`, `audio.rs`, `phone/files.rs`, `views/files.rs` | Shared file/library service, audio output and separate file-manager UI |
 | `config.rs` | Host capability flags, separate from native settings |
-| `storage.rs` | Bounded local JSON loading, sync and atomic replacement |
+| `storage.rs`, `storage/` | Bounded JSON, schema checks, backup/atomic replacement, profile lock and utility checkpoints |
 
 Core code has no USB, modem, network or filesystem access. The browser worker receives only a URL and cannot access the mailbox. No firmware binary is executed.
 
@@ -57,20 +57,22 @@ Browser opens its four-entry start page. `about:demo` is an offline test documen
 
 HTTP has a 12-second timeout, 2 MiB decoded-body limit and two waiting jobs. Stop invalidates results; it does not abort the worker's underlying request immediately. Back holds 32 pages; persistent history holds 100 URLs, offline storage 20 parsed documents. Offline snapshots restore initial fields and clear passwords. No JS/CSS renderer, POST, WML, images or downloads. Native settings now use one home type, two font sizes and an inline image checkbox. Clear entry/cancel is sampled; activation is unavailable because native commit behavior is unknown. Restore confirmation remains host policy. Saved pages without flow data still load. See [layout evidence](browser-layout.md).
 
-Music decodes MP3/WAV from the VFS. Playback time comes from the audio sink and continues outside the player; held seek is canceled on navigation. Three synthetic tracks are retained only for screenshot smoke scenes. See [storage](storage.md). Utility timer/stopwatch state continues offscreen while the program runs. Radio/flashlight/recording only change local state. Recorder entries contain durations, not sound. Organizer alarms show local dialogs and snooze while running; no OS wake scheduler is implemented. Dates use UTC+8. Snake is a playable replacement; its maps/physics are not native evidence.
+Music decodes MP3/WAV from the VFS. Playback time comes from the audio sink and continues outside the player; held seek is canceled on navigation. Three synthetic tracks are retained only for screenshot smoke scenes. See [storage](storage.md). Timer/stopwatch state persists; running clocks include elapsed time between launches, while paused clocks stay paused. Radio/flashlight/recording only change local state. Recorder entries contain durations, not sound. Organizer alarms show local dialogs and snooze while running; no OS wake scheduler is implemented. Dates use UTC+8. Snake is a playable replacement; its maps/physics are not native evidence.
 
 ## Data
 
-macOS data directory: `~/Library/Application Support/TA1278 Replica/`. Override with `--data-dir PATH`. Run one instance per directory.
+macOS data directory: `~/Library/Application Support/TA1278 Replica/`. Override with `--data-dir PATH`. An OS lock enforces one instance per directory for builds with this persistence update.
 
 - `messages.json`: drafts, received records/read state and outgoing queue; optional timestamps and explicit synthetic sent state.
 - `preferences.json`: accent and side shortcuts.
 - `browser.json`: bookmarks, history, offline documents and browser preferences.
-- `organizer.json`: local contacts, calendar entries and alarms.
+- `organizer.json`: local contacts/groups, playlists, calendar entries, alarms, pending alerts and snoozes.
 - `music.json`: volume, repeat, shuffle, virtual track path and paused resume position.
+- `utilities.json`: timer, stopwatch/laps and radio preferences.
+- `snake.json`: unlocked levels, scores and game settings.
 - `files/`, `card/`: default VFS volumes, separate from private app records.
 
-Writes use a temporary file, sync and rename. Corrupt/oversized existing files are retained and startup fails rather than overwriting them. All dirty stores block normal window close on save failure. App data is separate from firmware, acquisition archives and public screenshots.
+Writes use unique temporary files, sync and rename, keeping one previous JSON copy in `.bak`. See [persistence and recovery](persistence.md). Corrupt/oversized existing files are retained and startup fails rather than overwriting them. All dirty stores block normal window close on save failure. App data is separate from firmware, acquisition archives and public screenshots.
 
 The prototype's 750 ms multi-tap, 500 ms long press, 120 ms repeat, 4096-unit SMS limit, extra local folder routes, utility formulas, game rules and host persistence are implementation choices. See [fidelity status](fidelity.md) and [asset licenses](../assets/README.md).
 
@@ -78,4 +80,4 @@ The prototype's 750 ms multi-tap, 500 ms long press, 120 ms repeat, 4096-unit SM
 
 ## Media and local completion
 
-Image, video, contact-picture, wallpaper and ringtone selection share `phone/media_browser.rs` and `views/media_browser.rs`. `visual_media.rs` owns bounded copies and decoding jobs. The small `native/MediaHelper.swift` uses installed macOS frameworks and is bundled beside the executable. `phone/contact_groups.rs` handles group/choice routes. `effects.rs` generates local cues; native waveform parity is not claimed. Playlist queue rules remain in `phone-core/music.rs`; UI/data stays in `phone/music.rs`. [Behavior and exact limits](local-completion.md).
+Image, video, contact-picture, wallpaper and ringtone selection share `phone/media_browser.rs` and `views/media_browser.rs`. `visual_media.rs` owns bounded copies and decoding jobs. The small `native/MediaHelper.swift` uses installed macOS frameworks and is bundled beside the executable. `phone/contact_groups.rs` handles group/choice routes. `effects.rs` routes cues through recovered audio resources and independent SF2 synthesis; native waveform parity is not claimed. Playlist queue rules remain in `phone-core/music.rs`; UI/data stays in `phone/music.rs`. [Behavior and exact limits](local-completion.md).

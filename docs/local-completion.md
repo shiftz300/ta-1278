@@ -48,7 +48,7 @@ The replica now uses this ring update and two-draw mapping. Its initial words an
 - Original prediction internals, font hinting, all native error/interrupt branches, exact status/lock behavior and every scroll edge are not recovered.
 - Snake boot randomness, exact scheduler timing, exact native DSP waveforms, transient death/win frames and overflow/full-board parity are not established.
 - Bluetooth, SIM PIN/STK, USB device mode, LED/FM and microphone services have no host backend. Recorder timing is not an audio recording. Speed dial stays disabled with calling.
-- Alarms/reminders require the app to be running. There is no system wake service; queued snoozes do not survive quitting. Music/video pause for an alert and require explicit resume.
+- Alarms/reminders require the app to be running. There is no system wake service. Pending alerts and snoozes now survive quitting; overdue snoozes appear on restart. Scheduled occurrences entirely missed while closed are not replayed. See [persistence](persistence.md). Music/video pause for an alert and require explicit resume.
 - The UI is Chinese. Additional system-language UI and unsupported native security settings are not implemented.
 - This pass does not add original native codecs, animated GIF playback, tags/album art, FAT/disk-image backends or physical hot-unplug recovery.
 
@@ -68,4 +68,4 @@ target/TA1278.app/Contents/MacOS/phone-desktop --smoke-test /tmp/ta1278-screens
 
 The generated video used `ffmpeg -f lavfi -i testsrc2=size=240x180:rate=10 -f lavfi -i sine=frequency=440:sample_rate=16000 -t 6 -c:v libx264 -pix_fmt yuv420p -c:a aac clip.mp4`. Run `TA1278_VIDEO_FIXTURE=/absolute/path/clip.mp4 cargo test -p phone-desktop --locked native_video_frames_pause_seek_and_cleanup -- --ignored --nocapture` in a normal macOS session. The separate `real_output_pause_seek_and_eof` test generates a WAV, or accepts `TA1278_AUDIO_FIXTURE` for MP3. These tests do not use the handset.
 
-The audio follow-up distributable is about 39.05 MiB. Library paths are indexed once per scan/update, and visible music rows borrow track titles. This avoids per-frame full-library title copies and repeated linear path searches. [Size and image comparison](build-size.md).
+The current distributable is about 19.77 MiB after resource packing and font deduplication. Library paths are indexed once per scan/update, and visible music rows borrow track titles. This avoids per-frame full-library title copies and repeated linear path searches. [Size and image comparison](build-size.md).

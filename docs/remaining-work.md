@@ -37,3 +37,9 @@ The subsequent [conversation implementation](sms-conversations.md) completes tha
 Known native behavior takes priority. Unknown visible behavior is recorded explicitly; a conservative local replacement is acceptable only when identified as such in the technical evidence. Do not label a replacement as recovered firmware behavior. Do not add implementation notes throughout ordinary phone screens.
 
 Ask the owner when uncertainty changes a visible interaction, supported capability or persistent-data behavior in a material way. Resolve routine code organization and verification details directly. This version is complete when the supported phone tasks work consistently, not when every firmware function has been explained.
+
+## Persistence follow-up
+
+Pending alerts and snoozes, timer/stopwatch state and radio preferences now survive restart. JSON stores share bounded reads, atomic writes, one previous backup and an exclusive profile lock. [Checks and remaining limits](persistence.md). These are host data policies, not newly recovered handset behavior.
+
+The normal-process follow-up also verified draft recovery, timer expiration, paused/running stopwatch recovery and save-failure protection through actual macOS windows. It fixed Cmd-Q bypassing the save path. These checks close the persistence acceptance gap for the exercised local flows; they do not extend the native-fidelity or backend scope above. [Restart evidence](evidence/restart-validation.json).

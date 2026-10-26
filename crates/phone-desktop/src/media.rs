@@ -279,8 +279,8 @@ impl Media {
             phone.status = format!("原机音效无法播放：{e}");
         }
         let tone = phone
-            .organizer
-            .alarm
+            .local_data
+            .reminders
             .alerts
             .front()
             .map(|a| a.tone.as_str());

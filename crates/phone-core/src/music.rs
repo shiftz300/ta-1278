@@ -19,6 +19,8 @@ pub struct Music {
     pub seek_revision: u64,
     held: Option<(Key, bool)>,
     seed: u32,
+    shuffled: Vec<usize>,
+    shuffled_source: Vec<usize>,
 }
 impl Default for Music {
     fn default() -> Self {
@@ -40,6 +42,8 @@ impl Default for Music {
             seek_revision: 0,
             held: None,
             seed: 1278,
+            shuffled: vec![],
+            shuffled_source: vec![],
         }
     }
 }
@@ -52,6 +56,7 @@ impl Music {
             return;
         }
         self.index = index;
+        self.shuffled.clear();
         self.position = 0.;
         self.playing = true;
         self.generation = self.generation.wrapping_add(1);
@@ -72,9 +77,8 @@ impl Music {
     }
     fn step(&mut self, delta: i32, natural: bool) {
         self.generation = self.generation.wrapping_add(1);
-        let order = self.order();
+        let mut order = self.order();
         let n = order.len();
-        let current = order.iter().position(|i| *i == self.index).unwrap_or(0);
         if n == 0 {
             self.playing = false;
             return;
@@ -83,17 +87,30 @@ impl Music {
             self.position = 0.;
             return;
         }
-        if natural && !self.shuffle && self.repeat == Repeat::Off && current + 1 == n {
+        if self.shuffle {
+            if self.shuffled_source != order || self.shuffled.is_empty() {
+                self.shuffled_source = order.clone();
+                // Permutation generation is host policy. Native end mode 1
+                // (shuffle + repeat off) still stops when its queue wraps.
+                let current = order.iter().position(|i| *i == self.index).unwrap_or(0);
+                order.swap(0, current);
+                for i in (2..n).rev() {
+                    self.seed = self.seed.wrapping_mul(1664525).wrapping_add(1013904223);
+                    order.swap(i, 1 + self.seed as usize % i);
+                }
+                self.shuffled = order;
+            }
+            order = self.shuffled.clone();
+        } else {
+            self.shuffled.clear();
+        }
+        let current = order.iter().position(|i| *i == self.index).unwrap_or(0);
+        if natural && self.repeat == Repeat::Off && current + 1 == n {
             self.playing = false;
             self.position = self.duration();
             return;
         }
-        if self.shuffle && n > 1 {
-            self.seed = self.seed.wrapping_mul(1664525).wrapping_add(1013904223);
-            self.index = order[(current + 1 + self.seed as usize % (n - 1)) % n];
-        } else {
-            self.index = order[(current as i32 + delta).rem_euclid(n as i32) as usize];
-        }
+        self.index = order[(current as i32 + delta).rem_euclid(n as i32) as usize];
         self.position = 0.;
     }
     pub fn event(&mut self, e: Event) {
@@ -218,6 +235,41 @@ mod tests {
         assert_eq!(m.index, 0);
         m.tracks.clear();
         m.tick(100.);
+        assert!(!m.playing);
+    }
+}
+
+#[cfg(test)]
+mod native_end_tests {
+    use super::*;
+    #[test]
+    fn shuffle_without_repeat_visits_queue_once_then_stops_and_all_wraps() {
+        let mut m = Music {
+            shuffle: true,
+            ..Music::default()
+        };
+        m.play(1);
+        let mut seen = vec![m.index];
+        for _ in 0..2 {
+            m.ended();
+            assert!(m.playing);
+            assert!(!seen.contains(&m.index));
+            seen.push(m.index);
+        }
+        m.ended();
+        assert!(!m.playing);
+        assert_eq!(m.position, m.duration());
+        m.repeat = Repeat::All;
+        m.playing = true;
+        m.ended();
+        assert_eq!(m.index, seen[0]);
+        m.repeat = Repeat::One;
+        m.ended();
+        assert_eq!(m.index, seen[0]);
+        m.queue = vec![2];
+        m.repeat = Repeat::Off;
+        m.play(2);
+        m.ended();
         assert!(!m.playing);
     }
 }

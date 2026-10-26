@@ -23,6 +23,8 @@ pub enum ToolPage {
     Calls,
 }
 pub struct Tools {
+    pub dirty: bool,
+    pub timer_notice: bool,
     pub page: ToolPage,
     pub calculator: Calculator,
     pub stopwatch: Stopwatch,
@@ -43,6 +45,8 @@ pub struct Tools {
 impl Default for Tools {
     fn default() -> Self {
         Self {
+            dirty: false,
+            timer_notice: false,
             page: ToolPage::Other,
             calculator: Default::default(),
             stopwatch: Default::default(),
@@ -169,6 +173,7 @@ impl Phone {
         )
     }
     pub(super) fn tools_key(&mut self, key: Key) {
+        self.tools.dirty = true;
         use ToolPage::*;
         match self.tools.page {
             Files => {
@@ -341,7 +346,11 @@ impl Phone {
             }
             Key::Center if n > 0 => match self.tools.page {
                 Other => {
-                    self.tools.page = [Timer, Stopwatch, Flashlight, Converter][self.index];
+                    self.tools.page = if self.index == 0 && self.tools.timer.remaining_ms > 0 {
+                        TimerRunning
+                    } else {
+                        [Timer, Stopwatch, Flashlight, Converter][self.index]
+                    };
                     self.index = 0;
                 }
                 Timer => self.open_local_text(
@@ -398,6 +407,7 @@ impl Phone {
         }
     }
     pub(super) fn tool_text(&mut self, field: usize, value: String) {
+        self.tools.dirty = true;
         match field {
             0 => match value.parse::<u64>() {
                 Ok(seconds) if seconds <= 359999 => self.tools.timer_seconds = seconds,

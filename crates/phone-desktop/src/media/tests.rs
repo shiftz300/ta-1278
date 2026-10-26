@@ -328,7 +328,8 @@ fn pending_scan_saves_controls_and_keeps_resume_path_even_on_close() {
     assert_eq!(state.repeat, 1);
     assert!(state.shuffle);
     let bytes = fs::read(dir.join("music.json")).unwrap();
-    fs::create_dir(dir.join("music.json.tmp")).unwrap();
+    fs::remove_file(dir.join("music.json.bak")).unwrap();
+    fs::create_dir(dir.join("music.json.bak")).unwrap();
     p.music.volume = 3;
     assert!(media.save(&dir, &p, true).is_err());
     assert_eq!(fs::read(dir.join("music.json")).unwrap(), bytes);

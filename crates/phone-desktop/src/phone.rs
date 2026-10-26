@@ -330,6 +330,7 @@ impl Phone {
         self.organizer.date = self.local_clock().0;
     }
     pub fn notice(&mut self, s: impl Into<String>) {
+        self.tools.timer_notice = false;
         self.notice_scroll = 0;
         self.notice_lines = 0;
         self.overlay = Some(Overlay::Notice(s.into()));
@@ -370,7 +371,7 @@ impl Phone {
             MenuKind::BrowserRoot => vec!["主页", "设置", "关闭"],
             MenuKind::BrowserOpen => vec!["主页", "输入URL", "书签", "历史", "离线页面"],
             MenuKind::BrowserNavigation => vec!["刷新", "停止", "前进", "返回"],
-            MenuKind::BrowserSave => vec!["添加书签", "保存离线页面"],
+            MenuKind::BrowserSave => vec!["作为主页", "书签", "网页", "图像"],
             MenuKind::Music => vec![
                 "重复",
                 "随机播放",
@@ -394,6 +395,8 @@ impl Phone {
     }
     pub fn menu_enabled(&self, kind: MenuKind, index: usize) -> bool {
         match kind {
+            // Native action 31 is present, but this text adapter has no image backend.
+            MenuKind::BrowserSave => index < 3 && !self.browser.page.url.is_empty(),
             MenuKind::Sms => index != 2 && (index < 3 || !self.compose.body.units.is_empty()),
             MenuKind::Symbols => index != 40,
             MenuKind::BrowserNavigation => match index {
@@ -406,7 +409,7 @@ impl Phone {
         }
     }
     pub fn editor(&self) -> Option<&Editor> {
-        if !self.organizer.alarm.alerts.is_empty() || self.mail_ui.pending.is_some() {
+        if !self.local_data.reminders.alerts.is_empty() || self.mail_ui.pending.is_some() {
             return None;
         }
         match &self.overlay {
@@ -439,7 +442,7 @@ impl Phone {
         }
     }
     pub fn editor_mut(&mut self) -> Option<&mut Editor> {
-        if !self.organizer.alarm.alerts.is_empty() || self.mail_ui.pending.is_some() {
+        if !self.local_data.reminders.alerts.is_empty() || self.mail_ui.pending.is_some() {
             return None;
         }
         match &mut self.overlay {
@@ -488,7 +491,7 @@ impl Phone {
         }
     }
     pub fn tab(&mut self) {
-        if !self.organizer.alarm.alerts.is_empty() || self.mail_ui.pending.is_some() {
+        if !self.local_data.reminders.alerts.is_empty() || self.mail_ui.pending.is_some() {
             return;
         }
         if self.screen == Screen::Compose && self.overlay.is_none() {
@@ -558,14 +561,22 @@ impl Phone {
             self.index = 0;
         }
         self.tools.stopwatch.tick(elapsed);
+        let timer_expired = self.tools.timer.expired;
         self.tools.timer.tick(elapsed);
+        if self.tools.timer.expired != timer_expired {
+            self.tools.dirty = true;
+        }
         if self.tools.recording {
             self.tools.record_ms = self.tools.record_ms.saturating_add(elapsed);
         }
-        if self.tools.timer.expired {
+        if self.tools.timer.expired
+            && !self.tools.timer_notice
+            && self.overlay.is_none()
+            && self.local_data.reminders.alerts.is_empty()
+        {
             self.cues.push(crate::effects::Cue::Alert);
-            self.tools.timer.expired = false;
             self.notice(format!("{}\n时间到", self.tools.timer_name));
+            self.tools.timer_notice = true;
         }
 
         if let Some(e) = self.editor_mut() {
@@ -584,7 +595,7 @@ impl Phone {
     }
     pub fn handle(&mut self, event: Event, now: u64) {
         let Event { key, phase } = event;
-        if !self.organizer.alarm.alerts.is_empty() {
+        if !self.local_data.reminders.alerts.is_empty() {
             if phase == Phase::Down {
                 self.alarm_alert_key(key);
             }

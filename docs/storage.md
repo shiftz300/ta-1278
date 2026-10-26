@@ -7,7 +7,7 @@ The app uses a **VFS inside the process**. It does not mount a disk in macOS, us
 | `/phone` | `<data-dir>/files/` |
 | `/card` | `<data-dir>/card/`, or the existing directory passed to `--mount-card` |
 
-Private app records (messages, contacts, settings, browser data and music settings) remain beside these folders, outside the browsable volumes. Existing records are preserved. An app-owned default data directory can be backed up as a whole. An external card directory must be backed up separately.
+Private app records (messages, contacts, settings, browser data, reminders and utility/music state) remain beside these folders, outside the browsable volumes. Existing records are preserved. An app-owned default data directory can be backed up as a whole. An external card directory must be backed up separately.
 
 ## Flags
 
@@ -39,7 +39,7 @@ Another backend can implement `Volume` and be mounted without changing the playe
 
 Files can browse folders, inspect size, create a folder, rename without overwrite and delete with confirmation. A failed folder read leaves the path, selection and Back history intact; leaving Files cancels pending file navigation. Deleting a nonempty directory fails; no recursive erase. Opening MP3/WAV enters the music player; Back returns to the originating folder. Unsupported formats report an error. Folder menus/geometry are conservative local implementations; their native fidelity is not claimed.
 
-Music scans the volumes on startup and with Music → menu → 手动刷新. External edits need refresh. A refresh pauses playback immediately and preserves the same virtual path/position when available. Playback requests wait for the scan. A file mutation invalidates older scan results; folder renames update the saved virtual path, and deletion clears it. Volume/repeat/shuffle still save if the app closes during a scan. The scan has a 10000-entry and 16-level bound, skips hidden entries, and reports invalid files. Files are streamed, not loaded wholly into memory. Track names currently come from filenames. MP3 and PCM WAV are enabled; other codecs, playlist editing and cover art remain unimplemented.
+Music scans the volumes on startup and with Music → menu → 手动刷新. External edits need refresh. A refresh pauses playback immediately and preserves the same virtual path/position when available. Playback requests wait for the scan. A file mutation invalidates older scan results; folder renames update the saved virtual path, and deletion clears it. Volume/repeat/shuffle still save if the app closes during a scan. The scan has a 10000-entry and 16-level bound, skips hidden entries, and reports invalid files. Files are streamed, not loaded wholly into memory. Track names currently come from filenames. MP3 and PCM WAV are enabled; other codecs and cover art remain unimplemented; playlist editing is available.
 
 Center pauses/resumes; Up/Down changes volume; a short Left/Right changes track; a held Left/Right seeks. Repeat and shuffle follow the existing control model. Elapsed time comes from the audio sink, including outside the player. Volume, repeat, shuffle, virtual path and position save periodically and on normal close. Restart restores a paused track. Music-save failure blocks normal close. Audio initialization/seek errors stop playback visibly.
 
@@ -66,3 +66,7 @@ Primary API references: [Rodio sink](https://docs.rs/rodio/0.21.1/rodio/struct.S
 Files also support bounded background copy/move between mounts, without overwrite. Copies/cross-volume moves have limits of 10,000 visible entries, depth 16 and 512 MiB; same-volume moves use rename. A failed copy attempts to remove newly created entries; inaccessible storage can prevent cleanup. A move removes sources only after copying all targets; source cleanup can fail separately. Folder deletion stays nonrecursive. Successful rename/move updates saved picture/ringtone/playlist references.
 
 Images and video use a shared VFS browser. On macOS a small helper, built from our Swift source with Apple SDKs, decodes a bounded temporary local copy; there is no external URL or upload. PNG/JPEG previews and H.264/AAC MP4 playback were exercised. GIF uses its first frame. Other system codecs, video rotation metadata and native gallery/player geometry are not fully verified. [Flows, controls and limits](local-completion.md).
+
+## App data
+
+See [persistence](persistence.md) for record files, version checks, single-instance locking, backups and manual recovery. These records stay outside the browsable VFS. An external card is not included in a data-directory backup.

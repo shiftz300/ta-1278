@@ -1,9 +1,35 @@
+#[path = "../../build/pack.rs"]
+mod pack;
+
 fn main() {
+    let root = std::path::PathBuf::from(std::env::var_os("CARGO_MANIFEST_DIR").unwrap());
+    let out = std::path::PathBuf::from(std::env::var_os("OUT_DIR").unwrap());
+    pack::pack(
+        root.parent().unwrap().parent().unwrap(),
+        &out,
+        &[
+            (
+                "LATIN",
+                "nokia-ta1278-research/analysis/ui/fonts/font-0-latn.otf",
+            ),
+            (
+                "HANI1",
+                "nokia-ta1278-research/analysis/ui/fonts/font-1-hani.otf",
+            ),
+            (
+                "HANI2",
+                "nokia-ta1278-research/analysis/ui/fonts/font-2-hani.otf",
+            ),
+            ("CJK", "assets/fonts/subsets/FallbackCJK.otf"),
+            ("SYMBOLS", "assets/fonts/subsets/FallbackSymbols.ttf"),
+            ("EMOJI", "assets/fonts/subsets/FallbackEmoji.ttf"),
+            ("SOUNDFONT", "assets/audio/gm1_A21.sf2"),
+        ],
+    );
     println!("cargo:rerun-if-changed=native/MediaHelper.swift");
     if std::env::var("CARGO_CFG_TARGET_OS").as_deref() != Ok("macos") {
         return;
     }
-    let out = std::path::PathBuf::from(std::env::var_os("OUT_DIR").unwrap());
     let helper = out.join("ta1278-media");
     println!("cargo:rerun-if-env-changed=MACOSX_DEPLOYMENT_TARGET");
     let arch = match std::env::var("CARGO_CFG_TARGET_ARCH").unwrap().as_str() {

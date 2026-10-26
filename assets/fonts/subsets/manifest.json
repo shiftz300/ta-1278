@@ -1,0 +1,36 @@
+{
+  "method": "Subset supplemental fonts in renderer fallback order; preserve Unicode cmap union. Remove unused layout shaping features. Rename derived font families; preserve copyright/license records. Original source fonts remain unchanged.",
+  "coverage_codepoints": 49332,
+  "fonts": [
+    {
+      "source": "assets/fonts/NotoSansCJKsc-Regular.otf",
+      "file": "assets/fonts/subsets/FallbackCJK.otf",
+      "source_sha256": "2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b",
+      "sha256": "1492c6eaa55c9e3d097ddb4a0894db19e1a2d0672607329f62da56f68a47e26e",
+      "source_bytes": 16437364,
+      "bytes": 6458212,
+      "source_codepoints": 44810,
+      "retained_codepoints": 28155
+    },
+    {
+      "source": "assets/fonts/NotoSansSymbols2-Regular.ttf",
+      "file": "assets/fonts/subsets/FallbackSymbols.ttf",
+      "source_sha256": "7d5fb73b7ca67a6798101741f5d280a3d016a56a197afcd4199dbb57b4b82a21",
+      "sha256": "7014f282150c4609b72ff77db46b35be95764ad166e7efdfb69094b49ba5976f",
+      "source_bytes": 1233128,
+      "bytes": 1128096,
+      "source_codepoints": 2955,
+      "retained_codepoints": 2545
+    },
+    {
+      "source": "assets/fonts/NotoEmoji.ttf",
+      "file": "assets/fonts/subsets/FallbackEmoji.ttf",
+      "source_sha256": "de6c18832938afc99caf132b39d6a30a19bac7f2e812e28db2535b4608d27551",
+      "sha256": "ad88d1de1028f28202e4d55896d12a31d970003385f37d5fc71a753215dc6e29",
+      "source_bytes": 1982596,
+      "bytes": 1365532,
+      "source_codepoints": 1489,
+      "retained_codepoints": 1070
+    }
+  ]
+}

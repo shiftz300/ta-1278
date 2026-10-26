@@ -28,7 +28,8 @@ cat > "$bundle/Contents/Info.plist" <<PLIST
 </dict></plist>
 PLIST
 notices="$bundle/Contents/Resources/Notices"
-mkdir -p "$notices/fonts" "$notices/input" "$notices/audio"
+mkdir -p "$notices/fonts" "$notices/input" "$notices/audio" "$notices/resources"
+cp third-party-licenses/resources/*.txt "$notices/resources/"
 cp THIRD_PARTY_NOTICES.md "$notices/"
 cp third-party-licenses/audio/*.txt "$notices/audio/"
 cp -R third-party-licenses/audio/sources "$notices/audio/"

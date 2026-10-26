@@ -100,7 +100,7 @@ pub fn format_number(value: f64) -> String {
     let s = format!("{value:.8}");
     s.trim_end_matches('0').trim_end_matches('.').to_owned()
 }
-#[derive(Default)]
+#[derive(Clone, Debug, Default, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct Stopwatch {
     pub elapsed_ms: u64,
     pub running: bool,
@@ -122,7 +122,7 @@ impl Stopwatch {
         }
     }
 }
-#[derive(Default)]
+#[derive(Clone, Debug, Default, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct Timer {
     pub remaining_ms: u64,
     pub running: bool,

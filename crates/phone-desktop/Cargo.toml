@@ -19,3 +19,11 @@ url = "2"
 scraper = "0.29"
 oxisynth = "=0.1.0"
 midly = { version = "=0.5.3", default-features = false, features = ["std"] }
+
+[build-dependencies]
+miniz_oxide.workspace = true
+
+[target.'cfg(target_os = "macos")'.dependencies]
+objc2 = "=0.5.3"
+objc2-app-kit = { version = "=0.2.2", default-features = false, features = ["NSApplication", "NSResponder"] }
+objc2-foundation = { version = "=0.2.2", default-features = false, features = ["NSObject"] }

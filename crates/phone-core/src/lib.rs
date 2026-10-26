@@ -2,6 +2,7 @@
 pub mod browser;
 pub mod calendar;
 pub mod editor;
+pub mod embedded;
 pub mod input;
 pub mod music;
 pub mod predict;

@@ -43,15 +43,22 @@ fn dictionary(language: Language) -> &'static [Entry] {
     static CN: OnceLock<Vec<Entry>> = OnceLock::new();
     static EN: OnceLock<Vec<Entry>> = OnceLock::new();
     static ST: OnceLock<Vec<Entry>> = OnceLock::new();
-    let (slot, data) = match language {
-        Language::Chinese => (
-            &CN,
-            include_str!("../../../assets/input/pinyin_simp.dict.yaml"),
-        ),
-        Language::Stroke => (&ST, include_str!("../../../assets/input/stroke.dict.yaml")),
-        Language::English => (&EN, include_str!("../../../assets/input/en_50k.txt")),
+    static CN_SOURCE: OnceLock<String> = OnceLock::new();
+    static ST_SOURCE: OnceLock<String> = OnceLock::new();
+    static EN_SOURCE: OnceLock<String> = OnceLock::new();
+    mod packed {
+        include!(concat!(env!("OUT_DIR"), "/packed.rs"));
+    }
+    let (slot, source, packed) = match language {
+        Language::Chinese => (&CN, &CN_SOURCE, packed::PINYIN),
+        Language::Stroke => (&ST, &ST_SOURCE, packed::STROKE),
+        Language::English => (&EN, &EN_SOURCE, packed::ENGLISH),
     };
     slot.get_or_init(|| {
+        let data = source.get_or_init(|| {
+            String::from_utf8(crate::embedded::decode(packed).expect("Embedded dictionary"))
+                .expect("UTF-8 dictionary")
+        });
         let mut entries = Vec::new();
         let weights: HashMap<&str, u64> = if language == Language::Stroke {
             let mut weights = HashMap::new();

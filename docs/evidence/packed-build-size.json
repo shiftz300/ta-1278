@@ -1,0 +1,105 @@
+{
+  "bundle_bytes": 20731395,
+  "executable_bytes": 20338272,
+  "executable_sha256": "5ce9d736916995ba550169b64accc9c3d1d2a98880fcbb9b4c62bb3b30f59034",
+  "groups_bytes": {
+    "original_fonts": 4414894,
+    "fallback_fonts": 6782923,
+    "input_dictionaries": 1873275,
+    "native_soundfont": 2470319,
+    "machine_code_including_static_dependencies": 2905708,
+    "other_executable_data_and_metadata": 1891153,
+    "native_media_helper": 124656,
+    "notices_and_bundle_metadata": 268467
+  },
+  "packed_resources": [
+    {
+      "source": "nokia-ta1278-research/analysis/ui/fonts/font-0-latn.otf",
+      "raw_bytes": 196204,
+      "packed_bytes": 87907,
+      "raw_sha256": "f463aa88beb81df923f5fa9ba4ce1c0c40bc942d1ed0f636ca811b53a00e5105",
+      "packed_sha256": "a73f03f140ebb13e09109a1cdfacca656d81c46b55600072cf4d0ad937bf2f57",
+      "executable_offset": 5496406
+    },
+    {
+      "source": "nokia-ta1278-research/analysis/ui/fonts/font-1-hani.otf",
+      "raw_bytes": 1667468,
+      "packed_bytes": 1381500,
+      "raw_sha256": "a62cb8fc10257ae2041e3bcba7d0c1677c1c8de6cabf35042189853c506a2642",
+      "packed_sha256": "4f8f31952f6dc38afb5248d545e506322cba3b67970a289be6c25aed26bcd0a0",
+      "executable_offset": 5584313
+    },
+    {
+      "source": "nokia-ta1278-research/analysis/ui/fonts/font-2-hani.otf",
+      "raw_bytes": 3612424,
+      "packed_bytes": 2945487,
+      "raw_sha256": "ab92df9ef87d5b0db00411f119a554ddcee5ea5d28e51fb9588dee4b048c327b",
+      "packed_sha256": "61b6cc16f9343a283fab5e00a34ca0f2485aff70a0034426e70443f4125d9955",
+      "executable_offset": 6965813
+    },
+    {
+      "source": "assets/fonts/subsets/FallbackCJK.otf",
+      "raw_bytes": 6458212,
+      "packed_bytes": 5422520,
+      "raw_sha256": "1492c6eaa55c9e3d097ddb4a0894db19e1a2d0672607329f62da56f68a47e26e",
+      "packed_sha256": "3417867216eb3249b8e647be2b2ef5a5b3e8b3b1d27208457d078e7f502148cd",
+      "executable_offset": 9911300
+    },
+    {
+      "source": "assets/fonts/subsets/FallbackSymbols.ttf",
+      "raw_bytes": 1128096,
+      "packed_bytes": 484009,
+      "raw_sha256": "7014f282150c4609b72ff77db46b35be95764ad166e7efdfb69094b49ba5976f",
+      "packed_sha256": "7ea03975b6a5f033e962edaefeb2742c8c7b878eb1bf5490ccc7569cfe306d35",
+      "executable_offset": 15333820
+    },
+    {
+      "source": "assets/fonts/subsets/FallbackEmoji.ttf",
+      "raw_bytes": 1365532,
+      "packed_bytes": 876394,
+      "raw_sha256": "ad88d1de1028f28202e4d55896d12a31d970003385f37d5fc71a753215dc6e29",
+      "packed_sha256": "a6c951acad589b93f6300d5c63fb89b9243f30617521e1e31f54a02bdf304d47",
+      "executable_offset": 15817829
+    },
+    {
+      "source": "assets/input/pinyin_simp.dict.yaml",
+      "raw_bytes": 1266216,
+      "packed_bytes": 538880,
+      "raw_sha256": "e341598343a0f0f2035bb1aafc34a7f3bb7887deeecb3f60796262aaa2983e6b",
+      "packed_sha256": "212d992b0cf8a7e72dbe3bedbe8fc85252744b94142ab6e6a7abe4ad1cd68866",
+      "executable_offset": 17074040
+    },
+    {
+      "source": "assets/input/stroke.dict.yaml",
+      "raw_bytes": 3396330,
+      "packed_bytes": 1055922,
+      "raw_sha256": "b3e93dce89c185f45c3d6e189b86b3a8626913352cc85e1094c786579a665791",
+      "packed_sha256": "255acb6a99bf25c2d0d4dd60669d4632ddb4816afd62495d32563707f1e9fd22",
+      "executable_offset": 17612920
+    },
+    {
+      "source": "assets/input/en_50k.txt",
+      "raw_bytes": 622749,
+      "packed_bytes": 278473,
+      "raw_sha256": "5351ff405b1126ef555791dd4d9798a48e3e9a501a9fc481a9da957752cfb458",
+      "packed_sha256": "e1311ef93177e6a6ad05a6c261417989bffdc412bacb4d48391dd928c531e8bf",
+      "executable_offset": 18668842
+    },
+    {
+      "source": "assets/audio/gm1_A21.sf2",
+      "raw_bytes": 2586984,
+      "packed_bytes": 2470319,
+      "raw_sha256": "9309119628275607526a94cf746f25a7ca5a6d688feeba9e7991b02008414ef0",
+      "packed_sha256": "90f151ca89be48e0248a0ad367f6a641278e36dbb5fa79470732c85b32bf2f25",
+      "executable_offset": 2949814
+    }
+  ],
+  "method": "Logical file sizes, embedded byte search, independent Python zlib roundtrip, Mach-O __text/__stubs sizes. Other executable data includes small images/audio, strings, tables, alignment and signing metadata; it is not all code.",
+  "profile": {
+    "opt-level": "z",
+    "lto": "fat",
+    "codegen-units": 1,
+    "strip": "symbols",
+    "panic": "abort"
+  }
+}

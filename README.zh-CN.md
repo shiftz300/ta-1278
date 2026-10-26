@@ -15,7 +15,7 @@ cargo run --release --locked -p phone-desktop
 生成优化版 macOS 应用：`sh scripts/package-macos.sh`，然后打开 `target/TA1278.app`。
 
 - **短信：** 拼音、笔画、Abc/abc/ABC 多击和直接输入、光标移动、换行、字符计数、草稿、会话列表、收发气泡、底部续写、转发、确认删除和本地待发记录。
-- **浏览器：** HTTP(S) 文本网页、链接、输入框、单选/复选框、选择框及 GET 表单；书签、历史和离线页面可保存。内置演示无需联网。
+- **浏览器：** HTTP(S) 文本网页、链接、输入框、单选/复选框、选择框及 GET 表单；书签、历史和离线页面可保存。内置演示无需联网。[浏览器功能与边界](docs/browser-capabilities.md)。
 - **音乐：** 从虚拟手机存储和存储卡真实播放 MP3/WAV，支持暂停、切歌、长按快进退、音量、循环、随机播放和持久化播放列表。联系人图片、壁纸和铃声共用文件选择器；可从“文件”打开本地图片和视频。
 - 日历、闹钟、本地联系人、计算器、定时器、秒表和使用原机地图与素材的贪吃蛇已可操作。电话及通话记录入口置灰并禁用。**桌面程序不会拨号或发送真实短信。**
 
@@ -23,7 +23,7 @@ cargo run --release --locked -p phone-desktop
 
 编辑时，0–9 按当前模式输入，长按输入数字；F4 切换 拼 → 笔 → Abc → abc → ABC → 123。候选框中，上下选词，左右切换拼音与文字列；确认键选词。也支持直接输入字母和桌面输入法。Tab 切换收件人与正文；Shift+Enter 换行；Backspace 删除；Cmd/Ctrl+A 全选。[操作与模块说明](docs/architecture.md)。
 
-macOS 本地消息、设置、浏览记录及日历/联系人数据位于 `~/Library/Application Support/TA1278 Replica/`。可用 `--data-dir PATH` 指定测试目录。程序不打开固件和采集存档；媒体只从配置的 VFS 卷读取。
+macOS 本地消息、设置、浏览记录及日历/联系人数据位于 `~/Library/Application Support/TA1278 Replica/`。可用 `--data-dir PATH` 指定测试目录。计时器、秒表分段和待处理提醒也会保留到下次启动。[保存与恢复](docs/persistence.md)。程序不打开固件和采集存档；媒体只从配置的 VFS 卷读取。
 
 存储使用程序内部的 VFS，不设导入按钮、不安装系统驱动。默认将数据目录中的 `files/` 和 `card/` 挂到 `/phone` 和 `/card`。把音乐放进去，再在“音乐 → 菜单 → 手动刷新”更新曲库。“文件”应用浏览相同的卷。
 
@@ -58,3 +58,5 @@ cargo run --release --locked -p phone-desktop -- --mount-card /你的/存储卡�
 - [实机截图与观察记录](docs/handset-observations.md)：已打通截图和按键，完整采样与复刻对比仍在进行。
 
 原机 MIDI 和提取出的音色库现已用于铃声与贪吃蛇音效的本地合成。[证据与边界](docs/native-audio.md)。
+
+[全量成果核对与实现对应](docs/reverse-audit.md) · [当前包体组成](docs/build-size.md)

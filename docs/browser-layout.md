@@ -46,3 +46,5 @@ This is still a small HTML adapter, not the original browser engine. CSS, JavaSc
 The 43-scene smoke test and unit tests check the replica. They do not establish full handset parity. See [remaining work](fidelity.md).
 
 The later [equal-content SMS check](sms-composer-layout.md) corrects body font metrics, count baseline, caret height and scrolling. Its four fixtures are a more precise editor comparison than the earlier empty/different-text pairs above.
+
+Current implementation details and the later firmware-byte audit: [browser capabilities](browser-capabilities.md).

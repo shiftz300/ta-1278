@@ -118,6 +118,12 @@ impl Phone {
                 }
             }
             (MenuKind::BrowserSave, 0) => {
+                self.browser_data.settings.home_url = self.browser.page.url.clone();
+                self.browser_data.settings.custom_home = true;
+                self.browser_dirty = true;
+                self.notice("已设为主页");
+            }
+            (MenuKind::BrowserSave, 1) => {
                 if !self
                     .browser_data
                     .bookmarks
@@ -133,7 +139,7 @@ impl Phone {
                 self.browser_dirty = true;
                 self.notice("书签已添加");
             }
-            (MenuKind::BrowserSave, 1) => {
+            (MenuKind::BrowserSave, 2) => {
                 self.browser_data.save_page(&self.browser.page);
                 self.browser_dirty = true;
                 self.notice("离线页面已保存");
@@ -247,6 +253,17 @@ impl Phone {
                         ..
                     }) => {
                         let mut editor = Editor::new(&value, limit);
+                        // Native XHTML constructor 0x88b48fa0 caps the initial
+                        // copy too. Keep the host's scalar-safe UTF-16 policy.
+                        editor.units.truncate(limit);
+                        if editor
+                            .units
+                            .last()
+                            .is_some_and(|u| (0xd800..=0xdbff).contains(u))
+                        {
+                            editor.units.pop();
+                        }
+                        editor.cursor = editor.units.len();
                         editor
                             .prediction
                             .set_language(Some(phone_core::predict::Language::Chinese));

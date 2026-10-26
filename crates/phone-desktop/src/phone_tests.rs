@@ -596,10 +596,10 @@ fn local_alarm_once_disables_and_does_not_repeat_same_minute() {
     assert!(p.overlay.is_none());
     p.check_alarms(date, 420);
     assert!(!p.local_data.alarms[0].enabled);
-    assert_eq!(p.organizer.alarm.alerts.len(), 1);
+    assert_eq!(p.local_data.reminders.alerts.len(), 1);
     press(&mut p, Key::Center);
     p.check_alarms(date, 420);
-    assert!(p.organizer.alarm.alerts.is_empty());
+    assert!(p.local_data.reminders.alerts.is_empty());
 }
 
 #[test]
@@ -894,8 +894,8 @@ fn alarm_weekdays_sunday_bit_and_multiple_same_minute_alerts() {
     let sunday = phone_core::calendar::Date::new(2026, 10, 25).unwrap();
     p.check_alarms(sunday, 540);
     assert_eq!(
-        p.organizer
-            .alarm
+        p.local_data
+            .reminders
             .alerts
             .iter()
             .map(|a| a.name.as_str())
@@ -905,9 +905,12 @@ fn alarm_weekdays_sunday_bit_and_multiple_same_minute_alerts() {
     press(&mut p, Key::Center);
     press(&mut p, Key::Center);
     p.check_alarms(sunday, 540);
-    assert!(p.organizer.alarm.alerts.is_empty());
+    assert!(p.local_data.reminders.alerts.is_empty());
     p.check_alarms(sunday.next(1), 540);
-    assert_eq!(p.organizer.alarm.alerts.front().unwrap().name, "Monday");
+    assert_eq!(
+        p.local_data.reminders.alerts.front().unwrap().name,
+        "Monday"
+    );
     assert!(p.local_data.alarms.iter().all(|a| a.enabled));
     for mask in 0..=127 {
         assert_eq!(alarm::repeat_mask(&alarm::repeat_label(mask)), mask);
@@ -942,12 +945,12 @@ fn alarm_snooze_crosses_midnight_without_mutating_interrupted_editor() {
     );
     assert_eq!(p.compose.body.text(), "unsaved text");
     press(&mut p, Key::SoftLeft);
-    assert!(p.organizer.alarm.alerts.is_empty());
+    assert!(p.local_data.reminders.alerts.is_empty());
     assert!(matches!(p.overlay, Some(Overlay::Menu { index: 4, .. })));
     p.check_alarms(date.next(1), 2);
-    assert!(p.organizer.alarm.alerts.is_empty());
+    assert!(p.local_data.reminders.alerts.is_empty());
     p.check_alarms(date.next(1), 3);
-    assert_eq!(p.organizer.alarm.alerts.front().unwrap().time, "00:03");
+    assert_eq!(p.local_data.reminders.alerts.front().unwrap().time, "00:03");
     press(&mut p, Key::End);
     assert_eq!(p.screen, Screen::Compose);
     assert_eq!(p.compose.body.text(), "unsaved text");
@@ -1032,7 +1035,7 @@ fn sms_queue_disk_failure_rolls_back_and_success_waits_for_persistence() {
     assert_eq!(p.message(), edited);
     assert_eq!(p.mailbox.outbox.len(), 1);
     // Force a real filesystem error without permissions tricks or changing user data.
-    std::fs::create_dir(dir.join("messages.json.tmp")).unwrap();
+    std::fs::create_dir(dir.join("messages.json.bak")).unwrap();
     assert!(crate::storage::save(&dir, &p.mailbox).is_err());
     p.storage_failed();
     assert_eq!(p.screen, Screen::Compose);
@@ -1041,7 +1044,7 @@ fn sms_queue_disk_failure_rolls_back_and_success_waits_for_persistence() {
     assert!(p.mailbox.outbox.is_empty());
     assert!(!p.dirty);
     assert_eq!(crate::storage::load(&dir).unwrap().drafts, [original]);
-    std::fs::remove_dir(dir.join("messages.json.tmp")).unwrap();
+    std::fs::remove_dir(dir.join("messages.json.bak")).unwrap();
     press(&mut p, Key::Center);
     crate::storage::save(&dir, &p.mailbox).unwrap();
     p.storage_saved();
@@ -1548,12 +1551,12 @@ fn recurring_events_mark_days_and_remind_across_midnight_once() {
     assert!(p.local_data.events[0].occurs(start.next(7)));
     assert!(!p.local_data.events[0].occurs(start.next(1)));
     p.check_events(start.next(-1), 23 * 60 + 50);
-    assert_eq!(p.organizer.alarm.alerts.len(), 1);
-    assert_eq!(p.organizer.alarm.alerts[0].tone, "无");
+    assert_eq!(p.local_data.reminders.alerts.len(), 1);
+    assert_eq!(p.local_data.reminders.alerts[0].tone, "无");
     p.check_events(start.next(-1), 23 * 60 + 50);
-    assert_eq!(p.organizer.alarm.alerts.len(), 1);
+    assert_eq!(p.local_data.reminders.alerts.len(), 1);
     p.check_events(start.next(6), 23 * 60 + 50);
-    assert_eq!(p.organizer.alarm.alerts.len(), 2);
+    assert_eq!(p.local_data.reminders.alerts.len(), 2);
     p.organizer.page = organizer::OrganizerPage::Events;
     p.organizer.date = start.next(7);
     assert_eq!(p.organizer_items(), ["提醒"]);
@@ -1729,4 +1732,63 @@ fn birthday_uses_date_digits_without_text_mode_or_invalid_values() {
     press(&mut p, Key::SoftRight);
     assert_eq!(p.organizer.page, organizer::OrganizerPage::Contacts);
     assert!(p.local_data.contacts.is_empty());
+}
+
+#[test]
+fn browser_initial_field_value_obeys_native_utf16_cap_without_changing_page_on_cancel() {
+    for (value, limit, expected) in [
+        ("ABCDE", 3, "ABC"),
+        ("中文内容", 2, "中文"),
+        ("A😀B", 3, "A😀"),
+        ("A😀B", 2, "A"),
+    ] {
+        let mut p = phone();
+        p.go(Screen::Browser);
+        p.browser_view = BrowserView::Page;
+        p.browser = Browser::new(web::parse(
+            "https://example.com/",
+            &format!("<input value='{value}' maxlength='{limit}'>"),
+        ));
+        press(&mut p, Key::Center);
+        let editor = p.editor().unwrap();
+        assert_eq!(editor.text(), expected);
+        assert_eq!(editor.cursor, expected.encode_utf16().count());
+        p.text("Z");
+        assert_eq!(p.editor().unwrap().units.len(), limit);
+        press(&mut p, Key::End);
+        assert!(
+            matches!(&p.browser.page.elements[0], Element::Field { value: saved, .. } if saved == value)
+        );
+        press(&mut p, Key::Center);
+        press(&mut p, Key::Center);
+        assert!(
+            matches!(&p.browser.page.elements[0], Element::Field { value: saved, .. } if saved == expected)
+        );
+    }
+}
+
+#[test]
+fn browser_native_save_actions_use_home_bookmark_page_order_and_persist() {
+    let mut p = phone();
+    p.go(Screen::Browser);
+    p.browser_view = BrowserView::Page;
+    p.browser = Browser::new(web::demo());
+    assert_eq!(
+        p.menu_labels(MenuKind::BrowserSave),
+        ["作为主页", "书签", "网页", "图像"]
+    );
+    assert!(!p.menu_enabled(MenuKind::BrowserSave, 3));
+    option(&mut p, MenuKind::BrowserSave, 0);
+    assert!(p.browser_dirty && p.browser_data.settings.custom_home);
+    assert_eq!(p.browser_data.settings.home_url, "about:demo");
+    option(&mut p, MenuKind::BrowserSave, 1);
+    option(&mut p, MenuKind::BrowserSave, 1);
+    assert_eq!(p.browser_data.bookmarks.len(), 1);
+    option(&mut p, MenuKind::BrowserSave, 2);
+    let json = serde_json::to_vec(&p.browser_data).unwrap();
+    p.browser_data = serde_json::from_slice(&json).unwrap();
+    assert_eq!(p.browser_data.offline.len(), 1);
+    option(&mut p, MenuKind::BrowserOpen, 0);
+    assert_eq!(p.pending_url.as_deref(), Some("about:demo"));
+    assert_eq!(p.browser_view, BrowserView::Page);
 }

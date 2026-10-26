@@ -3,7 +3,7 @@
 use super::*;
 use organizer::{Alarm, OrganizerPage};
 use phone_core::calendar::Date;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 use std::{collections::VecDeque, sync::OnceLock};
 
 #[derive(Deserialize)]
@@ -20,7 +20,7 @@ pub fn tables() -> &'static Tables {
             .expect("verified alarm tables")
     })
 }
-#[derive(Clone)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Alert {
     pub tone: String,
     pub name: String,
@@ -33,8 +33,35 @@ pub struct AlarmUi {
     pub digit: usize,
     pub days: u8,
     pub return_field: usize,
+}
+/// Durable reminder state; stored with alarm definitions in organizer.json.
+#[derive(Clone, Default, Serialize, Deserialize)]
+#[serde(default)]
+pub struct Reminders {
     pub alerts: VecDeque<Alert>,
     pub snoozed: Vec<(Date, u64, Alert)>,
+    pub last_alarm_fired: Option<(Date, u64)>,
+    pub last_event_fired: Option<(Date, u64)>,
+}
+impl Reminders {
+    pub fn valid(&self) -> bool {
+        let moment =
+            |(d, m): &(Date, u64)| Date::new(d.year, d.month, d.day).is_some() && *m < 1440;
+        let alert = |a: &Alert| {
+            a.name.chars().count() <= 256
+                && a.tone.len() <= 4096
+                && super::organizer::valid_time(&a.time)
+                && (1..=60).contains(&a.snooze)
+        };
+        self.alerts.len() + self.snoozed.len() <= 1024
+            && self.alerts.iter().all(alert)
+            && self
+                .snoozed
+                .iter()
+                .all(|(d, m, a)| moment(&(*d, *m)) && alert(a))
+            && self.last_alarm_fired.as_ref().is_none_or(moment)
+            && self.last_event_fired.as_ref().is_none_or(moment)
+    }
 }
 pub fn repeat_mask(s: &str) -> u8 {
     match s {
@@ -99,17 +126,21 @@ impl Phone {
         }
         self.organizer.last_alarm_minute = Some((date, minute));
         let time = format!("{:02}:{:02}", minute / 60, minute % 60);
-        let ui = &mut self.organizer.alarm;
+        let ui = &mut self.local_data.reminders;
         let mut pending = Vec::new();
         for (d, m, mut alert) in ui.snoozed.drain(..) {
             if (d, m) <= (date, minute) {
                 alert.time = time.clone();
                 ui.alerts.push_back(alert);
+                self.local_dirty = true;
             } else {
                 pending.push((d, m, alert));
             }
         }
         ui.snoozed = pending;
+        if ui.last_alarm_fired == Some((date, minute)) {
+            return;
+        }
         for a in &mut self.local_data.alarms {
             if !a.enabled || a.fields.first() != Some(&time) {
                 continue;
@@ -117,7 +148,11 @@ impl Phone {
             let repeat = a.fields.get(1).map_or("一次", String::as_str);
             let mask = repeat_mask(repeat);
             let once = matches!(repeat, "一次" | "不必重复" | "");
-            if once || mask & tables().weekday_bits[date.weekday()] != 0 {
+            if (once || mask & tables().weekday_bits[date.weekday()] != 0)
+                && ui.alerts.len() + ui.snoozed.len() < 1024
+            {
+                ui.last_alarm_fired = Some((date, minute));
+                self.local_dirty = true;
                 ui.alerts.push_back(Alert {
                     tone: a.fields.get(3).cloned().unwrap_or_else(|| "默认".into()),
                     name: a
@@ -138,23 +173,27 @@ impl Phone {
         }
     }
     pub(super) fn alarm_alert_key(&mut self, key: Key) -> bool {
-        if self.organizer.alarm.alerts.is_empty() {
+        if self.local_data.reminders.alerts.is_empty() {
             return false;
         }
         match key {
             Key::SoftLeft => {
-                if let Some((date, minute)) = self.organizer.last_alarm_minute {
-                    let alert = self.organizer.alarm.alerts.pop_front().unwrap();
-                    let total = minute + alert.snooze;
-                    self.organizer.alarm.snoozed.push((
-                        date.next((total / 1440) as i32),
-                        total % 1440,
-                        alert,
-                    ));
-                }
+                let (date, minute) = self
+                    .organizer
+                    .last_alarm_minute
+                    .unwrap_or_else(|| self.local_clock());
+                let alert = self.local_data.reminders.alerts.pop_front().unwrap();
+                self.local_dirty = true;
+                let total = minute + alert.snooze;
+                self.local_data.reminders.snoozed.push((
+                    date.next((total / 1440) as i32),
+                    total % 1440,
+                    alert,
+                ));
             }
             Key::Center | Key::SoftRight | Key::End => {
-                self.organizer.alarm.alerts.pop_front();
+                self.local_data.reminders.alerts.pop_front();
+                self.local_dirty = true;
             }
             _ => {}
         }

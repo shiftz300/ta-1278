@@ -2,8 +2,12 @@
 use super::*;
 use phone_core::calendar::Date;
 use serde::{Deserialize, Serialize};
-#[derive(Clone, Default, Serialize, Deserialize)]
+#[derive(Clone, Serialize, Deserialize)]
 pub struct LocalData {
+    #[serde(default = "local_schema")]
+    pub schema_version: u32,
+    #[serde(default)]
+    pub reminders: super::alarm::Reminders,
     #[serde(default)]
     pub groups: Vec<String>,
     #[serde(default)]
@@ -11,6 +15,22 @@ pub struct LocalData {
     pub contacts: Vec<Vec<String>>,
     pub events: Vec<CalendarEvent>,
     pub alarms: Vec<Alarm>,
+}
+fn local_schema() -> u32 {
+    1
+}
+impl Default for LocalData {
+    fn default() -> Self {
+        Self {
+            schema_version: 1,
+            reminders: Default::default(),
+            groups: vec![],
+            playlists: vec![],
+            contacts: vec![],
+            events: vec![],
+            alarms: vec![],
+        }
+    }
 }
 #[derive(Clone, Serialize, Deserialize)]
 pub struct CalendarEvent {
@@ -419,6 +439,9 @@ impl Phone {
             return;
         }
         self.organizer.last_event_minute = Some((date, minute));
+        if self.local_data.reminders.last_event_fired == Some((date, minute)) {
+            return;
+        }
         for event in &self.local_data.events {
             let lead = match event.fields[2].as_str() {
                 "准时" => 0,
@@ -431,16 +454,23 @@ impl Phone {
             let due = minute + lead;
             let day = if due >= 1440 { date.next(1) } else { date };
             let time = &event.fields[1];
-            if event.occurs(day)
+            if self.local_data.reminders.alerts.len() + self.local_data.reminders.snoozed.len()
+                < 1024
+                && event.occurs(day)
                 && valid_time(time)
                 && time == &format!("{:02}:{:02}", due % 1440 / 60, due % 60)
             {
-                self.organizer.alarm.alerts.push_back(super::alarm::Alert {
-                    tone: event.fields[4].clone(),
-                    name: event.fields[0].clone(),
-                    time: time.clone(),
-                    snooze: 10,
-                });
+                self.local_dirty = true;
+                self.local_data.reminders.last_event_fired = Some((date, minute));
+                self.local_data
+                    .reminders
+                    .alerts
+                    .push_back(super::alarm::Alert {
+                        tone: event.fields[4].clone(),
+                        name: event.fields[0].clone(),
+                        time: time.clone(),
+                        snooze: 10,
+                    });
             }
         }
     }

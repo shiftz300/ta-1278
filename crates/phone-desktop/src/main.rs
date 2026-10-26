@@ -5,10 +5,13 @@ mod config;
 mod effects;
 mod gpu;
 mod host_input;
+#[cfg(target_os = "macos")]
+mod macos_lifecycle;
 mod media;
 mod menu;
 mod midi_synth;
 mod native_audio;
+mod packed;
 mod phone;
 mod smoke;
 mod snake_art;
@@ -50,6 +53,7 @@ struct App {
     next_redraw: Instant,
     occluded: bool,
     data_dir: PathBuf,
+    utilities: storage::utilities::Session,
     smoke: Option<PathBuf>,
     smoke_stage: usize,
     failure: Option<String>,
@@ -82,6 +86,14 @@ impl App {
         }
     }
     fn flush(&mut self) {
+        if Instant::now() >= self.save_retry_at
+            && let Err(e) = self
+                .utilities
+                .save(&self.data_dir, &mut self.phone.tools, false)
+        {
+            self.save_retry_at = Instant::now() + Duration::from_secs(5);
+            self.phone.status = format!("计时数据保存失败：{e}");
+        }
         if self.phone.snake_dirty && Instant::now() >= self.save_retry_at {
             match storage::save_json(&self.data_dir, "snake.json", &self.phone.snake_data, 4096) {
                 Ok(()) => self.phone.snake_dirty = false,
@@ -184,6 +196,14 @@ impl App {
         {
             self.phone
                 .notice("Save failed. Window stays open so you can keep your text.");
+            return;
+        }
+        if let Err(e) = self
+            .utilities
+            .save(&self.data_dir, &mut self.phone.tools, true)
+        {
+            self.phone
+                .notice(format!("计时数据保存失败，窗口保持打开：{e}"));
             return;
         }
         if let Some(media) = &mut self.media
@@ -361,6 +381,13 @@ impl ApplicationHandler for App {
         }
     }
     fn about_to_wait(&mut self, event_loop: &ActiveEventLoop) {
+        #[cfg(target_os = "macos")]
+        if macos_lifecycle::take_quit_request() {
+            self.quit(event_loop);
+        }
+        if event_loop.exiting() {
+            return;
+        }
         let now = Instant::now();
         if self.smoke.is_some() && self.start.elapsed() > Duration::from_secs(30) {
             self.fail(event_loop, "Window smoke test timed out before all frames were presented; ensure the window is visible.".into());
@@ -499,6 +526,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     if no_card && card.is_some() {
         return Err("--no-card conflicts with --mount-card".into());
     }
+    let _data_lock = storage::DataLock::acquire(&data_dir)?;
     let mailbox = storage::load(&data_dir)?;
     let mut phone = phone::Phone::new(mailbox);
     phone.features = features;
@@ -538,6 +566,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     } else {
         None
     };
+    let utilities = storage::utilities::Session::load(&data_dir, &mut phone.tools)?;
     let now = Instant::now();
     let mut app = App {
         window: None,
@@ -557,10 +586,13 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         next_redraw: now,
         occluded: false,
         data_dir,
+        utilities,
         smoke,
         smoke_stage: 0,
         failure: None,
     };
+    #[cfg(target_os = "macos")]
+    macos_lifecycle::initialize()?;
     EventLoop::new()?.run_app(&mut app)?;
     if let Some(e) = app.failure {
         return Err(e.into());

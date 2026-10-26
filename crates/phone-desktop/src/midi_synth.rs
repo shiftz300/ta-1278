@@ -6,7 +6,6 @@ use std::io::Cursor;
 
 pub const RATE: u32 = 32000;
 const MAX_FRAMES: usize = RATE as usize * 60;
-const BANK: &[u8] = include_bytes!("../../../assets/audio/gm1_A21.sf2");
 struct Event {
     frame: usize,
     message: MidiEvent,
@@ -125,8 +124,9 @@ pub struct MidiSynth {
 }
 impl MidiSynth {
     pub fn new() -> Result<Self, String> {
+        let bytes = phone_core::embedded::decode(crate::packed::SOUNDFONT)?;
         let font =
-            SoundFont::load(&mut Cursor::new(BANK)).map_err(|e| format!("原机音色库：{e:?}"))?;
+            SoundFont::load(&mut Cursor::new(bytes)).map_err(|e| format!("原机音色库：{e:?}"))?;
         let mut synth = Synth::new(SynthDescriptor {
             sample_rate: RATE as f32,
             polyphony: 64,

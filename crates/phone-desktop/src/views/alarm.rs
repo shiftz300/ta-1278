@@ -173,7 +173,7 @@ pub(super) fn render(c: &mut Canvas, p: &mut Phone) {
 }
 
 pub(super) fn alert(c: &mut Canvas, p: &Phone) {
-    if let Some(a) = p.organizer.alarm.alerts.front() {
+    if let Some(a) = p.local_data.reminders.alerts.front() {
         c.caret = None;
         c.background();
         status(c);

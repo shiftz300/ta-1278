@@ -26,18 +26,18 @@ pub struct Canvas {
 impl Canvas {
     pub fn new() -> Result<Self, String> {
         let fonts = [
-            include_bytes!("../../../nokia-ta1278-research/analysis/ui/fonts/font-0-latn.otf")
-                .as_slice(),
-            include_bytes!("../../../nokia-ta1278-research/analysis/ui/fonts/font-1-hani.otf")
-                .as_slice(),
-            include_bytes!("../../../nokia-ta1278-research/analysis/ui/fonts/font-2-hani.otf")
-                .as_slice(),
-            include_bytes!("../../../assets/fonts/NotoSansCJKsc-Regular.otf").as_slice(),
-            include_bytes!("../../../assets/fonts/NotoSansSymbols2-Regular.ttf").as_slice(),
-            include_bytes!("../../../assets/fonts/NotoEmoji.ttf").as_slice(),
+            crate::packed::LATIN,
+            crate::packed::HANI1,
+            crate::packed::HANI2,
+            crate::packed::CJK,
+            crate::packed::SYMBOLS,
+            crate::packed::EMOJI,
         ]
-        .iter()
-        .map(|b| Font::from_bytes(*b, FontSettings::default()).map_err(str::to_owned))
+        .into_iter()
+        .map(|packed| {
+            let bytes = phone_core::embedded::decode(packed)?;
+            Font::from_bytes(bytes, FontSettings::default()).map_err(str::to_owned)
+        })
         .collect::<Result<Vec<_>, _>>()?;
         let icons = [
             include_bytes!(
@@ -418,3 +418,6 @@ mod tests {
         }
     }
 }
+
+#[cfg(test)]
+mod font_parity;

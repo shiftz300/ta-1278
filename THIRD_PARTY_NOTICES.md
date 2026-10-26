@@ -12,6 +12,10 @@ W19 MMI/T9 框架参考仅发布 URL、固定版本和文本哈希；不将整�
 
 - Rime stroke dictionary: rime/rime-stroke, revision `1e8fff9b9494ddec23b0cbc526bcfd8171a6fd48`. Original text, authors and LGPL-3.0 license retained under `assets/input/`. Used as replacement five-stroke data, not original Nokia input code. Runtime ranking also uses the existing pinyin frequencies.
 
+## Resource compression
+
+- miniz_oxide 0.8.9 (MIT), unmodified. Build-time packing and bounded runtime decompression use the already pinned dependency. Its copyright and license are retained in `third-party-licenses/resources/miniz_oxide-MIT.txt` and bundled with the app. Compression does not change the fonts, dictionaries or original sound bank and does not change their licenses.
+
 ## Audio output
 
 - Rodio 0.21.1 (MIT OR Apache-2.0), [upstream source](https://github.com/RustAudio/rodio/tree/v0.21.1). MIT text retained in `third-party-licenses/audio/rodio-MIT.txt`.

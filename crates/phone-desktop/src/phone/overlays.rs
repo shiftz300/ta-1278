@@ -14,6 +14,10 @@ impl Phone {
                 }
                 if !matches!(key, Key::Center | Key::SoftRight | Key::SoftLeft | Key::End) {
                     self.overlay = Some(Overlay::Notice(s));
+                } else if self.tools.timer_notice {
+                    self.tools.timer.expired = false;
+                    self.tools.timer_notice = false;
+                    self.tools.dirty = true;
                 }
             }
             Overlay::Menu { kind, mut index } => {

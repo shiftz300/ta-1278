@@ -5,3 +5,10 @@ edition.workspace = true
 
 [dependencies]
 serde.workspace = true
+miniz_oxide.workspace = true
+
+[build-dependencies]
+miniz_oxide.workspace = true
+
+[dev-dependencies]
+serde_json.workspace = true

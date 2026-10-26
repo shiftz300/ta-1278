@@ -23,7 +23,7 @@
 | `web.rs`, `web/flow.rs`, `phone-core/web_flow.rs` | Bounded HTTP worker, DOM control mapping and ordered HTML layout tokens |
 | `views/browser_layout.rs`, `browser_chrome.rs` | Browser document paint/focus geometry and measured native panel styles |
 | `phone-vfs` | Virtual mount table, stream/volume interface and directory adapter |
-| `media.rs`, `audio.rs`, `phone/files.rs`, `views/files.rs` | Shared file/library service, audio output and separate file-manager UI |
+| `media.rs`, `media/files.rs`, `audio.rs`, `phone/files.rs`, `views/files.rs` | Shared file/library service, audio output and separate file-manager UI |
 | `config.rs` | Host capability flags, separate from native settings |
 | `storage.rs` | Bounded local JSON loading, sync and atomic replacement |
 
@@ -75,3 +75,7 @@ Writes use a temporary file, sync and rename. Corrupt/oversized existing files a
 The prototype's 750 ms multi-tap, 500 ms long press, 120 ms repeat, 4096-unit SMS limit, extra local folder routes, utility formulas, game rules and host persistence are implementation choices. See [fidelity status](fidelity.md) and [asset licenses](../assets/README.md).
 
 [Shared UI controls](shared-ui.md) describe the native framework correlation and the common host implementation. Pages supply actions and control data; they do not own softkey baselines or edit metrics.
+
+## Media and local completion
+
+Image, video, contact-picture, wallpaper and ringtone selection share `phone/media_browser.rs` and `views/media_browser.rs`. `visual_media.rs` owns bounded copies and decoding jobs. The small `native/MediaHelper.swift` uses installed macOS frameworks and is bundled beside the executable. `phone/contact_groups.rs` handles group/choice routes. `effects.rs` generates local cues; native waveform parity is not claimed. Playlist queue rules remain in `phone-core/music.rs`; UI/data stays in `phone/music.rs`. [Behavior and exact limits](local-completion.md).

@@ -1,5 +1,5 @@
 //! Rules traced from firmware 17.00.17.02; see docs/evidence/snake-recovery.json.
-//! Host PRNG and scheduling remain replacements, not the original runtime.
+//! Random update follows the kernel; initial state and scheduling are local policies.
 use crate::input::Key;
 use std::collections::VecDeque;
 const MAPS: &[u8; 1344] = include_bytes!("../../../assets/snake/maps.bin");
@@ -30,7 +30,7 @@ pub struct Snake {
     pub kind: usize,
     pub level: u8,
     elapsed: u64,
-    seed: u32,
+    random: Random55,
 }
 impl Default for Snake {
     fn default() -> Self {
@@ -47,7 +47,7 @@ impl Default for Snake {
             kind: 0,
             level: 1,
             elapsed: 0,
-            seed: 1278,
+            random: Random55::default(),
         }
     }
 }
@@ -107,12 +107,13 @@ impl Snake {
             && MAPS[self.kind.min(5) * 192 + (y * Self::W + x) as usize] != 0
     }
     fn free_position(&mut self, avoid: Option<(i32, i32)>) -> Option<(i32, i32)> {
-        // Native bounds at 0x886902ce: x %12, y %14 +2. Local PRNG.
+        // Native uses TWO draws at 0x886902dc/ea: x %12, y %14 +2.
         let free = |s: &Self, p| !s.body.contains(&p) && !s.wall(p.0, p.1) && Some(p) != avoid;
         for _ in 0..336 {
-            self.seed = self.seed.wrapping_mul(1664525).wrapping_add(1013904223);
-            let n = (self.seed >> 8) % 168;
-            let p = (n as i32 % Self::W, n as i32 / Self::W + 2);
+            let p = (
+                (self.random.next() % 12) as i32,
+                (self.random.next() % 14) as i32 + 2,
+            );
             if free(self, p) {
                 return Some(p);
             }
@@ -198,6 +199,57 @@ impl Snake {
             }
             self.bonus_tick();
         }
+    }
+}
+/// 0x8165ab58: add two uint32 words, store at the second pointer, advance
+/// both pointers in a 0xdc-byte ring, return the sum with bit31 cleared.
+struct Random55 {
+    words: [u32; 55],
+    read: usize,
+    write: usize,
+}
+impl Default for Random55 {
+    fn default() -> Self {
+        // Boot-time seed table and pointer separation are not recovered.
+        let mut seed = 1278u32;
+        let words = std::array::from_fn(|_| {
+            seed = seed.wrapping_mul(1664525).wrapping_add(1013904223);
+            seed
+        });
+        Self {
+            words,
+            read: 0,
+            write: 31,
+        }
+    }
+}
+impl Random55 {
+    fn next(&mut self) -> u32 {
+        let sum = self.words[self.read].wrapping_add(self.words[self.write]);
+        self.words[self.write] = sum;
+        self.read = (self.read + 1) % 55;
+        self.write = (self.write + 1) % 55;
+        sum & 0x7fff_ffff
+    }
+}
+#[cfg(test)]
+mod random_tests {
+    use super::Random55;
+    #[test]
+    fn native_ring_update_masks_only_return_value() {
+        let mut rng = Random55 {
+            words: [0; 55],
+            read: 54,
+            write: 0,
+        };
+        rng.words[54] = 0x80000000;
+        rng.words[0] = 3;
+        assert_eq!(rng.next(), 3);
+        assert_eq!(rng.words[0], 0x80000003);
+        assert_eq!((rng.read, rng.write), (0, 1));
+        rng.words[1] = u32::MAX;
+        assert_eq!(rng.next(), 2);
+        assert_eq!(rng.words[1], 0x80000002);
     }
 }
 #[cfg(test)]

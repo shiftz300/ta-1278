@@ -1,6 +1,6 @@
 # Phone storage
 
-The app uses a **VFS inside the process**. It does not mount a disk in macOS, use FUSE, or import/copy media. The selected directory is a volume; file browsing and music share it. This replaces the earlier import-copy proposal at the owner's request.
+The app uses a **VFS inside the process**. It does not mount a disk in macOS, use FUSE, or import media into a separate library. The selected directory is a volume; file browsing and music share it. This replaces the earlier import-copy proposal at the owner's request.
 
 | Virtual path | Default backend |
 |---|---|
@@ -15,9 +15,12 @@ Private app records (messages, contacts, settings, browser data and music settin
 |---|---|
 | `--mount-card DIRECTORY` | Mount an existing directory directly at `/card`. No copy. Writes affect that directory. |
 | `--no-card` | Do not mount `/card`. Conflicts with `--mount-card`. |
-| `--read-only-storage` | Block mkdir, rename and delete in both media volumes. Does not disable private app-record saves. |
-| `--disable music` | Block music launch and file-to-player dispatch; no scanning or audio output. |
+| `--read-only-storage` | Block mkdir, rename, delete and copy/move destinations in both media volumes. Does not disable private app-record saves. |
+| `--disable music` | Block music launch and file-to-player dispatch; no music scan or music-player output. Alert sounds are controlled separately. |
 | `--disable files` | Block file-manager launch and all file-manager service requests. Music may still read the volume. |
+| `--disable pictures` | Block image choosers, previews and saved wallpaper decoding. |
+| `--disable video` | Block video launch and file-to-video dispatch. |
+| `--disable sounds` | Mute key, Snake, message and alarm cues. Music/video volume is separate. |
 | `--disable network` | Reject external browser requests before dispatch. Local demo and saved pages remain usable. |
 
 Combine disabled features with commas. These are runtime capabilities, not native phone settings. They keep the sampled menu order and reject unavailable actions instead of rearranging the menu. They do not remove compiled dependencies.
@@ -57,3 +60,9 @@ cargo test --locked -p phone-desktop real_output_pause_seek_and_eof -- --ignored
 The same test accepts `TA1278_AUDIO_FIXTURE=/absolute/path/to/generated.mp3`. Both WAV and a locally generated MP3 passed on this Mac outside the sandbox. This proves output-stream operation, not a listening-quality assessment or complete native-player fidelity. No private media or phone data was used.
 
 Primary API references: [Rodio sink](https://docs.rs/rodio/0.21.1/rodio/struct.Sink.html), [decoder builder](https://docs.rs/rodio/0.21.1/rodio/decoder/struct.DecoderBuilder.html). Versions and checksums are pinned in Cargo.lock.
+
+## Local media completion
+
+Files also support bounded background copy/move between mounts, without overwrite. Copies/cross-volume moves have limits of 10,000 visible entries, depth 16 and 512 MiB; same-volume moves use rename. A failed copy attempts to remove newly created entries; inaccessible storage can prevent cleanup. A move removes sources only after copying all targets; source cleanup can fail separately. Folder deletion stays nonrecursive. Successful rename/move updates saved picture/ringtone/playlist references.
+
+Images and video use a shared VFS browser. On macOS a small helper, built from our Swift source with Apple SDKs, decodes a bounded temporary local copy; there is no external URL or upload. PNG/JPEG previews and H.264/AAC MP4 playback were exercised. GIF uses its first frame. Other system codecs, video rotation metadata and native gallery/player geometry are not fully verified. [Flows, controls and limits](local-completion.md).

@@ -1334,8 +1334,10 @@ fn contact_native_routes_preserve_edits_and_disable_calling() {
     assert_eq!(p.organizer.page, P::Contacts);
     press(&mut p, Key::SoftLeft);
     assert_eq!(p.organizer.page, P::ContactsMenu);
-    press(&mut p, Key::Center); // Unsupported group action is inert.
-    assert_eq!(p.organizer.page, P::ContactsMenu);
+    press(&mut p, Key::Center);
+    assert_eq!(p.organizer.page, P::ContactGroups);
+    press(&mut p, Key::SoftRight);
+    press(&mut p, Key::SoftLeft);
     press(&mut p, Key::Down);
     press(&mut p, Key::Center);
     assert_eq!((p.organizer.page, p.index), (P::ContactForm, 1));
@@ -1393,6 +1395,245 @@ fn contact_native_routes_preserve_edits_and_disable_calling() {
     press(&mut p, Key::Center);
     press(&mut p, Key::Center);
     assert!(p.local_data.contacts.is_empty());
+}
+#[test]
+fn media_picker_preserves_contact_draft_and_cancel_restores_focus() {
+    use media_browser::Purpose;
+    use organizer::OrganizerPage as P;
+    let mut p = phone();
+    p.launch(Screen::Contacts);
+    p.organizer_form(P::ContactForm, None);
+    p.text("测试");
+    press(&mut p, Key::Up);
+    press(&mut p, Key::Center);
+    assert_eq!(p.screen, Screen::Media);
+    assert_eq!(p.organizer.draft[1], "测试");
+    assert_eq!(p.media_ui.purpose, Purpose::ContactPicture);
+    press(&mut p, Key::SoftRight);
+    assert_eq!(p.index, 0);
+    assert_eq!(p.organizer.page, P::ContactForm);
+    assert_eq!(p.organizer.draft[0], "");
+    press(&mut p, Key::Center);
+    p.media_ui.selected = "/card/photo.png".into();
+    p.media_ui.viewing = true;
+    press(&mut p, Key::Center);
+    assert_eq!(p.screen, Screen::Media);
+    p.media_ui.frame = Some(image::RgbaImage::new(1, 1));
+    press(&mut p, Key::Center);
+    assert_eq!(p.organizer.draft[0], "/card/photo.png");
+    assert_eq!(p.screen, Screen::Contacts);
+    assert!(p.local_data.contacts.is_empty());
+}
+#[test]
+fn groups_filter_saved_ids_and_assign_transactionally() {
+    use organizer::OrganizerPage as P;
+    let mut p = phone();
+    p.launch(Screen::Contacts);
+    p.organizer.page = P::ContactGroups;
+    p.contact_group_name("家人".into());
+    p.contact_group_name("家人".into());
+    assert_eq!(p.local_data.groups, ["家人"]);
+    p.overlay = None;
+    p.organizer_form(P::ContactForm, None);
+    p.text("甲");
+    press(&mut p, Key::Down);
+    p.contact_load_field(8);
+    press(&mut p, Key::Center);
+    assert_eq!(p.contact_choices(), ["无", "家人"]);
+    press(&mut p, Key::Down);
+    press(&mut p, Key::Center);
+    assert_eq!(p.organizer.draft[8], "家人");
+    assert!(p.local_data.contacts.is_empty());
+    press(&mut p, Key::SoftLeft);
+    press(&mut p, Key::Center);
+    assert_eq!(p.local_data.contacts[0][8], "家人");
+    p.organizer.contact.group_filter = Some("其他".into());
+    assert!(p.contact_ids().is_empty());
+    p.organizer.contact.group_filter = Some("家人".into());
+    assert_eq!(p.contact_ids(), [0]);
+}
+#[test]
+fn local_settings_validate_time_and_reset_only_preferences() {
+    use settings::SettingsPage as S;
+    let mut p = phone();
+    p.setting_text(0, "问候语".into());
+    p.setting_text(1, "0".into());
+    assert_eq!(p.preferences.volume, 0);
+    p.setting_text(1, "11".into());
+    assert_eq!(p.preferences.volume, 0);
+    p.overlay = None;
+    p.setting_text(2, "-13".into());
+    assert_eq!(p.preferences.timezone, 8);
+    p.overlay = None;
+    p.setting_text(2, "9".into());
+    assert_eq!(p.preferences.timezone, 9);
+    p.setting_text(3, "17:41".into());
+    assert_eq!(p.local_clock().1, 17 * 60 + 41);
+    p.setting_text(4, "2028-02-29".into());
+    assert_eq!(p.local_clock().0.iso(), "2028-02-29");
+    p.setting_text(4, "2027-02-29".into());
+    assert_eq!(p.local_clock().0.iso(), "2028-02-29");
+    p.overlay = None;
+    p.local_data.groups.push("test".into());
+    p.launch(Screen::Settings);
+    p.settings_open(S::Reset, 1);
+    press(&mut p, Key::Center);
+    assert_eq!(p.preferences.greeting, "");
+    assert_eq!(p.local_data.groups, ["test"]);
+    assert!(p.preferences_dirty);
+}
+#[test]
+fn media_capabilities_block_entry_without_losing_caller() {
+    let mut p = phone();
+    p.features.pictures = false;
+    p.open_media(media_browser::Purpose::Pictures);
+    assert_eq!(p.screen, Screen::Home);
+    assert!(p.overlay.is_some());
+    p.features.video = false;
+    p.overlay = None;
+    p.open_media(media_browser::Purpose::Videos);
+    assert_eq!(p.screen, Screen::Home);
+    assert!(p.overlay.is_some());
+}
+#[test]
+fn playlist_add_remove_and_restart_keep_virtual_paths() {
+    let mut p = phone();
+    p.launch(Screen::Music);
+    p.set_music_paths(vec![
+        "/card/a.wav".into(),
+        "/card/b.wav".into(),
+        "/card/c.wav".into(),
+    ]);
+    p.music_view = MusicView::AddPlaylist;
+    p.music.index = 2;
+    p.playlist_name("收藏".into());
+    assert_eq!(p.local_data.playlists[0].paths, ["/card/c.wav"]);
+    p.music_action(3);
+    p.index = 1;
+    press(&mut p, Key::Center);
+    assert_eq!(p.local_data.playlists[0].paths.len(), 1);
+    p.music.index = 0;
+    p.music_action(3);
+    p.index = 1;
+    press(&mut p, Key::Center);
+    let json = serde_json::to_vec(&p.local_data).unwrap();
+    p.local_data = serde_json::from_slice(&json).unwrap();
+    p.music_view = MusicView::Playlists;
+    p.index = 0;
+    press(&mut p, Key::Center);
+    p.index = 0;
+    press(&mut p, Key::Center);
+    assert_eq!(p.music.queue, [2, 0]);
+    assert_eq!(p.music.index, 2);
+    p.music.ended();
+    assert_eq!(p.music.index, 0);
+    p.music_view = MusicView::Playlist;
+    p.index = 1;
+    press(&mut p, Key::SoftLeft);
+    p.index = 2;
+    press(&mut p, Key::Center);
+    assert_eq!(p.local_data.playlists[0].paths, ["/card/c.wav"]);
+}
+#[test]
+fn recurring_events_mark_days_and_remind_across_midnight_once() {
+    use phone_core::calendar::Date;
+    let mut p = phone();
+    p.local_data.events.push(organizer::CalendarEvent {
+        date: Date::new(2026, 10, 26).unwrap(),
+        fields: ["提醒", "00:05", "15分钟前", "", "无", "每周", ""]
+            .map(str::to_owned)
+            .to_vec(),
+    });
+    let start = p.local_data.events[0].date;
+    assert!(p.local_data.events[0].occurs(start.next(7)));
+    assert!(!p.local_data.events[0].occurs(start.next(1)));
+    p.check_events(start.next(-1), 23 * 60 + 50);
+    assert_eq!(p.organizer.alarm.alerts.len(), 1);
+    assert_eq!(p.organizer.alarm.alerts[0].tone, "无");
+    p.check_events(start.next(-1), 23 * 60 + 50);
+    assert_eq!(p.organizer.alarm.alerts.len(), 1);
+    p.check_events(start.next(6), 23 * 60 + 50);
+    assert_eq!(p.organizer.alarm.alerts.len(), 2);
+    p.organizer.page = organizer::OrganizerPage::Events;
+    p.organizer.date = start.next(7);
+    assert_eq!(p.organizer_items(), ["提醒"]);
+}
+#[test]
+fn snake_sound_tracks_normal_food_but_not_bonus_score_changes() {
+    let mut p = phone();
+    p.launch(Screen::Snake);
+    p.snake.start();
+    p.snake_view = snake::SnakeView::Game;
+    p.snake.score = 5;
+    p.snake.food = (9, 6);
+    p.tick(0, 0.);
+    p.tick(250, 0.25);
+    assert_eq!(p.snake.score, 6);
+    assert!(
+        p.cues
+            .iter()
+            .any(|c| matches!(c, crate::effects::Cue::Food))
+    );
+    p.cues.clear();
+    p.snake.food = (0, 5);
+    p.snake.bonus.as_mut().unwrap().position = (10, 6);
+    let len = p.snake.body.len();
+    p.tick(500, 0.25);
+    assert!(p.snake.score > 6);
+    assert_eq!(p.snake.body.len(), len);
+    assert!(
+        !p.cues
+            .iter()
+            .any(|c| matches!(c, crate::effects::Cue::Food))
+    );
+}
+#[test]
+fn alarm_native_ringtone_choice_and_file_cancel_keep_the_form() {
+    use organizer::OrganizerPage as P;
+    let mut p = phone();
+    p.launch(Screen::Organizer(P::Alarms));
+    p.organizer_form(P::AlarmForm, None);
+    let time = p.organizer.draft[0].clone();
+    p.index = 3;
+    press(&mut p, Key::Center);
+    assert_eq!(p.organizer.page, P::AlarmRingtone);
+    assert_eq!(p.index, 2);
+    press(&mut p, Key::Down);
+    press(&mut p, Key::Center);
+    assert_eq!(p.organizer.draft[3], "Clock 2");
+    assert_eq!(p.audio_preview.as_deref(), Some("Clock 2"));
+    assert_eq!(p.index, 3);
+    assert_eq!(p.organizer.draft[0], time);
+    press(&mut p, Key::Center);
+    p.index = crate::native_audio::file_index();
+    press(&mut p, Key::Center);
+    assert_eq!(p.screen, Screen::Media);
+    assert_eq!(p.media_ui.purpose, media_browser::Purpose::AlarmRingtone);
+    press(&mut p, Key::SoftRight);
+    assert_eq!(p.organizer.page, P::AlarmForm);
+    assert_eq!(p.index, 3);
+    assert_eq!(p.organizer.draft[3], "Clock 2");
+    press(&mut p, Key::SoftLeft);
+    press(&mut p, Key::Center);
+    assert_eq!(p.local_data.alarms[0].fields[3], "Clock 2");
+}
+#[test]
+fn ringtone_controls_match_between_settings_and_contact_forms() {
+    let mut p = phone();
+    p.launch(Screen::Settings);
+    p.settings_page = settings::SettingsPage::Ringtone;
+    p.preferences.ringtone = "Clock1".into();
+    p.index = 2;
+    let mut c = crate::canvas::Canvas::new().unwrap();
+    crate::views::render(&mut c, &mut p);
+    let expected = c.pixels.clone();
+    p.launch(Screen::Contacts);
+    p.organizer_form(organizer::OrganizerPage::ContactForm, None);
+    p.organizer.page = organizer::OrganizerPage::ContactRingtone;
+    p.organizer.draft[7] = "Clock1".into();
+    p.index = 2;
+    crate::views::render(&mut c, &mut p);
+    assert_eq!(c.pixels, expected);
 }
 
 #[test]

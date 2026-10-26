@@ -13,6 +13,7 @@ pub struct Music {
     pub repeat: Repeat,
     pub shuffle: bool,
     pub tracks: Vec<(String, f32)>,
+    pub queue: Vec<usize>,
     pub external_clock: bool,
     pub generation: u64,
     pub seek_revision: u64,
@@ -34,6 +35,7 @@ impl Default for Music {
                 ("Demo track 3".into(), 75.),
             ],
             external_clock: false,
+            queue: vec![],
             generation: 0,
             seek_revision: 0,
             held: None,
@@ -57,9 +59,22 @@ impl Music {
     pub fn ended(&mut self) {
         self.step(1, true);
     }
+    pub fn order(&self) -> Vec<usize> {
+        if self.queue.is_empty() {
+            (0..self.tracks.len()).collect()
+        } else {
+            self.queue
+                .iter()
+                .copied()
+                .filter(|i| *i < self.tracks.len())
+                .collect()
+        }
+    }
     fn step(&mut self, delta: i32, natural: bool) {
         self.generation = self.generation.wrapping_add(1);
-        let n = self.tracks.len();
+        let order = self.order();
+        let n = order.len();
+        let current = order.iter().position(|i| *i == self.index).unwrap_or(0);
         if n == 0 {
             self.playing = false;
             return;
@@ -68,16 +83,16 @@ impl Music {
             self.position = 0.;
             return;
         }
-        if natural && !self.shuffle && self.repeat == Repeat::Off && self.index + 1 == n {
+        if natural && !self.shuffle && self.repeat == Repeat::Off && current + 1 == n {
             self.playing = false;
             self.position = self.duration();
             return;
         }
         if self.shuffle && n > 1 {
             self.seed = self.seed.wrapping_mul(1664525).wrapping_add(1013904223);
-            self.index = (self.index + 1 + self.seed as usize % (n - 1)) % n;
+            self.index = order[(current + 1 + self.seed as usize % (n - 1)) % n];
         } else {
-            self.index = (self.index as i32 + delta).rem_euclid(n as i32) as usize;
+            self.index = order[(current as i32 + delta).rem_euclid(n as i32) as usize];
         }
         self.position = 0.;
     }
@@ -132,6 +147,31 @@ impl Music {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn playlist_order_is_used_for_end_skip_repeat_and_shuffle() {
+        let mut m = Music {
+            queue: vec![2, 0],
+            ..Music::default()
+        };
+        m.play(2);
+        m.ended();
+        assert_eq!(m.index, 0);
+        m.ended();
+        assert!(!m.playing);
+        assert_eq!(m.index, 0);
+        m.repeat = Repeat::All;
+        m.playing = true;
+        m.ended();
+        assert_eq!(m.index, 2);
+        m.shuffle = true;
+        for _ in 0..20 {
+            m.ended();
+            assert!(matches!(m.index, 0 | 2));
+        }
+        m.queue = vec![999];
+        m.ended();
+        assert!(!m.playing);
+    }
     #[test]
     fn short_release_and_long_seek() {
         let mut m = Music::default();

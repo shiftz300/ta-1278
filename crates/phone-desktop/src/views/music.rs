@@ -6,7 +6,11 @@ pub(super) fn render(c: &mut Canvas, p: &Phone) {
             1,
             match p.music_view {
                 MusicView::Songs => "歌曲",
-                MusicView::Playlists => "播放列表",
+                MusicView::Playlists
+                | MusicView::AddPlaylist
+                | MusicView::Playlist
+                | MusicView::DeletePlaylist => "播放列表",
+                MusicView::PlaylistMenu => "选项",
                 MusicView::Repeat => "重复",
                 MusicView::Queue => "播放队列",
                 _ => "音乐",
@@ -14,7 +18,40 @@ pub(super) fn render(c: &mut Canvas, p: &Phone) {
             14,
             WHITE,
         );
+        if matches!(
+            p.music_view,
+            MusicView::Songs | MusicView::Queue | MusicView::Playlist
+        ) {
+            let order = match p.music_view {
+                MusicView::Queue => p.music.order(),
+                MusicView::Playlist => p.playlist_tracks(),
+                _ => vec![],
+            };
+            let count = if p.music_view == MusicView::Songs {
+                p.music.tracks.len()
+            } else {
+                order.len()
+            };
+            if count == 0 {
+                c.text(8, 130, "这里没有可显示的内容。", 18, MUTED);
+            }
+            list::draw(c, count, p.index, list::ListStyle::STANDARD, |i| {
+                list::Row::text(
+                    &p.music.tracks[if p.music_view == MusicView::Songs {
+                        i
+                    } else {
+                        order[i]
+                    }]
+                    .0,
+                )
+            });
+            Softkeys::menu("选择").draw(c);
+            return;
+        }
         let labels = p.music_items();
+        if labels.is_empty() {
+            c.text(8, 130, "这里没有可显示的内容。", 18, MUTED);
+        }
         let root = p.music_view == MusicView::Root;
         if root {
             // Native library Home has an 84px first row, then standard rows.

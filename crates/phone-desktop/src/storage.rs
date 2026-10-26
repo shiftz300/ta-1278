@@ -142,7 +142,21 @@ pub fn save_json<T: serde::Serialize>(
 pub fn load_organizer(dir: &Path) -> Result<crate::phone::organizer::LocalData, String> {
     let data: crate::phone::organizer::LocalData =
         load_json(dir, "organizer.json", 8 * 1024 * 1024)?;
-    if data.contacts.iter().any(|c| c.len() != 9)
+    if data.groups.len() > 64
+        || data
+            .groups
+            .iter()
+            .any(|g| g.is_empty() || g.chars().count() > 128)
+        || data.playlists.len() > 100
+        || data.playlists.iter().any(|p| {
+            p.name.is_empty()
+                || p.name.chars().count() > 80
+                || p.paths.len() > 1000
+                || p.paths
+                    .iter()
+                    .any(|s| !s.starts_with('/') || s.len() > 4096)
+        })
+        || data.contacts.iter().any(|c| c.len() != 9)
         || data.alarms.iter().any(|a| a.fields.len() != 5)
         || data.events.iter().any(|e| {
             e.fields.len() != 7
@@ -191,6 +205,7 @@ mod tests {
             accent: 4,
             left_shortcut: 3,
             right_shortcut: 12,
+            ..Preferences::default()
         };
         save_preferences(&dir, &prefs).unwrap();
         let restored = load_preferences(&dir).unwrap();

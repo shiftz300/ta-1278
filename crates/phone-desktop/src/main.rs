@@ -2,10 +2,13 @@ mod audio;
 mod candidate_view;
 mod canvas;
 mod config;
+mod effects;
 mod gpu;
 mod host_input;
 mod media;
 mod menu;
+mod midi_synth;
+mod native_audio;
 mod phone;
 mod smoke;
 mod snake_art;
@@ -13,6 +16,7 @@ mod storage;
 mod theme;
 mod ui;
 mod views;
+mod visual_media;
 mod web;
 use phone_core::input::{Event, Input};
 use std::{
@@ -137,6 +141,15 @@ impl App {
         }
     }
     fn quit(&mut self, event_loop: &ActiveEventLoop) {
+        if self.phone.files.busy
+            || matches!(
+                self.phone.files.pending,
+                Some(phone::files::FileRequest::Transfer(..))
+            )
+        {
+            self.phone.notice("文件操作尚未结束，请稍候。");
+            return;
+        }
         if self.phone.mail_ui.pending.is_some() {
             self.save_retry_at = Instant::now();
             self.flush();
@@ -371,7 +384,11 @@ impl ApplicationHandler for App {
         if let Some(url) = self.phone.pending_url.take() {
             self.phone.requested_url = url.clone();
             let id = self.phone.browser.start();
-            if let Err(e) = self.web.load(id, url) {
+            if !self.phone.preferences.mobile_data {
+                self.phone
+                    .browser
+                    .complete(id, Err("移动数据已关闭。".into()));
+            } else if let Err(e) = self.web.load(id, url) {
                 self.phone.browser.complete(id, Err(e));
             }
         }
@@ -430,6 +447,24 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut args = std::env::args().skip(1);
     while let Some(arg) = args.next() {
         match arg.as_str() {
+            "--version" | "-V" => {
+                println!("TA1278 {}", env!("CARGO_PKG_VERSION"));
+                return Ok(());
+            }
+            "--render-tone" => {
+                let tone = args.next().ok_or("--render-tone needs NAME OUTPUT.wav")?;
+                let output =
+                    PathBuf::from(args.next().ok_or("--render-tone needs NAME OUTPUT.wav")?);
+                if args.next().is_some() {
+                    return Err("--render-tone does not accept other options".into());
+                }
+                native_audio::export(&tone, &output)?;
+                return Ok(());
+            }
+            "--print-media-helper" => {
+                println!("{}", option_env!("TA1278_MEDIA_HELPER").unwrap_or(""));
+                return Ok(());
+            }
             "--data-dir" => data_dir = PathBuf::from(args.next().ok_or("--data-dir needs a path")?),
             "--mount-card" => {
                 card = Some(PathBuf::from(
@@ -454,7 +489,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             }
             "--help" => {
                 println!(
-                    "cargo run -p phone-desktop -- [--data-dir PATH] [--mount-card DIRECTORY | --no-card] [--read-only-storage] [--disable music,files,network] [--smoke-test OUTPUT]\nArrows: navigate; Enter: center; F1/F2: softkeys; F3: disabled; Home: end/home; Tab: recipient/body; F4: input mode. Mouse left/right/middle = left/right/center key."
+                    "cargo run -p phone-desktop -- [--data-dir PATH] [--mount-card DIRECTORY | --no-card] [--read-only-storage] [--disable music,files,network,pictures,video,sounds] [--smoke-test OUTPUT]\nOffline tone preview: --render-tone NAME OUTPUT.wav (creates a new file)\nArrows: navigate; Enter: center; F1/F2: softkeys; F3: disabled; Home: end/home; Tab: recipient/body; F4: input mode. Mouse left/right/middle = left/right/center key."
                 );
                 return Ok(());
             }

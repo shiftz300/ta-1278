@@ -8,6 +8,39 @@ use crate::ui::form::{self, Field, FieldKind};
 const BLACK: Color = [0, 0, 0, 255];
 pub(super) fn render(c: &mut Canvas, p: &mut Phone) {
     match p.organizer.page {
+        Page::ContactGroupMenu => {
+            chrome::title(c, "选项");
+            list::popup(c, 3, p.index, |i| list::Row {
+                label: ["新增组", "重命名", "删除组"][i],
+                enabled: i == 0 || p.organizer.contact.selected_group.is_some(),
+                marker: list::Marker::None,
+            });
+            Softkeys::back("选择").draw(c);
+        }
+        Page::ContactGroupDelete => {
+            chrome::title(c, "通话组");
+            c.text(10, 120, "是否删除此通话组？", 20, WHITE);
+            c.text(10, 155, "联系人将保留。", 18, MUTED);
+            Softkeys::new(Button::None, Button::Text("确认"), Button::Close).draw(c);
+        }
+        Page::ContactRingtone => {
+            crate::ui::tone_picker::draw(c, "铃声", p.index, &p.organizer.draft[7], "预设")
+        }
+        Page::ContactGroups | Page::ContactGroupChoice => {
+            chrome::title(c, p.organizer_title());
+            let labels = p.contact_choices();
+            list::plain(c, &labels, p.index);
+            Softkeys::new(
+                if p.organizer.page == Page::ContactGroups {
+                    Button::Menu
+                } else {
+                    Button::None
+                },
+                Button::Text("选择"),
+                Button::Back,
+            )
+            .draw(c);
+        }
         Page::Contacts => root(c, p),
         Page::ContactsMenu => {
             root(c, p);
@@ -88,6 +121,13 @@ fn root(c: &mut Canvas, p: &mut Phone) {
             name.chars().next(),
             [90, 95, 90, 255],
         );
+        contact_picture(
+            c,
+            p,
+            &p.local_data.contacts[ids[i]][0],
+            7,
+            72 + (i - first) as i32 * 52,
+        );
     }
     // The handset empty-store caption has not been sampled: keep the list empty.
     Softkeys::menu(if ids.is_empty() { "" } else { "打开" }).draw(c);
@@ -109,7 +149,16 @@ fn form(c: &mut Canvas, p: &mut Phone, index: usize, active: bool) {
         },
     );
     form::avatar(c, 7, 34 - scroll, None, [90, 95, 90, 255]);
-    c.text(52, 43 - scroll, "添加图片", 20, MUTED);
+    if let Some(path) = p.organizer.draft.first() {
+        contact_picture(c, p, path, 7, 34 - scroll);
+    }
+    c.text(
+        52,
+        43 - scroll,
+        "添加图片",
+        20,
+        if index == 0 { WHITE } else { MUTED },
+    );
     for (i, top) in TOPS.iter().enumerate().skip(1) {
         let y = top - scroll;
         if y + 68 < 24 || y >= 282 {
@@ -193,6 +242,9 @@ fn detail(c: &mut Canvas, p: &Phone, index: usize) {
     let name = p.selected_contact_name();
     chrome::title(c, &name);
     form::avatar(c, 7, 31, name.chars().next(), [90, 95, 90, 255]);
+    if let Some(row) = p.local_data.contacts.get(p.organizer.selected) {
+        contact_picture(c, p, &row[0], 7, 31);
+    }
     c.fit(52, 41, &name, 16, WHITE, 178);
     let numbers = p.contact_numbers();
     let labels: Vec<_> = numbers
@@ -227,4 +279,14 @@ fn detail(c: &mut Canvas, p: &Phone, index: usize) {
         Button::Back,
     )
     .draw(c);
+}
+fn contact_picture(c: &mut Canvas, p: &Phone, path: &str, x: i32, y: i32) {
+    if let Some(img) = p.pictures.get(path) {
+        let img = image::imageops::thumbnail(img, 40, 40);
+        c.image(
+            &img,
+            x + (40 - img.width() as i32) / 2,
+            y + (40 - img.height() as i32) / 2,
+        );
+    }
 }

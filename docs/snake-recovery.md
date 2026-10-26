@@ -40,4 +40,4 @@ The unread-SMS status icon is suppressed on the full-screen playfield. Center so
 
 ## Remaining gaps
 
-Native PRNG, sound playback, transient death/win effects, extreme signed score overflow, full-board completion, and all suspend/interruption paths are not reproduced. The host sound preference is saved but currently makes no sound. Five-score persistence is tested locally; exact native NV timing is not claimed. Window scheduling can differ from the phone even with the recovered interval table.
+The kernel 55-word random update and two-draw coordinate mapping have now been verified and implemented; initial RAM state, seed and pointer separation remain local policies. [RNG evidence](evidence/snake-random.json). The saved sound preference now enables synthesized local cues, not identified native waveforms. Transient death/win effects, extreme signed score overflow, full-board completion and all suspend/interruption paths are not reproduced. Five-score persistence is tested locally; exact native NV timing is not claimed. Window scheduling can differ from the phone even with the recovered interval table.

@@ -19,3 +19,13 @@ W19 MMI/T9 框架参考仅发布 URL、固定版本和文本哈希；不将整�
 - Symphonia 0.5.5 and its core/metadata/MP3/PCM/RIFF components (MPL-2.0), unmodified. [Corresponding source](https://github.com/pdeljanov/Symphonia/tree/v0.5.5) and exact crates/checksums in Cargo.lock. License text retained in `third-party-licenses/audio/symphonia-MPL-2.0.txt`.
 
 These audio components are host implementations, not recovered Nokia code. Other transitive dependency versions and source checksums are recorded in Cargo.lock.
+
+## MIDI synthesis
+
+- OxiSynth, oxisynth-chorus and oxisynth-reverb 0.1.0 (LGPL-2.1), unmodified, [upstream](https://github.com/PolyMeilex/OxiSynth). The exact registry source archives and SHA-256 manifest are retained in `third-party-licenses/audio/sources/` and packaged under `Contents/Resources/Notices/audio/sources/`. The LGPL text is `oxisynth-LGPL-2.1.txt`.
+- soundfont 0.1.0 (MIT), unmodified, from the same upstream repository. License, exact source archive and checksum are retained alongside OxiSynth.
+- midly 0.5.3 (Unlicense), unmodified, [upstream](https://github.com/negamartin/midly). Declared license text, exact source archive and checksum are retained alongside OxiSynth.
+
+The application source in this checkout can be modified and rebuilt to replace these LGPL libraries; reverse engineering to debug modifications to these libraries is permitted. Unpack an archive, modify the library, add a local `[patch.crates-io]` path in the root Cargo.toml and rebuild with `cargo build --release -p phone-desktop` (refresh Cargo.lock when changing the source). `scripts/package-macos.sh` then packages and ad-hoc signs the replacement executable. Keep the matching application source and these notices with any distribution.
+
+`assets/audio/gm1_A21.sf2` is original firmware data, copyright 2010 SPRDCorporation according to its metadata. The original MIDI and MP3 resources are also firmware data. None is relicensed under the synthesizer's LGPL or the parser's license. Recovered notes/samples do not imply recovery of the proprietary DSP implementation.

@@ -1,0 +1,57 @@
+[
+  {
+    "crate": "oxisynth-0.1.0",
+    "archive": "oxisynth-0.1.0.crate",
+    "sha256": "68d089fc07e074f57ac6698292ce3da05eac1d282b821eb4156d4c7d8e36c6ec",
+    "vcs": {
+      "git": {
+        "sha1": "87c08c1a0165c7ea3577d86571f7688622387674"
+      },
+      "path_in_vcs": "oxisynth"
+    }
+  },
+  {
+    "crate": "oxisynth-chorus-0.1.0",
+    "archive": "oxisynth-chorus-0.1.0.crate",
+    "sha256": "755d6ea336fc37043b00a1b54198e24cb4537c509435c7aca2d837d36185703b",
+    "vcs": {
+      "git": {
+        "sha1": "33ef995279a25a06fb3f969c5e372a534d097a3f"
+      },
+      "path_in_vcs": "oxisynth-chorus"
+    }
+  },
+  {
+    "crate": "oxisynth-reverb-0.1.0",
+    "archive": "oxisynth-reverb-0.1.0.crate",
+    "sha256": "bdbb2d72d399b03dc7546c1087fabcdba68402f987bea903fe284c946fcca7aa",
+    "vcs": {
+      "git": {
+        "sha1": "33ef995279a25a06fb3f969c5e372a534d097a3f"
+      },
+      "path_in_vcs": "oxisynth-reverb"
+    }
+  },
+  {
+    "crate": "soundfont-0.1.0",
+    "archive": "soundfont-0.1.0.crate",
+    "sha256": "2a7f4cb358863e55f8f1a3882f68601360cf6c42fc53ff2fe9aea41c33e24489",
+    "vcs": {
+      "git": {
+        "sha1": "74c579ff5a6c31547236c14bebeb7c4979f01b4f"
+      },
+      "path_in_vcs": "soundfont-rs"
+    }
+  },
+  {
+    "crate": "midly-0.5.3",
+    "archive": "midly-0.5.3.crate",
+    "sha256": "207d755f4cb882d20c4da58d707ca9130a0c9bc5061f657a4f299b8e36362b7a",
+    "vcs": {
+      "git": {
+        "sha1": "816cb2a585b4d5d1fd7aeb0cb35668f21dc00869"
+      },
+      "path_in_vcs": ""
+    }
+  }
+]

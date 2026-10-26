@@ -7,6 +7,10 @@ pub(super) fn render(c: &mut Canvas, p: &mut Phone) {
         return;
     }
     let page = p.organizer.page;
+    if page == OrganizerPage::EventRingtone {
+        crate::ui::tone_picker::draw(c, "铃声", p.index, &p.organizer.draft[4], "默认");
+        return;
+    }
     if crate::phone::contacts::is_contact(page) {
         super::contacts::render(c, p);
         return;
@@ -40,11 +44,9 @@ pub(super) fn render(c: &mut Canvas, p: &mut Phone) {
                 c.rect(px, py, 33, 28, c.accent(3));
             }
             c.text(px + 6, py + 4, &d.to_string(), 18, WHITE);
-            if p.local_data
-                .events
-                .iter()
-                .any(|e| e.date.year == date.year && e.date.month == date.month && e.date.day == d)
-            {
+            if p.local_data.events.iter().any(|e| {
+                e.occurs(phone_core::calendar::Date::new(date.year, date.month, d).unwrap())
+            }) {
                 c.rect(px + 14, py + 25, 4, 2, WHITE);
             }
         }

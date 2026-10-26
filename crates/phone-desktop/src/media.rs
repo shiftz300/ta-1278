@@ -1,4 +1,5 @@
 //! Shared VFS service for file browsing and the music library.
+mod files;
 use crate::{
     audio::{self, Audio},
     phone::{
@@ -26,6 +27,7 @@ pub struct Track {
 #[derive(Clone, Default, PartialEq, Serialize, Deserialize)]
 #[serde(default)]
 pub struct SavedMusic {
+    queue: Vec<String>,
     volume: Option<u8>,
     repeat: u8,
     shuffle: bool,
@@ -35,6 +37,12 @@ pub struct SavedMusic {
 impl SavedMusic {
     fn capture(phone: &Phone, tracks: &[Track]) -> Self {
         Self {
+            queue: phone
+                .music
+                .queue
+                .iter()
+                .filter_map(|i| tracks.get(*i).map(|t| t.path.clone()))
+                .collect(),
             volume: Some(phone.music.volume),
             repeat: match phone.music.repeat {
                 Repeat::Off => 0,
@@ -110,7 +118,17 @@ fn scan(vfs: &Vfs) -> (Vec<Track>, Vec<String>) {
     tracks.sort_by(|a, b| a.path.cmp(&b.path));
     (tracks, warnings)
 }
+struct TransferResult {
+    result: Result<(), String>,
+    from: String,
+    to: String,
+    moving: bool,
+}
 pub struct Media {
+    unread: usize,
+    transfers: mpsc::Receiver<TransferResult>,
+    transfer_results: mpsc::Sender<TransferResult>,
+    visual: crate::visual_media::VisualMedia,
     pub vfs: Arc<Vfs>,
     pub tracks: Vec<Track>,
     audio: Audio,
@@ -149,7 +167,12 @@ impl Media {
         });
         phone.music_refresh = phone.features.music;
         phone.music_loading = phone.features.music;
+        let (transfer_results, transfers) = mpsc::channel();
         Ok(Self {
+            unread: phone.mailbox.unread(),
+            transfers,
+            transfer_results,
+            visual: crate::visual_media::VisualMedia::new(vfs.clone()),
             vfs,
             tracks: vec![],
             audio: Audio::default(),
@@ -160,98 +183,6 @@ impl Media {
             saved,
             last_save: Instant::now(),
         })
-    }
-    fn list(&self, phone: &mut Phone, path: String) -> Result<(), String> {
-        let entries = self.vfs.list(&path).map_err(|e| e.to_string())?;
-        phone.files.writable = self.vfs.writable(&path);
-        phone.files.path = path;
-        phone.files.entries = entries;
-        phone.files.view = FileView::Browse;
-        phone.index = phone.index.min(phone.files.entries.len().saturating_sub(1));
-        Ok(())
-    }
-    fn file_request(&mut self, phone: &mut Phone, request: FileRequest) -> Result<(), String> {
-        if !phone.features.files {
-            return Err("文件功能已停用。".into());
-        }
-        match request {
-            FileRequest::List(path) => self.list(phone, path),
-            FileRequest::Enter(path) => {
-                let previous = (phone.files.path.clone(), phone.index);
-                self.list(phone, path)?;
-                phone.files.history.push(previous);
-                phone.index = 0;
-                Ok(())
-            }
-            FileRequest::Parent => {
-                if let Some((path, index)) = phone.files.history.last().cloned() {
-                    self.list(phone, path)?;
-                    phone.files.history.pop();
-                    phone.index = index.min(phone.files.entries.len().saturating_sub(1));
-                }
-                Ok(())
-            }
-            FileRequest::Play(path) => {
-                if self.scanning || phone.music_loading {
-                    return Err("正在刷新曲库，请稍候。".into());
-                }
-                if !phone.features.music {
-                    return Err("音乐功能已停用。".into());
-                }
-                let track = probe(&self.vfs, &path)?;
-                let index = if let Some(i) = self.tracks.iter().position(|t| t.path == path) {
-                    i
-                } else {
-                    phone
-                        .music
-                        .tracks
-                        .push((track.title.clone(), track.seconds));
-                    self.tracks.push(track);
-                    self.tracks.len() - 1
-                };
-                self.restore = None;
-                phone.files.selected = phone.index;
-                phone.go(Screen::Music);
-                phone.play_track(index);
-                phone.music_return_file = true;
-                Ok(())
-            }
-            FileRequest::Mkdir(path) => {
-                self.vfs.mkdir(&path).map_err(|e| e.to_string())?;
-                self.list(phone, phone.files.path.clone())
-            }
-            FileRequest::Remove(path) => {
-                self.vfs.remove(&path).map_err(|e| e.to_string())?;
-                self.prepare_refresh(phone);
-                if let Some(saved) = &mut self.restore
-                    && saved.path.as_ref().is_some_and(|p| path_contains(&path, p))
-                {
-                    saved.path = None;
-                    saved.position = 0.;
-                }
-                self.list(phone, phone.files.path.clone())
-            }
-            FileRequest::Rename(from, to) => {
-                self.vfs.rename(&from, &to).map_err(|e| e.to_string())?;
-                self.prepare_refresh(phone);
-                if let Some(saved) = &mut self.restore
-                    && let Some(path) = &mut saved.path
-                    && path_contains(&from, path)
-                {
-                    *path = format!("{to}{}", &path[from.len()..]);
-                }
-                self.list(phone, phone.files.path.clone())
-            }
-        }
-    }
-    fn prepare_refresh(&mut self, phone: &mut Phone) {
-        if self.restore.is_none() {
-            self.restore = Some(SavedMusic::capture(phone, &self.tracks));
-        }
-        self.audio.stop();
-        phone.music.playing = false;
-        phone.music_loading = phone.features.music;
-        phone.music_refresh = phone.features.music;
     }
     fn apply_scan(&mut self, phone: &mut Phone, tracks: Vec<Track>, warnings: Vec<String>) {
         self.audio.stop();
@@ -264,16 +195,24 @@ impl Media {
             .iter()
             .map(|t| (t.title.clone(), t.seconds))
             .collect();
+        phone.set_music_paths(tracks.iter().map(|t| t.path.clone()).collect());
+        phone.music.queue.clear();
         self.tracks = tracks;
-        if let Some(saved) = self.restore.take()
-            && let Some(i) = self
+        if let Some(saved) = self.restore.take() {
+            phone.music.queue = saved
+                .queue
+                .iter()
+                .filter_map(|p| phone.music_index(p))
+                .collect();
+            if let Some(i) = self
                 .tracks
                 .iter()
                 .position(|t| Some(&t.path) == saved.path.as_ref())
-        {
-            phone.music.index = i;
-            phone.music.position = saved.position.min(self.tracks[i].seconds);
-            phone.music_started = true;
+            {
+                phone.music.index = i;
+                phone.music.position = saved.position.min(self.tracks[i].seconds);
+                phone.music_started = true;
+            }
         }
         if phone.screen == Screen::Music
             && phone.music.tracks.is_empty()
@@ -288,6 +227,7 @@ impl Media {
                 phone.music_view,
                 crate::phone::MusicView::Songs
                     | crate::phone::MusicView::Queue
+                    | crate::phone::MusicView::Playlist
                     | crate::phone::MusicView::Root
             )
         {
@@ -301,6 +241,85 @@ impl Media {
         }
     }
     pub fn tick(&mut self, phone: &mut Phone) {
+        self.visual.tick(&self.vfs, phone);
+        let volume = if phone.preferences.silent || !phone.features.sounds {
+            0
+        } else {
+            phone.preferences.volume
+        };
+        let unread = phone.mailbox.unread();
+        if unread > self.unread {
+            phone.audio_preview = Some(
+                if matches!(phone.preferences.ringtone.as_str(), "预设" | "默认") {
+                    "Message 1".into()
+                } else {
+                    phone.preferences.ringtone.clone()
+                },
+            );
+        }
+        self.unread = unread;
+        self.audio.effect_volume(volume);
+        if volume > 0 {
+            for cue in std::mem::take(&mut phone.cues) {
+                if let Err(e) = self.audio.feedback(cue, volume) {
+                    phone.status = format!("音效不可用：{e}");
+                    break;
+                }
+            }
+            if let Some(path) = phone.audio_preview.take()
+                && let Err(e) = self.audio.preview(&self.vfs, &path, volume)
+            {
+                phone.notice(format!("无法播放铃声：{e}"));
+            }
+        } else {
+            phone.cues.clear();
+            phone.audio_preview = None;
+        }
+        if let Err(e) = self.audio.poll_effects() {
+            phone.status = format!("原机音效无法播放：{e}");
+        }
+        let tone = phone
+            .organizer
+            .alarm
+            .alerts
+            .front()
+            .map(|a| a.tone.as_str());
+        if tone.is_some() {
+            phone.music.playing = false;
+            if phone.media_ui.playing {
+                phone
+                    .media_ui
+                    .pending
+                    .push(crate::phone::media_browser::Request::Command(
+                        "pause".into(),
+                    ));
+                phone.media_ui.playing = false;
+            }
+        }
+        if let Err(e) = self.audio.alert(&self.vfs, tone, volume) {
+            phone.status = format!("闹钟声音不可用：{e}");
+        }
+        while let Ok(TransferResult {
+            result,
+            from,
+            to,
+            moving,
+        }) = self.transfers.try_recv()
+        {
+            phone.files.busy = false;
+            if let Err(e) = result {
+                phone.notice(format!("复制/移动失败：{e}"));
+            } else {
+                phone.files.clipboard = None;
+                self.prepare_refresh(phone);
+                if moving {
+                    self.remap_links(phone, &from, &to);
+                }
+            }
+            if let Err(e) = self.list(phone, phone.files.path.clone()) {
+                phone.notice(e);
+            }
+        }
         if let Some(request) = phone.files.pending.take()
             && let Err(e) = self.file_request(phone, request)
         {
@@ -343,6 +362,7 @@ impl Media {
         if let Some(pending) = &self.restore {
             state.path = pending.path.clone();
             state.position = pending.position;
+            state.queue = pending.queue.clone();
         }
         if state != self.saved {
             storage::save_json(dir, "music.json", &state, 65536)?;

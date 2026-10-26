@@ -4,6 +4,10 @@ use phone_core::calendar::Date;
 use serde::{Deserialize, Serialize};
 #[derive(Clone, Default, Serialize, Deserialize)]
 pub struct LocalData {
+    #[serde(default)]
+    pub groups: Vec<String>,
+    #[serde(default)]
+    pub playlists: Vec<super::music::Playlist>,
     pub contacts: Vec<Vec<String>>,
     pub events: Vec<CalendarEvent>,
     pub alarms: Vec<Alarm>,
@@ -12,6 +16,20 @@ pub struct LocalData {
 pub struct CalendarEvent {
     pub date: Date,
     pub fields: Vec<String>,
+}
+impl CalendarEvent {
+    pub fn occurs(&self, date: Date) -> bool {
+        if date < self.date {
+            return false;
+        }
+        match self.fields.get(5).map(String::as_str) {
+            Some("每天") => true,
+            Some("每周") => date.weekday() == self.date.weekday(),
+            Some("每月") => date.day == self.date.day,
+            Some("每年") => date.month == self.date.month && date.day == self.date.day,
+            _ => date == self.date,
+        }
+    }
 }
 #[derive(Clone, Serialize, Deserialize)]
 pub struct Alarm {
@@ -24,10 +42,14 @@ pub enum OrganizerPage {
     CalendarMenu,
     Events,
     EventForm,
+    EventReminder,
+    EventRepeat,
+    EventRingtone,
     Alarms,
     AlarmForm,
     AlarmDays,
     AlarmSnooze,
+    AlarmRingtone,
     AlarmMenu,
     AlarmFormMenu,
     DeleteAllAlarms,
@@ -38,6 +60,11 @@ pub enum OrganizerPage {
     ContactDetail,
     ContactMenu,
     DeleteContact,
+    ContactGroups,
+    ContactGroupChoice,
+    ContactRingtone,
+    ContactGroupMenu,
+    ContactGroupDelete,
     DeleteEvent,
     DeleteAlarm,
     DeletePast,
@@ -52,6 +79,7 @@ pub struct Organizer {
     pub selected: usize,
     pub pick_recipient: bool,
     pub last_alarm_minute: Option<(Date, u64)>,
+    pub last_event_minute: Option<(Date, u64)>,
 }
 impl Default for Organizer {
     fn default() -> Self {
@@ -65,6 +93,7 @@ impl Default for Organizer {
             selected: 0,
             pick_recipient: false,
             last_alarm_minute: None,
+            last_event_minute: None,
         }
     }
 }
@@ -88,15 +117,23 @@ impl Phone {
             CalendarMenu | ContactMenu | ContactsMenu | ContactFormMenu => "选项",
             Events => "日程",
             EventForm => "添加事件",
+            EventReminder => "提醒",
+            EventRepeat => "重复",
+            EventRingtone => "铃声",
             Alarms => "闹钟",
             AlarmForm => "闹钟",
             AlarmDays => "重复，每周",
             AlarmSnooze => "重响时间",
+            AlarmRingtone => "闹钟铃声",
             AlarmMenu | AlarmFormMenu => "选项",
             DeleteAllAlarms => "确认",
             Contacts => "通讯录",
             ContactForm => "新联系人",
             ContactDetail => "详情",
+            ContactGroups | ContactGroupChoice => "通话组",
+            ContactGroupMenu => "选项",
+            ContactGroupDelete => "确认",
+            ContactRingtone => "铃声",
             DeleteContact | DeleteEvent | DeleteAlarm | DeletePast => "确认",
         }
     }
@@ -115,11 +152,18 @@ impl Phone {
             ContactMenu => super::contacts::DETAIL_MENU.map(str::to_owned).to_vec(),
             ContactsMenu => super::contacts::ROOT_MENU.map(str::to_owned).to_vec(),
             ContactFormMenu => vec!["保存".into()],
+            EventReminder => ["关闭", "准时", "5分钟前", "15分钟前", "30分钟前", "1小时前"]
+                .map(str::to_owned)
+                .to_vec(),
+            EventRepeat => ["不重复", "每天", "每周", "每月", "每年"]
+                .map(str::to_owned)
+                .to_vec(),
+            EventRingtone => crate::native_audio::tone_labels("默认"),
             Events => self
                 .local_data
                 .events
                 .iter()
-                .filter(|e| e.date == self.organizer.date)
+                .filter(|e| e.occurs(self.organizer.date))
                 .map(|e| e.fields.first().cloned().unwrap_or_default())
                 .collect(),
             EventForm | ContactForm => {
@@ -257,6 +301,7 @@ impl Phone {
                     CalendarMenu | Events | EventForm | DeletePast => Calendar,
                     DeleteAlarm => Alarms,
                     DeleteEvent => Events,
+                    EventReminder | EventRepeat | EventRingtone => EventForm,
                     _ => {
                         if self.organizer.pick_recipient {
                             self.organizer.pick_recipient = false;
@@ -267,7 +312,11 @@ impl Phone {
                         return;
                     }
                 };
-                self.index = 0;
+                self.index = if matches!(page, EventReminder | EventRepeat | EventRingtone) {
+                    self.organizer.contact.return_index
+                } else {
+                    0
+                };
             }
             Key::SoftLeft if page == EventForm => self.organizer_save(),
             Key::SoftLeft if page == Events => self.organizer_form(EventForm, None),
@@ -295,7 +344,10 @@ impl Phone {
                         Events
                     }
                     _ => {
-                        self.local_data.events.retain(|e| e.date >= Date::default());
+                        let today = self.local_clock().0;
+                        self.local_data.events.retain(|e| {
+                            e.date >= today || e.fields.get(5).is_some_and(|s| s != "不重复")
+                        });
                         Calendar
                     }
                 };
@@ -312,6 +364,33 @@ impl Phone {
                     ),
                     _ => self.organizer.page = DeletePast,
                 },
+                EventForm if matches!(self.index, 2 | 4 | 5) => {
+                    self.organizer.contact.return_index = self.index;
+                    self.organizer.page = match self.index {
+                        2 => EventReminder,
+                        4 => EventRingtone,
+                        _ => EventRepeat,
+                    };
+                    self.index = 0;
+                }
+                EventReminder | EventRepeat => {
+                    let field = if page == EventReminder { 2 } else { 5 };
+                    self.organizer.draft[field] = self.organizer_items()[self.index].clone();
+                    self.organizer.page = EventForm;
+                    self.index = field;
+                }
+                EventRingtone => {
+                    if self.index == crate::native_audio::file_index() {
+                        self.organizer.page = EventForm;
+                        self.index = 4;
+                        self.open_media(media_browser::Purpose::EventRingtone);
+                    } else {
+                        self.organizer.draft[4] = self.organizer_items()[self.index].clone();
+                        self.audio_preview = Some(self.organizer.draft[4].clone());
+                        self.organizer.page = EventForm;
+                        self.index = 4;
+                    }
+                }
                 EventForm => self.open_local_text(
                     TextTarget::Organizer(self.index),
                     self.organizer.draft[self.index].clone(),
@@ -331,9 +410,39 @@ impl Phone {
             .events
             .iter()
             .enumerate()
-            .filter(|(_, e)| e.date == self.organizer.date)
+            .filter(|(_, e)| e.occurs(self.organizer.date))
             .map(|(i, _)| i)
             .collect()
+    }
+    pub fn check_events(&mut self, date: Date, minute: u64) {
+        if minute >= 1440 || self.organizer.last_event_minute == Some((date, minute)) {
+            return;
+        }
+        self.organizer.last_event_minute = Some((date, minute));
+        for event in &self.local_data.events {
+            let lead = match event.fields[2].as_str() {
+                "准时" => 0,
+                "5分钟前" => 5,
+                "15分钟前" => 15,
+                "30分钟前" => 30,
+                "1小时前" => 60,
+                _ => continue,
+            };
+            let due = minute + lead;
+            let day = if due >= 1440 { date.next(1) } else { date };
+            let time = &event.fields[1];
+            if event.occurs(day)
+                && valid_time(time)
+                && time == &format!("{:02}:{:02}", due % 1440 / 60, due % 60)
+            {
+                self.organizer.alarm.alerts.push_back(super::alarm::Alert {
+                    tone: event.fields[4].clone(),
+                    name: event.fields[0].clone(),
+                    time: time.clone(),
+                    snooze: 10,
+                });
+            }
+        }
     }
     pub(super) fn organizer_text(&mut self, field: usize, value: String) {
         if field == 100 {

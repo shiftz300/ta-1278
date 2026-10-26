@@ -19,7 +19,7 @@ impl Field<'_> {
         if choice && self.focused {
             c.rect(0, y, 240, 68, c.accent(3));
         }
-        c.text(
+        c.fit(
             6,
             y + if choice { 8 } else { 4 },
             self.label,
@@ -31,8 +31,9 @@ impl Field<'_> {
             } else {
                 MUTED
             },
+            228,
         );
-        c.text(
+        c.fit(
             6,
             y + if choice {
                 37
@@ -58,6 +59,7 @@ impl Field<'_> {
             } else {
                 WHITE
             },
+            228,
         );
         if !choice {
             c.rect(

@@ -22,6 +22,7 @@ pub fn tables() -> &'static Tables {
 }
 #[derive(Clone)]
 pub struct Alert {
+    pub tone: String,
     pub name: String,
     pub time: String,
     pub snooze: u64,
@@ -76,7 +77,14 @@ pub fn is_alarm(page: OrganizerPage) -> bool {
     use OrganizerPage::*;
     matches!(
         page,
-        Alarms | AlarmForm | AlarmDays | AlarmSnooze | AlarmMenu | AlarmFormMenu | DeleteAllAlarms
+        Alarms
+            | AlarmForm
+            | AlarmDays
+            | AlarmSnooze
+            | AlarmRingtone
+            | AlarmMenu
+            | AlarmFormMenu
+            | DeleteAllAlarms
     )
 }
 impl Phone {
@@ -111,6 +119,7 @@ impl Phone {
             let once = matches!(repeat, "一次" | "不必重复" | "");
             if once || mask & tables().weekday_bits[date.weekday()] != 0 {
                 ui.alerts.push_back(Alert {
+                    tone: a.fields.get(3).cloned().unwrap_or_else(|| "默认".into()),
                     name: a
                         .fields
                         .get(2)
@@ -305,7 +314,13 @@ impl Phone {
                         self.index = snooze_index(&self.organizer.draft[4]);
                         self.organizer.page = AlarmSnooze;
                     }
-                    _ => self.notice("铃声选择和播放尚未实现。"),
+                    _ => {
+                        self.organizer.page = AlarmRingtone;
+                        self.index = crate::native_audio::tone_labels("预设")
+                            .iter()
+                            .position(|s| s == &self.organizer.draft[3])
+                            .unwrap_or(0);
+                    }
                 },
                 _ => {}
             },
@@ -334,6 +349,24 @@ impl Phone {
                 Key::SoftRight => self.alarm_return(4),
                 _ => {}
             },
+            AlarmRingtone => {
+                let labels = crate::native_audio::tone_labels("预设");
+                match key {
+                    Key::Up => self.index = (self.index + labels.len() - 1) % labels.len(),
+                    Key::Down => self.index = (self.index + 1) % labels.len(),
+                    Key::SoftRight => self.alarm_return(3),
+                    Key::Center if self.index == crate::native_audio::file_index() => {
+                        self.alarm_return(3);
+                        self.open_media(media_browser::Purpose::AlarmRingtone);
+                    }
+                    Key::Center => {
+                        self.organizer.draft[3] = labels[self.index].clone();
+                        self.audio_preview = Some(labels[self.index].clone());
+                        self.alarm_return(3);
+                    }
+                    _ => {}
+                }
+            }
             _ => {}
         }
         true

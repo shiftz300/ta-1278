@@ -56,6 +56,12 @@ impl Phone {
                     Key::SoftRight => editor.backspace(),
                     Key::SoftLeft | Key::Center => {
                         match target {
+                            TextTarget::Setting(i) => self.setting_text(i, editor.text()),
+                            TextTarget::ContactGroup => self.contact_group_name(editor.text()),
+                            TextTarget::ContactGroupRename => {
+                                self.rename_contact_group(editor.text())
+                            }
+                            TextTarget::PlaylistName => self.playlist_name(editor.text()),
                             TextTarget::BrowserHome => {
                                 self.browser_data.settings.home_url = editor.text();
                                 self.browser_dirty = true;

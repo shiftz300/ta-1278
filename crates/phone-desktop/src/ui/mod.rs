@@ -7,6 +7,7 @@ pub mod form;
 pub mod list;
 pub mod softkeys;
 pub mod text;
+pub mod tone_picker;
 pub const TITLE_HEIGHT: i32 = 24;
 pub const SOFTKEY_TOP: i32 = 284;
 pub const SOFTKEY_TEXT_Y: i32 = 289;

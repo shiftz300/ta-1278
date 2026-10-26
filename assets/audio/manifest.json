@@ -1,0 +1,2174 @@
+{
+  "user_sha256": "8f0db2dc82f9e763cb700c2e5781b7ca7125a4d250f4c075dbec793eb549c1ca",
+  "mmi_sha256": "14c573027f375ea6b5f8ead2c6c432f2773f373faaa3c8a33261d0de9737886c",
+  "verified_sres_sounds": 75,
+  "entries": [
+    {
+      "key": "snake-food",
+      "name": "snake-food",
+      "source": "assets/audio/snake-food.mid",
+      "bytes": 274,
+      "sha256": "1d8f3c8e746cd4febe09d6e826cb77e552b3b4e370f010683f2e88a400959ae8",
+      "midi": true,
+      "evidence": {
+        "confidence": "code-verified",
+        "image": "user.bin",
+        "offset": "0x2037f8",
+        "size": 274,
+        "binding": "0x8869079c..0x8869079e: event5 after score increment"
+      },
+      "smf": {
+        "format": 1,
+        "division": 960,
+        "tracks": [
+          {
+            "names": [
+              "untitled"
+            ],
+            "programs": [],
+            "note_on": 0,
+            "last_tick": 0
+          },
+          {
+            "names": [
+              "WoodBlok"
+            ],
+            "programs": [
+              [
+                0,
+                115
+              ]
+            ],
+            "note_on": 2,
+            "last_tick": 402
+          },
+          {
+            "names": [
+              "WoodBlok"
+            ],
+            "programs": [
+              [
+                0,
+                113
+              ]
+            ],
+            "note_on": 2,
+            "last_tick": 402
+          }
+        ],
+        "seconds_to_last_event": 0.209375
+      }
+    },
+    {
+      "key": "snake-over",
+      "name": "snake-over",
+      "source": "assets/audio/snake-over.mid",
+      "bytes": 1744,
+      "sha256": "e0ec7cc6f5299d254f41fa6abbb282818ca888f4a8032b70eaf45127e82a6882",
+      "midi": true,
+      "evidence": {
+        "confidence": "code-verified",
+        "image": "user.bin",
+        "offset": "0x20390a",
+        "size": 1744,
+        "binding": "0x88690c28..0x88690c2c: event6 during end handling"
+      },
+      "smf": {
+        "format": 1,
+        "division": 480,
+        "tracks": [
+          {
+            "names": [
+              "untitled"
+            ],
+            "programs": [],
+            "note_on": 0,
+            "last_tick": 0
+          },
+          {
+            "names": [
+              "GrandPno"
+            ],
+            "programs": [],
+            "note_on": 3,
+            "last_tick": 2858
+          },
+          {
+            "names": [
+              "SawLd"
+            ],
+            "programs": [
+              [
+                1,
+                81
+              ]
+            ],
+            "note_on": 6,
+            "last_tick": 2859
+          },
+          {
+            "names": [
+              "SquareLd"
+            ],
+            "programs": [
+              [
+                2,
+                80
+              ]
+            ],
+            "note_on": 26,
+            "last_tick": 3060
+          },
+          {
+            "names": [
+              "Distortd"
+            ],
+            "programs": [
+              [
+                3,
+                30
+              ]
+            ],
+            "note_on": 3,
+            "last_tick": 2978
+          },
+          {
+            "names": [
+              "ElPiano1"
+            ],
+            "programs": [
+              [
+                5,
+                4
+              ]
+            ],
+            "note_on": 10,
+            "last_tick": 2832
+          },
+          {
+            "names": [
+              "GM Drums"
+            ],
+            "programs": [
+              [
+                9,
+                0
+              ]
+            ],
+            "note_on": 10,
+            "last_tick": 840
+          }
+        ],
+        "seconds_to_last_event": 3.1875
+      }
+    },
+    {
+      "key": "Clock1",
+      "name": "Clock1",
+      "source": "nokia-ta1278-research/analysis/ui/audio/01529-sound-0015143c.mid",
+      "bytes": 1870,
+      "sha256": "be869d023c4a13f15a9560cc269d063828319fad6c93fbe4fcddd7eead357cb8",
+      "midi": true,
+      "evidence": {
+        "confidence": "name-and-SMF-metadata",
+        "sound_resource_id": "0x40000015",
+        "offset": "0x15143c",
+        "name_pointer_table": "user.bin+0xc16550",
+        "note": "Names are verified UTF16 strings. Except named SMF titles, pairing to the sound index is inferred from the matching lists; native selector code is not fully traced."
+      },
+      "smf": {
+        "format": 1,
+        "division": 480,
+        "tracks": [
+          {
+            "names": [],
+            "programs": [],
+            "note_on": 0,
+            "last_tick": 0
+          },
+          {
+            "names": [
+              "Clock alert 1_v2",
+              "Flutes"
+            ],
+            "programs": [
+              [
+                0,
+                73
+              ]
+            ],
+            "note_on": 77,
+            "last_tick": 28500
+          },
+          {
+            "names": [
+              "Clock alert 1_v2",
+              "Full Brass"
+            ],
+            "programs": [
+              [
+                1,
+                56
+              ]
+            ],
+            "note_on": 48,
+            "last_tick": 28540
+          },
+          {
+            "names": [
+              "Clock alert 1_v2",
+              "Realistic Vibraphones"
+            ],
+            "programs": [
+              [
+                2,
+                9
+              ]
+            ],
+            "note_on": 77,
+            "last_tick": 28540
+          }
+        ],
+        "seconds_to_last_event": 29.729166666666668
+      }
+    },
+    {
+      "key": "Clock 2",
+      "name": "Clock 2",
+      "source": "nokia-ta1278-research/analysis/ui/audio/01530-sound-00151b8c.mid",
+      "bytes": 2388,
+      "sha256": "42cd6e23120daa90cd0dcb4df796cad710ee9aff2aec6f05e647c6e000fa8de0",
+      "midi": true,
+      "evidence": {
+        "confidence": "name-and-SMF-metadata",
+        "sound_resource_id": "0x40000016",
+        "offset": "0x151b8c",
+        "name_pointer_table": "user.bin+0xc16550",
+        "note": "Names are verified UTF16 strings. Except named SMF titles, pairing to the sound index is inferred from the matching lists; native selector code is not fully traced."
+      },
+      "smf": {
+        "format": 1,
+        "division": 480,
+        "tracks": [
+          {
+            "names": [],
+            "programs": [],
+            "note_on": 0,
+            "last_tick": 0
+          },
+          {
+            "names": [
+              "Clock alert 2_v2",
+              "Homemade Xylophone"
+            ],
+            "programs": [
+              [
+                0,
+                8
+              ]
+            ],
+            "note_on": 144,
+            "last_tick": 22733
+          },
+          {
+            "names": [
+              "Clock alert 2_v2",
+              "Flutes"
+            ],
+            "programs": [
+              [
+                1,
+                79
+              ]
+            ],
+            "note_on": 153,
+            "last_tick": 23000
+          }
+        ],
+        "seconds_to_last_event": 23.958333333333332
+      }
+    },
+    {
+      "key": "Bicycle",
+      "name": "Bicycle",
+      "source": "nokia-ta1278-research/analysis/ui/audio/01510-sound-00145f4c.mid",
+      "bytes": 1214,
+      "sha256": "660a7879f5d5511bc2c38235a8eda66ec549ee96613603a4dbc05fbb54720234",
+      "midi": true,
+      "evidence": {
+        "confidence": "order-based inference",
+        "sound_resource_id": "0x40000002",
+        "offset": "0x145f4c",
+        "name_pointer_table": "user.bin+0xc16550",
+        "note": "Names are verified UTF16 strings. Except named SMF titles, pairing to the sound index is inferred from the matching lists; native selector code is not fully traced."
+      },
+      "smf": {
+        "format": 1,
+        "division": 480,
+        "tracks": [
+          {
+            "names": [],
+            "programs": [],
+            "note_on": 0,
+            "last_tick": 0
+          },
+          {
+            "names": [
+              "MIDI 01",
+              "Wurlitzer"
+            ],
+            "programs": [
+              [
+                0,
+                4
+              ]
+            ],
+            "note_on": 9,
+            "last_tick": 7680
+          },
+          {
+            "names": [
+              "MIDI 02",
+              "Grand Piano"
+            ],
+            "programs": [
+              [
+                1,
+                0
+              ]
+            ],
+            "note_on": 0,
+            "last_tick": 2
+          },
+          {
+            "names": [
+              "MIDI 03",
+              "Pop Flute"
+            ],
+            "programs": [
+              [
+                2,
+                79
+              ]
+            ],
+            "note_on": 8,
+            "last_tick": 2999
+          },
+          {
+            "names": [
+              "MIDI 04",
+              "Future Flute"
+            ],
+            "programs": [
+              [
+                3,
+                80
+              ]
+            ],
+            "note_on": 8,
+            "last_tick": 2999
+          },
+          {
+            "names": [
+              "MIDI 05",
+              "Pop Organ"
+            ],
+            "programs": [
+              [
+                4,
+                20
+              ]
+            ],
+            "note_on": 8,
+            "last_tick": 2999
+          },
+          {
+            "names": [
+              "MIDI 06",
+              "Analog Basic Pad"
+            ],
+            "programs": [
+              [
+                5,
+                103
+              ]
+            ],
+            "note_on": 8,
+            "last_tick": 2999
+          },
+          {
+            "names": [
+              "MIDI 07",
+              "Sub Synth Bass"
+            ],
+            "programs": [
+              [
+                6,
+                39
+              ]
+            ],
+            "note_on": 8,
+            "last_tick": 2999
+          },
+          {
+            "names": [
+              "Bike Bell",
+              "Music Box"
+            ],
+            "programs": [
+              [
+                7,
+                124
+              ]
+            ],
+            "note_on": 8,
+            "last_tick": 3240
+          },
+          {
+            "names": [
+              "MIDI 09",
+              "Wurlitzer"
+            ],
+            "programs": [
+              [
+                8,
+                4
+              ]
+            ],
+            "note_on": 8,
+            "last_tick": 2999
+          },
+          {
+            "names": [
+              "MIDI 10",
+              "Music Box"
+            ],
+            "programs": [],
+            "note_on": 8,
+            "last_tick": 3240
+          }
+        ],
+        "seconds_to_last_event": 8.0
+      }
+    },
+    {
+      "key": "Brikabrak",
+      "name": "Brikabrak",
+      "source": "nokia-ta1278-research/analysis/ui/audio/01511-sound-0014640c.mid",
+      "bytes": 1769,
+      "sha256": "b48924591da81098af8d88a8f0aecf1616f52ed26e4f1c2ced772e557badc127",
+      "midi": true,
+      "evidence": {
+        "confidence": "order-based inference",
+        "sound_resource_id": "0x40000003",
+        "offset": "0x14640c",
+        "name_pointer_table": "user.bin+0xc16550",
+        "note": "Names are verified UTF16 strings. Except named SMF titles, pairing to the sound index is inferred from the matching lists; native selector code is not fully traced."
+      },
+      "smf": {
+        "format": 1,
+        "division": 480,
+        "tracks": [
+          {
+            "names": [],
+            "programs": [],
+            "note_on": 0,
+            "last_tick": 0
+          },
+          {
+            "names": [
+              "Kalimba",
+              "Realistic Vibraphones"
+            ],
+            "programs": [
+              [
+                0,
+                9
+              ]
+            ],
+            "note_on": 68,
+            "last_tick": 15360
+          },
+          {
+            "names": [
+              "Sansa",
+              "Delicate Bells"
+            ],
+            "programs": [
+              [
+                1,
+                9
+              ]
+            ],
+            "note_on": 68,
+            "last_tick": 15360
+          },
+          {
+            "names": [
+              "Bass",
+              "Full Brass"
+            ],
+            "programs": [
+              [
+                2,
+                56
+              ]
+            ],
+            "note_on": 50,
+            "last_tick": 15121
+          }
+        ],
+        "seconds_to_last_event": 16.0
+      }
+    },
+    {
+      "key": "Brook",
+      "name": "Brook",
+      "source": "nokia-ta1278-research/analysis/ui/audio/01512-sound-00146af8.mid",
+      "bytes": 3084,
+      "sha256": "888062c60f006156039f419e4b8d0f357330f52c3a265c38c867d6395c73ad92",
+      "midi": true,
+      "evidence": {
+        "confidence": "order-based inference",
+        "sound_resource_id": "0x40000004",
+        "offset": "0x146af8",
+        "name_pointer_table": "user.bin+0xc16550",
+        "note": "Names are verified UTF16 strings. Except named SMF titles, pairing to the sound index is inferred from the matching lists; native selector code is not fully traced."
+      },
+      "smf": {
+        "format": 1,
+        "division": 480,
+        "tracks": [
+          {
+            "names": [],
+            "programs": [],
+            "note_on": 0,
+            "last_tick": 0
+          },
+          {
+            "names": [
+              "Track-1",
+              "Delicate Bells"
+            ],
+            "programs": [
+              [
+                0,
+                10
+              ]
+            ],
+            "note_on": 39,
+            "last_tick": 28340
+          },
+          {
+            "names": [
+              "Track-2",
+              "Delicate Bells"
+            ],
+            "programs": [
+              [
+                1,
+                10
+              ]
+            ],
+            "note_on": 77,
+            "last_tick": 28113
+          },
+          {
+            "names": [
+              "Track-4",
+              "Delicate Bells"
+            ],
+            "programs": [
+              [
+                3,
+                10
+              ]
+            ],
+            "note_on": 76,
+            "last_tick": 28360
+          },
+          {
+            "names": [
+              "Track-5",
+              "Full Brass"
+            ],
+            "programs": [
+              [
+                4,
+                56
+              ]
+            ],
+            "note_on": 4,
+            "last_tick": 23433
+          },
+          {
+            "names": [
+              "MIDI 07",
+              "Delicate Bells"
+            ],
+            "programs": [
+              [
+                6,
+                10
+              ]
+            ],
+            "note_on": 77,
+            "last_tick": 28473
+          },
+          {
+            "names": [
+              "MIDI 08",
+              "Delicate Bells"
+            ],
+            "programs": [
+              [
+                7,
+                10
+              ]
+            ],
+            "note_on": 39,
+            "last_tick": 28700
+          }
+        ],
+        "seconds_to_last_event": 29.895833333333332
+      }
+    },
+    {
+      "key": "Coconut",
+      "name": "Coconut",
+      "source": "nokia-ta1278-research/analysis/ui/audio/01513-sound-00147704.mid",
+      "bytes": 4748,
+      "sha256": "e54f5d0111b48d9ef34a6365c73777f1178f7d2b7cddf891cd3686abd6a987cb",
+      "midi": true,
+      "evidence": {
+        "confidence": "order-based inference",
+        "sound_resource_id": "0x40000005",
+        "offset": "0x147704",
+        "name_pointer_table": "user.bin+0xc16550",
+        "note": "Names are verified UTF16 strings. Except named SMF titles, pairing to the sound index is inferred from the matching lists; native selector code is not fully traced."
+      },
+      "smf": {
+        "format": 1,
+        "division": 480,
+        "tracks": [
+          {
+            "names": [],
+            "programs": [],
+            "note_on": 0,
+            "last_tick": 0
+          },
+          {
+            "names": [
+              "8-poly",
+              "Tweed Picked Synth"
+            ],
+            "programs": [
+              [
+                0,
+                27
+              ]
+            ],
+            "note_on": 78,
+            "last_tick": 15241
+          },
+          {
+            "names": [
+              "8-poly",
+              "Upright Studio Bass"
+            ],
+            "programs": [
+              [
+                2,
+                32
+              ]
+            ],
+            "note_on": 46,
+            "last_tick": 15241
+          },
+          {
+            "names": [
+              "8-poly",
+              "Island Mallets"
+            ],
+            "programs": [
+              [
+                3,
+                114
+              ]
+            ],
+            "note_on": 108,
+            "last_tick": 15294
+          },
+          {
+            "names": [
+              "8-poly",
+              "Full Brass"
+            ],
+            "programs": [
+              [
+                5,
+                57
+              ]
+            ],
+            "note_on": 20,
+            "last_tick": 15382
+          },
+          {
+            "names": [
+              "16-poly",
+              "String Ensemble"
+            ],
+            "programs": [
+              [
+                6,
+                48
+              ]
+            ],
+            "note_on": 10,
+            "last_tick": 15046
+          },
+          {
+            "names": [
+              "16-poly",
+              "Tonewheel Organ"
+            ],
+            "programs": [
+              [
+                7,
+                16
+              ]
+            ],
+            "note_on": 58,
+            "last_tick": 15081
+          },
+          {
+            "names": [
+              "16-poly",
+              "SoCal"
+            ],
+            "programs": [],
+            "note_on": 224,
+            "last_tick": 15359
+          }
+        ],
+        "seconds_to_last_event": 17.96963695
+      }
+    },
+    {
+      "key": "Destiny",
+      "name": "Destiny",
+      "source": "nokia-ta1278-research/analysis/ui/audio/01514-sound-00148990.mid",
+      "bytes": 7912,
+      "sha256": "94ce294634617931c27db4c86332c0b3725c7fa411621435f65849c62ea45c24",
+      "midi": true,
+      "evidence": {
+        "confidence": "order-based inference",
+        "sound_resource_id": "0x40000006",
+        "offset": "0x148990",
+        "name_pointer_table": "user.bin+0xc16550",
+        "note": "Names are verified UTF16 strings. Except named SMF titles, pairing to the sound index is inferred from the matching lists; native selector code is not fully traced."
+      },
+      "smf": {
+        "format": 1,
+        "division": 480,
+        "tracks": [
+          {
+            "names": [],
+            "programs": [],
+            "note_on": 0,
+            "last_tick": 0
+          },
+          {
+            "names": [
+              "JP-8000  1",
+              "Full Brass"
+            ],
+            "programs": [
+              [
+                0,
+                56
+              ]
+            ],
+            "note_on": 144,
+            "last_tick": 17276
+          },
+          {
+            "names": [
+              "JP-8000  1",
+              "Full Brass"
+            ],
+            "programs": [
+              [
+                1,
+                56
+              ]
+            ],
+            "note_on": 142,
+            "last_tick": 17276
+          },
+          {
+            "names": [
+              "Waldorf Pulse",
+              "Muted Bass"
+            ],
+            "programs": [
+              [
+                3,
+                33
+              ]
+            ],
+            "note_on": 32,
+            "last_tick": 17276
+          },
+          {
+            "names": [
+              "Virus C  1",
+              "Delicate Bells"
+            ],
+            "programs": [
+              [
+                4,
+                11
+              ]
+            ],
+            "note_on": 64,
+            "last_tick": 17276
+          },
+          {
+            "names": [
+              "JP-8000  1",
+              "Synth E-Bass"
+            ],
+            "programs": [
+              [
+                5,
+                39
+              ]
+            ],
+            "note_on": 128,
+            "last_tick": 17264
+          },
+          {
+            "names": [
+              "JV2080 10",
+              "Dark Pad"
+            ],
+            "programs": [
+              [
+                6,
+                89
+              ]
+            ],
+            "note_on": 40,
+            "last_tick": 17276
+          },
+          {
+            "names": [
+              " Timpani      ",
+              "Phasing Sweeper"
+            ],
+            "programs": [
+              [
+                7,
+                95
+              ]
+            ],
+            "note_on": 1,
+            "last_tick": 1916
+          },
+          {
+            "names": [
+              " Timpani      ",
+              "SoCal"
+            ],
+            "programs": [
+              [
+                9,
+                0
+              ]
+            ],
+            "note_on": 385,
+            "last_tick": 17396
+          },
+          {
+            "names": [
+              "Virus C  1",
+              "Realistic Vibraphones"
+            ],
+            "programs": [
+              [
+                11,
+                0
+              ]
+            ],
+            "note_on": 64,
+            "last_tick": 17756
+          }
+        ],
+        "seconds_to_last_event": 18.495833333333334
+      }
+    },
+    {
+      "key": "Elves",
+      "name": "Elves",
+      "source": "nokia-ta1278-research/analysis/ui/audio/01515-sound-0014a878.mid",
+      "bytes": 2426,
+      "sha256": "52a8e4541338fcfca95bb954b0570b3dfb2af0fb1540ed005646331443717ce6",
+      "midi": true,
+      "evidence": {
+        "confidence": "order-based inference",
+        "sound_resource_id": "0x40000007",
+        "offset": "0x14a878",
+        "name_pointer_table": "user.bin+0xc16550",
+        "note": "Names are verified UTF16 strings. Except named SMF titles, pairing to the sound index is inferred from the matching lists; native selector code is not fully traced."
+      },
+      "smf": {
+        "format": 1,
+        "division": 480,
+        "tracks": [
+          {
+            "names": [],
+            "programs": [],
+            "note_on": 0,
+            "last_tick": 0
+          },
+          {
+            "names": [
+              "Elves-v2",
+              "Synth Pop Strings"
+            ],
+            "programs": [
+              [
+                0,
+                51
+              ]
+            ],
+            "note_on": 14,
+            "last_tick": 12199
+          },
+          {
+            "names": [
+              "Elves-v2",
+              "Black Sun"
+            ],
+            "programs": [
+              [
+                3,
+                73
+              ]
+            ],
+            "note_on": 122,
+            "last_tick": 15440
+          },
+          {
+            "names": [
+              "Elves-v2",
+              "Sea of Tranquility"
+            ],
+            "programs": [
+              [
+                7,
+                88
+              ]
+            ],
+            "note_on": 15,
+            "last_tick": 12229
+          },
+          {
+            "names": [
+              "Elves-v2",
+              "Delicate Bells"
+            ],
+            "programs": [
+              [
+                2,
+                8
+              ]
+            ],
+            "note_on": 122,
+            "last_tick": 13579
+          }
+        ],
+        "seconds_to_last_event": 16.083333333333332
+      }
+    },
+    {
+      "key": "Nocturnal",
+      "name": "Nocturnal",
+      "source": "nokia-ta1278-research/analysis/ui/audio/01516-sound-0014b1f4.mid",
+      "bytes": 9872,
+      "sha256": "560cbe5b4933f9dc068e8fef7c499bedf8336c0ee00d4b0b5bfbe113934dabc0",
+      "midi": true,
+      "evidence": {
+        "confidence": "order-based inference",
+        "sound_resource_id": "0x40000008",
+        "offset": "0x14b1f4",
+        "name_pointer_table": "user.bin+0xc16550",
+        "note": "Names are verified UTF16 strings. Except named SMF titles, pairing to the sound index is inferred from the matching lists; native selector code is not fully traced."
+      },
+      "smf": {
+        "format": 1,
+        "division": 480,
+        "tracks": [
+          {
+            "names": [],
+            "programs": [],
+            "note_on": 0,
+            "last_tick": 0
+          },
+          {
+            "names": [
+              "JV2080 10",
+              "Homemade Xylophone"
+            ],
+            "programs": [
+              [
+                0,
+                13
+              ]
+            ],
+            "note_on": 108,
+            "last_tick": 24956
+          },
+          {
+            "names": [
+              "JV2080 10",
+              "Raining Bells"
+            ],
+            "programs": [
+              [
+                1,
+                82
+              ]
+            ],
+            "note_on": 108,
+            "last_tick": 25196
+          },
+          {
+            "names": [
+              "C6Simplyfy7.",
+              "Synth E-Bass"
+            ],
+            "programs": [
+              [
+                3,
+                33
+              ]
+            ],
+            "note_on": 156,
+            "last_tick": 24920
+          },
+          {
+            "names": [
+              "JV2080 10",
+              "Starlight Vox"
+            ],
+            "programs": [
+              [
+                5,
+                52
+              ]
+            ],
+            "note_on": 39,
+            "last_tick": 24956
+          },
+          {
+            "names": [
+              "Nord Lead3  2",
+              "Steinway Grand Piano"
+            ],
+            "programs": [
+              [
+                6,
+                1
+              ]
+            ],
+            "note_on": 28,
+            "last_tick": 17400
+          },
+          {
+            "names": [
+              "Nord Lead3  2",
+              "Steinway Grand Piano"
+            ],
+            "programs": [
+              [
+                7,
+                0
+              ]
+            ],
+            "note_on": 28,
+            "last_tick": 18120
+          },
+          {
+            "names": [
+              "JV2080 10",
+              "SoCal"
+            ],
+            "programs": [
+              [
+                9,
+                0
+              ]
+            ],
+            "note_on": 413,
+            "last_tick": 24956
+          },
+          {
+            "names": [
+              "MIDI 11",
+              "Steinway Grand Piano"
+            ],
+            "programs": [
+              [
+                11,
+                1
+              ]
+            ],
+            "note_on": 108,
+            "last_tick": 24953
+          },
+          {
+            "names": [
+              "MIDI 12",
+              "Realistic Vibraphones"
+            ],
+            "programs": [
+              [
+                12,
+                11
+              ]
+            ],
+            "note_on": 28,
+            "last_tick": 17880
+          },
+          {
+            "names": [
+              "MIDI 14",
+              "Picked Bass"
+            ],
+            "programs": [
+              [
+                14,
+                33
+              ]
+            ],
+            "note_on": 156,
+            "last_tick": 24945
+          },
+          {
+            "names": [
+              "MIDI 17",
+              "Dark Pad"
+            ],
+            "programs": [
+              [
+                13,
+                89
+              ]
+            ],
+            "note_on": 4,
+            "last_tick": 15805
+          }
+        ],
+        "seconds_to_last_event": 26.245833333333334
+      }
+    },
+    {
+      "key": "Default Tune",
+      "name": "Default Tune",
+      "source": "nokia-ta1278-research/analysis/ui/audio/01517-sound-0014d884.mid",
+      "bytes": 742,
+      "sha256": "d7bdfbc994972d66a210691e9e2d761e962d66c153fbb402f6a76a7ce15c8256",
+      "midi": true,
+      "evidence": {
+        "confidence": "order-based inference",
+        "sound_resource_id": "0x40000009",
+        "offset": "0x14d884",
+        "name_pointer_table": "user.bin+0xc16550",
+        "note": "Names are verified UTF16 strings. Except named SMF titles, pairing to the sound index is inferred from the matching lists; native selector code is not fully traced."
+      },
+      "smf": {
+        "format": 1,
+        "division": 480,
+        "tracks": [
+          {
+            "names": [],
+            "programs": [],
+            "note_on": 0,
+            "last_tick": 0
+          },
+          {
+            "names": [
+              "MIDI",
+              "Steinway Grand Piano"
+            ],
+            "programs": [
+              [
+                0,
+                1
+              ]
+            ],
+            "note_on": 26,
+            "last_tick": 3066
+          },
+          {
+            "names": [
+              "MIDI",
+              "Steinway Grand Piano"
+            ],
+            "programs": [
+              [
+                1,
+                1
+              ]
+            ],
+            "note_on": 11,
+            "last_tick": 3324
+          },
+          {
+            "names": [
+              "MIDI",
+              "Realistic Vibraphones"
+            ],
+            "programs": [
+              [
+                2,
+                11
+              ]
+            ],
+            "note_on": 27,
+            "last_tick": 3866
+          }
+        ],
+        "seconds_to_last_event": 4.027083333333334
+      }
+    },
+    {
+      "key": "Nostalgia",
+      "name": "Nostalgia",
+      "source": "nokia-ta1278-research/analysis/ui/audio/01518-sound-0014db6c.mid",
+      "bytes": 2624,
+      "sha256": "0549cc78dcf3647b1977f6f54d3faa2bfe8dbee98ca1c1f35a119bfee32a7c7e",
+      "midi": true,
+      "evidence": {
+        "confidence": "order-based inference",
+        "sound_resource_id": "0x4000000a",
+        "offset": "0x14db6c",
+        "name_pointer_table": "user.bin+0xc16550",
+        "note": "Names are verified UTF16 strings. Except named SMF titles, pairing to the sound index is inferred from the matching lists; native selector code is not fully traced."
+      },
+      "smf": {
+        "format": 1,
+        "division": 480,
+        "tracks": [
+          {
+            "names": [],
+            "programs": [],
+            "note_on": 0,
+            "last_tick": 1920
+          },
+          {
+            "names": [
+              "Sequence",
+              "Deep Round Synth Bass"
+            ],
+            "programs": [
+              [
+                1,
+                38
+              ]
+            ],
+            "note_on": 0,
+            "last_tick": 45
+          },
+          {
+            "names": [
+              "             4",
+              "Deep Round Synth Bass"
+            ],
+            "programs": [],
+            "note_on": 25,
+            "last_tick": 13440
+          },
+          {
+            "names": [
+              "Sequence",
+              "Wurlitzer"
+            ],
+            "programs": [
+              [
+                2,
+                4
+              ]
+            ],
+            "note_on": 0,
+            "last_tick": 45
+          },
+          {
+            "names": [
+              "             4",
+              "Wurlitzer"
+            ],
+            "programs": [],
+            "note_on": 48,
+            "last_tick": 6602
+          },
+          {
+            "names": [
+              "Sequence",
+              "Wurlitzer"
+            ],
+            "programs": [
+              [
+                3,
+                4
+              ]
+            ],
+            "note_on": 0,
+            "last_tick": 45
+          },
+          {
+            "names": [
+              "             4",
+              "Wurlitzer"
+            ],
+            "programs": [],
+            "note_on": 48,
+            "last_tick": 6602
+          },
+          {
+            "names": [
+              "Sequence",
+              "Electric Piano"
+            ],
+            "programs": [
+              [
+                4,
+                5
+              ]
+            ],
+            "note_on": 0,
+            "last_tick": 45
+          },
+          {
+            "names": [
+              "             4",
+              "Electric Piano"
+            ],
+            "programs": [],
+            "note_on": 48,
+            "last_tick": 6602
+          },
+          {
+            "names": [
+              "Sequence",
+              "Music Box"
+            ],
+            "programs": [
+              [
+                6,
+                115
+              ]
+            ],
+            "note_on": 0,
+            "last_tick": 45
+          },
+          {
+            "names": [
+              "             4",
+              "Music Box"
+            ],
+            "programs": [],
+            "note_on": 24,
+            "last_tick": 6602
+          },
+          {
+            "names": [
+              "Sequence",
+              "Pop Kit"
+            ],
+            "programs": [
+              [
+                9,
+                4
+              ]
+            ],
+            "note_on": 0,
+            "last_tick": 45
+          },
+          {
+            "names": [
+              "             4",
+              "Pop Kit"
+            ],
+            "programs": [],
+            "note_on": 48,
+            "last_tick": 6602
+          }
+        ],
+        "seconds_to_last_event": 14.0
+      }
+    },
+    {
+      "key": "Rococo",
+      "name": "Rococo",
+      "source": "nokia-ta1278-research/analysis/ui/audio/01519-sound-0014e5ac.mid",
+      "bytes": 959,
+      "sha256": "61b0944cf218361f38440d86ca05a097c7ede7c9a4f46f7adb5b76399bf9fe50",
+      "midi": true,
+      "evidence": {
+        "confidence": "order-based inference",
+        "sound_resource_id": "0x4000000b",
+        "offset": "0x14e5ac",
+        "name_pointer_table": "user.bin+0xc16550",
+        "note": "Names are verified UTF16 strings. Except named SMF titles, pairing to the sound index is inferred from the matching lists; native selector code is not fully traced."
+      },
+      "smf": {
+        "format": 1,
+        "division": 480,
+        "tracks": [
+          {
+            "names": [],
+            "programs": [],
+            "note_on": 0,
+            "last_tick": 0
+          },
+          {
+            "names": [
+              "(01) Piano",
+              "Steinway Grand Piano"
+            ],
+            "programs": [
+              [
+                1,
+                10
+              ]
+            ],
+            "note_on": 42,
+            "last_tick": 9610
+          },
+          {
+            "names": [
+              "(01) Piano Echo",
+              "Muted Bass"
+            ],
+            "programs": [
+              [
+                2,
+                10
+              ]
+            ],
+            "note_on": 14,
+            "last_tick": 7100
+          },
+          {
+            "names": [
+              "(01) Vibes",
+              "Realistic Vibraphones"
+            ],
+            "programs": [
+              [
+                3,
+                11
+              ]
+            ],
+            "note_on": 30,
+            "last_tick": 6780
+          }
+        ],
+        "seconds_to_last_event": 10.010416666666666
+      }
+    },
+    {
+      "key": "Seahorse",
+      "name": "Seahorse",
+      "source": "nokia-ta1278-research/analysis/ui/audio/01520-sound-0014e96c.mid",
+      "bytes": 1657,
+      "sha256": "f84d4c643083fa22bb8a01f52e043823fa973f3c3ac55075c1b2b013abfa4c92",
+      "midi": true,
+      "evidence": {
+        "confidence": "order-based inference",
+        "sound_resource_id": "0x4000000c",
+        "offset": "0x14e96c",
+        "name_pointer_table": "user.bin+0xc16550",
+        "note": "Names are verified UTF16 strings. Except named SMF titles, pairing to the sound index is inferred from the matching lists; native selector code is not fully traced."
+      },
+      "smf": {
+        "format": 1,
+        "division": 480,
+        "tracks": [
+          {
+            "names": [],
+            "programs": [],
+            "note_on": 0,
+            "last_tick": 0
+          },
+          {
+            "names": [
+              "Roland 2",
+              "Acoustic Guitar"
+            ],
+            "programs": [
+              [
+                1,
+                24
+              ]
+            ],
+            "note_on": 32,
+            "last_tick": 13836
+          },
+          {
+            "names": [
+              "Roland 3",
+              "Homemade Xylophone"
+            ],
+            "programs": [
+              [
+                2,
+                13
+              ]
+            ],
+            "note_on": 32,
+            "last_tick": 13596
+          },
+          {
+            "names": [
+              "Roland 4",
+              "Realistic Vibraphones"
+            ],
+            "programs": [
+              [
+                3,
+                11
+              ]
+            ],
+            "note_on": 24,
+            "last_tick": 15736
+          },
+          {
+            "names": [
+              "Roland 9",
+              "Flutes"
+            ],
+            "programs": [
+              [
+                8,
+                79
+              ]
+            ],
+            "note_on": 32,
+            "last_tick": 13836
+          },
+          {
+            "names": [
+              "Roland dr2",
+              "Dark Pad"
+            ],
+            "programs": [
+              [
+                12,
+                49
+              ]
+            ],
+            "note_on": 9,
+            "last_tick": 15848
+          },
+          {
+            "names": [
+              "Roland 15",
+              "Modern Classic"
+            ],
+            "programs": [
+              [
+                14,
+                5
+              ]
+            ],
+            "note_on": 27,
+            "last_tick": 16628
+          }
+        ],
+        "seconds_to_last_event": 17.320833333333333
+      }
+    },
+    {
+      "key": "Urgent",
+      "name": "Urgent",
+      "source": "nokia-ta1278-research/analysis/ui/audio/01521-sound-0014efe8.mid",
+      "bytes": 467,
+      "sha256": "b107ffb54ee66f13ed349d91c38cdecfd57361fe8ff4cece3adc103817bdc778",
+      "midi": true,
+      "evidence": {
+        "confidence": "order-based inference",
+        "sound_resource_id": "0x4000000d",
+        "offset": "0x14efe8",
+        "name_pointer_table": "user.bin+0xc16550",
+        "note": "Names are verified UTF16 strings. Except named SMF titles, pairing to the sound index is inferred from the matching lists; native selector code is not fully traced."
+      },
+      "smf": {
+        "format": 1,
+        "division": 480,
+        "tracks": [
+          {
+            "names": [],
+            "programs": [],
+            "note_on": 0,
+            "last_tick": 0
+          },
+          {
+            "names": [
+              "MIDI Region",
+              "Flutes"
+            ],
+            "programs": [
+              [
+                7,
+                72
+              ]
+            ],
+            "note_on": 18,
+            "last_tick": 1528
+          },
+          {
+            "names": [
+              "MIDI Region",
+              "Flutes"
+            ],
+            "programs": [
+              [
+                8,
+                72
+              ]
+            ],
+            "note_on": 19,
+            "last_tick": 3840
+          }
+        ],
+        "seconds_to_last_event": 4.0
+      }
+    },
+    {
+      "key": "Trace",
+      "name": "Trace",
+      "source": "nokia-ta1278-research/analysis/ui/audio/01522-sound-0014f1bc.mid",
+      "bytes": 637,
+      "sha256": "5288118fea8f794ca9efe8f62cd096afff66f261f35e27f483c0e8ab80e14587",
+      "midi": true,
+      "evidence": {
+        "confidence": "order-based inference",
+        "sound_resource_id": "0x4000000e",
+        "offset": "0x14f1bc",
+        "name_pointer_table": "user.bin+0xc16550",
+        "note": "Names are verified UTF16 strings. Except named SMF titles, pairing to the sound index is inferred from the matching lists; native selector code is not fully traced."
+      },
+      "smf": {
+        "format": 0,
+        "division": 480,
+        "tracks": [
+          {
+            "names": [
+              "Flute   ",
+              "Flutes"
+            ],
+            "programs": [
+              [
+                4,
+                73
+              ]
+            ],
+            "note_on": 72,
+            "last_tick": 5640
+          }
+        ],
+        "seconds_to_last_event": 6.13043325
+      }
+    },
+    {
+      "key": "Tumbler",
+      "name": "Tumbler",
+      "source": "nokia-ta1278-research/analysis/ui/audio/01523-sound-0014f43c.mid",
+      "bytes": 6113,
+      "sha256": "4899380ea9dc58f687b14e05c86d9ac95c5b22890b338029f363c5152e808360",
+      "midi": true,
+      "evidence": {
+        "confidence": "order-based inference",
+        "sound_resource_id": "0x4000000f",
+        "offset": "0x14f43c",
+        "name_pointer_table": "user.bin+0xc16550",
+        "note": "Names are verified UTF16 strings. Except named SMF titles, pairing to the sound index is inferred from the matching lists; native selector code is not fully traced."
+      },
+      "smf": {
+        "format": 1,
+        "division": 480,
+        "tracks": [
+          {
+            "names": [],
+            "programs": [],
+            "note_on": 0,
+            "last_tick": 0
+          },
+          {
+            "names": [
+              "MIDI 10",
+              "SoCal"
+            ],
+            "programs": [],
+            "note_on": 33,
+            "last_tick": 29820
+          },
+          {
+            "names": [
+              "MIDI 11",
+              "SoCal"
+            ],
+            "programs": [],
+            "note_on": 36,
+            "last_tick": 31320
+          },
+          {
+            "names": [
+              "MIDI 01",
+              "Classic Rock Organ"
+            ],
+            "programs": [
+              [
+                0,
+                1
+              ]
+            ],
+            "note_on": 59,
+            "last_tick": 29400
+          },
+          {
+            "names": [
+              "MIDI 02",
+              "Classic Rock Organ"
+            ],
+            "programs": [
+              [
+                1,
+                1
+              ]
+            ],
+            "note_on": 59,
+            "last_tick": 29400
+          },
+          {
+            "names": [
+              "MIDI 03",
+              "Classic Rock Organ"
+            ],
+            "programs": [
+              [
+                0,
+                1
+              ]
+            ],
+            "note_on": 31,
+            "last_tick": 29640
+          },
+          {
+            "names": [
+              "MIDI 04",
+              "Classic Rock Organ"
+            ],
+            "programs": [
+              [
+                0,
+                1
+              ]
+            ],
+            "note_on": 34,
+            "last_tick": 29880
+          },
+          {
+            "names": [
+              "MIDI 06",
+              "Acoustic Guitar"
+            ],
+            "programs": [
+              [
+                5,
+                24
+              ]
+            ],
+            "note_on": 128,
+            "last_tick": 31200
+          },
+          {
+            "names": [
+              "MIDI 07",
+              "Full Brass"
+            ],
+            "programs": [
+              [
+                6,
+                56
+              ]
+            ],
+            "note_on": 128,
+            "last_tick": 31140
+          },
+          {
+            "names": [
+              "MIDI 08",
+              "Realistic Vibraphones"
+            ],
+            "programs": [
+              [
+                7,
+                11
+              ]
+            ],
+            "note_on": 42,
+            "last_tick": 31080
+          },
+          {
+            "names": [
+              "MIDI 14",
+              "Delicate Bells"
+            ],
+            "programs": [
+              [
+                11,
+                8
+              ]
+            ],
+            "note_on": 72,
+            "last_tick": 30780
+          }
+        ],
+        "seconds_to_last_event": 32.625
+      }
+    },
+    {
+      "key": "Calendar 1",
+      "name": "Calendar 1",
+      "source": "nokia-ta1278-research/analysis/ui/audio/01524-sound-00150c20.mid",
+      "bytes": 419,
+      "sha256": "b9b9920c397ac4ab034f663d001b8a07a5a3d0ec7c8fa66b21f76d2846f88bab",
+      "midi": true,
+      "evidence": {
+        "confidence": "order-based inference",
+        "sound_resource_id": "0x40000010",
+        "offset": "0x150c20",
+        "name_pointer_table": "user.bin+0xc16550",
+        "note": "Names are verified UTF16 strings. Except named SMF titles, pairing to the sound index is inferred from the matching lists; native selector code is not fully traced."
+      },
+      "smf": {
+        "format": 1,
+        "division": 480,
+        "tracks": [
+          {
+            "names": [],
+            "programs": [],
+            "note_on": 0,
+            "last_tick": 0
+          },
+          {
+            "names": [
+              "MIDI Region",
+              "Flutes"
+            ],
+            "programs": [
+              [
+                0,
+                73
+              ]
+            ],
+            "note_on": 3,
+            "last_tick": 1052
+          },
+          {
+            "names": [
+              "MIDI Region",
+              "Realistic Vibraphones"
+            ],
+            "programs": [
+              [
+                1,
+                11
+              ]
+            ],
+            "note_on": 30,
+            "last_tick": 6488
+          }
+        ],
+        "seconds_to_last_event": 6.758333333333334
+      }
+    },
+    {
+      "key": "Message 1",
+      "name": "Message 1",
+      "source": "nokia-ta1278-research/analysis/ui/audio/01525-sound-00150dc4.mid",
+      "bytes": 228,
+      "sha256": "27ddce6313d544b59b1034e3eef61d3232cf17dac48ce6dee9aafd79f1caadb1",
+      "midi": true,
+      "evidence": {
+        "confidence": "order-based inference",
+        "sound_resource_id": "0x40000011",
+        "offset": "0x150dc4",
+        "name_pointer_table": "user.bin+0xc16550",
+        "note": "Names are verified UTF16 strings. Except named SMF titles, pairing to the sound index is inferred from the matching lists; native selector code is not fully traced."
+      },
+      "smf": {
+        "format": 1,
+        "division": 480,
+        "tracks": [
+          {
+            "names": [],
+            "programs": [],
+            "note_on": 0,
+            "last_tick": 0
+          },
+          {
+            "names": [
+              "MIDI Region",
+              "Flutes"
+            ],
+            "programs": [
+              [
+                0,
+                73
+              ]
+            ],
+            "note_on": 2,
+            "last_tick": 966
+          },
+          {
+            "names": [
+              "MIDI Region",
+              "Realistic Vibraphones"
+            ],
+            "programs": [
+              [
+                1,
+                11
+              ]
+            ],
+            "note_on": 3,
+            "last_tick": 1973
+          }
+        ],
+        "seconds_to_last_event": 2.0552083333333333
+      }
+    },
+    {
+      "key": "Calendar 2",
+      "name": "Calendar 2",
+      "source": "nokia-ta1278-research/analysis/ui/audio/01526-sound-00150ea8.mid",
+      "bytes": 382,
+      "sha256": "10b1baaae453141ee441d7125dd74ac144d3140fea07b2b9a46ff8c72fad9940",
+      "midi": true,
+      "evidence": {
+        "confidence": "order-based inference",
+        "sound_resource_id": "0x40000012",
+        "offset": "0x150ea8",
+        "name_pointer_table": "user.bin+0xc16550",
+        "note": "Names are verified UTF16 strings. Except named SMF titles, pairing to the sound index is inferred from the matching lists; native selector code is not fully traced."
+      },
+      "smf": {
+        "format": 1,
+        "division": 480,
+        "tracks": [
+          {
+            "names": [],
+            "programs": [],
+            "note_on": 0,
+            "last_tick": 0
+          },
+          {
+            "names": [
+              "Alarm 2_v3",
+              "Phasing Sweeper"
+            ],
+            "programs": [
+              [
+                7,
+                95
+              ]
+            ],
+            "note_on": 6,
+            "last_tick": 5520
+          },
+          {
+            "names": [
+              "Alarm 2_v3",
+              "Delicate Bells"
+            ],
+            "programs": [
+              [
+                13,
+                8
+              ]
+            ],
+            "note_on": 8,
+            "last_tick": 1785
+          },
+          {
+            "names": [
+              "Alarm 2_v3",
+              "Delicate Bells"
+            ],
+            "programs": [
+              [
+                14,
+                10
+              ]
+            ],
+            "note_on": 8,
+            "last_tick": 1785
+          }
+        ],
+        "seconds_to_last_event": 5.75
+      }
+    },
+    {
+      "key": "Message 2",
+      "name": "Message 2",
+      "source": "nokia-ta1278-research/analysis/ui/audio/01527-sound-00151028.mid",
+      "bytes": 481,
+      "sha256": "de45fcdac49c8cb84425e7f685948e04c03d6b9a7533748a2f7be12d7b2a01c6",
+      "midi": true,
+      "evidence": {
+        "confidence": "name-and-SMF-metadata",
+        "sound_resource_id": "0x40000013",
+        "offset": "0x151028",
+        "name_pointer_table": "user.bin+0xc16550",
+        "note": "Names are verified UTF16 strings. Except named SMF titles, pairing to the sound index is inferred from the matching lists; native selector code is not fully traced."
+      },
+      "smf": {
+        "format": 1,
+        "division": 480,
+        "tracks": [
+          {
+            "names": [],
+            "programs": [],
+            "note_on": 0,
+            "last_tick": 0
+          },
+          {
+            "names": [
+              "Message 2_v3",
+              "Flutes"
+            ],
+            "programs": [
+              [
+                0,
+                72
+              ]
+            ],
+            "note_on": 12,
+            "last_tick": 1140
+          },
+          {
+            "names": [
+              "Message 2_v3",
+              "Delicate Bells"
+            ],
+            "programs": [
+              [
+                7,
+                8
+              ]
+            ],
+            "note_on": 9,
+            "last_tick": 1950
+          },
+          {
+            "names": [
+              "Message 2_v3",
+              "Flutes"
+            ],
+            "programs": [
+              [
+                8,
+                72
+              ]
+            ],
+            "note_on": 12,
+            "last_tick": 1140
+          }
+        ],
+        "seconds_to_last_event": 2.03125
+      }
+    },
+    {
+      "key": "Message 3",
+      "name": "Message 3",
+      "source": "nokia-ta1278-research/analysis/ui/audio/01528-sound-0015120c.mid",
+      "bytes": 560,
+      "sha256": "d8de666a160606489b73e9db407f73397a8b7ee44242d4b4265f2e78ba29b71a",
+      "midi": true,
+      "evidence": {
+        "confidence": "order-based inference",
+        "sound_resource_id": "0x40000014",
+        "offset": "0x15120c",
+        "name_pointer_table": "user.bin+0xc16550",
+        "note": "Names are verified UTF16 strings. Except named SMF titles, pairing to the sound index is inferred from the matching lists; native selector code is not fully traced."
+      },
+      "smf": {
+        "format": 1,
+        "division": 480,
+        "tracks": [
+          {
+            "names": [],
+            "programs": [],
+            "note_on": 0,
+            "last_tick": 5760
+          },
+          {
+            "names": [
+              "Sequence",
+              "Delicate Bells"
+            ],
+            "programs": [
+              [
+                1,
+                9
+              ]
+            ],
+            "note_on": 33,
+            "last_tick": 6720
+          },
+          {
+            "names": [
+              "Sequence",
+              "Realistic Vibraphones"
+            ],
+            "programs": [
+              [
+                3,
+                11
+              ]
+            ],
+            "note_on": 10,
+            "last_tick": 5160
+          }
+        ],
+        "seconds_to_last_event": 5.887028866666666
+      }
+    },
+    {
+      "key": "key",
+      "name": "Key click",
+      "source": "nokia-ta1278-research/analysis/ui/audio/01532-sound-00154348.mp3",
+      "bytes": 2256,
+      "sha256": "929e84a59e606520047e1c432d0dea757f0b668a3e0d136becc55ffb814a506e",
+      "midi": false,
+      "evidence": {
+        "confidence": "original asset; local event binding",
+        "sound_resource_id": "0x40000018",
+        "offset": "0x154348",
+        "note": "14 adjacent MP3 sound entries 0x18..0x25 are byte-identical short clicks, not distinct DTMF samples. Key-event association remains local policy."
+      }
+    }
+  ],
+  "soundfont": {
+    "file": "assets/audio/gm1_A21.sf2",
+    "sha256": "9309119628275607526a94cf746f25a7ca5a6d688feeba9e7991b02008414ef0",
+    "offset": "user.bin+0x7aa358"
+  },
+  "rendering": "Original SMF events and original SF2 bank rendered by OxiSynth 0.1.0. The DSP, interpolation, effects, gain, polyphony and output timing are independent host implementation choices; identical handset waveforms are not established."
+}

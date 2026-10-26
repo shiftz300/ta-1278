@@ -25,6 +25,13 @@ pub trait Volume: Send + Sync {
     fn rename(&self, from: &str, to: &str) -> io::Result<()>;
     /// Directories must be empty. Never recursively erase a tree.
     fn remove(&self, path: &str) -> io::Result<()>;
+    /// Create a new regular file; must fail if the destination exists.
+    fn create(&self, _path: &str, _source: &mut dyn Read, _limit: u64) -> io::Result<()> {
+        Err(io::Error::new(
+            io::ErrorKind::Unsupported,
+            "File creation unavailable",
+        ))
+    }
 }
 struct Mount {
     label: String,
@@ -149,6 +156,77 @@ impl Vfs {
             return Err(invalid("Cross-volume moves are not supported"));
         }
         a.volume.rename(&src, &dst)
+    }
+    /// Bounded recursive copy. No overwrite; failed copies roll back new entries.
+    /// A move removes sources only after every destination file is complete.
+    pub fn transfer(&self, from: &str, to: &str, moving: bool) -> io::Result<()> {
+        let (source_mount, _) = self.resolve(from, moving)?;
+        let (target_mount, _) = self.resolve(to, true)?;
+        if components(from)?.len() < 2 || to == from || to.starts_with(&format!("{from}/")) {
+            return Err(invalid("Invalid transfer destination"));
+        }
+        if moving && std::ptr::eq(source_mount, target_mount) {
+            return self.rename(from, to);
+        }
+        let parent = from.rsplit_once('/').unwrap().0;
+        let root = self
+            .list(parent)?
+            .into_iter()
+            .find(|e| e.path == from)
+            .ok_or_else(|| invalid("Source unavailable"))?;
+        let mut nodes = vec![(root, to.to_owned(), 0)];
+        let mut cursor = 0;
+        let mut size = 0u64;
+        while cursor < nodes.len() {
+            let (entry, dest, depth) = nodes[cursor].clone();
+            if nodes.len() > 10000 || depth > 16 {
+                return Err(invalid("Transfer exceeds entry/depth limit"));
+            }
+            if entry.directory {
+                for child in self.list(&entry.path)? {
+                    let target = format!("{dest}/{}", child.name);
+                    nodes.push((child, target, depth + 1));
+                }
+            } else {
+                size = size.saturating_add(entry.len);
+                if size > 512 * 1024 * 1024 {
+                    return Err(invalid("Transfer exceeds 512 MiB"));
+                }
+            }
+            cursor += 1;
+        }
+        let mut created: Vec<String> = vec![];
+        for (entry, dest, _) in &nodes {
+            let result = if entry.directory {
+                self.mkdir(dest)
+            } else {
+                (|| {
+                    let (mount, relative) = self.resolve(dest, true)?;
+                    let mut source = self.open(&entry.path)?;
+                    mount
+                        .volume
+                        .create(&relative, &mut source.reader, entry.len)
+                })()
+            };
+            if let Err(e) = result {
+                for path in created.iter().rev() {
+                    let _ = self.remove(path);
+                }
+                return Err(e);
+            }
+            created.push(dest.clone());
+        }
+        if moving {
+            for (entry, _, _) in nodes.iter().rev() {
+                self.remove(&entry.path).map_err(|e| {
+                    io::Error::new(
+                        e.kind(),
+                        format!("Copy completed, source cleanup incomplete: {e}"),
+                    )
+                })?;
+            }
+        }
+        Ok(())
     }
 }
 #[cfg(test)]

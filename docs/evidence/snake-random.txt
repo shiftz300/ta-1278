@@ -1,0 +1,51 @@
+
+<user.bin ELF wrapper>:	file format elf32-littlearm
+
+Disassembly of section .text:
+
+88000000 <.text>:
+886902ce: f04f 080c    	mov.w	r8, #0xc
+886902d2: f04f 090e    	mov.w	r9, #0xe
+886902d6: 8131         	strh	r1, [r6, #0x8]
+886902d8: f8a6 a00a    	strh.w	r10, [r6, #0xa]
+886902dc: f670 e3b6    	blx	0x88100a4c <.text+0x100a4c> @ imm = #-0x58f894
+886902e0: fb90 f2f8    	sdiv	r2, r0, r8
+886902e4: fb08 0012    	mls	r0, r8, r2, r0
+886902e8: 8020         	strh	r0, [r4]
+886902ea: f670 e3b0    	blx	0x88100a4c <.text+0x100a4c> @ imm = #-0x58f8a0
+886902ee: fb90 f2f9    	sdiv	r2, r0, r9
+886902f2: fb09 0012    	mls	r0, r9, r2, r0
+886902f6: 1c80         	adds	r0, r0, #0x2
+886902f8: b200         	sxth	r0, r0
+886902fa: 8060         	strh	r0, [r4, #0x2]
+
+<user.bin ELF wrapper>:	file format elf32-littlearm
+
+Disassembly of section .text:
+
+88000000 <.text>:
+88100a4c: e51ff004     	ldr	pc, [pc, #-0x4]         @ 0x88100a50 <.text+0x100a50>
+88100a50: 8165ab59     	qdsubhi	r10, r9, r5
+
+<kernel.bin ELF wrapper>:	file format elf32-littlearm
+
+Disassembly of section .text:
+
+80e65e00 <.text>:
+8165ab58: 490b         	ldr	r1, [pc, #0x2c]         @ 0x8165ab88 <.text+0x7f4d88>
+8165ab5a: f8d1 c000    	ldr.w	r12, [r1]
+8165ab5e: 684a         	ldr	r2, [r1, #0x4]
+8165ab60: f85c 3b04    	ldr	r3, [r12], #4
+8165ab64: 6810         	ldr	r0, [r2]
+8165ab66: 4418         	add	r0, r3
+8165ab68: f842 0b04    	str	r0, [r2], #4
+8165ab6c: 458c         	cmp	r12, r1
+8165ab6e: bf28         	it	hs
+8165ab70: f1a1 0cdc    	subhs.w	r12, r1, #0xdc
+8165ab74: 428a         	cmp	r2, r1
+8165ab76: bf28         	it	hs
+8165ab78: f1a1 02dc    	subhs.w	r2, r1, #0xdc
+8165ab7c: f8c1 c000    	str.w	r12, [r1]
+8165ab80: 604a         	str	r2, [r1, #0x4]
+8165ab82: f020 4000    	bic	r0, r0, #0x80000000
+8165ab86: 4770         	bx	lr

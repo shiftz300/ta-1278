@@ -17,8 +17,12 @@ pub enum FileRequest {
     Rename(String, String),
     Remove(String),
     Play(String),
+    Transfer(String, String, bool),
 }
 pub struct Files {
+    pub return_to: Option<(Screen, usize)>,
+    pub clipboard: Option<(String, bool)>,
+    pub busy: bool,
     pub path: String,
     pub entries: Vec<Entry>,
     pub view: FileView,
@@ -30,6 +34,9 @@ pub struct Files {
 impl Default for Files {
     fn default() -> Self {
         Self {
+            return_to: None,
+            clipboard: None,
+            busy: false,
             path: "/".into(),
             entries: vec![],
             view: FileView::Browse,
@@ -41,11 +48,34 @@ impl Default for Files {
     }
 }
 impl Phone {
+    pub fn file_action_enabled(&self, index: usize) -> bool {
+        let selected = self.files.entries.get(self.files.selected).is_some();
+        let writable = self.files.writable && self.files.path != "/";
+        match index {
+            0 | 1 => selected,
+            2 | 3 | 7 => selected && writable,
+            4 => writable,
+            5 => true,
+            6 => selected && self.files.path != "/",
+            8 => self.files.clipboard.is_some() && writable,
+            _ => false,
+        }
+    }
     pub fn file_labels(&self) -> Vec<String> {
         match self.files.view {
-            FileView::Options => ["打开", "详情", "重命名", "删除", "新建文件夹", "刷新"]
-                .map(str::to_owned)
-                .to_vec(),
+            FileView::Options => [
+                "打开",
+                "详情",
+                "重命名",
+                "删除",
+                "新建文件夹",
+                "刷新",
+                "复制",
+                "移动",
+                "粘贴",
+            ]
+            .map(str::to_owned)
+            .to_vec(),
             _ => self
                 .files
                 .entries
@@ -61,7 +91,7 @@ impl Phone {
         }
     }
     pub(super) fn files_key(&mut self, key: Key) {
-        if self.files.pending.is_some() {
+        if self.files.pending.is_some() || self.files.busy {
             return;
         }
         if self.files.view == FileView::Delete {
@@ -99,7 +129,12 @@ impl Phone {
                 } else if !self.files.history.is_empty() {
                     self.files.pending = Some(FileRequest::Parent);
                 } else {
-                    self.leave_app();
+                    if let Some((screen, index)) = self.files.return_to.take() {
+                        self.go(screen);
+                        self.index = index;
+                    } else {
+                        self.leave_app();
+                    }
                 }
             }
             Key::SoftLeft if self.files.view == FileView::Browse => {
@@ -110,6 +145,9 @@ impl Phone {
             Key::Center | Key::SoftLeft => {
                 if self.files.view == FileView::Options {
                     let action = self.index;
+                    if !self.file_action_enabled(action) {
+                        return;
+                    }
                     self.index = self.files.selected;
                     self.files.view = FileView::Browse;
                     match action {
@@ -132,6 +170,21 @@ impl Phone {
                         }
                         4 => self.open_local_text(TextTarget::FileName(true), String::new(), false),
                         5 => self.files.pending = Some(FileRequest::List(self.files.path.clone())),
+                        6 | 7 => {
+                            if let Some(e) = self.files.entries.get(self.index) {
+                                self.files.clipboard = Some((e.path.clone(), action == 7));
+                            }
+                        }
+                        8 => {
+                            if let Some((from, moving)) = self.files.clipboard.clone() {
+                                let name = from.rsplit('/').next().unwrap_or("");
+                                self.files.pending = Some(FileRequest::Transfer(
+                                    from.clone(),
+                                    format!("{}/{name}", self.files.path),
+                                    moving,
+                                ));
+                            }
+                        }
                         _ => {}
                     }
                 } else {

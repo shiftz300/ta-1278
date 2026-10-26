@@ -8,6 +8,8 @@ pub struct ContactUi {
     pub return_index: usize,
     pub root_index: usize,
     pub date_digit: usize,
+    pub group_filter: Option<String>,
+    pub selected_group: Option<usize>,
 }
 impl Default for ContactUi {
     fn default() -> Self {
@@ -18,6 +20,8 @@ impl Default for ContactUi {
             return_index: 0,
             root_index: 0,
             date_digit: 0,
+            group_filter: None,
+            selected_group: None,
         }
     }
 }
@@ -31,6 +35,11 @@ pub fn is_contact(page: Page) -> bool {
             | Page::ContactDetail
             | Page::ContactMenu
             | Page::DeleteContact
+            | Page::ContactGroups
+            | Page::ContactGroupChoice
+            | Page::ContactRingtone
+            | Page::ContactGroupMenu
+            | Page::ContactGroupDelete
     )
 }
 pub const ROOT_MENU: [&str; 6] = [
@@ -55,11 +64,17 @@ impl Phone {
             .iter()
             .enumerate()
             .filter(|(_, c)| {
-                query.is_empty()
-                    || c.iter()
-                        .skip(1)
-                        .take(5)
-                        .any(|s| s.to_lowercase().contains(&query))
+                (self
+                    .organizer
+                    .contact
+                    .group_filter
+                    .as_ref()
+                    .is_none_or(|g| c.get(8) == Some(g)))
+                    && (query.is_empty()
+                        || c.iter()
+                            .skip(1)
+                            .take(5)
+                            .any(|s| s.to_lowercase().contains(&query)))
             })
             .map(|(i, _)| i)
             .collect()
@@ -77,7 +92,7 @@ impl Phone {
     }
     pub fn contact_menu_enabled(&self, index: usize) -> bool {
         match self.organizer.page {
-            Page::ContactsMenu => index == 1 || (index == 2 && !self.contact_ids().is_empty()),
+            Page::ContactsMenu => index <= 1 || (index == 2 && !self.contact_ids().is_empty()),
             Page::ContactMenu => index < 2,
             _ => true,
         }
@@ -99,7 +114,7 @@ impl Phone {
         self.organizer.contact.input = input;
     }
     fn contact_sync(&mut self) -> bool {
-        if self.organizer.contact.field == 6 {
+        if !(1..=5).contains(&self.organizer.contact.field) {
             return true;
         }
         if !self.organizer.contact.input.accept_prediction() {
@@ -175,6 +190,9 @@ impl Phone {
         if !is_contact(page) {
             return false;
         }
+        if self.contact_groups_key(key) {
+            return true;
+        }
         if page == Page::ContactForm && self.index == 6 {
             match key {
                 Key::Left => {
@@ -209,6 +227,28 @@ impl Phone {
         }
         match page {
             Page::ContactForm => match key {
+                Key::Delete if matches!(self.index, 0 | 7 | 8) => {
+                    self.organizer.draft[self.index] = match self.index {
+                        0 => String::new(),
+                        _ => "无".into(),
+                    }
+                }
+                Key::Center if matches!(self.index, 0 | 7 | 8) => {
+                    if !self.contact_sync() {
+                        return true;
+                    }
+                    match self.index {
+                        0 => self.open_media(media_browser::Purpose::ContactPicture),
+                        7 => {
+                            self.organizer.page = Page::ContactRingtone;
+                            self.index = 0;
+                        }
+                        _ => {
+                            self.organizer.page = Page::ContactGroupChoice;
+                            self.index = 0;
+                        }
+                    }
+                }
                 Key::Up | Key::Down => {
                     if self.contact_sync() {
                         let next = if key == Key::Up {
@@ -275,6 +315,9 @@ impl Phone {
                         if self.organizer.pick_recipient {
                             self.organizer.pick_recipient = false;
                             self.go(Screen::Compose);
+                        } else if self.organizer.contact.group_filter.take().is_some() {
+                            self.organizer.page = Page::ContactGroups;
+                            self.index = 0;
                         } else {
                             self.leave_app();
                         }
@@ -300,7 +343,10 @@ impl Phone {
                         self.index = self.organizer.contact.return_index;
                     }
                     Key::Center if self.contact_menu_enabled(self.index) => {
-                        if page == Page::ContactsMenu && self.index == 1 {
+                        if page == Page::ContactsMenu && self.index == 0 {
+                            self.organizer.page = Page::ContactGroups;
+                            self.index = 0;
+                        } else if page == Page::ContactsMenu && self.index == 1 {
                             self.organizer_form(Page::ContactForm, None);
                         } else if page == Page::ContactMenu && self.index == 0 {
                             self.organizer_form(Page::ContactForm, Some(self.organizer.selected));

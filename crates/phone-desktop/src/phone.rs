@@ -1,17 +1,19 @@
 pub mod alarm;
 mod browser;
 pub mod browser_data;
+mod contact_groups;
 pub mod contacts;
 pub mod conversation;
 pub mod files;
 pub mod mail;
+pub mod media_browser;
 mod music;
 pub mod organizer;
 mod overlays;
 mod sms;
 pub mod snake;
 pub mod tools;
-pub use music::MusicView;
+pub use music::{MusicView, Playlist};
 pub mod settings;
 use crate::web;
 pub use browser::BrowserView;
@@ -36,6 +38,7 @@ pub enum Screen {
     Compose,
     Browser,
     Music,
+    Media,
     Snake,
     Contacts,
     Settings,
@@ -67,6 +70,10 @@ pub enum TextTarget {
     Organizer(usize),
     BrowserHome,
     FileName(bool),
+    Setting(usize),
+    ContactGroup,
+    ContactGroupRename,
+    PlaylistName,
 }
 #[derive(Clone, Debug)]
 pub enum Overlay {
@@ -112,6 +119,14 @@ impl Default for Compose {
     }
 }
 pub struct Phone {
+    pub music_paths: Vec<String>,
+    music_lookup: std::collections::HashMap<String, usize>,
+    pub playlist: usize,
+    pub playlist_row: usize,
+    pub cues: Vec<crate::effects::Cue>,
+    pub audio_preview: Option<String>,
+    pub media_ui: media_browser::MediaBrowser,
+    pub pictures: std::collections::HashMap<String, image::RgbaImage>,
     pub features: crate::config::Features,
     pub files: files::Files,
     pub music_refresh: bool,
@@ -161,6 +176,14 @@ pub struct Phone {
 impl Phone {
     pub fn new(mailbox: Mailbox) -> Self {
         Self {
+            music_paths: vec![],
+            music_lookup: Default::default(),
+            playlist: 0,
+            playlist_row: 0,
+            cues: vec![],
+            audio_preview: None,
+            media_ui: Default::default(),
+            pictures: Default::default(),
             features: Default::default(),
             files: Default::default(),
             music_refresh: false,
@@ -222,6 +245,10 @@ impl Phone {
         }
         if (s == Screen::Music && !self.features.music)
             || (s == Screen::Tools(tools::ToolPage::Files) && !self.features.files)
+            || (s == Screen::Tools(tools::ToolPage::Gallery)
+                && (!self.features.files || !self.features.pictures))
+            || (s == Screen::Tools(tools::ToolPage::Video)
+                && (!self.features.files || !self.features.video))
         {
             self.notice("此功能已停用。");
             return;
@@ -276,6 +303,14 @@ impl Phone {
             self.settings_page = SettingsPage::Root;
         }
         self.go(screen);
+        if let Screen::Tools(page @ (tools::ToolPage::Gallery | tools::ToolPage::Video)) = screen {
+            self.open_media(if page == tools::ToolPage::Video {
+                media_browser::Purpose::Videos
+            } else {
+                media_browser::Purpose::Pictures
+            });
+            self.media_ui.origin = self.app_origin;
+        }
         if screen == Screen::Tools(tools::ToolPage::Files) && self.features.files {
             self.files = Default::default();
             self.files.pending = Some(files::FileRequest::List("/".into()));
@@ -292,6 +327,7 @@ impl Phone {
     pub fn apply_preferences(&mut self, preferences: Preferences) {
         self.accent = preferences.accent;
         self.preferences = preferences;
+        self.organizer.date = self.local_clock().0;
     }
     pub fn notice(&mut self, s: impl Into<String>) {
         self.notice_scroll = 0;
@@ -504,16 +540,18 @@ impl Phone {
             .last_tick
             .replace(now)
             .map_or(0, |last| now.saturating_sub(last));
-        let wall = std::time::SystemTime::now()
-            .duration_since(std::time::UNIX_EPOCH)
-            .unwrap_or_default()
-            .as_secs();
-        self.check_alarms(
-            phone_core::calendar::Date::from_unix(wall, 8 * 3600),
-            ((wall + 8 * 3600) / 60) % 1440,
-        );
+        let (date, minute) = self.local_clock();
+        self.check_alarms(date, minute);
+        self.check_events(date, minute);
+        let segments = self.snake.body.len();
         self.snake.tick(elapsed);
+        if self.snake_data.sound && self.snake.body.len() > segments {
+            self.cues.push(crate::effects::Cue::Food);
+        }
         if self.snake.over && self.snake_view == snake::SnakeView::Game {
+            if self.snake_data.sound {
+                self.cues.push(crate::effects::Cue::Over);
+            }
             self.snake_data.record(self.snake.kind, self.snake.score);
             self.snake_dirty = true;
             self.snake_view = snake::SnakeView::GameOver;
@@ -525,6 +563,7 @@ impl Phone {
             self.tools.record_ms = self.tools.record_ms.saturating_add(elapsed);
         }
         if self.tools.timer.expired {
+            self.cues.push(crate::effects::Cue::Alert);
             self.tools.timer.expired = false;
             self.notice(format!("{}\n时间到", self.tools.timer_name));
         }
@@ -579,6 +618,9 @@ impl Phone {
         if !matches!(phase, Phase::Down | Phase::Repeat) {
             return;
         }
+        if phase == Phase::Down && self.preferences.keypad_sound && self.cues.len() < 8 {
+            self.cues.push(crate::effects::Cue::Key);
+        }
         if phase == Phase::Repeat
             && !matches!(
                 key,
@@ -586,6 +628,9 @@ impl Phone {
             )
         {
             return;
+        }
+        if matches!(key, Key::SoftRight | Key::End) {
+            self.audio_preview = Some("无".into());
         }
         if self.prediction_key(key) {
             return;
@@ -703,6 +748,7 @@ impl Phone {
             },
             Screen::Browser => self.browser_key(key),
             Screen::Music => self.music_key(key),
+            Screen::Media => self.media_key(key),
             Screen::Snake => self.snake_key(key),
             Screen::Contacts | Screen::Organizer(_) => self.organizer_key(key),
             Screen::Settings => self.settings_key(key),

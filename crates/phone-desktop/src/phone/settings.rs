@@ -29,6 +29,16 @@ pub struct Preferences {
     pub accent: usize,
     pub left_shortcut: usize,
     pub right_shortcut: usize,
+    pub greeting: String,
+    pub wallpaper: Option<String>,
+    pub ringtone: String,
+    pub volume: u8,
+    pub silent: bool,
+    pub keypad_sound: bool,
+    pub timezone: i32,
+    pub clock_12h: bool,
+    pub clock_adjustment: i64,
+    pub mobile_data: bool,
 }
 impl Default for Preferences {
     fn default() -> Self {
@@ -37,6 +47,16 @@ impl Default for Preferences {
             accent: crate::theme::Theme::load().startup_fallback_accent,
             left_shortcut: 12,
             right_shortcut: 3,
+            greeting: String::new(),
+            wallpaper: None,
+            ringtone: "预设".into(),
+            volume: 6,
+            silent: false,
+            keypad_sound: false,
+            timezone: 8,
+            clock_12h: false,
+            clock_adjustment: 0,
+            mobile_data: true,
         }
     }
 }
@@ -45,6 +65,14 @@ impl Preferences {
         if self.accent >= 6
             || self.left_shortcut >= SHORTCUTS.len()
             || self.right_shortcut >= SHORTCUTS.len()
+            || self.volume > 10
+            || !(-12..=14).contains(&self.timezone)
+            || self.greeting.chars().count() > 128
+            || self.clock_adjustment.unsigned_abs() > 100 * 366 * 86400
+            || self
+                .wallpaper
+                .as_ref()
+                .is_some_and(|p| !p.starts_with('/') || p.len() > 4096)
         {
             Err("Invalid saved preferences; original file retained".into())
         } else {
@@ -63,6 +91,14 @@ pub enum SettingsPage {
         left: bool,
     },
     Theme,
+    System,
+    Connections,
+    Time,
+    Security,
+    Sounds,
+    Wallpaper,
+    Ringtone,
+    Reset,
 }
 impl Phone {
     pub fn settings_title(&self) -> &'static str {
@@ -74,9 +110,20 @@ impl Phone {
             SettingsPage::Shortcut { left: true } => "左键",
             SettingsPage::Shortcut { left: false } => "右键",
             SettingsPage::Theme => "主题",
+            SettingsPage::System => "系统",
+            SettingsPage::Connections => "连接功能",
+            SettingsPage::Time => "时间和语言",
+            SettingsPage::Security => "安全选项",
+            SettingsPage::Sounds => "声音",
+            SettingsPage::Wallpaper => "锁定屏幕背景",
+            SettingsPage::Ringtone => "铃声",
+            SettingsPage::Reset => "恢复设置",
         }
     }
     pub fn settings_labels(&self) -> Vec<String> {
+        if self.settings_page == SettingsPage::Ringtone {
+            return crate::native_audio::tone_labels("预设");
+        }
         match self.settings_page {
             SettingsPage::Root => vec![
                 "系统",
@@ -91,6 +138,14 @@ impl Phone {
             SettingsPage::Shortcuts => vec!["右键", "左键"],
             SettingsPage::Shortcut { .. } => SHORTCUTS.to_vec(),
             SettingsPage::Theme => vec![],
+            SettingsPage::System => vec!["关于", "存储", "恢复设置"],
+            SettingsPage::Connections => vec!["移动数据", "蓝牙", "USB"],
+            SettingsPage::Time => vec!["时间", "日期", "时区", "时间格式"],
+            SettingsPage::Security => vec!["SIM 卡 PIN 码", "手机锁"],
+            SettingsPage::Sounds => vec!["静音", "铃声音量", "铃声", "按键音"],
+            SettingsPage::Wallpaper => vec!["无", "从文件选择"],
+            SettingsPage::Ringtone => vec!["预设", "无", "从文件选择"],
+            SettingsPage::Reset => vec!["取消", "恢复设置"],
         }
         .into_iter()
         .map(str::to_owned)
@@ -128,8 +183,101 @@ impl Phone {
                 Shortcuts => self.settings_open(Keyboard, 1),
                 Shortcut { left } => self.settings_open(Shortcuts, usize::from(left)),
                 Theme => unreachable!(),
+                System | Connections | Time | Security => self.settings_open(
+                    Root,
+                    match self.settings_page {
+                        System => 0,
+                        Connections => 1,
+                        Time => 3,
+                        _ => 4,
+                    },
+                ),
+                Sounds => self.settings_open(Personalization, 1),
+                Wallpaper => self.settings_open(Personalization, 2),
+                Ringtone => self.settings_open(Sounds, 2),
+                Reset => self.settings_open(System, 2),
             },
             Key::Center | Key::SoftLeft => match (self.settings_page, self.index) {
+                _ if !self.setting_enabled(self.index) => {}
+                (Root, 0) => self.settings_open(System, 0),
+                (Root, 1) => self.settings_open(Connections, 0),
+                (Root, 3) => self.settings_open(Time, 0),
+                (Root, 4) => self.settings_open(Security, 0),
+                (System, 0) => self.notice(
+                    "TA-1278 Replica\n本地交互系统\n参考固件 17.00.17.02\n无电话及短信网络服务。",
+                ),
+                (System, 1) => {
+                    self.launch(Screen::Tools(tools::ToolPage::Files));
+                    self.files.return_to = Some((Screen::Settings, 1));
+                }
+                (System, 2) => self.settings_open(Reset, 0),
+                (Reset, 0) => self.settings_open(System, 2),
+                (Reset, 1) => {
+                    self.apply_preferences(Preferences::default());
+                    self.preferences_dirty = true;
+                    self.settings_open(Root, 0);
+                }
+                (Connections, 0) => {
+                    self.preferences.mobile_data = !self.preferences.mobile_data;
+                    self.preferences_dirty = true;
+                }
+                (Connections, 2) => self.notice("存储由 VFS 提供。USB 设备模式不可用。"),
+                (Personalization, 0) => self.open_local_text(
+                    TextTarget::Setting(0),
+                    self.preferences.greeting.clone(),
+                    false,
+                ),
+                (Personalization, 1) => self.settings_open(Sounds, 0),
+                (Personalization, 2) => self.settings_open(Wallpaper, 0),
+                (Sounds, 0) => {
+                    self.preferences.silent = !self.preferences.silent;
+                    self.preferences_dirty = true;
+                }
+                (Sounds, 1) => self.open_local_text(
+                    TextTarget::Setting(1),
+                    self.preferences.volume.to_string(),
+                    true,
+                ),
+                (Sounds, 2) => self.settings_open(Ringtone, 0),
+                (Sounds, 3) => {
+                    self.preferences.keypad_sound = !self.preferences.keypad_sound;
+                    self.preferences_dirty = true;
+                }
+                (Wallpaper, 0) => {
+                    self.preferences.wallpaper = None;
+                    self.preferences_dirty = true;
+                    self.settings_open(Personalization, 2);
+                }
+                (Wallpaper, 1) => self.open_media(media_browser::Purpose::Wallpaper),
+                (Ringtone, i) if i == crate::native_audio::file_index() => {
+                    self.open_media(media_browser::Purpose::Ringtone)
+                }
+                (Ringtone, i) => {
+                    self.preferences.ringtone = self.settings_labels()[i].clone();
+                    self.audio_preview = Some(self.preferences.ringtone.clone());
+                    self.preferences_dirty = true;
+                }
+                (Time, 0) => {
+                    let (_, minutes) = self.local_clock();
+                    self.open_local_text(
+                        TextTarget::Setting(3),
+                        format!("{:02}:{:02}", minutes / 60, minutes % 60),
+                        false,
+                    );
+                }
+                (Time, 1) => {
+                    let (date, _) = self.local_clock();
+                    self.open_local_text(TextTarget::Setting(4), date.iso(), false);
+                }
+                (Time, 2) => self.open_local_text(
+                    TextTarget::Setting(2),
+                    self.preferences.timezone.to_string(),
+                    false,
+                ),
+                (Time, 3) => {
+                    self.preferences.clock_12h = !self.preferences.clock_12h;
+                    self.preferences_dirty = true;
+                }
                 (Root, 2) => self.settings_open(Personalization, 0),
                 (Personalization, 3) => {
                     self.theme_preview = self.accent;
@@ -159,9 +307,108 @@ impl Phone {
                     self.preferences_dirty = true;
                     self.settings_open(Shortcuts, usize::from(left));
                 }
-                _ => self.notice("此设置尚未实现。"),
+                _ => {}
             },
             _ => {}
+        }
+    }
+    pub fn setting_enabled(&self, index: usize) -> bool {
+        !matches!(
+            (self.settings_page, index),
+            (SettingsPage::Root, 5)
+                | (SettingsPage::Connections, 1)
+                | (SettingsPage::Security, _)
+                | (SettingsPage::Keyboard, 0)
+                | (SettingsPage::Shortcut { .. }, 2 | 17)
+        )
+    }
+    pub fn local_clock(&self) -> (phone_core::calendar::Date, u64) {
+        let wall = std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .unwrap_or_default()
+            .as_secs() as i64;
+        let seconds =
+            (wall + self.preferences.clock_adjustment + self.preferences.timezone as i64 * 3600)
+                .max(0) as u64;
+        (
+            phone_core::calendar::Date::from_unix(seconds, 0),
+            seconds / 60 % 1440,
+        )
+    }
+    pub(super) fn setting_text(&mut self, i: usize, value: String) {
+        use phone_core::calendar::Date;
+        let valid = match i {
+            0 => {
+                self.preferences.greeting = value.chars().take(128).collect();
+                true
+            }
+            1 => value
+                .parse::<u8>()
+                .ok()
+                .filter(|n| *n <= 10)
+                .map(|n| self.preferences.volume = n)
+                .is_some(),
+            2 => value
+                .parse::<i32>()
+                .ok()
+                .filter(|n| (-12..=14).contains(n))
+                .map(|n| self.preferences.timezone = n)
+                .is_some(),
+            3 => {
+                let parts: Vec<_> = value.split(':').collect();
+                if let [a, b] = parts.as_slice() {
+                    if let (Ok(h), Ok(m)) = (a.parse::<u64>(), b.parse::<u64>()) {
+                        if h < 24 && m < 60 {
+                            let (_, current) = self.local_clock();
+                            self.preferences.clock_adjustment +=
+                                (h * 60 + m) as i64 * 60 - current as i64 * 60;
+                            true
+                        } else {
+                            false
+                        }
+                    } else {
+                        false
+                    }
+                } else {
+                    false
+                }
+            }
+            4 => {
+                if let Some(date) = Date::parse(&value).filter(|d| (1970..=2099).contains(&d.year))
+                {
+                    let current = self.local_clock().0;
+                    fn days(d: Date) -> i64 {
+                        let mut total = 0;
+                        for y in 1970..d.year {
+                            total += if y % 4 == 0 && (y % 100 != 0 || y % 400 == 0) {
+                                366
+                            } else {
+                                365
+                            };
+                        }
+                        for m in 1..d.month {
+                            total += Date::new(d.year, m, 1).unwrap().month_days() as i64;
+                        }
+                        total + d.day as i64 - 1
+                    }
+                    self.preferences.clock_adjustment += (days(date) - days(current)) * 86400;
+                    self.organizer.date = date;
+                    true
+                } else {
+                    false
+                }
+            }
+            _ => false,
+        };
+        if valid {
+            self.preferences_dirty = true;
+        } else {
+            self.notice(match i {
+                1 => "音量范围 0–10。",
+                2 => "时区范围 -12–14。",
+                3 => "时间格式 HH:MM。",
+                _ => "日期格式 YYYY-MM-DD，范围 1970–2099。",
+            });
         }
     }
     pub(super) fn shortcut(&mut self, left: bool) {

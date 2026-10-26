@@ -54,9 +54,9 @@ result['code_evidence']['turns']='0x88099b88..0x88099bea rejects either directio
 result['code_evidence']['timer']='0x88690a6e..0x88690a82 indexes signed halfwords directly by level (1..8) and passes interval to timer helper.'
 result['code_evidence']['bonus']='0x886907a2..0x886907e8: positive score multiple of six spawns bonus; countdown *3 on collection without growth. 0x8869087e..0x886908fe counts rendered ticks modulo floor(1000/interval), clears one interval after reaching zero.'
 result['code_evidence']['game_over']='0x88690a36..0x88690aec: states 2/3 redraw board then draw (30,70,180,50), fill 0x0127, text 0xf800 at font20. Literal 0x690cd8 is 0x401c002c (游戏结束). State4 draws 暂停 via 0x40000b25.'
-result['limits']=['PRNG sequence is a local replacement; no claim of native food sequence.',
+result['limits']=['RNG update and two-draw coordinate mapping are kernel-verified; seed/pointer initialization is local. See snake-random.json; no native sequence claim.',
  'Timer table and call arguments are verified; wall-clock scheduler timing is not measured.',
- 'Sound output, transient death/win effects and complete frame parity still require work; static game-over overlay verified.',
+ 'Synthesized host sound is implemented; original waveforms, transient death/win effects and complete frame parity are not recovered. Static game-over overlay verified.',
  'Seventh map is compiled but not exposed by the six-item native picker; not enabled in replica.']
 result['reviewed_code_ranges']=[]
 for lo,hi in [(0x690034,0x6900ec),(0x690166,0x6902a6),(0x6902ce,0x6902fc),(0x69044c,0x6904e2),(0x69062c,0x6908fe),(0x690988,0x6909ee),(0x690a36,0x690aec),(0x690bbc,0x690cfa),(0x99b88,0x99bec),(0x99e04,0x99f92)]:

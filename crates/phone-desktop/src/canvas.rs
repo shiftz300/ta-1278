@@ -284,6 +284,21 @@ impl Canvas {
             Self::blend_into(&mut self.pixels, x + dx as i32, y + dy as i32, pixel.0, 255);
         }
     }
+    /// Clipped nearest-neighbour blit without allocating a scaled image.
+    pub fn image_rect(&mut self, image: &image::RgbaImage, dest: [i32; 4], clip: [i32; 4]) {
+        let [x, y, w, h] = dest;
+        let [cx, cy, cw, ch] = clip;
+        if w <= 0 || h <= 0 || image.width() == 0 || image.height() == 0 {
+            return;
+        }
+        for py in y.max(cy).max(0)..(y + h).min(cy + ch).min(H as i32) {
+            let sy = ((py - y) as u64 * image.height() as u64 / h as u64) as u32;
+            for px in x.max(cx).max(0)..(x + w).min(cx + cw).min(W as i32) {
+                let sx = ((px - x) as u64 * image.width() as u64 / w as u64) as u32;
+                Self::blend_into(&mut self.pixels, px, py, image.get_pixel(sx, sy).0, 255);
+            }
+        }
+    }
     pub fn icon(&mut self, index: usize, x: i32, y: i32, size: u32) {
         if size == 0 {
             return;

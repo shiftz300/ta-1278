@@ -52,6 +52,40 @@ fn scan_decode_corrupt_and_stream_seek() {
     fs::remove_dir_all(dir).unwrap();
 }
 #[test]
+fn background_move_updates_links_without_moving_another_apps_focus() {
+    let (vfs, dir) = fixture("move-links", false);
+    let mut p = Phone::new(Default::default());
+    p.features.music = false;
+    p.preferences.ringtone = "/card/Music/tone.wav".into();
+    p.local_data.playlists.push(crate::phone::Playlist {
+        name: "test".into(),
+        paths: vec!["/card/Music/tone.wav".into()],
+    });
+    let mut media = Media::new(vfs, &dir, &mut p).unwrap();
+    media
+        .file_request(
+            &mut p,
+            FileRequest::Transfer("/card/Music".into(), "/card/Songs".into(), true),
+        )
+        .unwrap();
+    p.go(Screen::Menu);
+    p.index = 7;
+    let deadline = Instant::now() + Duration::from_secs(5);
+    while p.files.busy && Instant::now() < deadline {
+        media.tick(&mut p);
+        thread::sleep(Duration::from_millis(5));
+    }
+    assert!(!p.files.busy);
+    assert_eq!(p.index, 7);
+    assert_eq!(p.screen, Screen::Menu);
+    assert_eq!(p.preferences.ringtone, "/card/Songs/tone.wav");
+    assert_eq!(p.local_data.playlists[0].paths, ["/card/Songs/tone.wav"]);
+    assert!(p.local_dirty && p.preferences_dirty);
+    assert!(!dir.join("card/Music").exists());
+    assert!(dir.join("card/Songs/tone.wav").exists());
+    fs::remove_dir_all(dir).unwrap();
+}
+#[test]
 fn file_actions_and_flags_reach_service_boundary() {
     let (vfs, dir) = fixture("files", true);
     let mut phone = Phone::new(Default::default());
@@ -92,6 +126,7 @@ fn saved_track_uses_virtual_path_and_restarts_paused() {
         volume: Some(3),
         repeat: 2,
         shuffle: true,
+        ..Default::default()
     };
     storage::save_json(&dir, "music.json", &saved, 65536).unwrap();
     let mut phone = Phone::new(Default::default());

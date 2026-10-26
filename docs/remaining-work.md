@@ -16,11 +16,15 @@ The **1–2 day target** guides prioritization, not a guaranteed duration. The e
 | Existing utilities | Keep calculator, stopwatch, timer and Snake usable; fix broken actions and visible layout issues. Their existence does not require exhaustive hardware-service reconstruction. |
 | Verification | Exercise each supported path, restart persistence, cancel/delete and long text. Use existing handset/code evidence first; perform new reverse engineering only to resolve a relevant discrepancy. |
 
+## Later local completion pass
+
+The owner subsequently asked to finish the deferred local flows. Contacts pictures/groups/ringtones, playlists, image/video browsing, copy/move, common settings and calendar reminders are now implemented and checked. Exact native behavior is claimed only where code or captures support it. [Implemented flows and hard limits](local-completion.md).
+
 ## Outside current acceptance
 
-Real call/SMS services, exact T9 internals, complex web compatibility, Alipay and Ximalaya remain excluded. Full advanced settings, file/gallery/video workflows and exhaustive native error/interrupt branches are not prerequisites. Unsupported entries must not pretend to work.
+Real call/SMS services, exact T9 internals, complex web compatibility, Alipay and Ximalaya remain excluded. Full native advanced settings and exhaustive native error/interrupt branches remain outside this implementation. File/gallery/video now have working local workflows, with the codec and fidelity limits stated above. Unsupported entries must not pretend to work.
 
-Music must support actual local audio playback. The owner's later decision replaces the import-copy proposal: use an in-process VFS, mounting storage volumes without an import UI. Directory volumes, runtime capability flags, MP3/WAV output and basic file operations are implemented. Disk-image/FAT backends, full native file-manager fidelity and playlist editing remain outside the current implementation. See [storage](storage.md).
+Music must support actual local audio playback. The owner's later decision replaces the import-copy proposal: use an in-process VFS, mounting storage volumes without an import UI. Directory volumes, runtime capability flags, MP3/WAV output and basic file operations are implemented. Disk-image/FAT backends and full native file-manager fidelity remain outside the current implementation. Playlist editing is implemented. See [storage](storage.md).
 
 ## Evidence and decisions
 

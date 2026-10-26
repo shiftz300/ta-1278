@@ -110,6 +110,24 @@ impl App {
             97 => "contacts-list",
             98 => "contacts-search",
             99 => "contact-form-filled",
+            100 => "settings-sounds",
+            101 => "settings-wallpaper",
+            102 => "contact-groups",
+            103 => "contact-picture",
+            104 => "gallery-volumes",
+            105 => "gallery-files",
+            106 => "gallery-picture",
+            107 => "gallery-zoom",
+            108 => "video-preview",
+            109 => "settings-time",
+            110 => "settings-connections",
+            111 => "settings-reset",
+            112 => "music-playlists",
+            113 => "music-playlist-tracks",
+            114 => "settings-ringtones",
+            115 => "alarm-ringtones",
+            116 => "calendar-ringtones",
+            117 => "contact-ringtones",
             _ => {
                 eprintln!(
                     "SMOKE PASS: {} presented frames",
@@ -786,8 +804,141 @@ impl App {
                     .organizer_form(phone::organizer::OrganizerPage::ContactForm, None);
                 self.phone.text("测试联系人");
             }
+            99 => {
+                self.phone.launch(Screen::Settings);
+                self.phone.settings_page = phone::settings::SettingsPage::Sounds;
+                self.phone.index = 0;
+            }
+            100 => {
+                self.phone.settings_page = phone::settings::SettingsPage::Wallpaper;
+                self.phone.index = 0;
+            }
+            101 => {
+                self.phone.launch(Screen::Contacts);
+                self.phone.organizer.page = phone::organizer::OrganizerPage::ContactGroups;
+                self.phone.local_data.groups = vec!["家人".into(), "朋友".into()];
+                self.phone.index = 1;
+            }
+            102 => {
+                let img = sample_picture();
+                self.phone.pictures.insert("/card/sample.png".into(), img);
+                self.phone
+                    .organizer_form(phone::organizer::OrganizerPage::ContactForm, None);
+                self.phone.organizer.draft[0] = "/card/sample.png".into();
+                self.phone.contact_load_field(0);
+            }
+            103 => {
+                self.phone
+                    .open_media(phone::media_browser::Purpose::Pictures);
+                self.phone.media_ui.entries = vec![
+                    phone_vfs::Entry {
+                        name: "手机存储".into(),
+                        path: "/phone".into(),
+                        directory: true,
+                        len: 0,
+                    },
+                    phone_vfs::Entry {
+                        name: "存储卡".into(),
+                        path: "/card".into(),
+                        directory: true,
+                        len: 0,
+                    },
+                ];
+            }
+            104 => {
+                self.phone.media_ui.path = "/card".into();
+                self.phone.media_ui.entries = vec![phone_vfs::Entry {
+                    name: "sample.png".into(),
+                    path: "/card/sample.png".into(),
+                    directory: false,
+                    len: 100,
+                }];
+                self.phone.index = 0;
+            }
+            105 => {
+                self.phone.media_ui.viewing = true;
+                self.phone.media_ui.selected = "/card/sample.png".into();
+                self.phone.media_ui.frame = Some(sample_picture());
+            }
+            106 => {
+                self.phone.media_ui.zoom = 2;
+            }
+            107 => {
+                self.phone.media_ui.purpose = phone::media_browser::Purpose::Videos;
+                self.phone.media_ui.zoom = 1;
+                self.phone.media_ui.position = 3.;
+                self.phone.media_ui.duration = 6.;
+                self.phone.media_ui.playing = true;
+            }
+            108 => {
+                self.phone.launch(Screen::Settings);
+                self.phone.settings_page = phone::settings::SettingsPage::Time;
+            }
+            109 => {
+                self.phone.settings_page = phone::settings::SettingsPage::Connections;
+            }
+            110 => {
+                self.phone.settings_page = phone::settings::SettingsPage::Reset;
+            }
+            111 => {
+                self.phone.launch(Screen::Music);
+                self.phone.music_view = phone::MusicView::Playlists;
+                self.phone.local_data.playlists = vec![phone::Playlist {
+                    name: "收藏".into(),
+                    paths: vec!["/card/test.wav".into()],
+                }];
+                self.phone.set_music_paths(vec!["/card/test.wav".into()]);
+                self.phone.music.tracks = vec![("test.wav".into(), 60.)];
+            }
+            112 => {
+                self.phone.music_view = phone::MusicView::Playlist;
+                self.phone.playlist = 0;
+                self.phone.index = 0;
+            }
+            113 => {
+                self.phone.launch(Screen::Settings);
+                self.phone.settings_page = phone::settings::SettingsPage::Ringtone;
+                self.phone.index = 2;
+            }
+            114 => {
+                self.phone.launch(Screen::Organizer(
+                    phone::organizer::OrganizerPage::AlarmRingtone,
+                ));
+                self.phone.organizer.page = phone::organizer::OrganizerPage::AlarmRingtone;
+                self.phone.index = 2;
+            }
+            115 => {
+                self.phone.launch(Screen::Organizer(
+                    phone::organizer::OrganizerPage::EventRingtone,
+                ));
+                self.phone.organizer.page = phone::organizer::OrganizerPage::EventRingtone;
+                self.phone.index = 20;
+            }
+            116 => {
+                self.phone.launch(Screen::Organizer(
+                    phone::organizer::OrganizerPage::ContactRingtone,
+                ));
+                self.phone.organizer.draft = vec![String::new(); 10];
+                self.phone.organizer.draft[7] = "Clock1".into();
+                self.phone.index = 2;
+            }
             _ => {}
         }
         self.smoke_stage += 1;
     }
+}
+fn sample_picture() -> image::RgbaImage {
+    image::RgbaImage::from_fn(240, 180, |x, y| {
+        image::Rgba(if y < 60 {
+            [40, 90, 180, 255]
+        } else if y < 120 {
+            if x < 120 {
+                [255, 190, 40, 255]
+            } else {
+                [80, 180, 100, 255]
+            }
+        } else {
+            [120, 60, 150, 255]
+        })
+    })
 }

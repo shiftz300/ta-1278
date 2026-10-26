@@ -355,3 +355,18 @@ The desktop local queue now commits only after a successful file write and rolls
 No handset access or new firmware reading. The owner replaced the media-import proposal with an in-process VFS. Implemented a separate volume interface/directory backend, shared file manager/music access, read-only volumes and runtime music/files/network flags. Real MP3/PCM-WAV playback passed explicit CoreAudio clock/pause/seek/EOF tests on generated silent fixtures; 84 default tests and a 68-frame Metal run passed. Details and limits: `docs/storage.md`, `docs/evidence/storage-audio-validation.json`.
 
 Owner's Home footer screenshot exposed a remaining text/icon error. Compared archived native session 283 `shortcut-return-4.png` with extracted 26×26 resources 00397 (Opera, TRES 0x4000018e) and 00398 (Messages, TRES 0x4000018f). Their 24px ink matches the side actions at x=6..29 and 209..232, y=288..311. Replaced Home side text and aligned the center label. Other configurable shortcut glyph assignments remain unverified fallback artwork. Evidence: `docs/evidence/home-softkeys.json`; no new native capture was made.
+
+
+## 2026-10-26 — Offline local-app completion and kernel random generator
+
+No USB, modem or new handset-data access. `scripts/recover-snake-random.py` hash-checks user.bin and kernel.bin, checks the ARM veneer at 0x88100a4c and follows it to Thumb 0x8165ab58. Kernel file mapping uses the previously verified base 0x80e65e00, not a guessed 0x81000000 base. The function updates a 55-word ring; Snake takes two draws for x%12 and y%14+2. Initial RAM words, pointer gap and boot seeding remain unknown. Source/listings: `docs/evidence/snake-random.*`.
+
+Implemented local contact image/group/ringtone flows, persisted playlists/queues, mounted file copy/move, shared image/video selection and genuine macOS decoding/playback, common settings and recurring calendar reminders. Original codecs, native waveforms and unobserved interaction branches were not declared recovered. Local cues are explicit replacements. Verification uses generated media and an isolated QA profile, not private device data. See `docs/local-completion.md` and `docs/evidence/local-completion-validation.json`.
+
+## 2026-10-26 — Offline native audio/MIDI follow-up
+
+- Verified all 75 sound-resource hashes against the captured `mmi.bin`; extracted code-bound Snake food/end SMFs and catalogued 21 original preset names. Some name-to-sound pairings remain list-order inference, explicitly marked in the manifest.
+- Found a complete 2,586,984-byte SF2 in `user.bin+0x7aa358`; verified its SHA-256 and native constructor → RIFF/sfbk parser call chain. Indexed 129 presets, 129 instruments, 412 samples and custom modulators. Added reproducible `scripts/recover-audio.py` / `soundfont_summary.py`.
+- Replaced synthesized sine cues and interim system-GM rendering with original SMFs/SF2 through pinned, source-inspected OxiSynth + midly. No firmware binary execution. The Apple helper now handles images/video only. The independent DSP remains an approximation, with rate/effects/gain and cutoff choices recorded.
+- Added common ringtone controls, background synthesis/cache, local WAV export and preview cancellation. Ran all bundled SMFs and preset selection checks; CoreAudio food/alarm/mute/stop check passed. This is host evidence, not physical phone audio capture.
+- No USB access, new firmware download, device write or upload in this pass. Current build/test/hash/preview details are recorded in `../docs/evidence/native-audio-validation.json`.

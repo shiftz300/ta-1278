@@ -1,6 +1,10 @@
 use super::*;
 use crate::phone::settings::{SHORTCUTS, SettingsPage};
 pub(super) fn render(c: &mut Canvas, p: &Phone) {
+    if p.settings_page == SettingsPage::Ringtone {
+        crate::ui::tone_picker::draw(c, "铃声", p.index, &p.preferences.ringtone, "预设");
+        return;
+    }
     chrome::title(c, p.settings_title());
     if p.settings_page == SettingsPage::Theme {
         for i in 0..6 {
@@ -42,7 +46,40 @@ pub(super) fn render(c: &mut Canvas, p: &Phone) {
             c.text(6, y + 36, SHORTCUTS[*assigned], 16, MUTED);
         }
     } else {
-        let labels = p.settings_labels();
+        let mut labels = p.settings_labels();
+        use SettingsPage::*;
+        match p.settings_page {
+            Connections => {
+                labels[0] = format!(
+                    "移动数据  {}",
+                    if p.preferences.mobile_data {
+                        "开"
+                    } else {
+                        "关"
+                    }
+                )
+            }
+            Sounds => {
+                labels[0] = format!("静音  {}", if p.preferences.silent { "开" } else { "关" });
+                labels[1] = format!("铃声音量  {}", p.preferences.volume);
+                labels[3] = format!(
+                    "按键音  {}",
+                    if p.preferences.keypad_sound {
+                        "开"
+                    } else {
+                        "关"
+                    }
+                );
+            }
+            Time => {
+                labels[2] = format!("时区  UTC{:+}", p.preferences.timezone);
+                labels[3] = format!(
+                    "时间格式  {}小时",
+                    if p.preferences.clock_12h { 12 } else { 24 }
+                );
+            }
+            _ => {}
+        }
         list::draw(
             c,
             labels.len(),
@@ -66,9 +103,7 @@ pub(super) fn render(c: &mut Canvas, p: &Phone) {
                 list::Row {
                     label: &labels[i],
                     marker,
-                    enabled: !((matches!(p.settings_page, SettingsPage::Shortcut { .. })
-                        && i == 2)
-                        || (p.settings_page == SettingsPage::Keyboard && i == 0)),
+                    enabled: p.setting_enabled(i),
                 }
             },
         );

@@ -42,7 +42,22 @@ pub(super) fn render(c: &mut Canvas, p: &Phone) {
             }
         }
         _ => {
-            list::plain(c, &p.file_labels(), p.index);
+            let labels = p.file_labels();
+            if p.files.view == FileView::Options {
+                list::draw(c, labels.len(), p.index, list::ListStyle::STANDARD, |i| {
+                    list::Row {
+                        label: &labels[i],
+                        enabled: p.file_action_enabled(i),
+                        marker: list::Marker::None,
+                    }
+                });
+            } else {
+                list::plain(c, &labels, p.index);
+            }
+            if p.files.busy {
+                c.rect(0, 120, 240, 42, [0, 0, 0, 255]);
+                c.text(8, 130, "正在复制文件…", 20, WHITE);
+            }
             Softkeys::menu("选择").draw(c);
         }
     }

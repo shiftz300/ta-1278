@@ -6,7 +6,7 @@ Firmware research and a working desktop phone prototype for the **Nokia 215 4G (
 
 ## Run
 
-Requires Rust and a graphics driver. Tested on macOS arm64.
+Requires Rust and a graphics driver. macOS builds also need Apple Command Line Tools for the small media helper. Tested on macOS arm64.
 
 ```sh
 cargo run --release --locked -p phone-desktop
@@ -16,7 +16,7 @@ For an optimized local macOS app: `sh scripts/package-macos.sh`, then open `targ
 
 - **Messages:** Chinese pinyin/stroke, Abc/abc/ABC multi-tap and direct typing, cursor movement, line breaks, character counts, drafts, conversations with incoming/outgoing bubbles, inline replies, forwarding, confirmed deletion and an unsent queue.
 - **Browser:** HTTP(S) text pages, links, fields, radios/checkboxes, selects and GET forms; saved bookmarks/history/offline pages. The demo works offline.
-- **Music:** real MP3/WAV playback from virtual phone storage and memory card; pause, track changes, long-press seek, volume, repeat and shuffle.
+- **Music:** real MP3/WAV playback from virtual phone storage and memory card; pause, track changes, long-press seek, volume, repeat, shuffle and saved playlists. Local images and video open from Files; the same file picker supplies contact pictures, wallpaper and ringtones.
 - Calendar, alarms, local contacts, calculator, timer, stopwatch and Snake with recovered maps/artwork are available. Phone/call-history entries are grey and disabled. **The desktop app makes no calls and sends no real SMS.**
 
 Arrow keys navigate. Enter confirms. F1/F2 are the softkeys; Escape is also F2. Mouse **left/right/middle** map to **left softkey/right softkey/confirm**, anywhere in the window. Home returns home or asks to save a message.
@@ -29,7 +29,7 @@ Storage is an in-process VFS, with no import button or OS driver. By default, `f
 
 ```sh
 cargo run --release --locked -p phone-desktop -- --mount-card /path/to/card
-# Optional: --read-only-storage --disable network,music,files
+# Optional: --read-only-storage --disable network,music,files,pictures,video,sounds
 # No memory card: --no-card
 ```
 
@@ -37,7 +37,7 @@ cargo run --release --locked -p phone-desktop -- --mount-card /path/to/card
 
 [Snake code evidence](docs/snake-recovery.md) · [Alarm code evidence](docs/alarm-recovery.md) · [SMS lifecycle](docs/sms-lifecycle.md) · [SMS conversations](docs/sms-conversations.md) · [Build size and checks](docs/build-size.md)
 
-[Delivery scope](docs/remaining-work.md)
+[Delivery scope](docs/remaining-work.md) · [Local app additions and exact limits](docs/local-completion.md)
 
 The target is a faithful standalone phone interaction replica. Exhaustive firmware reconstruction is not a release requirement.
 
@@ -55,3 +55,5 @@ The target is a faithful standalone phone interaction replica. Exhaustive firmwa
 - [Validation](docs/validation.md)
 
 Original system firmware and derived assets remain in `nokia-ta1278-research/`. Private NAND/NV and temporary acquisition files are excluded. See the [firmware manifest](nokia-ta1278-research/firmware/public-system-manifest.json) and [third-party notices](THIRD_PARTY_NOTICES.md).
+
+Original MIDI notes and the recovered sound bank now drive local ringtone and Snake synthesis. [Audio evidence and limits](docs/native-audio.md).

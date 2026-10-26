@@ -140,9 +140,9 @@
     "provenance": "Previously extracted initialized kernel data, hash checked; not a live RAM read."
   },
   "limits": [
-    "PRNG sequence is a local replacement; no claim of native food sequence.",
+    "RNG update and two-draw coordinate mapping are kernel-verified; seed/pointer initialization is local. See snake-random.json; no native sequence claim.",
     "Timer table and call arguments are verified; wall-clock scheduler timing is not measured.",
-    "Sound output, transient death/win effects and complete frame parity still require work; static game-over overlay verified.",
+    "Synthesized host sound is implemented; original waveforms, transient death/win effects and complete frame parity are not recovered. Static game-over overlay verified.",
     "Seventh map is compiled but not exposed by the six-item native picker; not enabled in replica."
   ],
   "reviewed_code_ranges": [

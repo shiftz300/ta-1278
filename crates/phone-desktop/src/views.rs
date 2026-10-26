@@ -7,6 +7,7 @@ mod contacts;
 mod conversation;
 mod files;
 mod mail;
+mod media_browser;
 mod music;
 mod organizer;
 mod pickers;
@@ -31,13 +32,27 @@ pub fn render(c: &mut Canvas, p: &mut Phone) {
     status(c);
     match p.screen {
         Screen::Home => {
-            let seconds = std::time::SystemTime::now()
-                .duration_since(std::time::UNIX_EPOCH)
-                .unwrap_or_default()
-                .as_secs()
-                + 8 * 3600;
-            let time = format!("{:02}:{:02}", seconds / 3600 % 24, seconds / 60 % 60);
-            let date = phone_core::calendar::Date::default();
+            if let Some(img) = p
+                .preferences
+                .wallpaper
+                .as_ref()
+                .and_then(|path| p.pictures.get(path))
+                .filter(|_| p.features.pictures)
+            {
+                c.image_rect(img, [0, 0, 240, 320], [0, 0, 240, 320]);
+                status(c);
+            }
+            let (date, minutes) = p.local_clock();
+            let hour = minutes / 60;
+            let time = format!(
+                "{:02}:{:02}",
+                if p.preferences.clock_12h {
+                    (hour + 11) % 12 + 1
+                } else {
+                    hour
+                },
+                minutes % 60
+            );
             let w = c.width(&time, 54);
             c.text((240 - w) / 2, 88, &time, 54, WHITE);
             let s = format!(
@@ -48,6 +63,9 @@ pub fn render(c: &mut Canvas, p: &mut Phone) {
             );
             let w = c.width(&s, 18);
             c.text((240 - w) / 2, 153, &s, 18, WHITE);
+            if !p.preferences.greeting.is_empty() {
+                c.fit(6, 190, &p.preferences.greeting, 18, WHITE, 228);
+            }
             Softkeys::new(
                 Button::Shortcut(p.preferences.left_shortcut),
                 Button::Text("功能表"),
@@ -93,6 +111,7 @@ pub fn render(c: &mut Canvas, p: &mut Phone) {
         Screen::Compose => compose::render(c, p),
         Screen::Browser => browser::render(c, p),
         Screen::Music => music::render(c, p),
+        Screen::Media => media_browser::render(c, p),
         Screen::Snake => snake::render(c, p),
         Screen::Contacts | Screen::Organizer(_) => organizer::render(c, p),
         Screen::Settings => settings::render(c, p),

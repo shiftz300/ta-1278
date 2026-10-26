@@ -7,6 +7,10 @@ const BLACK: Color = [0, 0, 0, 255];
 
 pub(super) fn render(c: &mut Canvas, p: &mut Phone) {
     use OrganizerPage::*;
+    if p.organizer.page == AlarmRingtone {
+        crate::ui::tone_picker::draw(c, "闹钟铃声", p.index, &p.organizer.draft[3], "预设");
+        return;
+    }
     c.text(
         6,
         1,

@@ -142,3 +142,19 @@ These are test pages, not firmware sources. Host response hashes are in [browser
 - <https://httpbin.org/forms/post> — HTTPBin's own demo form; native text, tel, textarea, radio and checkbox sampling. Dummy values stayed in the handset; no POST was sent.
 - <http://info.cern.ch/> — CERN's own static first-website page; link/focus, Back and Forward sampling.
 - <https://www.selenium.dev/selenium/web/web-form.html> — Selenium's own test fixture; loaded after HTTP-to-HTTPS redirection, native single-select and cancel behavior sampled. No submit or upload.
+
+
+## 2026-10-26 — Kernel RNG and host media adapter
+
+- The previously captured public system images are the source for the Snake veneer/kernel routine. Both original hashes and exact bytes are checked by `scripts/recover-snake-random.py`; see `docs/evidence/snake-random.json`. This proves the update operation, not the native boot-time sequence.
+- `crates/phone-desktop/native/MediaHelper.swift` is local source compiled with the installed Apple Command Line Tools and system ImageIO/AVFoundation. No downloaded executable, driver, device loader or firmware binary is run. Its output is evidence for the desktop adapter only.
+- Generated PNG/JPEG/color-bar MP4/silent WAV/MP3 fixtures are host tests. They provide no evidence about handset codecs, resource identities or physical screen behavior. FFmpeg is used only to make test fixtures and is not a runtime or bundled dependency.
+
+## 2026-10-26 — Original sound bank and independent synthesis
+
+- Primary evidence: hash-verified existing `user.bin`, bank `0x7aa358..0xa21cc0`, Snake SMFs at `0x2037f8` and `0x20390a`. The native codec constructor passes the bank to a RIFF/sfbk parser; recovery does not depend on a similar model. See `../docs/native-audio.md` and its bounded listings/indices.
+- [OxiSynth upstream](https://github.com/PolyMeilex/OxiSynth), pinned crates.io 0.1.0 plus chorus/reverb/soundfont components. Source inspected locally for SF2 modulators, GM drums and reset behavior. This is a host synthesis implementation, not the original DSP. Exact registry archives/checksums and VCS revisions are under `../third-party-licenses/audio/sources/`.
+- [midly upstream](https://github.com/negamartin/midly), pinned crates.io 0.5.3. SMF parser; local scheduling preserves tempo changes and same-tick track order. No third-party executable or driver is installed.
+- [RustySynth](https://github.com/sinshu/rustysynth) was inspected but not used: generator-only instrument import does not preserve this bank's custom modulators. The interim Apple GM rendering was also removed in favor of the extracted bank.
+
+Credibility: direct local code/data evidence for bank and Snake associations; metadata/order inference for some preset names; desktop-only evidence for synthesized PCM and output. No firmware/phone data uploaded and no phone operation performed in this pass.

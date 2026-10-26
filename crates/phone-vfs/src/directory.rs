@@ -52,6 +52,29 @@ impl Directory {
     }
 }
 impl Volume for Directory {
+    fn create(&self, relative: &str, source: &mut dyn Read, limit: u64) -> io::Result<()> {
+        let path = self.path(relative, true)?;
+        let mut options = fs::OpenOptions::new();
+        options.write(true).create_new(true);
+        #[cfg(unix)]
+        {
+            use std::os::unix::fs::OpenOptionsExt;
+            options.mode(0o600);
+        }
+        let mut out = options.open(&path)?;
+        let result = std::io::copy(&mut source.take(limit + 1), &mut out).and_then(|n| {
+            if n > limit {
+                Err(invalid("Source grew during copy"))
+            } else {
+                out.sync_all()
+            }
+        });
+        drop(out);
+        if result.is_err() {
+            let _ = fs::remove_file(&path);
+        }
+        result
+    }
     fn list(&self, relative: &str) -> io::Result<Vec<Entry>> {
         let mut entries = vec![];
         for item in fs::read_dir(self.path(relative, false)?)? {

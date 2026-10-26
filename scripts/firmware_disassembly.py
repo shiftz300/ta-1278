@@ -5,8 +5,8 @@ import tempfile
 from pathlib import Path
 
 
-def disassemble_arm(image, base, ranges):
-    """Return bounded Thumb listings using the installed Xcode LLVM tool."""
+def disassemble_arm(image, base, ranges, thumb=True, label='<user.bin ELF wrapper>'):
+    """Return bounded Thumb or ARM listings using the installed Xcode LLVM tool."""
     names = b'\0.text\0.shstrtab\0'
     text_offset = 52
     names_offset = text_offset + len(image)
@@ -26,9 +26,9 @@ def disassemble_arm(image, base, ranges):
         elf.write_bytes(wrapped)
         for start, end in ranges:
             result = subprocess.run([
-                'xcrun', 'llvm-objdump', '-d', '--triple=thumbv7a-none-eabi',
+                'xcrun', 'llvm-objdump', '-d', '--triple='+('thumbv7a' if thumb else 'armv7a')+'-none-eabi',
                 '--mattr=+hwdiv', f'--start-address={start}',
                 f'--stop-address={end}', str(elf),
             ], check=True, text=True, capture_output=True)
-            outputs.append(result.stdout.replace(str(elf), '<user.bin ELF wrapper>'))
+            outputs.append(result.stdout.replace(str(elf), label))
     return '\n'.join(outputs)

@@ -16,7 +16,7 @@ cargo run --release --locked -p phone-desktop
 
 - **短信：** 拼音、笔画、Abc/abc/ABC 多击和直接输入、光标移动、换行、字符计数、草稿、会话列表、收发气泡、底部续写、转发、确认删除和本地待发记录。
 - **浏览器：** HTTP(S) 文本网页、链接、输入框、单选/复选框、选择框及 GET 表单；书签、历史和离线页面可保存。内置演示无需联网。
-- **音乐：** 从虚拟手机存储和存储卡真实播放 MP3/WAV，支持暂停、切歌、长按快进退、音量、循环和随机播放。
+- **音乐：** 从虚拟手机存储和存储卡真实播放 MP3/WAV，支持暂停、切歌、长按快进退、音量、循环、随机播放和持久化播放列表。联系人图片、壁纸和铃声共用文件选择器；可从“文件”打开本地图片和视频。
 - 日历、闹钟、本地联系人、计算器、定时器、秒表和使用原机地图与素材的贪吃蛇已可操作。电话及通话记录入口置灰并禁用。**桌面程序不会拨号或发送真实短信。**
 
 方向键导航，Enter 确认，F1/F2 为软键，Escape 也可作右软键。鼠标**左/右/中键**分别触发**左软键/右软键/确认键**，不看点击位置。Home 返回主屏或提示保存短信。
@@ -29,7 +29,7 @@ macOS 本地消息、设置、浏览记录及日历/联系人数据位于 `~/Lib
 
 ```sh
 cargo run --release --locked -p phone-desktop -- --mount-card /你的/存储卡目录
-# 可选：--read-only-storage --disable network,music,files
+# 可选：--read-only-storage --disable network,music,files,pictures,video,sounds
 # 不挂存储卡：--no-card
 ```
 
@@ -37,7 +37,7 @@ cargo run --release --locked -p phone-desktop -- --mount-card /你的/存储卡�
 
 [贪吃蛇代码依据](docs/snake-recovery.md) · [闹钟代码证据](docs/alarm-recovery.md) · [短信读写流程](docs/sms-lifecycle.md) · [本地收件测试](docs/sms-inbox.md) · [体积与优化检查](docs/build-size.md)
 
-[交付范围](docs/remaining-work.md)
+[交付范围](docs/remaining-work.md) · [本轮补齐的流程和明确边界](docs/local-completion.md)
 
 目标是独立、注重还原的手机交互组件。交付不再以完整解读固件为前提。
 
@@ -56,3 +56,5 @@ cargo run --release --locked -p phone-desktop -- --mount-card /你的/存储卡�
 系统固件及派生素材保留在 `nokia-ta1278-research/`；私人 NAND/NV 和采集临时文件不提交。见[固件清单](nokia-ta1278-research/firmware/public-system-manifest.json)及[第三方声明](THIRD_PARTY_NOTICES.md)。
 
 - [实机截图与观察记录](docs/handset-observations.md)：已打通截图和按键，完整采样与复刻对比仍在进行。
+
+原机 MIDI 和提取出的音色库现已用于铃声与贪吃蛇音效的本地合成。[证据与边界](docs/native-audio.md)。

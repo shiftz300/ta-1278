@@ -6,11 +6,11 @@ pub(super) fn render(c: &mut Canvas, p: &Phone) {
         Softkeys::new(Button::None, Button::None, Button::Close).draw(c);
         return;
     }
-    if p.music_view != MusicView::Player {
+    if p.playback.view != MusicView::Player {
         c.text(
             6,
             1,
-            match p.music_view {
+            match p.playback.view {
                 MusicView::Songs => "歌曲",
                 MusicView::Playlists
                 | MusicView::AddPlaylist
@@ -25,16 +25,16 @@ pub(super) fn render(c: &mut Canvas, p: &Phone) {
             WHITE,
         );
         if matches!(
-            p.music_view,
+            p.playback.view,
             MusicView::Songs | MusicView::Queue | MusicView::Playlist
         ) {
-            let order = match p.music_view {
-                MusicView::Queue => p.music.order(),
+            let order = match p.playback.view {
+                MusicView::Queue => p.playback.model.order(),
                 MusicView::Playlist => p.playlist_tracks(),
                 _ => vec![],
             };
-            let count = if p.music_view == MusicView::Songs {
-                p.music.tracks.len()
+            let count = if p.playback.view == MusicView::Songs {
+                p.playback.model.tracks.len()
             } else {
                 order.len()
             };
@@ -43,7 +43,7 @@ pub(super) fn render(c: &mut Canvas, p: &Phone) {
             }
             list::draw(c, count, p.index, list::ListStyle::STANDARD, |i| {
                 list::Row::text(
-                    &p.music.tracks[if p.music_view == MusicView::Songs {
+                    &p.playback.model.tracks[if p.playback.view == MusicView::Songs {
                         i
                     } else {
                         order[i]
@@ -58,7 +58,7 @@ pub(super) fn render(c: &mut Canvas, p: &Phone) {
         if labels.is_empty() {
             c.text(8, 130, "这里没有可显示的内容。", 18, MUTED);
         }
-        let root = p.music_view == MusicView::Root;
+        let root = p.playback.view == MusicView::Root;
         if root {
             // Native library Home has an 84px first row, then standard rows.
             for (i, label) in labels.iter().take(6).enumerate() {
@@ -101,19 +101,20 @@ pub(super) fn render(c: &mut Canvas, p: &Phone) {
     c.rect(0, 24, 240, 216, [66, 66, 66, 255]);
     c.ring(116, 143, 25, [28, 32, 28, 255]);
     c.rect(139, 59, 4, 85, [28, 32, 28, 255]);
-    let duration = p.music.duration();
+    let duration = p.playback.model.duration();
     c.rect(0, 236, 240, 4, [38, 44, 38, 255]);
     c.rect(
         0,
         236,
-        (240. * p.music.position / duration.max(1.)).clamp(0., 240.) as i32,
+        (240. * p.playback.model.position / duration.max(1.)).clamp(0., 240.) as i32,
         4,
         c.accent(1),
     );
     let track = p
-        .music
+        .playback
+        .model
         .tracks
-        .get(p.music.index)
+        .get(p.playback.model.index)
         .map_or("", |t| t.0.as_str());
     c.fit(44, 245, track, 18, WHITE, 151);
     c.text(
@@ -121,8 +122,8 @@ pub(super) fn render(c: &mut Canvas, p: &Phone) {
         247,
         &format!(
             "{}:{:02}",
-            p.music.position as u32 / 60,
-            p.music.position as u32 % 60
+            p.playback.model.position as u32 / 60,
+            p.playback.model.position as u32 % 60
         ),
         12,
         c.accent(1),
@@ -134,5 +135,5 @@ pub(super) fn render(c: &mut Canvas, p: &Phone) {
         12,
         c.accent(1),
     );
-    softkeys::transport(c, p.music.playing);
+    softkeys::transport(c, p.playback.model.playing);
 }

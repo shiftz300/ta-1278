@@ -2,6 +2,12 @@
 mod groups;
 use super::*;
 use organizer::{OrganizerPage as Page, contact_name};
+#[derive(Default)]
+pub struct State {
+    pub ui: ContactUi,
+    pub records: Vec<Vec<String>>,
+    pub groups: Vec<String>,
+}
 pub struct ContactUi {
     pub query: Editor,
     pub input: Editor,
@@ -59,15 +65,15 @@ impl Phone {
                 || (self.organizer.page == Page::ContactForm && (1..=5).contains(&self.index)))
     }
     pub fn contact_ids(&self) -> Vec<usize> {
-        let query = self.organizer.contact.query.text().to_lowercase();
-        self.local_data
-            .contacts
+        let query = self.contacts.ui.query.text().to_lowercase();
+        self.contacts
+            .records
             .iter()
             .enumerate()
             .filter(|(_, c)| {
                 (self
-                    .organizer
-                    .contact
+                    .contacts
+                    .ui
                     .group_filter
                     .as_ref()
                     .is_none_or(|g| c.get(8) == Some(g)))
@@ -81,8 +87,8 @@ impl Phone {
             .collect()
     }
     pub fn contact_numbers(&self) -> Vec<(usize, String)> {
-        self.local_data
-            .contacts
+        self.contacts
+            .records
             .get(self.organizer.selected)
             .map(|c| {
                 (3..=5)
@@ -100,37 +106,37 @@ impl Phone {
     }
     pub fn contact_load_field(&mut self, field: usize) {
         self.index = field;
-        self.organizer.contact.field = field;
+        self.contacts.ui.field = field;
         let value = self.organizer.draft.get(field).cloned().unwrap_or_default();
         let mut input = Editor::new(&value, 40);
         input.numeric = (3..=6).contains(&field);
         if field == 6 {
-            self.organizer.contact.date_digit = 0;
+            self.contacts.ui.date_digit = 0;
         }
         if matches!(field, 1 | 2) {
             input
                 .prediction
                 .set_language(Some(phone_core::predict::Language::Chinese));
         }
-        self.organizer.contact.input = input;
+        self.contacts.ui.input = input;
     }
     fn contact_sync(&mut self) -> bool {
-        if !(1..=5).contains(&self.organizer.contact.field) {
+        if !(1..=5).contains(&self.contacts.ui.field) {
             return true;
         }
-        if !self.organizer.contact.input.accept_prediction() {
+        if !self.contacts.ui.input.accept_prediction() {
             return false;
         }
-        self.organizer.contact.input.commit();
-        let field = self.organizer.contact.field;
+        self.contacts.ui.input.commit();
+        let field = self.contacts.ui.field;
         if let Some(value) = self.organizer.draft.get_mut(field) {
-            *value = self.organizer.contact.input.text();
+            *value = self.contacts.ui.input.text();
         }
         true
     }
     fn contact_return(&mut self) {
-        if self.chat.contact_return {
-            self.chat.contact_return = false;
+        if self.messaging.chat.contact_return {
+            self.messaging.chat.contact_return = false;
             self.go(Screen::Conversation);
         } else {
             self.organizer.page = if self.organizer.editing.is_some() {
@@ -141,7 +147,7 @@ impl Phone {
             self.index = if self.organizer.editing.is_some() {
                 0
             } else {
-                self.organizer.contact.root_index
+                self.contacts.ui.root_index
             };
         }
     }
@@ -167,22 +173,22 @@ impl Phone {
         }
         let fields = self.organizer.draft.clone();
         if let Some(i) = self.organizer.editing {
-            self.local_data.contacts[i] = fields;
+            self.contacts.records[i] = fields;
         } else {
-            self.local_data.contacts.push(fields);
+            self.contacts.records.push(fields);
         }
-        self.local_dirty = true;
+        self.records_dirty = true;
         self.organizer.editing = None;
         self.contact_return();
     }
     fn contact_compose(&mut self, number: String) {
         if !self.organizer.pick_recipient {
-            self.compose = self.new_compose();
-            self.chat = Default::default();
+            self.messaging.compose = self.new_compose();
+            self.messaging.chat = Default::default();
         }
-        self.compose.to = Editor::new(&number, 40);
-        self.compose.to.numeric = true;
-        self.compose.recipient = false;
+        self.messaging.compose.to = Editor::new(&number, 40);
+        self.messaging.compose.to.numeric = true;
+        self.messaging.compose.recipient = false;
         self.organizer.pick_recipient = false;
         self.go(Screen::Compose);
     }
@@ -206,13 +212,11 @@ impl Phone {
         if page == Page::ContactForm && self.index == 6 {
             match key {
                 Key::Left => {
-                    self.organizer.contact.date_digit =
-                        self.organizer.contact.date_digit.saturating_sub(1);
+                    self.contacts.ui.date_digit = self.contacts.ui.date_digit.saturating_sub(1);
                     return true;
                 }
                 Key::Right => {
-                    self.organizer.contact.date_digit =
-                        (self.organizer.contact.date_digit + 1).min(7);
+                    self.contacts.ui.date_digit = (self.contacts.ui.date_digit + 1).min(7);
                     return true;
                 }
                 Key::Digit(d) if d < 10 => {
@@ -222,13 +226,12 @@ impl Phone {
                     } else {
                         b"1900-01-01".to_vec()
                     };
-                    bytes[phone_core::calendar::Date::DIGIT_OFFSETS
-                        [self.organizer.contact.date_digit]] = b'0' + d;
+                    bytes[phone_core::calendar::Date::DIGIT_OFFSETS[self.contacts.ui.date_digit]] =
+                        b'0' + d;
                     let next = String::from_utf8(bytes).unwrap();
                     if phone_core::calendar::Date::parse(&next).is_some() {
                         self.organizer.draft[6] = next;
-                        self.organizer.contact.date_digit =
-                            (self.organizer.contact.date_digit + 1).min(7);
+                        self.contacts.ui.date_digit = (self.contacts.ui.date_digit + 1).min(7);
                     }
                     return true;
                 }
@@ -271,17 +274,17 @@ impl Phone {
                 }
                 Key::SoftLeft => {
                     if self.contact_sync() {
-                        self.organizer.contact.return_index = self.index;
+                        self.contacts.ui.return_index = self.index;
                         self.organizer.page = Page::ContactFormMenu;
                         self.index = 0;
                     }
                 }
                 Key::SoftRight => {
                     if (1..=5).contains(&self.index)
-                        && (!self.organizer.contact.input.units.is_empty()
-                            || self.organizer.contact.input.prediction.active())
+                        && (!self.contacts.ui.input.units.is_empty()
+                            || self.contacts.ui.input.prediction.active())
                     {
-                        self.organizer.contact.input.backspace();
+                        self.contacts.ui.input.backspace();
                     } else {
                         self.contact_return();
                     }
@@ -292,7 +295,7 @@ impl Phone {
                 Key::Center => self.contact_save(),
                 Key::SoftRight => {
                     self.organizer.page = Page::ContactForm;
-                    self.index = self.organizer.contact.return_index;
+                    self.index = self.contacts.ui.return_index;
                 }
                 _ => {}
             },
@@ -304,13 +307,13 @@ impl Phone {
                     }
                     Key::Down if !ids.is_empty() => self.index = (self.index + 1) % ids.len(),
                     Key::SoftLeft => {
-                        self.organizer.contact.return_index = self.index;
-                        self.organizer.contact.root_index = self.index;
+                        self.contacts.ui.return_index = self.index;
+                        self.contacts.ui.root_index = self.index;
                         self.organizer.page = Page::ContactsMenu;
                         self.index = 0;
                     }
                     Key::Center if !ids.is_empty() => {
-                        self.organizer.contact.root_index = self.index;
+                        self.contacts.ui.root_index = self.index;
                         self.organizer.selected = ids[self.index.min(ids.len() - 1)];
                         if self.organizer.pick_recipient {
                             if let Some((_, n)) = self.contact_numbers().first().cloned() {
@@ -325,7 +328,7 @@ impl Phone {
                         if self.organizer.pick_recipient {
                             self.organizer.pick_recipient = false;
                             self.go(Screen::Compose);
-                        } else if self.organizer.contact.group_filter.take().is_some() {
+                        } else if self.contacts.ui.group_filter.take().is_some() {
                             self.organizer.page = Page::ContactGroups;
                             self.index = 0;
                         } else {
@@ -350,7 +353,7 @@ impl Phone {
                         } else {
                             Page::ContactDetail
                         };
-                        self.index = self.organizer.contact.return_index;
+                        self.index = self.contacts.ui.return_index;
                     }
                     Key::Center if self.contact_menu_enabled(self.index) => {
                         if page == Page::ContactsMenu && self.index == 0 {
@@ -364,7 +367,7 @@ impl Phone {
                             if page == Page::ContactsMenu {
                                 let ids = self.contact_ids();
                                 self.organizer.selected =
-                                    ids[self.organizer.contact.return_index.min(ids.len() - 1)];
+                                    ids[self.contacts.ui.return_index.min(ids.len() - 1)];
                             }
                             self.organizer.page = Page::DeleteContact;
                             self.index = 0;
@@ -385,13 +388,13 @@ impl Phone {
                     }
                 }
                 Key::SoftLeft => {
-                    self.organizer.contact.return_index = self.index;
+                    self.contacts.ui.return_index = self.index;
                     self.organizer.page = Page::ContactMenu;
                     self.index = 0;
                 }
                 Key::SoftRight => {
                     self.organizer.page = Page::Contacts;
-                    self.index = self.organizer.contact.root_index;
+                    self.index = self.contacts.ui.root_index;
                 }
                 Key::Center if self.index % 2 == 1 => {
                     if let Some((_, number)) = self.contact_numbers().get(self.index / 2).cloned() {
@@ -407,9 +410,9 @@ impl Phone {
             },
             Page::DeleteContact => match key {
                 Key::Center => {
-                    if self.organizer.selected < self.local_data.contacts.len() {
-                        self.local_data.contacts.remove(self.organizer.selected);
-                        self.local_dirty = true;
+                    if self.organizer.selected < self.contacts.records.len() {
+                        self.contacts.records.remove(self.organizer.selected);
+                        self.records_dirty = true;
                     }
                     self.organizer.page = Page::Contacts;
                     self.index = 0;
@@ -425,8 +428,8 @@ impl Phone {
         true
     }
     pub fn selected_contact_name(&self) -> String {
-        self.local_data
-            .contacts
+        self.contacts
+            .records
             .get(self.organizer.selected)
             .map(|c| contact_name(c))
             .unwrap_or_default()

@@ -1,7 +1,12 @@
-//! Legacy desktop JSON files; embedded hosts use Runtime::save instead.
+//! Default profile location and historical-format test fixtures.
+//! Production record loading and commits are owned by Runtime/Store.
+#[cfg(test)]
 use super::{load_json, save_json, validate_organizer};
+#[cfg(test)]
 use crate::phone::settings::Preferences;
+#[cfg(test)]
 use phone_core::sms::Mailbox;
+#[cfg(test)]
 use std::path::Path;
 #[cfg(feature = "desktop")]
 use std::path::PathBuf;
@@ -33,12 +38,15 @@ pub fn default_dir() -> PathBuf {
             .join("ta1278-replica")
     }
 }
+#[cfg(test)]
 pub fn load(dir: &Path) -> Result<Mailbox, String> {
     load_json(dir, "messages.json", 8 * 1024 * 1024)
 }
+#[cfg(test)]
 pub fn save(dir: &Path, mailbox: &Mailbox) -> Result<(), String> {
     save_json(dir, "messages.json", mailbox, 8 * 1024 * 1024)
 }
+#[cfg(test)]
 pub fn load_preferences(dir: &Path) -> Result<Preferences, String> {
     let mut prefs: Preferences = load_json(dir, "preferences.json", 65536)?;
     // Retired shortcut ID from older profiles. Keep all surviving IDs stable.
@@ -50,26 +58,31 @@ pub fn load_preferences(dir: &Path) -> Result<Preferences, String> {
     prefs.validate()?;
     Ok(prefs)
 }
+#[cfg(test)]
 pub fn save_preferences(dir: &Path, prefs: &Preferences) -> Result<(), String> {
     prefs.validate()?;
     save_json(dir, "preferences.json", prefs, 65536)
 }
 
+#[cfg(test)]
 pub fn load_browser(dir: &Path) -> Result<crate::phone::browser::data::BrowserData, String> {
     load_json(dir, "browser.json", 16 * 1024 * 1024)
 }
+#[cfg(test)]
 pub fn save_browser(
     dir: &Path,
     data: &crate::phone::browser::data::BrowserData,
 ) -> Result<(), String> {
     save_json(dir, "browser.json", data, 16 * 1024 * 1024)
 }
+#[cfg(test)]
 pub fn load_organizer(dir: &Path) -> Result<crate::phone::organizer::LocalData, String> {
     let data: crate::phone::organizer::LocalData =
         load_json(dir, "organizer.json", 8 * 1024 * 1024)?;
     validate_organizer(&data)?;
     Ok(data)
 }
+#[cfg(test)]
 pub fn load_snake(dir: &Path) -> Result<crate::phone::snake::SnakeData, String> {
     let data: crate::phone::snake::SnakeData = load_json(dir, "snake.json", 4096)?;
     if !data.valid() {

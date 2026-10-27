@@ -23,6 +23,7 @@ mod web;
 
 #[cfg(feature = "desktop")]
 pub mod desktop;
+pub mod persistence;
 pub mod platform;
 mod runtime;
 pub use effects::Cue;

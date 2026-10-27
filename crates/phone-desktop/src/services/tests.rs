@@ -43,6 +43,7 @@ fn fixture() -> (Services, Rc<RefCell<Traffic>>, Phone) {
 fn dispatch_waits_for_disk_and_acceptance_is_not_delivery() {
     let (mut services, traffic, mut phone) = fixture();
     phone
+        .messaging
         .mailbox
         .stage_service_queue(
             None,
@@ -54,14 +55,14 @@ fn dispatch_waits_for_disk_and_acceptance_is_not_delivery() {
             Some("test"),
         )
         .unwrap();
-    phone.dirty = true;
+    phone.messaging.dirty = true;
     services.tick(&mut phone).unwrap();
     assert!(traffic.borrow().commands.is_empty());
     phone.storage_saved();
     services.tick(&mut phone).unwrap();
     services.tick(&mut phone).unwrap();
     assert_eq!(traffic.borrow().commands.len(), 1);
-    assert!(!phone.mailbox.outbox[0].sent);
+    assert!(!phone.messaging.mailbox.outbox[0].sent);
     traffic.borrow_mut().events.push_back(Envelope {
         sequence: 1,
         event: Event::MessageStatus {
@@ -70,7 +71,7 @@ fn dispatch_waits_for_disk_and_acceptance_is_not_delivery() {
         },
     });
     services.tick(&mut phone).unwrap();
-    assert!(phone.mailbox.outbox[0].sent);
+    assert!(phone.messaging.mailbox.outbox[0].sent);
     assert!(traffic.borrow().acks.is_empty());
     phone.storage_failed();
     services.tick(&mut phone).unwrap();
@@ -83,7 +84,7 @@ fn dispatch_waits_for_disk_and_acceptance_is_not_delivery() {
 fn incoming_is_saved_before_ack_and_does_not_replace_composition() {
     let (mut services, traffic, mut phone) = fixture();
     phone.screen = crate::phone::Screen::Compose;
-    phone.compose.body = phone_core::editor::Editor::new("草稿", 4096);
+    phone.messaging.compose.body = phone_core::editor::Editor::new("草稿", 4096);
     traffic.borrow_mut().events.push_back(Envelope {
         sequence: 1,
         event: Event::MessageReceived {
@@ -93,8 +94,8 @@ fn incoming_is_saved_before_ack_and_does_not_replace_composition() {
         },
     });
     services.tick(&mut phone).unwrap();
-    assert_eq!(phone.compose.body.text(), "草稿");
-    assert_eq!(phone.mailbox.inbox[0].time, 42);
+    assert_eq!(phone.messaging.compose.body.text(), "草稿");
+    assert_eq!(phone.messaging.mailbox.inbox[0].time, 42);
     assert!(traffic.borrow().acks.is_empty());
     phone.storage_saved();
     services.tick(&mut phone).unwrap();
@@ -131,8 +132,8 @@ fn alert_waits_for_editor_and_dismissal_is_durable() {
         },
         10,
     );
-    assert!(phone.mailbox.services.alerts[0].dismissed);
-    assert!(phone.dirty);
+    assert!(phone.messaging.mailbox.services.alerts[0].dismissed);
+    assert!(phone.messaging.dirty);
     assert!(phone.overlay.is_none());
 }
 
@@ -150,7 +151,7 @@ fn crash_replay_uses_saved_cursor_and_send_keeps_its_id() {
     services.tick(&mut phone).unwrap();
     let dir = std::env::temp_dir().join(format!("ta1278-service-replay-{}", std::process::id()));
     std::fs::create_dir_all(&dir).unwrap();
-    crate::storage::save(&dir, &phone.mailbox).unwrap();
+    crate::storage::save(&dir, &phone.messaging.mailbox).unwrap();
     // Process dies after atomic write but before transport ack.
     let mut phone = Phone::new(crate::storage::load(&dir).unwrap());
     let mut services = Services::new(Box::new(TestBackend(traffic.clone())));
@@ -164,9 +165,10 @@ fn crash_replay_uses_saved_cursor_and_send_keeps_its_id() {
     });
     services.tick(&mut phone).unwrap();
     services.tick(&mut phone).unwrap();
-    assert_eq!(phone.mailbox.inbox.len(), 1);
+    assert_eq!(phone.messaging.mailbox.inbox.len(), 1);
     assert_eq!(traffic.borrow().acks, [1]);
     let receipt = phone
+        .messaging
         .mailbox
         .stage_service_queue(
             None,
@@ -179,7 +181,7 @@ fn crash_replay_uses_saved_cursor_and_send_keeps_its_id() {
         )
         .unwrap();
     assert_eq!(receipt.index, 0);
-    crate::storage::save(&dir, &phone.mailbox).unwrap();
+    crate::storage::save(&dir, &phone.messaging.mailbox).unwrap();
     services.tick(&mut phone).unwrap();
     // Adapter must deduplicate this same ID after restart, not issue another send.
     let mut phone = Phone::new(crate::storage::load(&dir).unwrap());
@@ -241,6 +243,6 @@ fn withdrawn_or_expired_alert_closes_without_losing_underlying_screen() {
     services.tick(&mut phone).unwrap();
     phone.storage_saved();
     services.tick(&mut phone).unwrap();
-    assert!(phone.mailbox.services.alerts.is_empty());
+    assert!(phone.messaging.mailbox.services.alerts.is_empty());
     assert!(phone.overlay.is_none());
 }

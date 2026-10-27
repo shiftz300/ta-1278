@@ -47,16 +47,16 @@ pub(super) fn folder(c: &mut Canvas, p: &Phone) {
     c.rect(0, 282, 240, 38, BLACK);
     Softkeys::back(if count == 0 { "" } else { "打开" }).draw(c);
 }
-fn read(c: &mut Canvas, p: &mut Phone) {
+fn read(c: &mut Canvas, p: &Phone) {
     let Some(m) = p.mail_message() else {
         return;
     };
-    let incoming = p.mail_ui.folder == Screen::Inbox;
+    let incoming = p.messaging.ui.folder == Screen::Inbox;
     chrome::title(
         c,
         if incoming {
             "信息"
-        } else if p.mail_ui.folder == Screen::Drafts {
+        } else if p.messaging.ui.folder == Screen::Drafts {
             "草稿"
         } else {
             p.mail_delivery().0
@@ -71,19 +71,19 @@ fn read(c: &mut Canvas, p: &mut Phone) {
         225,
     );
     let lines = c.wrap(m.body, 20, 216);
-    p.mail_ui.lines = lines.len();
-    p.mail_ui.scroll = p.mail_ui.scroll.min(lines.len().saturating_sub(7));
-    for (i, line) in lines.iter().skip(p.mail_ui.scroll).take(7).enumerate() {
+    let scroll = p.messaging.ui.scroll.min(lines.len().saturating_sub(7));
+    c.layout.reader = Some((lines.len(), scroll));
+    for (i, line) in lines.iter().skip(scroll).take(7).enumerate() {
         c.text(7, 64 + i as i32 * 29, &line.text, 20, WHITE);
     }
     if lines.len() > 7 {
         c.rect(235, 64, 3, 203, [42, 47, 42, 255]);
         let height = (203 * 7 / lines.len()).max(8) as i32;
-        let y = 64 + (203 - height) * p.mail_ui.scroll as i32 / (lines.len() - 7) as i32;
+        let y = 64 + (203 - height) * scroll as i32 / (lines.len() - 7) as i32;
         c.rect(235, y, 3, height, MUTED);
     }
 }
-pub(super) fn render(c: &mut Canvas, p: &mut Phone, page: MailPage) {
+pub(super) fn render(c: &mut Canvas, p: &Phone, page: MailPage) {
     use MailPage::*;
     match page {
         Read => {

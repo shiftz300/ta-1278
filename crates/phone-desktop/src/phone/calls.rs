@@ -10,6 +10,7 @@ pub struct Record {
 }
 #[derive(Default)]
 pub struct Calls {
+    pub records: Vec<Record>,
     pub number: Editor,
     pub selected: Option<usize>,
     origin: Option<(Screen, usize)>,
@@ -29,8 +30,8 @@ impl Phone {
     pub fn dial_number(&self) -> String {
         match self.calls.selected {
             Some(i) => self
-                .local_data
                 .contacts
+                .records
                 .get(i)
                 .and_then(|c| c.iter().skip(3).take(3).find(|n| valid(n)))
                 .cloned()
@@ -68,13 +69,11 @@ impl Phone {
         use tools::ToolPage::{Calls, Dial};
         if self.tools.page == Dial {
             match key {
-                Key::Up | Key::Down if !self.local_data.contacts.is_empty() => {
+                Key::Up | Key::Down if !self.contacts.records.is_empty() => {
                     self.calls.selected = match (key, self.calls.selected) {
                         (Key::Up, Some(0)) | (Key::Up, None) => None,
                         (Key::Up, Some(i)) => Some(i - 1),
-                        (Key::Down, Some(i)) => {
-                            Some((i + 1).min(self.local_data.contacts.len() - 1))
-                        }
+                        (Key::Down, Some(i)) => Some((i + 1).min(self.contacts.records.len() - 1)),
                         _ => Some(0),
                     };
                 }
@@ -104,15 +103,15 @@ impl Phone {
                         self.notice("请输入有效的电话号码");
                         return;
                     }
-                    self.local_data.calls.insert(
+                    self.calls.records.insert(
                         0,
                         Record {
                             number,
                             time: self.timestamp() / 1000,
                         },
                     );
-                    self.local_data.calls.truncate(LIMIT);
-                    self.local_dirty = true;
+                    self.calls.records.truncate(LIMIT);
+                    self.records_dirty = true;
                     self.notice("未连接通话服务，无法拨出。");
                 }
                 _ => {}
@@ -125,12 +124,10 @@ impl Phone {
         if self.calls.confirm_delete {
             match key {
                 Key::Center => {
-                    if self.index < self.local_data.calls.len() {
-                        self.local_data.calls.remove(self.index);
-                        self.index = self
-                            .index
-                            .min(self.local_data.calls.len().saturating_sub(1));
-                        self.local_dirty = true;
+                    if self.index < self.calls.records.len() {
+                        self.calls.records.remove(self.index);
+                        self.index = self.index.min(self.calls.records.len().saturating_sub(1));
+                        self.records_dirty = true;
                     }
                     self.calls.confirm_delete = false;
                 }
@@ -143,20 +140,20 @@ impl Phone {
             Key::Up | Key::Down => {
                 vertical(
                     &mut self.index,
-                    self.local_data.calls.len(),
+                    self.calls.records.len(),
                     key,
                     Boundary::Clamp,
                 );
             }
             Key::Center | Key::Call => {
-                if let Some(record) = self.local_data.calls.get(self.index) {
+                if let Some(record) = self.calls.records.get(self.index) {
                     self.open_dialer(record.number.clone());
                 } else if key == Key::Call {
                     self.open_dialer(String::new());
                 }
             }
             Key::SoftLeft => self.open_dialer(String::new()),
-            Key::Delete if !self.local_data.calls.is_empty() => self.calls.confirm_delete = true,
+            Key::Delete if !self.calls.records.is_empty() => self.calls.confirm_delete = true,
             Key::SoftRight => self.leave_app(),
             _ => {}
         }

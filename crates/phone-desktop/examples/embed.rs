@@ -1,10 +1,11 @@
 //! Run without a window, native adapter, network, audio output or profile directory.
 use phone_runtime::{
-    Runtime, Time,
+    Request, Runtime, Time,
     config::RuntimeConfig,
     input::Key,
     messaging::{Backend, Capabilities, Command, Envelope, Event, PortError},
-    platform,
+    persistence::{Record, Store},
+    platform::{self, Documents, Instance, Page, Platform},
 };
 struct Inbox(Option<Envelope>);
 impl Backend for Inbox {
@@ -34,6 +35,48 @@ impl Backend for Inbox {
         } else {
             Err(PortError::Unsupported)
         }
+    }
+}
+struct LocalHost {
+    instance: Instance,
+    ready: Option<(Request, Result<Page, String>)>,
+}
+impl Platform for LocalHost {
+    fn instance(&self) -> Instance {
+        self.instance
+    }
+    fn documents(&mut self) -> Option<&mut dyn Documents> {
+        Some(self)
+    }
+}
+impl Documents for LocalHost {
+    fn submit(&mut self, request: Request, _: Option<Page>) -> Result<(), String> {
+        let page = platform::parse(
+            &request.url,
+            "<title>Local page</title><p>Content supplied by the host.</p><form action='about:reply'><input name='text'><button>Submit</button></form>",
+        );
+        self.ready = Some((request, Ok(page)));
+        Ok(())
+    }
+    fn poll(&mut self) -> Option<(Request, Result<Page, String>)> {
+        self.ready.take()
+    }
+    fn cancel(&mut self) {
+        self.ready = None;
+    }
+}
+#[derive(Default)]
+struct Memory(Vec<u8>);
+impl Store for Memory {
+    fn read(&mut self, record: Record) -> Result<Option<Vec<u8>>, String> {
+        Ok((record == Record::Snapshot && !self.0.is_empty()).then(|| self.0.clone()))
+    }
+    fn write(&mut self, record: Record, bytes: &[u8]) -> Result<(), String> {
+        if record != Record::Snapshot {
+            return Err("Example stores checkpoints only".into());
+        }
+        self.0 = bytes.to_vec();
+        Ok(())
     }
 }
 fn capture(
@@ -83,23 +126,19 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         unix_ms: clock.unix_ms + 100,
     })?;
     runtime.navigate("about:example")?;
-    let request = runtime.take_request().ok_or("No browser request")?;
-    let page = platform::parse(
-        &request.url,
-        "<title>Local page</title><p>Content supplied by the host.</p><form action='about:reply'><input name='text'><button>Submit</button></form>",
-    );
-    assert!(runtime.complete(&request, Ok(page)));
+    let mut host = LocalHost {
+        instance: runtime.instance(),
+        ready: None,
+    };
+    runtime.poll_platform(&mut host)?;
     capture(&mut runtime, &output.join("browser.png"))?;
     runtime.poll_services()?;
-    let mut state = Vec::new();
-    // Example in-memory host transaction. Production code must atomically commit durable bytes.
-    runtime.save(|bytes| {
-        state = bytes.to_vec();
-        Ok(())
-    })?;
+    // The same Store contract supports in-memory and durable host storage.
+    let mut store = Memory::default();
+    runtime.save_to(&mut store)?;
     runtime.poll_services()?;
     assert_eq!(runtime.mailbox().inbox.len(), 1);
-    let mut restored = Runtime::restore(config, clock, &state, Box::new(Inbox(None)))?;
+    let mut restored = Runtime::restore_from(config, clock, &mut store, Box::new(Inbox(None)))?;
     assert_eq!(restored.mailbox().inbox.len(), 1);
     capture(&mut restored, &output.join("restored.png"))?;
     println!(

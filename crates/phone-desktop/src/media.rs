@@ -1,23 +1,27 @@
 //! Shared local folder service for file browsing and the music library.
 mod files;
 pub(crate) mod visual;
+#[cfg(test)]
+use crate::storage;
 use crate::storage::files::Folder;
 use crate::{
-    audio::{self, Audio},
+    audio,
     phone::{
         Phone, Screen,
         files::{FileRequest, FileView},
     },
-    storage,
 };
+#[cfg(test)]
 use phone_core::music::Repeat;
 use rodio::Source;
-use serde::{Deserialize, Serialize};
+#[cfg(test)]
 use std::{
     path::Path,
+    time::{Duration, Instant},
+};
+use std::{
     sync::{Arc, mpsc},
     thread,
-    time::{Duration, Instant},
 };
 #[derive(Clone, Debug)]
 pub struct Track {
@@ -25,41 +29,8 @@ pub struct Track {
     pub title: String,
     pub seconds: f32,
 }
-#[derive(Clone, Default, PartialEq, Serialize, Deserialize)]
-#[serde(default)]
-pub struct SavedMusic {
-    queue: Vec<String>,
-    volume: Option<u8>,
-    repeat: u8,
-    shuffle: bool,
-    path: Option<String>,
-    position: f32,
-}
-impl SavedMusic {
-    fn capture(phone: &Phone, tracks: &[Track]) -> Self {
-        Self {
-            queue: phone
-                .music
-                .queue
-                .iter()
-                .filter_map(|i| tracks.get(*i).map(|t| t.path.clone()))
-                .collect(),
-            volume: Some(phone.music.volume),
-            repeat: match phone.music.repeat {
-                Repeat::Off => 0,
-                Repeat::All => 1,
-                Repeat::One => 2,
-            },
-            shuffle: phone.music.shuffle,
-            path: phone
-                .music_started
-                .then(|| tracks.get(phone.music.index))
-                .flatten()
-                .map(|t| t.path.clone()),
-            position: phone.music.position,
-        }
-    }
-}
+#[cfg(test)]
+use crate::phone::music::SavedMusic;
 pub fn supported(path: &str) -> bool {
     path.rsplit('.')
         .next()
@@ -139,30 +110,25 @@ pub struct Media {
     visual: crate::media::visual::VisualMedia,
     pub files: Arc<Folder>,
     pub tracks: Vec<Track>,
-    audio: Audio,
+    audio: Box<dyn crate::platform::Sound>,
     jobs: mpsc::SyncSender<()>,
     results: mpsc::Receiver<(Vec<Track>, Vec<String>)>,
     scanning: bool,
-    restore: Option<SavedMusic>,
-    saved: SavedMusic,
-    last_save: Instant,
 }
 impl Media {
+    #[cfg(test)]
     pub fn new(files: Folder, dir: &Path, phone: &mut Phone) -> Result<Self, String> {
-        let saved: SavedMusic = storage::load_json(dir, "music.json", 65536)?;
-        if saved.volume.is_some_and(|v| v > 10)
-            || saved.repeat > 2
-            || !saved.position.is_finite()
-            || saved.position < 0.
-        {
-            return Err("Invalid music settings; original retained".into());
-        }
-        phone.music.volume = saved.volume.unwrap_or(6);
-        phone.music.repeat = [Repeat::Off, Repeat::All, Repeat::One][saved.repeat as usize];
-        phone.music.shuffle = saved.shuffle;
-        phone.music.tracks.clear();
-        phone.music.external_clock = true;
-        let files = Arc::new(files);
+        let saved = crate::persistence::read(
+            &mut crate::persistence::Directory::new(dir),
+            crate::persistence::Record::Music,
+        )?;
+        phone.playback.restore(saved)?;
+        Ok(Self::attach(crate::platform::Devices::native(files), phone))
+    }
+    pub fn attach(devices: crate::platform::Devices, phone: &mut Phone) -> Self {
+        phone.playback.model.tracks.clear();
+        phone.playback.model.external_clock = true;
+        let files = devices.folder;
         let worker = files.clone();
         let (jobs, rx) = mpsc::sync_channel(1);
         let (tx, results) = mpsc::channel();
@@ -173,41 +139,38 @@ impl Media {
                 }
             }
         });
-        phone.music_refresh = phone.features.music;
-        phone.music_loading = phone.features.music;
+        phone.playback.refresh = phone.features.music;
+        phone.playback.loading = phone.features.music;
         let (transfer_results, transfers) = mpsc::channel();
-        Ok(Self {
-            unread: phone.mailbox.unread(),
+        Self {
+            unread: phone.messaging.mailbox.unread(),
             transfers,
             transfer_results,
-            visual: crate::media::visual::VisualMedia::new(files.clone()),
+            visual: crate::media::visual::VisualMedia::new(files.clone(), devices.decoder),
             files,
             tracks: vec![],
-            audio: Audio::default(),
+            audio: devices.sound,
             jobs,
             results,
             scanning: false,
-            restore: Some(saved.clone()),
-            saved,
-            last_save: Instant::now(),
-        })
+        }
     }
     fn apply_scan(&mut self, phone: &mut Phone, tracks: Vec<Track>, warnings: Vec<String>) {
         self.audio.stop();
-        phone.music.playing = false;
-        phone.music.index = 0;
-        phone.music.position = 0.;
-        phone.music_started = false;
-        phone.music_loading = false;
-        phone.music.tracks = tracks
+        phone.playback.model.playing = false;
+        phone.playback.model.index = 0;
+        phone.playback.model.position = 0.;
+        phone.playback.started = false;
+        phone.playback.loading = false;
+        phone.playback.model.tracks = tracks
             .iter()
             .map(|t| (t.title.clone(), t.seconds))
             .collect();
         phone.set_music_paths(tracks.iter().map(|t| t.path.clone()).collect());
-        phone.music.queue.clear();
+        phone.playback.model.queue.clear();
         self.tracks = tracks;
-        if let Some(saved) = self.restore.take() {
-            phone.music.queue = saved
+        if let Some(saved) = phone.playback.resume.take() {
+            phone.playback.model.queue = saved
                 .queue
                 .iter()
                 .filter_map(|p| phone.music_index(p))
@@ -217,22 +180,22 @@ impl Media {
                 .iter()
                 .position(|t| Some(&t.path) == saved.path.as_ref())
             {
-                phone.music.index = i;
-                phone.music.position = saved.position.min(self.tracks[i].seconds);
-                phone.music_started = true;
+                phone.playback.model.index = i;
+                phone.playback.model.position = saved.position.min(self.tracks[i].seconds);
+                phone.playback.started = true;
             }
         }
         if phone.screen == Screen::Music
-            && phone.music.tracks.is_empty()
-            && phone.music_view == crate::phone::MusicView::Player
+            && phone.playback.model.tracks.is_empty()
+            && phone.playback.view == crate::phone::MusicView::Player
         {
-            phone.music_view = crate::phone::MusicView::Root;
+            phone.playback.view = crate::phone::MusicView::Root;
         }
         // Songs and queue depend on the new library. Do not move a repeat-picker
         // selection or another app's shared focus while a background scan ends.
         if phone.screen == Screen::Music
             && matches!(
-                phone.music_view,
+                phone.playback.view,
                 crate::phone::MusicView::Songs
                     | crate::phone::MusicView::Queue
                     | crate::phone::MusicView::Playlist
@@ -250,18 +213,21 @@ impl Media {
     }
     pub fn tick(&mut self, phone: &mut Phone) {
         self.visual.tick(&self.files, phone);
-        let volume = if phone.preferences.silent || !phone.features.sounds {
+        let volume = if phone.settings.preferences.silent || !phone.features.sounds {
             0
         } else {
-            phone.preferences.volume
+            phone.settings.preferences.volume
         };
-        let unread = phone.mailbox.unread();
+        let unread = phone.messaging.mailbox.unread();
         if unread > self.unread {
             phone.audio_preview = Some(
-                if matches!(phone.preferences.ringtone.as_str(), "预设" | "默认") {
+                if matches!(
+                    phone.settings.preferences.ringtone.as_str(),
+                    "预设" | "默认"
+                ) {
                     "Message 1".into()
                 } else {
-                    phone.preferences.ringtone.clone()
+                    phone.settings.preferences.ringtone.clone()
                 },
             );
         }
@@ -287,13 +253,14 @@ impl Media {
             phone.status = format!("原机音效无法播放：{e}");
         }
         if phone.active_reminder().is_some() {
-            phone.music.playing = false;
-            if phone.media_ui.playing {
+            phone.playback.model.playing = false;
+            if phone.media.ui.playing {
                 phone
-                    .media_ui
+                    .media
+                    .ui
                     .pending
                     .push(crate::phone::media::Request::Command("pause".into()));
-                phone.media_ui.playing = false;
+                phone.media.ui.playing = false;
             }
         }
         let tone = phone.active_reminder().map(|a| a.tone.as_str());
@@ -306,51 +273,48 @@ impl Media {
         {
             phone.notice(e);
         }
-        if phone.music_refresh {
+        if phone.playback.refresh {
             self.prepare_refresh(phone);
         }
         while let Ok((tracks, warnings)) = self.results.try_recv() {
             self.scanning = false;
             // A mutation/refresh requested after this job began invalidates it.
             // Keep the old library paused until a fresh scan completes.
-            if !phone.music_refresh {
+            if !phone.playback.refresh {
                 self.apply_scan(phone, tracks, warnings);
             }
         }
-        if phone.music_refresh
+        if phone.playback.refresh
             && !self.scanning
             && phone.features.music
             && self.jobs.try_send(()).is_ok()
         {
-            phone.music_refresh = false;
+            phone.playback.refresh = false;
             self.scanning = true;
         }
-        if phone.features.music && !phone.music_loading {
-            let path = self.tracks.get(phone.music.index).map(|t| t.path.as_str());
-            if let Err(e) = self.audio.sync(&self.files, path, &mut phone.music) {
+        if phone.features.music && !phone.playback.loading {
+            let path = self
+                .tracks
+                .get(phone.playback.model.index)
+                .map(|t| t.path.as_str());
+            if let Err(e) = self
+                .audio
+                .sync(&self.files, path, &mut phone.playback.model)
+            {
                 phone.notice(format!("无法播放：{e}"));
             }
         } else {
             self.audio.stop();
-            phone.music.playing = false;
+            phone.playback.model.playing = false;
         }
     }
-    pub fn save(&mut self, dir: &Path, phone: &Phone, force: bool) -> Result<(), String> {
-        if !force && self.last_save.elapsed() < Duration::from_secs(5) {
-            return Ok(());
-        }
-        let mut state = SavedMusic::capture(phone, &self.tracks);
-        if let Some(pending) = &self.restore {
-            state.path = pending.path.clone();
-            state.position = pending.position;
-            state.queue = pending.queue.clone();
-        }
-        if state != self.saved {
-            storage::save_json(dir, "music.json", &state, 65536)?;
-            self.saved = state;
-        }
-        self.last_save = Instant::now();
-        Ok(())
+    #[cfg(test)]
+    pub fn save(&mut self, dir: &Path, phone: &Phone, _: bool) -> Result<(), String> {
+        crate::persistence::write(
+            &mut crate::persistence::Directory::new(dir),
+            crate::persistence::Record::Music,
+            &phone.playback.snapshot(),
+        )
     }
 }
 fn path_contains(parent: &str, path: &str) -> bool {

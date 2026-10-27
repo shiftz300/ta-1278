@@ -40,12 +40,12 @@ fn sms_focus_uses_native_contacts_menu_delete_and_status_artwork() {
     let mut p = Phone::new(Default::default());
     p.features.disable("sounds,music,video,network").unwrap();
     p.launch(Screen::Compose);
-    assert!(p.compose.recipient);
+    assert!(p.messaging.compose.recipient);
     frame(&mut c, &mut p, "sms-recipient-icons");
     artwork(&c, crate::assets::png!("00455-icon-000765e0.png"), 5, 287);
     artwork(&c, crate::assets::png!("00542-icon-000b3b3c.png"), 210, 4);
     p.tab();
-    assert!(!p.compose.recipient);
+    assert!(!p.messaging.compose.recipient);
     p.text("A");
     frame(&mut c, &mut p, "sms-body-icons");
     artwork(&c, crate::assets::png!("01160-icon-000d0620.png"), 5, 287);
@@ -59,7 +59,7 @@ fn sms_focus_uses_native_contacts_menu_delete_and_status_artwork() {
 fn audited_timer_fields_and_storage_pages_render_without_external_services() {
     let mut p = Phone::new(Default::default());
     p.features.disable("sounds,music,video,network").unwrap();
-    p.accent = 4;
+    p.settings.accent = 4;
     let mut c = Canvas::new().unwrap();
     p.launch(Screen::Tools(ToolPage::Timer));
     frame(&mut c, &mut p, "timer-empty");
@@ -132,7 +132,7 @@ fn calendar_viewport_preserves_title_and_footer_and_file_checks_use_shared_rows(
     use phone_core::input::{Event, Key, Phase};
     let mut p = Phone::new(Default::default());
     p.features.disable("sounds,music,video,network").unwrap();
-    p.accent = 4;
+    p.settings.accent = 4;
     let mut c = Canvas::new().unwrap();
     p.launch(Screen::Organizer(Page::Calendar));
     p.organizer_form(Page::EventForm, None);
@@ -219,7 +219,7 @@ fn converter_native_fields_keep_units_and_baselines_when_focus_changes() {
     }
     let mut p = Phone::new(Default::default());
     p.features.disable("sounds,music,video,network").unwrap();
-    p.accent = 4;
+    p.settings.accent = 4;
     let mut c = Canvas::new().unwrap();
     p.launch(Screen::Tools(ToolPage::Converter));
     frame(&mut c, &mut p, "converter-root");
@@ -259,7 +259,7 @@ fn converter_native_fields_keep_units_and_baselines_when_focus_changes() {
 fn music_and_radio_popups_preserve_their_background_and_wait_has_only_close() {
     let mut p = Phone::new(Default::default());
     p.features.disable("sounds,video,network").unwrap();
-    p.accent = 4;
+    p.settings.accent = 4;
     let mut c = Canvas::new().unwrap();
     p.launch(Screen::Tools(ToolPage::Radio));
     p.tools.radio_on = true;
@@ -280,7 +280,7 @@ fn music_and_radio_popups_preserve_their_background_and_wait_has_only_close() {
     p.index = 6;
     frame(&mut c, &mut p, "radio-close-option");
     p.launch(Screen::Music);
-    p.music_view = MusicView::Root;
+    p.playback.view = MusicView::Root;
     frame(&mut c, &mut p, "music-library");
     let library = c.pixels.clone();
     p.overlay = Some(Overlay::Menu {
@@ -294,7 +294,7 @@ fn music_and_radio_popups_preserve_their_background_and_wait_has_only_close() {
     );
     assert!(c.pixels[pixel] > 0);
     p.overlay = None;
-    p.music_loading = true;
+    p.playback.loading = true;
     frame(&mut c, &mut p, "music-refresh-wait");
     let footer = c.pixels[284 * 240 * 4..].to_vec();
     Softkeys::new(Button::None, Button::None, Button::Close).draw(&mut c);
@@ -329,9 +329,9 @@ fn shared_popup_app_pages_render_with_synthetic_content() {
     use crate::phone::organizer::OrganizerPage as Page;
     let mut p = Phone::new(Default::default());
     p.features.disable("sounds,music,video,network").unwrap();
-    p.accent = 4;
+    p.settings.accent = 4;
     let mut c = Canvas::new().unwrap();
-    p.local_data.contacts.push(
+    p.contacts.records.push(
         ["", "Example", "", "1230000", "", "", "", "预设", ""]
             .map(str::to_owned)
             .into(),
@@ -390,7 +390,7 @@ fn all_application_fixtures_render_without_host_services() {
         },
     )
     .unwrap();
-    runtime.phone.accent = 4;
+    runtime.phone.settings.accent = 4;
     for stage in 0..126 {
         if runtime.pending_commit() {
             runtime.save(|_| Ok(())).unwrap();

@@ -1,4 +1,6 @@
 //! Host-driven execution. All window/event-loop ownership stays outside this type.
+mod host;
+mod persist;
 mod state;
 use crate::{
     canvas::Canvas,
@@ -54,6 +56,8 @@ pub struct Runtime {
     input: Input,
     time: Time,
     services: Services,
+    persistence: persist::Session,
+    host: host::Host,
 }
 impl Runtime {
     /// Constructs an offline phone. No window, filesystem, audio device or worker is opened.
@@ -74,8 +78,8 @@ impl Runtime {
         phone.apps = config.apps;
         phone.features = config.effective_features();
         // Real tracks are supplied by the media adapter, never simulated here.
-        phone.music.tracks.clear();
-        phone.music.external_clock = true;
+        phone.playback.model.tracks.clear();
+        phone.playback.model.external_clock = true;
         let mut runtime = Self::from_phone(phone, predictor, time)?;
         runtime.connect(backend);
         Ok(runtime)
@@ -90,7 +94,7 @@ impl Runtime {
         phone.wall_ms = Some(time.unix_ms);
         phone.last_tick = Some(time.elapsed_ms);
         phone.prediction_engine = predictor.clone();
-        phone.compose.time = time.unix_ms;
+        phone.messaging.compose.time = time.unix_ms;
         phone.organizer.date = phone.local_clock().0;
         Ok(Self {
             phone,
@@ -100,10 +104,12 @@ impl Runtime {
             canvas: Canvas::new()?,
             input: Input::default(),
             services: Services::default(),
+            persistence: Default::default(),
+            host: Default::default(),
         })
     }
     fn connect(&mut self, backend: Box<dyn Backend>) {
-        self.phone.service_backend = backend
+        self.phone.messaging.backend = backend
             .capabilities()
             .send_messages
             .then(|| backend.id().to_owned());
@@ -117,7 +123,7 @@ impl Runtime {
     /// Retains at most the latest 64 cues if a host does not consume them.
     pub fn take_cues(&mut self) -> Vec<crate::Cue> {
         let cues = std::mem::take(&mut self.phone.cues);
-        if self.phone.features.sounds && !self.phone.preferences.silent {
+        if self.phone.features.sounds && !self.phone.settings.preferences.silent {
             cues
         } else {
             Vec::new()
@@ -145,8 +151,11 @@ impl Runtime {
     }
     pub(crate) fn dispatch(&mut self, event: Event) {
         self.phone.status.clear();
-        if matches!(event.key, Key::Up | Key::Down) && self.phone.editor().is_some() {
-            views::render(&mut self.canvas, &mut self.phone);
+        if matches!(
+            event.phase,
+            phone_core::input::Phase::Down | phone_core::input::Phase::Repeat
+        ) {
+            views::prepare(&mut self.canvas, &mut self.phone);
         }
         self.phone.handle(event, self.time.elapsed_ms);
         self.bound_cues();
@@ -188,7 +197,7 @@ impl Runtime {
         }
     }
     pub fn render(&mut self) -> Frame<'_> {
-        views::render(&mut self.canvas, &mut self.phone);
+        views::paint(&mut self.canvas, &self.phone);
         Frame {
             width: crate::canvas::W,
             height: crate::canvas::H,
@@ -200,7 +209,7 @@ impl Runtime {
     /// A mailbox transaction must be persisted before the backend may submit or ack it.
     /// Other user data can be saved at host-selected checkpoints through `save`.
     pub fn pending_commit(&self) -> bool {
-        self.phone.dirty || self.phone.mail_ui.pending.is_some()
+        self.phone.messaging.dirty || self.phone.messaging.ui.pending.is_some()
     }
     pub fn poll_services(&mut self) -> Result<(), String> {
         self.services.tick(&mut self.phone)
@@ -209,7 +218,7 @@ impl Runtime {
         &self.phone.status
     }
     pub fn mailbox(&self) -> &phone_core::sms::Mailbox {
-        &self.phone.mailbox
+        &self.phone.messaging.mailbox
     }
     /// Request a document through the same worker boundary used by browser navigation.
     pub fn navigate(&mut self, url: &str) -> Result<(), String> {
@@ -220,17 +229,18 @@ impl Runtime {
             return Err("Invalid document URL".into());
         }
         self.phone.go(Screen::Browser);
-        self.phone.browser_view = crate::phone::BrowserView::Page;
-        self.phone.pending_url = Some(url.into());
+        self.phone.browsing.view = crate::phone::BrowserView::Page;
+        self.phone.browsing.pending = Some(url.into());
         Ok(())
     }
     pub fn take_request(&mut self) -> Option<Request> {
-        let url = self.phone.pending_url.take()?;
-        self.phone.requested_url = url.clone();
-        let id = self.phone.browser.start();
-        if !self.phone.preferences.mobile_data {
+        let url = self.phone.browsing.pending.take()?;
+        self.phone.browsing.requested = url.clone();
+        let id = self.phone.browsing.model.start();
+        if !self.phone.settings.preferences.mobile_data {
             self.phone
-                .browser
+                .browsing
+                .model
                 .complete(id, Err("移动数据已关闭。".into()));
             return None;
         }
@@ -248,10 +258,13 @@ impl Runtime {
         if request.owner != self.owner {
             return false;
         }
-        let updated = self.phone.browser.complete(request.id, result);
+        let updated = self.phone.browsing.model.complete(request.id, result);
         if updated {
-            self.phone.browser_data.visit(&self.phone.browser.page);
-            self.phone.browser_dirty = true;
+            self.phone
+                .browsing
+                .data
+                .visit(&self.phone.browsing.model.page);
+            self.phone.browsing.dirty = true;
             if matches!(
                 self.phone.overlay,
                 Some(

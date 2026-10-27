@@ -14,7 +14,7 @@ enum Focus {
 }
 impl Phone {
     fn editor_focus(&self) -> Option<Focus> {
-        if self.active_reminder().is_some() || self.mail_ui.pending.is_some() {
+        if self.active_reminder().is_some() || self.messaging.ui.pending.is_some() {
             return None;
         }
         if let Some(overlay) = &self.overlay {
@@ -22,10 +22,11 @@ impl Phone {
         }
         Some(match self.screen {
             Screen::Tools(tools::ToolPage::Dial) => Focus::Dial,
-            Screen::Compose if self.compose.recipient => Focus::Recipient,
+            Screen::Compose if self.messaging.compose.recipient => Focus::Recipient,
             Screen::Compose => Focus::Body,
             Screen::Conversation
-                if self.chat.focus.is_none() && self.chat.popup == conversation::Popup::None =>
+                if self.messaging.chat.focus.is_none()
+                    && self.messaging.chat.popup == conversation::Popup::None =>
             {
                 Focus::Body
             }
@@ -49,10 +50,10 @@ impl Phone {
                 _ => return None,
             },
             Focus::Dial => &self.calls.number,
-            Focus::Recipient => &self.compose.to,
-            Focus::Body => &self.compose.body,
-            Focus::Query => &self.organizer.contact.query,
-            Focus::Contact => &self.organizer.contact.input,
+            Focus::Recipient => &self.messaging.compose.to,
+            Focus::Body => &self.messaging.compose.body,
+            Focus::Query => &self.contacts.ui.query,
+            Focus::Contact => &self.contacts.ui.input,
             Focus::Timer => &self.tools.timer_edit.name,
             Focus::Event => &self.organizer.event.input,
             Focus::Alarm => &self.organizer.alarm.name,
@@ -65,10 +66,10 @@ impl Phone {
                 _ => return None,
             },
             Focus::Dial => &mut self.calls.number,
-            Focus::Recipient => &mut self.compose.to,
-            Focus::Body => &mut self.compose.body,
-            Focus::Query => &mut self.organizer.contact.query,
-            Focus::Contact => &mut self.organizer.contact.input,
+            Focus::Recipient => &mut self.messaging.compose.to,
+            Focus::Body => &mut self.messaging.compose.body,
+            Focus::Query => &mut self.contacts.ui.query,
+            Focus::Contact => &mut self.contacts.ui.input,
             Focus::Timer => &mut self.tools.timer_edit.name,
             Focus::Event => &mut self.organizer.event.input,
             Focus::Alarm => &mut self.organizer.alarm.name,

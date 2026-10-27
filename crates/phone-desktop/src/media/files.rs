@@ -27,7 +27,7 @@ impl Media {
                 FileResult::Remove { removed, failed } => {
                     if !removed.is_empty() {
                         self.prepare_refresh(phone);
-                        if let Some(saved) = &mut self.restore
+                        if let Some(saved) = &mut phone.playback.resume
                             && saved
                                 .path
                                 .as_ref()
@@ -134,20 +134,20 @@ impl Media {
                     if phone.screen != Screen::Media {
                         return Err("此功能已停用。".into());
                     }
-                    phone.media_ui.selected = path.clone();
-                    phone.media_ui.viewing = true;
-                    phone.media_ui.direct = true;
-                    phone.media_ui.entries = phone
+                    phone.media.ui.selected = path.clone();
+                    phone.media.ui.viewing = true;
+                    phone.media.ui.direct = true;
+                    phone.media.ui.entries = phone
                         .files
                         .entries
                         .iter()
                         .filter(|e| !e.directory && purpose.accepts(&e.path))
                         .cloned()
                         .collect();
-                    phone.media_ui.pending = vec![Request::Open(path)];
+                    phone.media.ui.pending = vec![Request::Open(path)];
                     return Ok(());
                 }
-                if self.scanning || phone.music_loading {
+                if self.scanning || phone.playback.loading {
                     return Err("正在刷新曲库，请稍候。".into());
                 }
                 if !phone.features.music {
@@ -158,19 +158,20 @@ impl Media {
                     i
                 } else {
                     phone
-                        .music
+                        .playback
+                        .model
                         .tracks
                         .push((track.title.clone(), track.seconds));
                     self.tracks.push(track);
                     phone.append_music_path(path.clone());
                     self.tracks.len() - 1
                 };
-                self.restore = None;
+                phone.playback.resume = None;
                 phone.files.selected = phone.index;
                 phone.go(Screen::Music);
-                phone.music.queue.clear();
+                phone.playback.model.queue.clear();
                 phone.play_track(index);
-                phone.music_return_file = true;
+                phone.playback.return_file = true;
                 Ok(())
             }
             FileRequest::Mkdir(path) => {
@@ -194,7 +195,7 @@ impl Media {
                 false
             }
         };
-        if let Some(saved) = &mut self.restore {
+        if let Some(saved) = &mut phone.playback.resume {
             if let Some(path) = &mut saved.path {
                 remap(path);
             }
@@ -203,35 +204,35 @@ impl Media {
             }
         }
         let mut changed = false;
-        for row in &mut phone.local_data.contacts {
+        for row in &mut phone.contacts.records {
             changed |= remap(&mut row[0]);
             changed |= remap(&mut row[7]);
         }
-        for event in &mut phone.local_data.events {
+        for event in &mut phone.organizer.events {
             changed |= remap(&mut event.fields[4]);
         }
-        for alarm in &mut phone.local_data.alarms {
+        for alarm in &mut phone.organizer.alarms {
             changed |= remap(&mut alarm.fields[3]);
         }
-        for list in &mut phone.local_data.playlists {
+        for list in &mut phone.playback.playlists {
             for path in &mut list.paths {
                 changed |= remap(path);
             }
         }
-        phone.local_dirty |= changed;
-        if let Some(path) = &mut phone.preferences.wallpaper {
-            phone.preferences_dirty |= remap(path);
+        phone.records_dirty |= changed;
+        if let Some(path) = &mut phone.settings.preferences.wallpaper {
+            phone.settings.dirty |= remap(path);
         }
-        phone.preferences_dirty |= remap(&mut phone.preferences.ringtone);
-        phone.pictures.clear();
+        phone.settings.dirty |= remap(&mut phone.settings.preferences.ringtone);
+        phone.media.pictures.clear();
     }
     pub(super) fn prepare_refresh(&mut self, phone: &mut Phone) {
-        if self.restore.is_none() {
-            self.restore = Some(SavedMusic::capture(phone, &self.tracks));
+        if phone.playback.resume.is_none() {
+            phone.playback.resume = Some(phone.playback.snapshot());
         }
         self.audio.stop();
-        phone.music.playing = false;
-        phone.music_loading = phone.features.music;
-        phone.music_refresh = phone.features.music;
+        phone.playback.model.playing = false;
+        phone.playback.loading = phone.features.music;
+        phone.playback.refresh = phone.features.music;
     }
 }

@@ -24,13 +24,13 @@ fn dial_editing_offline_failure_and_history_roundtrip() {
     assert_eq!(p.calls.number.text(), "+12025550143");
     key(&mut p, Key::Call);
     assert!(matches!(&p.overlay,Some(Overlay::Notice(s)) if s.contains("未连接通话服务")));
-    assert_eq!(p.local_data.calls[0].time, 1234);
-    assert!(p.local_dirty);
-    let json = serde_json::to_vec(&p.local_data).unwrap();
+    assert_eq!(p.calls.records[0].time, 1234);
+    assert!(p.records_dirty);
+    let json = serde_json::to_vec(&p.records()).unwrap();
     let restored: organizer::LocalData = serde_json::from_slice(&json).unwrap();
     crate::storage::validate_organizer(&restored).unwrap();
     assert_eq!(restored.calls[0].number, "+12025550143");
-    assert!(p.mailbox.outbox.is_empty());
+    assert!(p.messaging.mailbox.outbox.is_empty());
 }
 #[test]
 fn history_delete_cancel_return_and_capacity() {
@@ -40,14 +40,14 @@ fn history_delete_cancel_return_and_capacity() {
         p.overlay = None;
         key(&mut p, Key::Call);
     }
-    assert_eq!(p.local_data.calls.len(), LIMIT);
+    assert_eq!(p.calls.records.len(), LIMIT);
     p.launch(Screen::Tools(tools::ToolPage::Calls));
     key(&mut p, Key::Delete);
     key(&mut p, Key::SoftRight);
-    assert_eq!(p.local_data.calls.len(), LIMIT);
+    assert_eq!(p.calls.records.len(), LIMIT);
     key(&mut p, Key::Delete);
     key(&mut p, Key::Center);
-    assert_eq!(p.local_data.calls.len(), LIMIT - 1);
+    assert_eq!(p.calls.records.len(), LIMIT - 1);
     key(&mut p, Key::Center);
     assert_eq!(p.screen, Screen::Tools(tools::ToolPage::Dial));
     key(&mut p, Key::SoftLeft);
@@ -55,8 +55,8 @@ fn history_delete_cancel_return_and_capacity() {
     key(&mut p, Key::Center);
     assert_eq!(p.screen, Screen::Tools(tools::ToolPage::Calls));
     assert_eq!(p.tools.page, tools::ToolPage::Calls);
-    p.local_data.calls[0].number = "invalid".into();
-    assert!(crate::storage::validate_organizer(&p.local_data).is_err());
+    p.calls.records[0].number = "invalid".into();
+    assert!(crate::storage::validate_organizer(&p.records()).is_err());
 }
 #[test]
 fn old_profile_and_hash_star_dialing_are_supported() {
@@ -74,13 +74,13 @@ fn old_profile_and_hash_star_dialing_are_supported() {
     assert_eq!(p.calls.number.text(), "9");
     key(&mut p, Key::SoftRight);
     key(&mut p, Key::Center);
-    assert!(p.local_data.calls.is_empty());
+    assert!(p.calls.records.is_empty());
 }
 
 #[test]
 fn selecting_a_contact_never_falls_back_to_an_unrelated_typed_number() {
     let mut p = Phone::new(Default::default());
-    p.local_data.contacts.push(
+    p.contacts.records.push(
         ["", "Alpha", "", "", "", "", "1900-01-01", "预设", "无"]
             .map(str::to_owned)
             .into(),
@@ -88,11 +88,11 @@ fn selecting_a_contact_never_falls_back_to_an_unrelated_typed_number() {
     p.open_dialer("12345".into());
     key(&mut p, Key::Down);
     key(&mut p, Key::Call);
-    assert!(p.local_data.calls.is_empty());
+    assert!(p.calls.records.is_empty());
     p.overlay = None;
-    p.local_data.contacts[0][3] = "67890".into();
+    p.contacts.records[0][3] = "67890".into();
     key(&mut p, Key::Call);
-    assert_eq!(p.local_data.calls[0].number, "67890");
+    assert_eq!(p.calls.records[0].number, "67890");
     p.overlay = None;
     key(&mut p, Key::Digit(6));
     assert!(p.calls.selected.is_none());

@@ -16,7 +16,7 @@ fn key(p: &mut Phone, key: Key) {
 #[test]
 fn system_state_variants() {
     let mut p = Phone::new(Default::default());
-    p.accent = 4;
+    p.settings.accent = 4;
     let mut c = Canvas::new().unwrap();
     p.launch(Screen::Settings);
     for (page, name) in [
@@ -25,11 +25,11 @@ fn system_state_variants() {
         (SettingsPage::Keyboard, "settings-keyboard"),
         (SettingsPage::Shortcuts, "settings-shortcuts"),
     ] {
-        p.settings_page = page;
+        p.settings.page = page;
         p.index = 0;
         frame(&mut c, &mut p, name);
     }
-    p.settings_page = SettingsPage::Shortcut { left: true };
+    p.settings.page = SettingsPage::Shortcut { left: true };
     for (index, name) in [
         (0, "shortcut-first"),
         (9, "shortcut-media"),
@@ -38,22 +38,22 @@ fn system_state_variants() {
         p.index = index;
         frame(&mut c, &mut p, name);
     }
-    p.settings_first = 12;
+    p.settings.first = 12;
     p.index = 12;
     frame(&mut c, &mut p, "shortcut-current-choice");
-    p.settings_page = SettingsPage::Theme;
+    p.settings.page = SettingsPage::Theme;
     for i in 0..6 {
-        p.theme_preview = i;
+        p.settings.preview = i;
         frame(&mut c, &mut p, &format!("theme-{i}"));
     }
-    p.settings_page = SettingsPage::Personalization;
+    p.settings.page = SettingsPage::Personalization;
     p.index = 3;
     frame(&mut c, &mut p, "theme-cancel");
     p.launch(Screen::Tools(ToolPage::Counter));
     frame(&mut c, &mut p, "counter-empty");
     p.open_dialer("00000000000".into());
     for name in ["Alpha", "Bravo", "Charlie", "Delta"] {
-        p.local_data.contacts.push(
+        p.contacts.records.push(
             [
                 "",
                 name,
@@ -124,15 +124,15 @@ fn system_state_variants() {
     p.index = 2;
     frame(&mut c, &mut p, "other-restored");
     p.launch(Screen::Snake);
-    p.snake_view = crate::phone::snake::SnakeView::Level;
+    p.gaming.view = crate::phone::snake::SnakeView::Level;
     for level in [7, 8] {
-        p.snake_level_preview = level;
+        p.gaming.level_preview = level;
         frame(&mut c, &mut p, &format!("snake-level-{level}"));
     }
-    p.snake_view = crate::phone::snake::SnakeView::Menu;
-    p.snake.over = false;
-    p.snake.start();
-    p.snake.running = false;
+    p.gaming.view = crate::phone::snake::SnakeView::Menu;
+    p.gaming.model.over = false;
+    p.gaming.model.start();
+    p.gaming.model.running = false;
     p.index = 0;
     frame(&mut c, &mut p, "snake-pause");
 }
@@ -140,10 +140,10 @@ fn system_state_variants() {
 #[test]
 fn message_state_variants() {
     let mut p = Phone::new(Default::default());
-    p.accent = 4;
+    p.settings.accent = 4;
     let mut c = Canvas::new().unwrap();
     p.go(Screen::Compose);
-    p.compose.recipient = false;
+    p.messaging.compose.recipient = false;
     for (name, text) in [
         ("sms-native-one", "你".to_string()),
         ("sms-numeric-160", "1234567890".repeat(16)),
@@ -158,8 +158,8 @@ fn message_state_variants() {
             "现在无法通话。我将稍后呼叫。".into(),
         ),
     ] {
-        p.compose.body = Editor::new(&text, 4096);
-        p.compose.body.numeric = true;
+        p.messaging.compose.body = Editor::new(&text, 4096);
+        p.messaging.compose.body.numeric = true;
         frame(&mut c, &mut p, name);
     }
     for (index, name) in [
@@ -173,7 +173,7 @@ fn message_state_variants() {
         });
         frame(&mut c, &mut p, name);
     }
-    p.compose.body.clear();
+    p.messaging.compose.body.clear();
     p.overlay = Some(Overlay::Menu {
         kind: MenuKind::Sms,
         index: 0,
@@ -195,16 +195,18 @@ fn message_state_variants() {
     });
     frame(&mut c, &mut p, "sms-smiley-picker");
     p.overlay = None;
-    p.compose.body = Editor::new("", 4096);
-    p.compose
+    p.messaging.compose.body = Editor::new("", 4096);
+    p.messaging
+        .compose
         .body
         .prediction
         .set_language(Some(phone_core::predict::Language::Chinese));
     for name in ["pinyin", "stroke", "title", "lower", "upper", "number"] {
         frame(&mut c, &mut p, &format!("sms-mode-{name}"));
-        p.compose.body.cycle_mode();
+        p.messaging.compose.body.cycle_mode();
     }
-    p.compose
+    p.messaging
+        .compose
         .body
         .prediction
         .set_language(Some(phone_core::predict::Language::Chinese));
@@ -212,31 +214,31 @@ fn message_state_variants() {
     frame(&mut c, &mut p, "sms-pinyin-6");
     key(&mut p, Key::Digit(4));
     frame(&mut c, &mut p, "sms-pinyin-64");
-    p.compose.body = Editor::new("", 4096);
-    p.compose.body.titlecase = true;
+    p.messaging.compose.body = Editor::new("", 4096);
+    p.messaging.compose.body.titlecase = true;
     for _ in 0..3 {
-        p.compose.body.digit(2, 0);
+        p.messaging.compose.body.digit(2, 0);
     }
     frame(&mut c, &mut p, "sms-multitap-pending");
-    p.compose.body.tick(800);
+    p.messaging.compose.body.tick(800);
     frame(&mut c, &mut p, "sms-multitap-committed");
-    p.compose = Compose::default();
+    p.messaging.compose = Compose::default();
     frame(&mut c, &mut p, "sms-new-after-save");
-    p.compose.body = Editor::new(&format!("呢{}", "1234567890".repeat(7)), 4096);
+    p.messaging.compose.body = Editor::new(&format!("呢{}", "1234567890".repeat(7)), 4096);
     frame(&mut c, &mut p, "sms-recipient-focus");
-    p.compose.recipient = false;
+    p.messaging.compose.recipient = false;
     frame(&mut c, &mut p, "sms-body-restored");
 }
 
 #[test]
 fn browser_chrome_variants() {
     let mut p = Phone::new(Default::default());
-    p.accent = 4;
+    p.settings.accent = 4;
     let mut c = Canvas::new().unwrap();
     p.launch(Screen::Browser);
-    p.browser_data.settings.home_url = "http://cn.bing.com".into();
-    p.browser_data.settings.download_images = false;
-    p.browser_view = BrowserView::Settings;
+    p.browsing.data.settings.home_url = "http://cn.bing.com".into();
+    p.browsing.data.settings.download_images = false;
+    p.browsing.view = BrowserView::Settings;
     for (i, name) in [
         (2, "browser-home-type-focus"),
         (4, "browser-images-off"),
@@ -248,20 +250,20 @@ fn browser_chrome_variants() {
         frame(&mut c, &mut p, name);
     }
     p.index = 4;
-    p.browser_data.settings.download_images = true;
+    p.browsing.data.settings.download_images = true;
     frame(&mut c, &mut p, "browser-images-on");
-    p.browser_data.settings.download_images = false;
+    p.browsing.data.settings.download_images = false;
     frame(&mut c, &mut p, "browser-images-restored-off");
     for (view, name) in [
         (BrowserView::HomeType, "browser-home-type-picker"),
         (BrowserView::FontSize, "browser-font-size-picker"),
         (BrowserView::Clear, "browser-clear-picker"),
     ] {
-        p.browser_view = view;
+        p.browsing.view = view;
         p.index = 0;
         frame(&mut c, &mut p, name);
     }
-    p.browser_view = BrowserView::Page;
+    p.browsing.view = BrowserView::Page;
     for (kind, index, name) in [
         (MenuKind::BrowserOpen, 0, "browser-open-menu"),
         (MenuKind::BrowserNavigation, 0, "browser-navigation-menu"),
@@ -300,21 +302,21 @@ fn browser_chrome_variants() {
         frame(&mut c, &mut p, name);
     }
     p.overlay = None;
-    p.browser_view = BrowserView::Page;
-    p.browser.page.url = "http://example.com".into();
-    p.browser.page.title.clear();
+    p.browsing.view = BrowserView::Page;
+    p.browsing.model.page.url = "http://example.com".into();
+    p.browsing.model.page.title.clear();
     p.overlay = Some(Overlay::Menu {
         kind: MenuKind::Browser,
         index: 5,
     });
     key(&mut p, Key::Center);
-    assert_eq!(p.browser_view, BrowserView::Details);
+    assert_eq!(p.browsing.view, BrowserView::Details);
     frame(&mut c, &mut p, "browser-page-details");
     key(&mut p, Key::SoftRight);
-    assert_eq!(p.browser_view, BrowserView::Page);
+    assert_eq!(p.browsing.view, BrowserView::Page);
     p.overlay = Some(Overlay::ClosePage);
     frame(&mut c, &mut p, "browser-page-close");
-    p.browser.page.elements = vec![Element::Select {
+    p.browsing.model.page.elements = vec![Element::Select {
         label: "".into(),
         name: "choice".into(),
         options: ["Open this select menu", "One", "Two", "Three"]
@@ -353,7 +355,7 @@ fn browser_chrome_variants() {
 fn transfer_and_timer_feedback_variants() {
     use crate::phone::files::FileView;
     let mut p = Phone::new(Default::default());
-    p.accent = 4;
+    p.settings.accent = 4;
     let mut c = Canvas::new().unwrap();
     p.launch(Screen::Tools(ToolPage::Files));
     p.files.capacity = Some((32 * 1024 * 1024, 30 * 1024 * 1024));
@@ -407,13 +409,14 @@ fn browser_document_variants() {
     // Equal visible text/values for review; these are local HTML fixtures, not
     // captured handset HTTP payloads. No request is sent by this test.
     let mut p = Phone::new(Default::default());
-    p.accent = 4;
+    p.settings.accent = 4;
     p.launch(Screen::Browser);
-    p.browser_data.settings.font_size = 0;
-    p.browser_view = BrowserView::Page;
+    p.browsing.data.settings.font_size = 0;
+    p.browsing.view = BrowserView::Page;
     let mut c = Canvas::new().unwrap();
-    p.browser = phone_core::browser::Browser::new(crate::web::parse("http://example.com", ""));
-    assert!(p.browser.page.elements.is_empty());
+    p.browsing.model =
+        phone_core::browser::Browser::new(crate::web::parse("http://example.com", ""));
+    assert!(p.browsing.model.page.elements.is_empty());
     frame(&mut c, &mut p, "browser-blank-page");
     for (name, url, html, title) in [
         (
@@ -429,27 +432,28 @@ fn browser_document_variants() {
             "World Wide Web",
         ),
     ] {
-        p.browser_data.settings.font_size = usize::from(name == "browser-live-text");
-        p.browser = phone_core::browser::Browser::new(crate::web::parse(url, html));
-        p.browser.page.title = title.into();
+        p.browsing.data.settings.font_size = usize::from(name == "browser-live-text");
+        p.browsing.model = phone_core::browser::Browser::new(crate::web::parse(url, html));
+        p.browsing.model.page.title = title.into();
         if let Some(i) = p
-            .browser
+            .browsing
+            .model
             .page
             .elements
             .iter()
             .position(|e| matches!(e, Element::Link { .. }))
         {
-            p.browser.focus = i;
+            p.browsing.model.focus = i;
         }
         frame(&mut c, &mut p, name);
     }
-    p.browser_data.settings.font_size = 0;
-    p.browser = phone_core::browser::Browser::new(crate::web::parse(
+    p.browsing.data.settings.font_size = 0;
+    p.browsing.model = phone_core::browser::Browser::new(crate::web::parse(
         "http://httpbin.org/forms/post",
         include_str!("../../../../scripts/fixtures/browser-form.html"),
     ));
     frame(&mut c, &mut p, "browser-live-form");
-    for e in &mut p.browser.page.elements {
+    for e in &mut p.browsing.model.page.elements {
         if let Element::Field { name, value, .. } = e
             && name == "custname"
         {
@@ -457,8 +461,9 @@ fn browser_document_variants() {
         }
     }
     frame(&mut c, &mut p, "browser-field-committed");
-    p.browser.focus = p
-        .browser
+    p.browsing.model.focus = p
+        .browsing
+        .model
         .page
         .elements
         .iter()
@@ -467,13 +472,14 @@ fn browser_document_variants() {
     frame(&mut c, &mut p, "browser-radio-focus");
     key(&mut p, Key::Center);
     frame(&mut c, &mut p, "browser-radio-selected");
-    p.browser = phone_core::browser::Browser::new(crate::web::parse(
+    p.browsing.model = phone_core::browser::Browser::new(crate::web::parse(
         "https://www.selenium.dev/selenium/web/web-form.html",
         "<h1>Web form</h1>Text input<input name=text>Password<input name=password type=password>Textarea<textarea name=textarea></textarea>Disabled input<input disabled>Readonly input<input readonly value='Readonly input'><br><a href='about:next'>Return to index</a><br>Dropdown (select)<br><select name=dropdown><option>Open this select menu</option><option>One</option><option>Two</option><option>Three</option></select>Dropdown",
     ));
     frame(&mut c, &mut p, "browser-https-form");
-    p.browser.focus = p
-        .browser
+    p.browsing.model.focus = p
+        .browsing
+        .model
         .page
         .elements
         .iter()
@@ -492,6 +498,6 @@ fn browser_document_variants() {
     key(&mut p, Key::SoftRight);
     frame(&mut c, &mut p, "browser-select-cancelled");
     assert!(
-        matches!(&p.browser.page.elements[p.browser.focus], Element::Select { selected, .. } if selected[2])
+        matches!(&p.browsing.model.page.elements[p.browsing.model.focus], Element::Select { selected, .. } if selected[2])
     );
 }

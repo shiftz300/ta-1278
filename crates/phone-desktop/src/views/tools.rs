@@ -1,7 +1,7 @@
 use super::*;
 use crate::phone::tools::ToolPage;
 use phone_core::utilities::clock;
-pub(super) fn render(c: &mut Canvas, p: &mut Phone) {
+pub(super) fn render(c: &mut Canvas, p: &Phone) {
     use ToolPage::*;
     if p.tools.page == Files {
         super::files::render(c, p);
@@ -114,9 +114,11 @@ pub(super) fn render(c: &mut Canvas, p: &mut Phone) {
                 if p.index == 1 { c.accent(3) } else { MUTED },
             );
             if p.index == 1 {
-                p.editor_lines = Edit::new([7, 125, 227, 27])
-                    .sized(20, 26)
-                    .draw(c, &edit.name);
+                c.layout.editor = Some(
+                    Edit::new([7, 125, 227, 27])
+                        .sized(20, 26)
+                        .draw(c, &edit.name),
+                );
                 crate::ui::editor::input_mode(c, &edit.name, 232, 103);
             } else {
                 c.text(7, 125, &edit.name.text(), 20, WHITE);

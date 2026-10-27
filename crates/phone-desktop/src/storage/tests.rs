@@ -86,11 +86,11 @@ fn press(p: &mut Phone, key: Key) {
 }
 fn restored(dir: &Path) -> Phone {
     let mut p = Phone::new(Mailbox::default());
-    p.local_data = load_organizer(dir).unwrap();
+    p.apply_records(load_organizer(dir).unwrap());
     p
 }
 fn checkpoint(dir: &Path, p: &Phone) {
-    save_json(dir, "organizer.json", &p.local_data, 8 * 1024 * 1024).unwrap();
+    save_json(dir, "organizer.json", &p.records(), 8 * 1024 * 1024).unwrap();
 }
 fn one_alarm(repeat: &str) -> organizer::Alarm {
     organizer::Alarm {
@@ -184,37 +184,37 @@ fn older_organizer_schema_migrates_and_future_or_invalid_data_is_preserved() {
 fn fired_once_alarm_and_snooze_survive_restart_and_midnight() {
     let dir = Temp::new();
     let mut p = Phone::new(Mailbox::default());
-    p.local_data.alarms.push(one_alarm("一次"));
+    p.organizer.alarms.push(one_alarm("一次"));
     let day = Date::new(2026, 12, 31).unwrap();
     p.check_alarms(day, 1438);
     checkpoint(&dir.0, &p);
     let mut p = restored(&dir.0);
-    assert!(!p.local_data.alarms[0].enabled);
-    assert_eq!(p.local_data.reminders.alerts.len(), 1);
+    assert!(!p.organizer.alarms[0].enabled);
+    assert_eq!(p.organizer.reminders.alerts.len(), 1);
     p.check_alarms(day, 1438);
     press(&mut p, Key::SoftLeft);
     checkpoint(&dir.0, &p);
     let mut p = restored(&dir.0);
-    assert!(p.local_data.reminders.alerts.is_empty());
-    assert_eq!(p.local_data.reminders.snoozed.len(), 1);
+    assert!(p.organizer.reminders.alerts.is_empty());
+    assert_eq!(p.organizer.reminders.snoozed.len(), 1);
     p.check_alarms(day.next(1), 2);
-    assert!(p.local_data.reminders.alerts.is_empty());
+    assert!(p.organizer.reminders.alerts.is_empty());
     p.check_alarms(day.next(1), 4);
-    assert_eq!(p.local_data.reminders.alerts.len(), 1);
-    assert!(p.local_data.reminders.snoozed.is_empty());
+    assert_eq!(p.organizer.reminders.alerts.len(), 1);
+    assert!(p.organizer.reminders.snoozed.is_empty());
     press(&mut p, Key::Center);
     checkpoint(&dir.0, &p);
     let mut p = restored(&dir.0);
     p.check_alarms(day.next(1), 4);
-    assert!(p.local_data.reminders.alerts.is_empty());
+    assert!(p.organizer.reminders.alerts.is_empty());
 }
 #[test]
 fn dismissed_recurring_alarm_and_calendar_event_do_not_repeat_on_same_minute_restart() {
     let dir = Temp::new();
     let mut p = Phone::new(Mailbox::default());
     let day = Date::new(2026, 10, 26).unwrap();
-    p.local_data.alarms.push(one_alarm("每天"));
-    p.local_data.events.push(organizer::CalendarEvent {
+    p.organizer.alarms.push(one_alarm("每天"));
+    p.organizer.events.push(organizer::CalendarEvent {
         date: day,
         fields: ["Calendar", "23:58", "准时", "", "无", "每天", ""]
             .map(str::to_owned)
@@ -222,35 +222,35 @@ fn dismissed_recurring_alarm_and_calendar_event_do_not_repeat_on_same_minute_res
     });
     p.check_alarms(day, 1438);
     p.check_events(day, 1438);
-    assert_eq!(p.local_data.reminders.alerts.len(), 2);
+    assert_eq!(p.organizer.reminders.alerts.len(), 2);
     press(&mut p, Key::Center);
     press(&mut p, Key::Center);
     checkpoint(&dir.0, &p);
     let mut p = restored(&dir.0);
     p.check_alarms(day, 1438);
     p.check_events(day, 1438);
-    assert!(p.local_data.reminders.alerts.is_empty());
+    assert!(p.organizer.reminders.alerts.is_empty());
     p.check_alarms(day.next(1), 1438);
     p.check_events(day.next(1), 1438);
-    assert_eq!(p.local_data.reminders.alerts.len(), 2);
+    assert_eq!(p.organizer.reminders.alerts.len(), 2);
 }
 #[test]
 fn failed_alarm_checkpoint_keeps_old_record_and_live_alert_for_retry() {
     let dir = Temp::new();
     let mut p = Phone::new(Mailbox::default());
-    p.local_data.alarms.push(one_alarm("一次"));
+    p.organizer.alarms.push(one_alarm("一次"));
     checkpoint(&dir.0, &p);
     std::fs::create_dir(dir.0.join("organizer.json.bak")).unwrap();
     p.check_alarms(Date::new(2026, 10, 26).unwrap(), 1438);
-    assert!(save_json(&dir.0, "organizer.json", &p.local_data, 8 * 1024 * 1024).is_err());
+    assert!(save_json(&dir.0, "organizer.json", &p.records(), 8 * 1024 * 1024).is_err());
     let before = restored(&dir.0);
-    assert!(before.local_data.alarms[0].enabled);
-    assert!(before.local_data.reminders.alerts.is_empty());
-    assert!(!p.local_data.alarms[0].enabled && p.local_dirty);
-    assert_eq!(p.local_data.reminders.alerts.len(), 1);
+    assert!(before.organizer.alarms[0].enabled);
+    assert!(before.organizer.reminders.alerts.is_empty());
+    assert!(!p.organizer.alarms[0].enabled && p.records_dirty);
+    assert_eq!(p.organizer.reminders.alerts.len(), 1);
     std::fs::remove_dir(dir.0.join("organizer.json.bak")).unwrap();
     checkpoint(&dir.0, &p);
-    assert_eq!(restored(&dir.0).local_data.reminders.alerts.len(), 1);
+    assert_eq!(restored(&dir.0).organizer.reminders.alerts.len(), 1);
 }
 #[test]
 fn running_and_paused_clocks_restore_elapsed_time_without_restarting_a_finished_timer() {
@@ -330,24 +330,31 @@ fn timer_expiry_does_not_destroy_an_open_editor_and_can_be_acknowledged_later() 
 #[test]
 fn utility_future_schema_is_rejected_and_failed_checkpoint_remains_retryable() {
     let dir = Temp::new();
-    let mut tools = Tools::default();
-    let mut session = session::Session::load(&dir.0, &mut tools).unwrap();
-    tools.timer_name = "before".into();
-    tools.dirty = true;
-    session.save(&dir.0, &mut tools, false).unwrap();
+    let mut store = crate::persistence::Directory::new(&dir.0);
+    let mut runtime = crate::Runtime::load_profile(
+        Default::default(),
+        crate::Time::default(),
+        &mut store,
+        Box::new(phone_core::services::Offline),
+        crate::persistence::Resume::Paused,
+    )
+    .unwrap();
+    runtime.phone.tools.timer_name = "before".into();
+    runtime.phone.tools.dirty = true;
+    runtime.flush(&mut store, false).unwrap();
     std::fs::create_dir(dir.0.join("utilities.json.bak")).unwrap();
-    tools.timer_name = "after".into();
-    tools.dirty = true;
-    assert!(session.save(&dir.0, &mut tools, false).is_err());
-    assert!(tools.dirty);
+    runtime.phone.tools.timer_name = "after".into();
+    runtime.phone.tools.dirty = true;
+    assert!(runtime.flush(&mut store, false).is_err());
+    assert!(runtime.phone.tools.dirty);
     assert_eq!(
         utilities::Snapshot::load(&dir.0).unwrap().data.timer_name,
         "before"
     );
     std::fs::remove_dir(dir.0.join("utilities.json.bak")).unwrap();
-    session.save(&dir.0, &mut tools, false).unwrap();
-    assert!(!tools.dirty);
-    let mut future = utilities::Snapshot::capture(&tools, 1000);
+    runtime.flush(&mut store, false).unwrap();
+    assert!(!runtime.phone.tools.dirty);
+    let mut future = utilities::Snapshot::capture(&runtime.phone.tools, 1000);
     future.schema_version = 9;
     let original = serde_json::to_vec(&future).unwrap();
     std::fs::write(dir.0.join("utilities.json"), &original).unwrap();

@@ -5,6 +5,7 @@ pub mod candidates;
 pub mod chrome;
 pub mod editor;
 pub mod form;
+pub mod layout;
 pub mod list;
 pub mod menu;
 pub mod navigation;

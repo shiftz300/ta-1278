@@ -36,6 +36,11 @@ pub enum Request {
     Command(String),
     Stop,
 }
+#[derive(Default)]
+pub struct State {
+    pub ui: MediaBrowser,
+    pub pictures: std::collections::HashMap<String, image::RgbaImage>,
+}
 pub struct MediaBrowser {
     pub purpose: Purpose,
     pub path: String,
@@ -100,7 +105,7 @@ impl Phone {
         let origin = self.screen;
         let index = self.index;
         self.go(Screen::Media);
-        self.media_ui = MediaBrowser {
+        self.media.ui = MediaBrowser {
             purpose,
             origin,
             return_index: index,
@@ -109,15 +114,15 @@ impl Phone {
         };
     }
     pub fn close_media(&mut self) {
-        let origin = self.media_ui.origin;
-        let index = self.media_ui.return_index;
-        self.media_ui.pending.push(Request::Stop);
-        self.media_ui.playing = false;
+        let origin = self.media.ui.origin;
+        let index = self.media.ui.return_index;
+        self.media.ui.pending.push(Request::Stop);
+        self.media.ui.playing = false;
         self.go(origin);
         self.index = index;
     }
     fn choose_media(&mut self, path: String) {
-        match self.media_ui.purpose {
+        match self.media.ui.purpose {
             Purpose::ContactPicture => self.organizer.draft[0] = path,
             Purpose::ContactRingtone => {
                 self.audio_preview = Some(path.clone());
@@ -132,14 +137,14 @@ impl Phone {
                 self.organizer.draft[3] = path;
             }
             Purpose::Wallpaper => {
-                self.preferences.wallpaper = Some(path);
-                self.preferences.wallpaper_enabled = true;
-                self.preferences_dirty = true;
+                self.settings.preferences.wallpaper = Some(path);
+                self.settings.preferences.wallpaper_enabled = true;
+                self.settings.dirty = true;
             }
             Purpose::Ringtone => {
                 self.audio_preview = Some(path.clone());
-                self.preferences.ringtone = path;
-                self.preferences_dirty = true;
+                self.settings.preferences.ringtone = path;
+                self.settings.dirty = true;
             }
             _ => return,
         }
@@ -147,26 +152,26 @@ impl Phone {
     }
     pub(super) fn media_key(&mut self, key: Key) {
         use Request::*;
-        if self.media_ui.viewing {
-            let video = self.media_ui.purpose == Purpose::Videos;
+        if self.media.ui.viewing {
+            let video = self.media.ui.purpose == Purpose::Videos;
             match key {
                 Key::SoftRight => {
-                    if self.media_ui.direct {
+                    if self.media.ui.direct {
                         self.close_media();
                         return;
                     }
-                    self.media_ui.viewing = false;
-                    self.media_ui.playing = false;
-                    self.media_ui.pending.push(Stop);
+                    self.media.ui.viewing = false;
+                    self.media.ui.playing = false;
+                    self.media.ui.pending.push(Stop);
                 }
-                Key::Center if self.media_ui.purpose.picker() && self.media_ui.frame.is_some() => {
-                    self.choose_media(self.media_ui.selected.clone())
+                Key::Center if self.media.ui.purpose.picker() && self.media.ui.frame.is_some() => {
+                    self.choose_media(self.media.ui.selected.clone())
                 }
-                Key::Center if self.media_ui.purpose.picker() => {}
+                Key::Center if self.media.ui.purpose.picker() => {}
                 Key::Center if video => {
-                    self.media_ui.playing = !self.media_ui.playing;
-                    self.media_ui.pending.push(Command(
-                        if self.media_ui.playing {
+                    self.media.ui.playing = !self.media.ui.playing;
+                    self.media.ui.pending.push(Command(
+                        if self.media.ui.playing {
                             "play"
                         } else {
                             "pause"
@@ -177,32 +182,34 @@ impl Phone {
                 Key::Left | Key::Right if video => {
                     let delta = if key == Key::Left { -5. } else { 5. };
                     let pos =
-                        (self.media_ui.position + delta).clamp(0., self.media_ui.duration.max(0.));
-                    self.media_ui.pending.push(Command(format!("seek {pos}")));
+                        (self.media.ui.position + delta).clamp(0., self.media.ui.duration.max(0.));
+                    self.media.ui.pending.push(Command(format!("seek {pos}")));
                 }
                 Key::Up | Key::Down if video => {
-                    self.media_ui.volume = if key == Key::Up {
-                        (self.media_ui.volume + 1).min(10)
+                    self.media.ui.volume = if key == Key::Up {
+                        (self.media.ui.volume + 1).min(10)
                     } else {
-                        self.media_ui.volume.saturating_sub(1)
+                        self.media.ui.volume.saturating_sub(1)
                     };
-                    self.media_ui
+                    self.media
+                        .ui
                         .pending
-                        .push(Command(format!("volume {}", self.media_ui.volume)));
+                        .push(Command(format!("volume {}", self.media.ui.volume)));
                 }
                 Key::Center if !video => {
-                    self.media_ui.zoom = if self.media_ui.zoom == 4 {
+                    self.media.ui.zoom = if self.media.ui.zoom == 4 {
                         1
                     } else {
-                        self.media_ui.zoom * 2
+                        self.media.ui.zoom * 2
                     };
-                    self.media_ui.pan = (0, 0);
+                    self.media.ui.pan = (0, 0);
                 }
                 Key::Left | Key::Right
-                    if self.media_ui.zoom == 1 && !self.media_ui.purpose.picker() =>
+                    if self.media.ui.zoom == 1 && !self.media.ui.purpose.picker() =>
                 {
                     let files: Vec<_> = self
-                        .media_ui
+                        .media
+                        .ui
                         .entries
                         .iter()
                         .filter(|e| !e.directory)
@@ -211,50 +218,51 @@ impl Phone {
                     if !files.is_empty() {
                         let i = files
                             .iter()
-                            .position(|p| p == &self.media_ui.selected)
+                            .position(|p| p == &self.media.ui.selected)
                             .unwrap_or(0);
                         let next = if key == Key::Left {
                             (i + files.len() - 1) % files.len()
                         } else {
                             (i + 1) % files.len()
                         };
-                        self.media_ui.selected = files[next].clone();
-                        self.media_ui.frame = None;
-                        self.media_ui.pending.push(Open(files[next].clone()));
+                        self.media.ui.selected = files[next].clone();
+                        self.media.ui.frame = None;
+                        self.media.ui.pending.push(Open(files[next].clone()));
                     }
                 }
-                Key::Up => self.media_ui.pan.1 += 16,
-                Key::Down => self.media_ui.pan.1 -= 16,
-                Key::Left => self.media_ui.pan.0 += 16,
-                Key::Right => self.media_ui.pan.0 -= 16,
+                Key::Up => self.media.ui.pan.1 += 16,
+                Key::Down => self.media.ui.pan.1 -= 16,
+                Key::Left => self.media.ui.pan.0 += 16,
+                Key::Right => self.media.ui.pan.0 -= 16,
                 _ => {}
             }
             return;
         }
-        let n = self.media_ui.entries.len();
+        let n = self.media.ui.entries.len();
         match key {
             Key::Up | Key::Down => {
                 vertical(&mut self.index, n, key, Boundary::Wrap);
             }
             Key::SoftRight => {
-                if let Some((path, index)) = self.media_ui.history.pop() {
-                    self.media_ui.pending.push(List(path));
+                if let Some((path, index)) = self.media.ui.history.pop() {
+                    self.media.ui.pending.push(List(path));
                     self.index = index;
                 } else {
                     self.close_media();
                 }
             }
             Key::Center | Key::SoftLeft if n > 0 => {
-                let e = self.media_ui.entries[self.index.min(n - 1)].clone();
+                let e = self.media.ui.entries[self.index.min(n - 1)].clone();
                 if e.directory {
-                    self.media_ui
+                    self.media
+                        .ui
                         .history
-                        .push((self.media_ui.path.clone(), self.index));
+                        .push((self.media.ui.path.clone(), self.index));
                     self.index = 0;
-                    self.media_ui.pending.push(List(e.path));
-                } else if self.media_ui.purpose.picker()
+                    self.media.ui.pending.push(List(e.path));
+                } else if self.media.ui.purpose.picker()
                     && matches!(
-                        self.media_ui.purpose,
+                        self.media.ui.purpose,
                         Purpose::Ringtone
                             | Purpose::ContactRingtone
                             | Purpose::EventRingtone
@@ -263,12 +271,12 @@ impl Phone {
                 {
                     self.choose_media(e.path);
                 } else {
-                    self.media_ui.selected = e.path.clone();
-                    self.media_ui.frame = None;
-                    self.media_ui.viewing = true;
-                    self.media_ui.zoom = 1;
-                    self.media_ui.pan = (0, 0);
-                    self.media_ui.pending.push(Open(e.path));
+                    self.media.ui.selected = e.path.clone();
+                    self.media.ui.frame = None;
+                    self.media.ui.viewing = true;
+                    self.media.ui.zoom = 1;
+                    self.media.ui.pan = (0, 0);
+                    self.media.ui.pending.push(Open(e.path));
                 }
             }
             _ => {}

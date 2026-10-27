@@ -262,3 +262,32 @@ impl Audio {
         Ok(())
     }
 }
+
+impl crate::platform::Sound for Audio {
+    fn effect_volume(&mut self, volume: u8) {
+        Self::effect_volume(self, volume);
+    }
+    fn feedback(&mut self, cue: crate::Cue, volume: u8) -> Result<(), String> {
+        Self::feedback(self, cue, volume)
+    }
+    fn poll_effects(&mut self) -> Result<(), String> {
+        Self::poll_effects(self)
+    }
+    fn preview(&mut self, files: &Folder, path: &str, volume: u8) -> Result<(), String> {
+        Self::preview(self, files, path, volume)
+    }
+    fn alert(&mut self, files: &Folder, tone: Option<&str>, volume: u8) -> Result<(), String> {
+        Self::alert(self, files, tone, volume)
+    }
+    fn stop(&mut self) {
+        Self::stop(self);
+    }
+    fn sync(
+        &mut self,
+        files: &Folder,
+        path: Option<&str>,
+        music: &mut Music,
+    ) -> Result<(), String> {
+        Self::sync(self, files, path, music)
+    }
+}

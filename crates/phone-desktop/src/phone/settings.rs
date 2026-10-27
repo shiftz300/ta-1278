@@ -1,6 +1,8 @@
 //! Settings routes observed on firmware 17.00.17.02. Preferences belong to the replica.
+mod state;
 use super::*;
 use serde::{Deserialize, Serialize};
+pub use state::State;
 
 pub const SHORTCUTS: [&str; 17] = [
     "无",
@@ -103,7 +105,7 @@ pub enum SettingsPage {
 }
 impl Phone {
     pub fn settings_title(&self) -> &'static str {
-        match self.settings_page {
+        match self.settings.page {
             SettingsPage::Root => "设置",
             SettingsPage::Personalization => "个性化选项",
             SettingsPage::Keyboard => "键盘",
@@ -122,10 +124,10 @@ impl Phone {
         }
     }
     pub fn settings_labels(&self) -> Vec<String> {
-        if self.settings_page == SettingsPage::Ringtone {
+        if self.settings.page == SettingsPage::Ringtone {
             return crate::audio::native::tone_labels("预设");
         }
-        match self.settings_page {
+        match self.settings.page {
             SettingsPage::Root => vec![
                 "系统",
                 "连接功能",
@@ -153,9 +155,9 @@ impl Phone {
         .collect()
     }
     pub(super) fn settings_open(&mut self, page: SettingsPage, index: usize) {
-        self.settings_page = page;
+        self.settings.page = page;
         self.index = index;
-        self.settings_first = if matches!(page, SettingsPage::Shortcut { .. }) {
+        self.settings.first = if matches!(page, SettingsPage::Shortcut { .. }) {
             index
         } else {
             0
@@ -163,14 +165,14 @@ impl Phone {
     }
     pub(super) fn settings_key(&mut self, key: Key) {
         use SettingsPage::*;
-        if self.settings_page == Theme {
+        if self.settings.page == Theme {
             match key {
-                Key::Left => self.theme_preview = self.theme_preview.saturating_sub(1),
-                Key::Right => self.theme_preview = (self.theme_preview + 1).min(5),
+                Key::Left => self.settings.preview = self.settings.preview.saturating_sub(1),
+                Key::Right => self.settings.preview = (self.settings.preview + 1).min(5),
                 Key::Center | Key::SoftLeft => {
-                    self.accent = self.theme_preview;
-                    self.preferences.accent = self.accent;
-                    self.preferences_dirty = true;
+                    self.settings.accent = self.settings.preview;
+                    self.settings.preferences.accent = self.settings.accent;
+                    self.settings.dirty = true;
                     self.settings_open(Personalization, 3);
                 }
                 Key::SoftRight => self.settings_open(Personalization, 3),
@@ -186,12 +188,13 @@ impl Phone {
                 } else {
                     (self.index + 1) % n
                 };
-                self.settings_first = self
-                    .settings_first
+                self.settings.first = self
+                    .settings
+                    .first
                     .min(self.index)
                     .max(self.index.saturating_sub(5));
             }
-            Key::SoftRight => match self.settings_page {
+            Key::SoftRight => match self.settings.page {
                 Root => self.leave_app(),
                 Personalization => self.settings_open(Root, 2),
                 Keyboard => self.settings_open(Personalization, 4),
@@ -200,7 +203,7 @@ impl Phone {
                 Theme => unreachable!(),
                 System | Connections | Time | Security => self.settings_open(
                     Root,
-                    match self.settings_page {
+                    match self.settings.page {
                         System => 0,
                         Connections => 1,
                         Time => 3,
@@ -212,7 +215,7 @@ impl Phone {
                 Ringtone => self.settings_open(Sounds, 2),
                 Reset => self.settings_open(System, 2),
             },
-            Key::Center | Key::SoftLeft => match (self.settings_page, self.index) {
+            Key::Center | Key::SoftLeft => match (self.settings.page, self.index) {
                 _ if !self.setting_enabled(self.index) => {}
                 (Root, 0) => self.settings_open(System, 0),
                 (Root, 1) => self.settings_open(Connections, 0),
@@ -229,39 +232,40 @@ impl Phone {
                 (Reset, 0) => self.settings_open(System, 2),
                 (Reset, 1) => {
                     self.apply_preferences(Preferences::default());
-                    self.preferences_dirty = true;
+                    self.settings.dirty = true;
                     self.settings_open(Root, 0);
                 }
                 (Connections, 0) => {
-                    self.preferences.mobile_data = !self.preferences.mobile_data;
-                    self.preferences_dirty = true;
+                    self.settings.preferences.mobile_data = !self.settings.preferences.mobile_data;
+                    self.settings.dirty = true;
                 }
                 (Connections, 2) => self.notice("存储由 local folder 提供。USB 设备模式不可用。"),
                 (Personalization, 0) => self.open_local_text(
                     TextTarget::Setting(0),
-                    self.preferences.greeting.clone(),
+                    self.settings.preferences.greeting.clone(),
                     false,
                 ),
                 (Personalization, 1) => self.settings_open(Sounds, 0),
                 (Personalization, 2) => self.settings_open(Wallpaper, 0),
                 (Sounds, 0) => {
-                    self.preferences.silent = !self.preferences.silent;
-                    self.preferences_dirty = true;
+                    self.settings.preferences.silent = !self.settings.preferences.silent;
+                    self.settings.dirty = true;
                 }
                 (Sounds, 1) => self.open_local_text(
                     TextTarget::Setting(1),
-                    self.preferences.volume.to_string(),
+                    self.settings.preferences.volume.to_string(),
                     true,
                 ),
                 (Sounds, 2) => self.settings_open(Ringtone, 0),
                 (Sounds, 3) => {
-                    self.preferences.keypad_sound = !self.preferences.keypad_sound;
-                    self.preferences_dirty = true;
+                    self.settings.preferences.keypad_sound =
+                        !self.settings.preferences.keypad_sound;
+                    self.settings.dirty = true;
                 }
                 (Wallpaper, 0..=1) => {
-                    self.preferences.wallpaper = None;
-                    self.preferences.wallpaper_enabled = self.index == 0;
-                    self.preferences_dirty = true;
+                    self.settings.preferences.wallpaper = None;
+                    self.settings.preferences.wallpaper_enabled = self.index == 0;
+                    self.settings.dirty = true;
                     self.settings_open(Personalization, 2);
                 }
                 (Wallpaper, 2) => self.open_media(media::Purpose::Wallpaper),
@@ -269,9 +273,9 @@ impl Phone {
                     self.open_media(media::Purpose::Ringtone)
                 }
                 (Ringtone, i) => {
-                    self.preferences.ringtone = self.settings_labels()[i].clone();
-                    self.audio_preview = Some(self.preferences.ringtone.clone());
-                    self.preferences_dirty = true;
+                    self.settings.preferences.ringtone = self.settings_labels()[i].clone();
+                    self.audio_preview = Some(self.settings.preferences.ringtone.clone());
+                    self.settings.dirty = true;
                 }
                 (Time, 0) => {
                     let (_, minutes) = self.local_clock();
@@ -287,16 +291,16 @@ impl Phone {
                 }
                 (Time, 2) => self.open_local_text(
                     TextTarget::Setting(2),
-                    self.preferences.timezone.to_string(),
+                    self.settings.preferences.timezone.to_string(),
                     false,
                 ),
                 (Time, 3) => {
-                    self.preferences.clock_12h = !self.preferences.clock_12h;
-                    self.preferences_dirty = true;
+                    self.settings.preferences.clock_12h = !self.settings.preferences.clock_12h;
+                    self.settings.dirty = true;
                 }
                 (Root, 2) => self.settings_open(Personalization, 0),
                 (Personalization, 3) => {
-                    self.theme_preview = self.accent;
+                    self.settings.preview = self.settings.accent;
                     self.settings_open(Theme, 0);
                 }
                 (Personalization, 4) => self.settings_open(Keyboard, 0),
@@ -305,19 +309,19 @@ impl Phone {
                 (Shortcuts, index) => {
                     let left = index == 1;
                     let assigned = if left {
-                        self.preferences.left_shortcut
+                        self.settings.preferences.left_shortcut
                     } else {
-                        self.preferences.right_shortcut
+                        self.settings.preferences.right_shortcut
                     };
                     self.settings_open(Shortcut { left }, assigned);
                 }
                 (Shortcut { left }, index) => {
                     if left {
-                        self.preferences.left_shortcut = index;
+                        self.settings.preferences.left_shortcut = index;
                     } else {
-                        self.preferences.right_shortcut = index;
+                        self.settings.preferences.right_shortcut = index;
                     }
-                    self.preferences_dirty = true;
+                    self.settings.dirty = true;
                     self.settings_open(Shortcuts, usize::from(left));
                 }
                 _ => {}
@@ -326,13 +330,13 @@ impl Phone {
         }
     }
     pub fn setting_enabled(&self, index: usize) -> bool {
-        if matches!(self.settings_page, SettingsPage::Shortcut { .. })
+        if matches!(self.settings.page, SettingsPage::Shortcut { .. })
             && shortcut_screen(index).is_some_and(|s| !self.apps.allows(s))
         {
             return false;
         }
         !matches!(
-            (self.settings_page, index),
+            (self.settings.page, index),
             (SettingsPage::Root, 5)
                 | (SettingsPage::Connections, 1)
                 | (SettingsPage::Security, _)
@@ -341,9 +345,10 @@ impl Phone {
     }
     pub fn local_clock(&self) -> (phone_core::calendar::Date, u64) {
         let wall = (self.timestamp() / 1000) as i64;
-        let seconds =
-            (wall + self.preferences.clock_adjustment + self.preferences.timezone as i64 * 3600)
-                .max(0) as u64;
+        let seconds = (wall
+            + self.settings.preferences.clock_adjustment
+            + self.settings.preferences.timezone as i64 * 3600)
+            .max(0) as u64;
         (
             phone_core::calendar::Date::from_unix(seconds, 0),
             seconds / 60 % 1440,
@@ -353,20 +358,20 @@ impl Phone {
         use phone_core::calendar::Date;
         let valid = match i {
             0 => {
-                self.preferences.greeting = value.chars().take(128).collect();
+                self.settings.preferences.greeting = value.chars().take(128).collect();
                 true
             }
             1 => value
                 .parse::<u8>()
                 .ok()
                 .filter(|n| *n <= 10)
-                .map(|n| self.preferences.volume = n)
+                .map(|n| self.settings.preferences.volume = n)
                 .is_some(),
             2 => value
                 .parse::<i32>()
                 .ok()
                 .filter(|n| (-12..=14).contains(n))
-                .map(|n| self.preferences.timezone = n)
+                .map(|n| self.settings.preferences.timezone = n)
                 .is_some(),
             3 => {
                 let parts: Vec<_> = value.split(':').collect();
@@ -374,7 +379,7 @@ impl Phone {
                     if let (Ok(h), Ok(m)) = (a.parse::<u64>(), b.parse::<u64>()) {
                         if h < 24 && m < 60 {
                             let (_, current) = self.local_clock();
-                            self.preferences.clock_adjustment +=
+                            self.settings.preferences.clock_adjustment +=
                                 (h * 60 + m) as i64 * 60 - current as i64 * 60;
                             true
                         } else {
@@ -405,7 +410,8 @@ impl Phone {
                         }
                         total + d.day as i64 - 1
                     }
-                    self.preferences.clock_adjustment += (days(date) - days(current)) * 86400;
+                    self.settings.preferences.clock_adjustment +=
+                        (days(date) - days(current)) * 86400;
                     self.organizer.date = date;
                     true
                 } else {
@@ -415,7 +421,7 @@ impl Phone {
             _ => false,
         };
         if valid {
-            self.preferences_dirty = true;
+            self.settings.dirty = true;
         } else {
             self.notice(match i {
                 1 => "音量范围 0–10。",
@@ -427,9 +433,9 @@ impl Phone {
     }
     pub(super) fn shortcut(&mut self, left: bool) {
         let index = if left {
-            self.preferences.left_shortcut
+            self.settings.preferences.left_shortcut
         } else {
-            self.preferences.right_shortcut
+            self.settings.preferences.right_shortcut
         };
         if let Some(screen) = shortcut_screen(index) {
             self.launch(screen);
@@ -437,9 +443,9 @@ impl Phone {
     }
     pub fn visible_shortcut(&self, left: bool) -> usize {
         let index = if left {
-            self.preferences.left_shortcut
+            self.settings.preferences.left_shortcut
         } else {
-            self.preferences.right_shortcut
+            self.settings.preferences.right_shortcut
         };
         if shortcut_screen(index).is_none_or(|s| self.apps.allows(s)) {
             index

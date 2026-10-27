@@ -22,13 +22,30 @@ use crate::ui::softkeys::{Button, Softkeys};
 use crate::ui::{chrome, editor::Edit, list, softkeys, text};
 use crate::{canvas::*, phone::*};
 use phone_core::{browser::Element, editor::Editor, sms};
+/// Compatibility for frame fixtures: explicitly measure, apply geometry, paint.
+#[cfg(test)]
 pub fn render(c: &mut Canvas, p: &mut Phone) {
+    prepare(c, p);
+    paint(c, p);
+}
+
+pub fn prepare(c: &mut Canvas, p: &mut Phone) {
+    let previous = c.measuring;
+    c.measuring = true;
+    paint(c, p);
+    c.measuring = previous;
+    std::mem::take(&mut c.layout).apply(p);
+}
+
+/// Painting cannot mutate application state. Geometry is an explicit output.
+pub fn paint(c: &mut Canvas, p: &Phone) {
+    c.layout = Default::default();
     c.accent = if p.screen == Screen::Settings
-        && p.settings_page == crate::phone::settings::SettingsPage::Theme
+        && p.settings.page == crate::phone::settings::SettingsPage::Theme
     {
-        p.theme_preview
+        p.settings.preview
     } else {
-        p.accent
+        p.settings.accent
     };
     c.caret = None;
     c.background();
@@ -40,7 +57,7 @@ pub fn render(c: &mut Canvas, p: &mut Phone) {
             let hour = minutes / 60;
             let time = format!(
                 "{:02}:{:02}",
-                if p.preferences.clock_12h {
+                if p.settings.preferences.clock_12h {
                     (hour + 11) % 12 + 1
                 } else {
                     hour
@@ -58,8 +75,8 @@ pub fn render(c: &mut Canvas, p: &mut Phone) {
             );
             let w = c.width(&s, 14);
             c.text((240 - w) / 2, 96, &s, 14, WHITE);
-            if !p.preferences.greeting.is_empty() {
-                c.fit(6, 190, &p.preferences.greeting, 18, WHITE, 228);
+            if !p.settings.preferences.greeting.is_empty() {
+                c.fit(6, 190, &p.settings.preferences.greeting, 18, WHITE, 228);
             }
             Softkeys::new(
                 Button::Shortcut(p.visible_shortcut(true)),
@@ -70,13 +87,14 @@ pub fn render(c: &mut Canvas, p: &mut Phone) {
         }
         Screen::Menu => {
             let entries = crate::menu::visible(p.apps);
-            p.index = p.index.min(entries.len() - 1);
-            c.text(6, 1, entries[p.index].label, 14, WHITE);
-            let first_row = (p.index / 3).saturating_sub(2);
+            let index = p.index.min(entries.len() - 1);
+            c.layout.index = Some(index);
+            c.text(6, 1, entries[index].label, 14, WHITE);
+            let first_row = (index / 3).saturating_sub(2);
             for (i, entry) in entries.iter().enumerate().skip(first_row * 3).take(12) {
                 let x = 38 + (i % 3) as i32 * 81;
                 let y = 68 + (i / 3 - first_row) as i32 * 82;
-                if p.index == i {
+                if index == i {
                     c.ring(x, y, 31, c.accent(2));
                 }
                 c.icon_enabled(entry.icon, x - 38, y - 38, 76, true);
@@ -97,10 +115,10 @@ pub fn render(c: &mut Canvas, p: &mut Phone) {
         Screen::Settings => settings::render(c, p),
         Screen::Tools(_) => tools::render(c, p),
     }
-    if p.mailbox.unread() > 0
+    if p.messaging.mailbox.unread() > 0
         && !(p.screen == Screen::Snake
             && matches!(
-                p.snake_view,
+                p.gaming.view,
                 crate::phone::snake::SnakeView::Game
                     | crate::phone::snake::SnakeView::GameOver
                     | crate::phone::snake::SnakeView::Saved
@@ -160,7 +178,7 @@ pub fn render(c: &mut Canvas, p: &mut Phone) {
                 };
                 c.fit(12, 51, title, 18, WHITE, 212);
                 let lines = c.wrap(s, 15, 212);
-                p.notice_lines = lines.len();
+                c.layout.notice_lines = Some(lines.len());
                 for (i, l) in lines.iter().skip(p.notice_scroll).take(11).enumerate() {
                     c.text(12, 86 + i as i32 * 18, &l.text, 15, WHITE);
                 }
@@ -226,7 +244,7 @@ pub fn render(c: &mut Canvas, p: &mut Phone) {
                         20,
                         WHITE,
                     );
-                    p.editor_lines = Edit::new([7, 221, 227, 28]).sized(20, 26).draw(c, &e);
+                    c.layout.editor = Some(Edit::new([7, 221, 227, 28]).sized(20, 26).draw(c, &e));
                     c.rect(6, 251, 229, 3, c.accent(3));
                     c.text(205, 260, mode(&e), 16, MUTED);
                     Softkeys::new(Button::Close, Button::Text("确认"), Button::Delete).draw(c);
@@ -242,13 +260,13 @@ pub fn render(c: &mut Canvas, p: &mut Phone) {
                         18,
                         WHITE,
                     );
-                    let hidden = matches!(target,TextTarget::Field(i) if matches!(p.browser.page.elements.get(i),Some(Element::Field{password:true,..})));
+                    let hidden = matches!(target,TextTarget::Field(i) if matches!(p.browsing.model.page.elements.get(i),Some(Element::Field{password:true,..})));
                     if hidden {
                         let mut masked = Editor::new(&"*".repeat(e.units.len()), e.limit);
                         masked.cursor = e.cursor;
-                        p.editor_lines = Edit::new([6, 28, 228, 234]).draw(c, &masked);
+                        c.layout.editor = Some(Edit::new([6, 28, 228, 234]).draw(c, &masked));
                     } else {
-                        p.editor_lines = Edit::new([6, 28, 228, 234]).draw(c, &e);
+                        c.layout.editor = Some(Edit::new([6, 28, 228, 234]).draw(c, &e));
                     }
                     c.text(12, 270, mode(&e), 12, MUTED);
                     Softkeys::new(
@@ -271,7 +289,8 @@ pub fn render(c: &mut Canvas, p: &mut Phone) {
             } => {
                 status(c);
                 chrome::title(c, "选择");
-                if let Some(Element::Select { options, .. }) = p.browser.page.elements.get(element)
+                if let Some(Element::Select { options, .. }) =
+                    p.browsing.model.page.elements.get(element)
                 {
                     list::draw(
                         c,
@@ -353,9 +372,9 @@ mod tests {
             render(&mut c, &mut p);
         }
         p.go(Screen::Compose);
-        p.compose.body.insert("中😀\nhello");
+        p.messaging.compose.body.insert("中😀\nhello");
         for recipient in [true, false] {
-            p.compose.recipient = recipient;
+            p.messaging.compose.recipient = recipient;
             for overlay in [
                 Overlay::Menu {
                     kind: MenuKind::Sms,
@@ -391,9 +410,9 @@ mod sms_geometry_tests {
         let mut c = Canvas::new().unwrap();
         let mut p = Phone::new(Default::default());
         p.go(Screen::Compose);
-        p.compose.recipient = false;
-        p.compose.body.prediction.set_language(None);
-        p.compose.body.insert("你");
+        p.messaging.compose.recipient = false;
+        p.messaging.compose.body.prediction.set_language(None);
+        p.messaging.compose.body.insert("你");
         render(&mut c, &mut p);
         assert_eq!(c.caret.unwrap().1, 224);
         let fill = c.accent(3);
@@ -408,15 +427,16 @@ mod sms_geometry_tests {
         assert_eq!(pixel(&c, 29, 254), WHITE);
         assert_eq!(pixel(&c, 48, 254), WHITE);
         let chrome = c.pixels[254 * 240 * 4..].to_vec();
-        p.compose.body.insert("\n");
+        p.messaging.compose.body.insert("\n");
         render(&mut c, &mut p);
         assert_eq!(c.caret.unwrap().1, 224);
         assert_eq!(pixel(&c, 199, 194), fill);
         assert_eq!(pixel(&c, 199, 193), [0, 0, 0, 255]);
         // Count changes, but the softkey row does not move.
         assert_eq!(&c.pixels[286 * 240 * 4..], &chrome[(286 - 254) * 240 * 4..]);
-        p.compose.body.clear();
-        p.compose
+        p.messaging.compose.body.clear();
+        p.messaging
+            .compose
             .body
             .insert(&format!("{}1", "1234567890".repeat(16)));
         render(&mut c, &mut p);
@@ -447,8 +467,8 @@ mod sms_geometry_tests {
         assert_eq!(text::MESSAGE.width(&mut c, &rows[1].text, 20), 192);
         let mut p = Phone::new(Default::default());
         p.go(Screen::Compose);
-        p.compose.recipient = false;
-        p.compose.body.insert("中😀\n12");
+        p.messaging.compose.recipient = false;
+        p.messaging.compose.body.insert("中😀\n12");
         render(&mut c, &mut p);
         assert_eq!(p.editor_lines[1].stops, [(4, 0), (5, 12), (6, 24)]);
     }
@@ -492,8 +512,8 @@ mod shared_controls_tests {
         let mut c = Canvas::new().unwrap();
         let mut p = Phone::new(Default::default());
         p.go(Screen::Compose);
-        p.compose.recipient = false;
-        p.compose.body.insert("你");
+        p.messaging.compose.recipient = false;
+        p.messaging.compose.body.insert("你");
         render(&mut c, &mut p);
         let message_delete = region(&c, 208, 284, 32, 36);
         p.go(Screen::Browser);

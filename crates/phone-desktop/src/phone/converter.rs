@@ -28,7 +28,7 @@ impl Phone {
             && matches!(self.tools.page, ToolPage::Conversion(_))
             && self.overlay.is_none()
             && self.active_reminder().is_none()
-            && self.mail_ui.pending.is_none()
+            && self.messaging.ui.pending.is_none()
     }
     pub fn conversion_pair(&self) -> &'static phone_core::converter::Conversion {
         let category = match self.tools.page {

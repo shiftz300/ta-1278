@@ -1,7 +1,7 @@
 use super::*;
 use crate::phone::media::Purpose;
 pub(super) fn render(c: &mut Canvas, p: &Phone) {
-    let m = &p.media_ui;
+    let m = &p.media.ui;
     chrome::title(
         c,
         match m.purpose {

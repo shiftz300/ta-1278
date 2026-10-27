@@ -1,5 +1,7 @@
+mod state;
 use super::*;
 use serde::{Deserialize, Serialize};
+pub use state::State;
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Default)]
 pub enum SnakeView {
     #[default]
@@ -52,13 +54,13 @@ pub const GAME_TYPES: [&str; 6] = ["经典", "盒子", "隧道", "磨坊", "铁�
 impl Phone {
     /// Install validated host settings in both the model and the picker.
     pub fn apply_snake_data(&mut self, data: SnakeData) {
-        self.snake.level = data.level;
-        self.snake.kind = data.kind;
-        self.snake_level_preview = data.level;
-        self.snake_data = data;
+        self.gaming.model.level = data.level;
+        self.gaming.model.kind = data.kind;
+        self.gaming.level_preview = data.level;
+        self.gaming.data = data;
     }
     pub fn snake_items(&self) -> Vec<String> {
-        match self.snake_view {
+        match self.gaming.view {
             SnakeView::Menu | SnakeView::Saved => {
                 let mut v = vec![];
                 if self.snake_can_resume() {
@@ -73,14 +75,14 @@ impl Phone {
         }
     }
     fn snake_can_resume(&self) -> bool {
-        !self.snake.body.is_empty() && !self.snake.over
+        !self.gaming.model.body.is_empty() && !self.gaming.model.over
     }
     fn snake_menu(&mut self, row: usize) {
-        self.snake_view = SnakeView::Menu;
+        self.gaming.view = SnakeView::Menu;
         self.index = row + usize::from(self.snake_can_resume());
     }
     pub(super) fn snake_key(&mut self, key: Key) {
-        match self.snake_view {
+        match self.gaming.view {
             SnakeView::GameOver => {
                 if key == Key::SoftRight {
                     self.snake_menu(0);
@@ -95,27 +97,30 @@ impl Phone {
             }
             SnakeView::Game => {
                 if key == Key::SoftRight {
-                    self.snake.running = false;
-                    self.snake_view = SnakeView::Menu;
+                    self.gaming.model.running = false;
+                    self.gaming.view = SnakeView::Menu;
                     self.index = 0;
                 } else {
-                    self.snake.key(key);
+                    self.gaming.model.key(key);
                 }
                 return;
             }
             SnakeView::Level => {
                 match key {
                     Key::Left => {
-                        self.snake_level_preview = self.snake_level_preview.saturating_sub(1).max(1)
+                        self.gaming.level_preview =
+                            self.gaming.level_preview.saturating_sub(1).max(1)
                     }
-                    Key::Right => self.snake_level_preview = (self.snake_level_preview + 1).min(8),
+                    Key::Right => {
+                        self.gaming.level_preview = (self.gaming.level_preview + 1).min(8)
+                    }
                     Key::Center => {
-                        self.snake.level = self.snake_level_preview;
-                        self.snake_data.level = self.snake.level;
-                        self.snake_dirty = true;
-                        self.snake.discard();
+                        self.gaming.model.level = self.gaming.level_preview;
+                        self.gaming.data.level = self.gaming.model.level;
+                        self.gaming.dirty = true;
+                        self.gaming.model.discard();
                         self.snake_menu(0);
-                        self.snake_view = SnakeView::Saved;
+                        self.gaming.view = SnakeView::Saved;
                     }
                     Key::SoftRight => self.snake_menu(1),
                     _ => {}
@@ -134,50 +139,50 @@ impl Phone {
         match key {
             Key::Up => self.index = (self.index + n - 1) % n,
             Key::Down => self.index = (self.index + 1) % n,
-            Key::SoftRight => match self.snake_view {
+            Key::SoftRight => match self.gaming.view {
                 SnakeView::Menu => self.leave_app(),
                 SnakeView::Types => self.snake_menu(2),
                 SnakeView::Sound => self.snake_menu(4),
                 _ => {}
             },
-            Key::Center => match self.snake_view {
+            Key::Center => match self.gaming.view {
                 SnakeView::Types => {
-                    self.snake.kind = self.index;
-                    self.snake_data.kind = self.index;
-                    self.snake_dirty = true;
+                    self.gaming.model.kind = self.index;
+                    self.gaming.data.kind = self.index;
+                    self.gaming.dirty = true;
                     // The native picker retains the paused game and this row.
                     self.snake_menu(2);
                 }
                 SnakeView::Sound => {
-                    self.snake_data.sound = self.index == 1;
-                    self.snake_dirty = true;
+                    self.gaming.data.sound = self.index == 1;
+                    self.gaming.dirty = true;
                     self.snake_menu(4);
                 }
                 SnakeView::Menu => {
                     let resume = self.snake_can_resume();
                     if resume && self.index == 0 {
-                        self.snake.running = true;
-                        self.snake_view = SnakeView::Game;
+                        self.gaming.model.running = true;
+                        self.gaming.view = SnakeView::Game;
                     } else {
                         match self.index - usize::from(resume) {
                             0 => {
-                                self.snake.level = self.snake_data.level;
-                                self.snake.kind = self.snake_data.kind;
-                                self.snake.start();
-                                self.snake_view = SnakeView::Game;
+                                self.gaming.model.level = self.gaming.data.level;
+                                self.gaming.model.kind = self.gaming.data.kind;
+                                self.gaming.model.start();
+                                self.gaming.view = SnakeView::Game;
                             }
                             1 => {
-                                self.snake_level_preview = self.snake_data.level;
-                                self.snake_view = SnakeView::Level;
+                                self.gaming.level_preview = self.gaming.data.level;
+                                self.gaming.view = SnakeView::Level;
                             }
                             2 => {
-                                self.snake_view = SnakeView::Types;
-                                self.index = self.snake_data.kind;
+                                self.gaming.view = SnakeView::Types;
+                                self.index = self.gaming.data.kind;
                             }
-                            3 => self.snake_view = SnakeView::Scores,
+                            3 => self.gaming.view = SnakeView::Scores,
                             4 => {
-                                self.snake_view = SnakeView::Sound;
-                                self.index = usize::from(self.snake_data.sound);
+                                self.gaming.view = SnakeView::Sound;
+                                self.index = usize::from(self.gaming.data.sound);
                             }
                             _ => {}
                         }

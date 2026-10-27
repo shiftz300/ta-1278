@@ -5,7 +5,7 @@ use crate::phone::{
 };
 const BLACK: Color = [0, 0, 0, 255];
 
-pub(super) fn render(c: &mut Canvas, p: &mut Phone) {
+pub(super) fn render(c: &mut Canvas, p: &Phone) {
     use OrganizerPage::*;
     if p.organizer.page == AlarmRingtone {
         crate::ui::tones::draw(c, "闹钟铃声", p.index, &p.organizer.draft[3], "预设");
@@ -64,9 +64,11 @@ pub(super) fn render(c: &mut Canvas, p: &mut Phone) {
                 }
                 if y + 34 >= 24 {
                     if i == 2 && selected {
-                        p.editor_lines = Edit::new([7, y + 34, 224, 26])
-                            .sized(20, 26)
-                            .draw(c, &p.organizer.alarm.name);
+                        c.layout.editor = Some(
+                            Edit::new([7, y + 34, 224, 26])
+                                .sized(20, 26)
+                                .draw(c, &p.organizer.alarm.name),
+                        );
                         c.text(215, y + 8, mode(&p.organizer.alarm.name), 14, MUTED);
                     } else {
                         if i == 0 && selected {
@@ -196,7 +198,7 @@ fn root(c: &mut Canvas, p: &Phone, index: usize) -> (Button<'static>, &'static s
         c.rect(1, 25, 238, 34, c.accent(if index == 0 { 3 } else { 6 }));
         c.text(69, 32, "+ 新建闹钟", 20, WHITE);
     }
-    for (i, a) in p.local_data.alarms.iter().enumerate().skip(first).take(4) {
+    for (i, a) in p.organizer.alarms.iter().enumerate().skip(first).take(4) {
         let y = 64 + (i - first) as i32 * 69;
         if i + 1 == index {
             c.rect(0, y, 240, 64, c.accent(3));
@@ -226,10 +228,7 @@ fn root(c: &mut Canvas, p: &Phone, index: usize) -> (Button<'static>, &'static s
             if a.enabled { WHITE } else { MUTED },
         );
     }
-    if let Some(a) = index
-        .checked_sub(1)
-        .and_then(|i| p.local_data.alarms.get(i))
-    {
+    if let Some(a) = index.checked_sub(1).and_then(|i| p.organizer.alarms.get(i)) {
         return (Button::Menu, if a.enabled { "关闭" } else { "打开" });
     }
 

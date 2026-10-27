@@ -11,7 +11,7 @@ pub(super) fn render(c: &mut Canvas, p: &Phone) {
                 .draw(c, &p.calls.number);
         });
         let first = p.calls.selected.unwrap_or(0).saturating_sub(3);
-        for (i, contact) in p.local_data.contacts.iter().enumerate().skip(first).take(4) {
+        for (i, contact) in p.contacts.records.iter().enumerate().skip(first).take(4) {
             let y = 76 + (i - first) as i32 * 52;
             if p.calls.selected == Some(i) {
                 c.rect(0, y, 240, 52, c.accent(3));
@@ -38,8 +38,8 @@ pub(super) fn render(c: &mut Canvas, p: &Phone) {
     }
     chrome::title(c, "通话历史记录");
     let labels: Vec<_> = p
-        .local_data
         .calls
+        .records
         .iter()
         .map(|r| format!("{}  未拨出", r.number))
         .collect();

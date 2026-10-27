@@ -1,106 +1,128 @@
-//! Optional native user-space adapters. Creating a Runtime alone does not activate them.
+//! App-independent host ports. No adapter receives Phone or owns persistence.
+pub(crate) mod visual;
+pub use crate::storage::files::Folder;
 pub use crate::web::parse;
-use crate::{Runtime, media::Media, runtime::Request, storage::files::Folder, web::Web};
+use crate::{Request, Runtime, config::Features, web::Web};
+pub use image::RgbaImage as Picture;
 pub use phone_core::browser::Page;
-use std::path::Path;
+use std::{path::Path, sync::Arc};
+pub use visual::{Decoder, Video, VideoFrame, Visual};
 
-/// Existing folder/audio/HTTP adapter, usable with or without a desktop window.
-/// Bound to one runtime so background completions cannot leak into a restored instance.
+/// Opaque binding to a runtime generation; restored instances get a new identity.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct Instance(pub(crate) u64);
+
+pub trait Documents {
+    fn submit(&mut self, request: Request, current: Option<Page>) -> Result<(), String>;
+    fn poll(&mut self) -> Option<(Request, Result<Page, String>)>;
+    fn cancel(&mut self);
+}
+pub trait Sound {
+    fn effect_volume(&mut self, volume: u8);
+    fn feedback(&mut self, cue: crate::Cue, volume: u8) -> Result<(), String>;
+    fn poll_effects(&mut self) -> Result<(), String>;
+    fn preview(&mut self, files: &Folder, path: &str, volume: u8) -> Result<(), String>;
+    fn alert(&mut self, files: &Folder, tone: Option<&str>, volume: u8) -> Result<(), String>;
+    fn stop(&mut self);
+    fn sync(
+        &mut self,
+        files: &Folder,
+        path: Option<&str>,
+        music: &mut phone_core::music::Music,
+    ) -> Result<(), String>;
+}
+/// A selected real folder, output device and decoder, supplied explicitly once.
+/// This is direct filesystem access, not a virtual disk or a kernel driver API.
+pub struct Devices {
+    pub folder: Arc<Folder>,
+    pub sound: Box<dyn Sound>,
+    pub decoder: Arc<dyn Decoder>,
+}
+impl Devices {
+    pub fn native(folder: Folder) -> Self {
+        Self {
+            folder: Arc::new(folder),
+            sound: Box::<crate::audio::Audio>::default(),
+            decoder: Arc::new(visual::SystemDecoder),
+        }
+    }
+}
+/// Custom hosts may provide documents, media, both or neither. Methods must not
+/// wait for network/decoding; use a worker and return completions through poll.
+pub trait Platform {
+    fn instance(&self) -> Instance;
+    fn documents(&mut self) -> Option<&mut dyn Documents> {
+        None
+    }
+    fn take_devices(&mut self) -> Option<Devices> {
+        None
+    }
+}
+
 pub struct Native {
-    owner: u64,
+    instance: Instance,
     web: Web,
-    media: Option<Media>,
     request: Option<Request>,
+    devices: Option<Devices>,
 }
 impl Native {
-    /// `directory` maps the phone's media storage directly; `profile` stores music preferences.
-    /// No picker is opened. None means no file/audio adapter. HTTP is gated by config.
+    /// No window, picker or profile I/O. Runtime/Store owns application data.
     pub fn new(
-        runtime: &mut Runtime,
+        runtime: &Runtime,
         directory: Option<&Path>,
-        profile: &Path,
         read_only: bool,
     ) -> Result<Self, String> {
         let folder = directory
-            .map(|p| Folder::new(p, read_only).map_err(|error| error.to_string()))
+            .map(|p| Folder::new(p, read_only).map_err(|e| e.to_string()))
             .transpose()?;
-        Self::from_folder(runtime, folder, profile)
+        Ok(Self::from_folder(runtime, folder))
     }
-    pub(crate) fn from_folder(
-        runtime: &mut Runtime,
-        folder: Option<Folder>,
-        profile: &Path,
-    ) -> Result<Self, String> {
-        let media = folder
-            .map(|folder| Media::new(folder, profile, &mut runtime.phone))
-            .transpose()?;
-        Ok(Self {
-            owner: runtime.owner,
-            web: Web::configured(
-                runtime.phone.features.network,
-                runtime.phone.features.javascript,
-            ),
-            media,
+    pub fn from_folder(runtime: &Runtime, folder: Option<Folder>) -> Self {
+        let Features {
+            network,
+            javascript,
+            ..
+        } = runtime.capabilities();
+        Self {
+            instance: runtime.instance(),
+            web: Web::configured(network, javascript),
             request: None,
-        })
-    }
-    fn check(&self, runtime: &Runtime) -> Result<(), String> {
-        if runtime.owner != self.owner {
-            return Err("Native adapter belongs to another runtime".into());
+            devices: folder.map(Devices::native),
         }
-        Ok(())
     }
+    /// Compatibility convenience; all app integration lives in Runtime now.
     pub fn poll(&mut self, runtime: &mut Runtime) -> Result<(), String> {
-        self.check(runtime)?;
-        if let Some(media) = &mut self.media {
-            media.tick(&mut runtime.phone);
-        }
-        if let Some(request) = runtime.take_request() {
-            let page = request
-                .url
-                .starts_with("about:script/")
-                .then(|| runtime.phone.browser.page.clone());
-            let result = self.web.load_page(request.id, request.url.clone(), page);
-            match result {
-                Ok(()) => self.request = Some(request),
-                Err(error) => {
-                    runtime.complete(&request, Err(error));
-                    self.request = None;
-                }
-            }
-        }
-        if self.request.is_some() && !runtime.phone.browser.loading {
-            self.web.cancel();
-            self.request = None;
-        }
-        while let Ok((id, result)) = self.web.results.try_recv() {
-            if self
-                .request
-                .as_ref()
-                .is_some_and(|request| request.id == id)
-            {
-                let request = self.request.take().unwrap();
-                let keep_position = request.url.starts_with("about:script/")
-                    && result
-                        .as_ref()
-                        .is_ok_and(|p| p.url == runtime.phone.browser.page.url);
-                let position = (runtime.phone.browser.focus, runtime.phone.browser.scroll);
-                runtime.complete(&request, result);
-                if keep_position {
-                    runtime.phone.browser.focus = position
-                        .0
-                        .min(runtime.phone.browser.page.elements.len().saturating_sub(1));
-                    runtime.phone.browser.scroll = position.1;
-                }
-            }
-        }
+        runtime.poll_platform(self)
+    }
+}
+impl Platform for Native {
+    fn instance(&self) -> Instance {
+        self.instance
+    }
+    fn documents(&mut self) -> Option<&mut dyn Documents> {
+        Some(self)
+    }
+    fn take_devices(&mut self) -> Option<Devices> {
+        self.devices.take()
+    }
+}
+impl Documents for Native {
+    fn submit(&mut self, request: Request, current: Option<Page>) -> Result<(), String> {
+        self.web
+            .load_page(request.id, request.url.clone(), current)?;
+        self.request = Some(request);
         Ok(())
     }
-    pub fn save(&mut self, runtime: &Runtime, profile: &Path, force: bool) -> Result<(), String> {
-        self.check(runtime)?;
-        if let Some(media) = &mut self.media {
-            media.save(profile, &runtime.phone, force)?;
+    fn poll(&mut self) -> Option<(Request, Result<Page, String>)> {
+        while let Ok((id, result)) = self.web.results.try_recv() {
+            if self.request.as_ref().is_some_and(|r| r.id == id) {
+                return Some((self.request.take().unwrap(), result));
+            }
         }
-        Ok(())
+        None
+    }
+    fn cancel(&mut self) {
+        self.web.cancel();
+        self.request = None;
     }
 }

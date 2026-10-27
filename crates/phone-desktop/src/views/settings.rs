@@ -1,16 +1,16 @@
 use super::*;
 use crate::phone::settings::{SHORTCUTS, SettingsPage};
 pub(super) fn render(c: &mut Canvas, p: &Phone) {
-    if p.settings_page == SettingsPage::Ringtone {
-        crate::ui::tones::draw(c, "铃声", p.index, &p.preferences.ringtone, "预设");
+    if p.settings.page == SettingsPage::Ringtone {
+        crate::ui::tones::draw(c, "铃声", p.index, &p.settings.preferences.ringtone, "预设");
         return;
     }
     chrome::title(c, p.settings_title());
-    if p.settings_page == SettingsPage::Theme {
+    if p.settings.page == SettingsPage::Theme {
         for i in 0..6 {
             let x = i as i32 * 41;
             c.rect(x, 24, 36, 36, c.theme.color(i, 3));
-            if i == p.theme_preview {
+            if i == p.settings.preview {
                 c.rect(x, 24, 36, 3, WHITE);
                 c.rect(x, 57, 36, 3, WHITE);
                 c.rect(x, 24, 3, 36, WHITE);
@@ -30,10 +30,10 @@ pub(super) fn render(c: &mut Canvas, p: &Phone) {
         Softkeys::back("选择").draw(c);
         return;
     }
-    if p.settings_page == SettingsPage::Shortcuts {
+    if p.settings.page == SettingsPage::Shortcuts {
         for (i, (label, assigned)) in [
-            ("右键", p.preferences.right_shortcut),
-            ("左键", p.preferences.left_shortcut),
+            ("右键", p.settings.preferences.right_shortcut),
+            ("左键", p.settings.preferences.left_shortcut),
         ]
         .iter()
         .enumerate()
@@ -48,11 +48,11 @@ pub(super) fn render(c: &mut Canvas, p: &Phone) {
     } else {
         let mut labels = p.settings_labels();
         use SettingsPage::*;
-        match p.settings_page {
+        match p.settings.page {
             Connections => {
                 labels[0] = format!(
                     "移动数据  {}",
-                    if p.preferences.mobile_data {
+                    if p.settings.preferences.mobile_data {
                         "开"
                     } else {
                         "关"
@@ -60,11 +60,18 @@ pub(super) fn render(c: &mut Canvas, p: &Phone) {
                 )
             }
             Sounds => {
-                labels[0] = format!("静音  {}", if p.preferences.silent { "开" } else { "关" });
-                labels[1] = format!("铃声音量  {}", p.preferences.volume);
+                labels[0] = format!(
+                    "静音  {}",
+                    if p.settings.preferences.silent {
+                        "开"
+                    } else {
+                        "关"
+                    }
+                );
+                labels[1] = format!("铃声音量  {}", p.settings.preferences.volume);
                 labels[3] = format!(
                     "按键音  {}",
-                    if p.preferences.keypad_sound {
+                    if p.settings.preferences.keypad_sound {
                         "开"
                     } else {
                         "关"
@@ -72,10 +79,14 @@ pub(super) fn render(c: &mut Canvas, p: &Phone) {
                 );
             }
             Time => {
-                labels[2] = format!("时区  UTC{:+}", p.preferences.timezone);
+                labels[2] = format!("时区  UTC{:+}", p.settings.preferences.timezone);
                 labels[3] = format!(
                     "时间格式  {}小时",
-                    if p.preferences.clock_12h { 12 } else { 24 }
+                    if p.settings.preferences.clock_12h {
+                        12
+                    } else {
+                        24
+                    }
                 );
             }
             _ => {}
@@ -85,18 +96,18 @@ pub(super) fn render(c: &mut Canvas, p: &Phone) {
             labels.len(),
             p.index,
             list::ListStyle {
-                first: matches!(p.settings_page, SettingsPage::Shortcut { .. })
-                    .then_some(p.settings_first),
+                first: matches!(p.settings.page, SettingsPage::Shortcut { .. })
+                    .then_some(p.settings.first),
                 text_width: 203,
                 ..list::ListStyle::STANDARD
             },
             |i| {
-                let marker = if let SettingsPage::Shortcut { left } = p.settings_page {
+                let marker = if let SettingsPage::Shortcut { left } = p.settings.page {
                     list::Marker::Radio(
                         i == if left {
-                            p.preferences.left_shortcut
+                            p.settings.preferences.left_shortcut
                         } else {
-                            p.preferences.right_shortcut
+                            p.settings.preferences.right_shortcut
                         },
                     )
                 } else {

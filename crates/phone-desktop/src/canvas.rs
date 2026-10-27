@@ -13,6 +13,8 @@ pub struct Line {
     pub end: usize,
 }
 pub struct Canvas {
+    pub layout: crate::ui::layout::Layout,
+    pub measuring: bool,
     pub pixels: Vec<u8>,
     clip: [i32; 4],
     fonts: Vec<Font>,
@@ -69,6 +71,8 @@ impl Canvas {
         .collect::<Result<Vec<_>, _>>()?;
         let theme = crate::theme::Theme::load();
         Ok(Self {
+            layout: Default::default(),
+            measuring: false,
             accent: theme.startup_fallback_accent,
             theme,
             caret: None,
@@ -128,6 +132,9 @@ impl Canvas {
         self.clip = old;
     }
     pub fn rect(&mut self, x: i32, y: i32, w: i32, h: i32, c: Color) {
+        if self.measuring {
+            return;
+        }
         for yy in y.max(self.clip[1]).max(0)..(y + h).min(self.clip[3]).min(H as i32) {
             for xx in x.max(self.clip[0]).max(0)..(x + w).min(self.clip[2]).min(W as i32) {
                 let i = ((yy * W as i32 + xx) * 4) as usize;
@@ -155,6 +162,9 @@ impl Canvas {
         pixels[i + 3] = 255;
     }
     pub fn text(&mut self, x: i32, y: i32, text: &str, size: u16, c: Color) {
+        if self.measuring {
+            return;
+        }
         let mut cursor = x as f32;
         for ch in text.chars() {
             let glyph_size = size;
@@ -237,6 +247,9 @@ impl Canvas {
         out
     }
     pub fn image(&mut self, image: &image::RgbaImage, x: i32, y: i32) {
+        if self.measuring {
+            return;
+        }
         for (dx, dy, pixel) in image.enumerate_pixels() {
             Self::blend_into(
                 &mut self.pixels,
@@ -250,6 +263,9 @@ impl Canvas {
     }
     /// Clipped nearest-neighbour blit without allocating a scaled image.
     pub fn image_rect(&mut self, image: &image::RgbaImage, dest: [i32; 4], clip: [i32; 4]) {
+        if self.measuring {
+            return;
+        }
         let [x, y, w, h] = dest;
         let [cx, cy, cw, ch] = clip;
         if w <= 0 || h <= 0 || image.width() == 0 || image.height() == 0 {
@@ -274,6 +290,9 @@ impl Canvas {
         self.icon_enabled(index, x, y, size, true);
     }
     pub fn icon_enabled(&mut self, index: usize, x: i32, y: i32, size: u32, enabled: bool) {
+        if self.measuring {
+            return;
+        }
         if size == 0 {
             return;
         }
@@ -348,6 +367,9 @@ impl Canvas {
         y: i32,
         color: Option<Color>,
     ) {
+        if self.measuring {
+            return;
+        }
         for (ox, oy, pixel) in self.symbols[symbol as usize].enumerate_pixels() {
             Self::blend_into(
                 &mut self.pixels,
@@ -369,6 +391,9 @@ impl Canvas {
         y: i32,
         src: [u32; 4],
     ) {
+        if self.measuring {
+            return;
+        }
         let img = &self.sprites[kind as usize];
         let [sx, sy, width, height] = src;
         for oy in 0..height.min(img.height().saturating_sub(sy)) {
@@ -392,6 +417,9 @@ impl Canvas {
         self.shade(51);
     }
     pub fn shade(&mut self, brightness: u8) {
+        if self.measuring {
+            return;
+        }
         for px in self.pixels.as_chunks_mut::<4>().0 {
             for v in &mut px[..3] {
                 *v = (u16::from(*v) * u16::from(brightness) / 255) as u8;

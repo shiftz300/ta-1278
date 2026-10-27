@@ -9,7 +9,7 @@ mod editor;
 pub mod files;
 pub mod mail;
 pub mod media;
-mod music;
+pub mod music;
 pub mod organizer;
 mod overlays;
 mod sms;
@@ -134,141 +134,94 @@ impl Default for Compose {
     }
 }
 pub struct Phone {
+    pub contacts: contacts::State,
+    pub records_dirty: bool,
+    pub messaging: mail::State,
+    pub browsing: browser::State,
+    pub playback: music::State,
+    pub gaming: snake::State,
+    pub settings: settings::State,
+
     pub(crate) wall_ms: Option<u64>,
-    pub music_paths: Vec<String>,
-    music_lookup: std::collections::HashMap<String, usize>,
-    pub playlist: usize,
-    pub playlist_row: usize,
     pub cues: Vec<crate::effects::Cue>,
     pub audio_preview: Option<String>,
-    pub media_ui: media::MediaBrowser,
-    pub pictures: std::collections::HashMap<String, image::RgbaImage>,
+    pub media: media::State,
     pub features: crate::config::Features,
     pub apps: crate::config::Apps,
     pub files: files::Files,
-    pub music_refresh: bool,
-    pub music_loading: bool,
-    pub music_wait_dismissed: bool,
-    pub music_return_file: bool,
     pub screen: Screen,
     pub index: usize,
     pub overlay: Option<Overlay>,
-    pub mailbox: Mailbox,
-    pub service_backend: Option<String>,
     pub prediction_engine: std::sync::Arc<dyn phone_core::predict::Engine>,
-    pub compose: Compose,
-    pub mail_ui: mail::MailUi,
-    pub chat: conversation::ChatUi,
-    pub browser: Browser,
-    pub music: Music,
-    pub snake: phone_core::snake::Snake,
-    pub snake_view: snake::SnakeView,
-    pub snake_level_preview: u8,
-    pub snake_data: snake::SnakeData,
-    pub snake_dirty: bool,
     pub tools: tools::Tools,
     pub calls: calls::Calls,
     pub organizer: organizer::Organizer,
-    pub local_data: organizer::LocalData,
-    pub local_dirty: bool,
     pub(crate) last_tick: Option<u64>,
-    pub music_view: MusicView,
-    pub music_started: bool,
     pub status: String,
-    pub pending_url: Option<String>,
     pub editor_lines: Vec<VisualRow>,
-    pub dirty: bool,
     pub notice_scroll: usize,
     pub notice_lines: usize,
-    pub accent: usize,
-    pub pending_compose_close: bool,
     menu_index: usize,
     app_origin: Screen,
-    pub preferences: Preferences,
-    pub preferences_dirty: bool,
-    pub settings_page: SettingsPage,
-    pub settings_first: usize,
-    pub theme_preview: usize,
-    pub browser_view: BrowserView,
-    pub browser_settings_origin: BrowserView,
-    pub browser_data: browser::data::BrowserData,
-    pub browser_dirty: bool,
-    pub browser_clear: [bool; 2],
-    pub requested_url: String,
 }
 impl Phone {
     pub fn new(mailbox: Mailbox) -> Self {
         Self {
             wall_ms: None,
-            music_paths: vec![],
-            music_lookup: Default::default(),
-            playlist: 0,
-            playlist_row: 0,
             cues: vec![],
             audio_preview: None,
-            media_ui: Default::default(),
-            pictures: Default::default(),
+            media: Default::default(),
             features: Default::default(),
             apps: Default::default(),
             files: Default::default(),
-            music_refresh: false,
-            music_loading: false,
-            music_wait_dismissed: false,
-            music_return_file: false,
             screen: Screen::Home,
             index: 0,
             overlay: None,
-            mailbox,
-            service_backend: None,
             prediction_engine: phone_core::predict::default_engine(),
-            compose: Compose::default(),
-            mail_ui: mail::MailUi::default(),
-            chat: Default::default(),
-            browser: Browser::new(phone_core::browser::Page {
-                flow: vec![],
-                url: String::new(),
-                title: String::new(),
-                elements: vec![],
-                forms: vec![],
-            }),
-            music: Music::default(),
-            snake: Default::default(),
-            snake_view: Default::default(),
-            snake_level_preview: 1,
-            snake_data: Default::default(),
-            snake_dirty: false,
             tools: Default::default(),
             calls: Default::default(),
             organizer: Default::default(),
-            local_data: Default::default(),
-            local_dirty: false,
             last_tick: None,
-            music_view: MusicView::Root,
-            music_started: false,
             status: String::new(),
-            pending_url: None,
             editor_lines: vec![VisualRow {
                 stops: vec![(0, 0)],
             }],
-            dirty: false,
             notice_scroll: 0,
             notice_lines: 0,
-            accent: crate::theme::Theme::load().startup_fallback_accent,
-            pending_compose_close: false,
             menu_index: crate::menu::INITIAL_FOCUS,
             app_origin: Screen::Home,
-            preferences: Preferences::default(),
-            preferences_dirty: false,
-            settings_page: SettingsPage::Root,
-            settings_first: 0,
-            theme_preview: 1,
-            browser_view: BrowserView::Start,
-            browser_settings_origin: BrowserView::Start,
-            browser_data: Default::default(),
-            browser_dirty: false,
-            browser_clear: [false, true],
-            requested_url: String::new(),
+            contacts: Default::default(),
+            records_dirty: false,
+            messaging: mail::State {
+                mailbox,
+                ..Default::default()
+            },
+            browsing: Default::default(),
+            playback: Default::default(),
+            gaming: Default::default(),
+            settings: Default::default(),
         }
+    }
+    pub fn records(&self) -> organizer::LocalData {
+        organizer::LocalData {
+            schema_version: 1,
+            contacts: self.contacts.records.clone(),
+            groups: self.contacts.groups.clone(),
+            playlists: self.playback.playlists.clone(),
+            calls: self.calls.records.clone(),
+            events: self.organizer.events.clone(),
+            alarms: self.organizer.alarms.clone(),
+            reminders: self.organizer.reminders.clone(),
+        }
+    }
+    pub fn apply_records(&mut self, data: organizer::LocalData) {
+        self.contacts.records = data.contacts;
+        self.contacts.groups = data.groups;
+        self.playback.playlists = data.playlists;
+        self.calls.records = data.calls;
+        self.organizer.events = data.events;
+        self.organizer.alarms = data.alarms;
+        self.organizer.reminders = data.reminders;
     }
     pub fn timestamp(&self) -> u64 {
         self.wall_ms.unwrap_or_else(phone_core::sms::timestamp)
@@ -302,7 +255,7 @@ impl Phone {
         {
             self.files.pending = None;
         }
-        self.music.event(Event {
+        self.playback.model.event(Event {
             key: Key::End,
             phase: Phase::Cancel,
         });
@@ -316,8 +269,8 @@ impl Phone {
                 .unwrap_or(0);
         }
         if self.screen == Screen::Snake && s != Screen::Snake {
-            self.snake.running = false;
-            self.snake_view = snake::SnakeView::Menu;
+            self.gaming.model.running = false;
+            self.gaming.view = snake::SnakeView::Menu;
         }
         self.screen = s;
         self.index = if s == Screen::Menu {
@@ -344,7 +297,7 @@ impl Phone {
             return;
         }
         if screen == Screen::Music {
-            self.music_return_file = false;
+            self.playback.return_file = false;
         }
         self.app_origin = if self.screen == Screen::Menu {
             Screen::Menu
@@ -365,7 +318,7 @@ impl Phone {
             self.organizer.page = organizer::OrganizerPage::Contacts;
         }
         if screen == Screen::Settings {
-            self.settings_page = SettingsPage::Root;
+            self.settings.page = SettingsPage::Root;
         }
         self.go(screen);
         if let Screen::Tools(page @ (tools::ToolPage::Gallery | tools::ToolPage::Video)) = screen {
@@ -374,14 +327,14 @@ impl Phone {
             } else {
                 media::Purpose::Pictures
             });
-            self.media_ui.origin = self.app_origin;
+            self.media.ui.origin = self.app_origin;
         }
         if screen == Screen::Tools(tools::ToolPage::Files) && self.features.files {
             self.files = Default::default();
             self.files.pending = Some(files::FileRequest::Storage);
         }
         if screen == Screen::Organizer(organizer::OrganizerPage::Alarms)
-            && !self.local_data.alarms.is_empty()
+            && !self.organizer.alarms.is_empty()
         {
             self.index = 1;
         }
@@ -390,8 +343,8 @@ impl Phone {
         self.go(self.app_origin);
     }
     pub fn apply_preferences(&mut self, preferences: Preferences) {
-        self.accent = preferences.accent;
-        self.preferences = preferences;
+        self.settings.accent = preferences.accent;
+        self.settings.preferences = preferences;
         self.organizer.date = self.local_clock().0;
     }
     pub fn notice(&mut self, s: impl Into<String>) {
@@ -461,13 +414,15 @@ impl Phone {
     pub fn menu_enabled(&self, kind: MenuKind, index: usize) -> bool {
         match kind {
             // Native action 31 is present, but this text adapter has no image backend.
-            MenuKind::BrowserSave => index < 3 && !self.browser.page.url.is_empty(),
-            MenuKind::Sms => index != 2 && (index < 3 || !self.compose.body.units.is_empty()),
+            MenuKind::BrowserSave => index < 3 && !self.browsing.model.page.url.is_empty(),
+            MenuKind::Sms => {
+                index != 2 && (index < 3 || !self.messaging.compose.body.units.is_empty())
+            }
             MenuKind::Symbols => index != 40,
             MenuKind::BrowserNavigation => match index {
-                1 => self.browser.loading,
-                2 => self.browser.can_forward(),
-                3 => self.browser.can_back(),
+                1 => self.browsing.model.loading,
+                2 => self.browsing.model.can_forward(),
+                3 => self.browsing.model.can_back(),
                 _ => true,
             },
             _ => true,
@@ -492,17 +447,19 @@ impl Phone {
         }
     }
     pub fn tab(&mut self) {
-        if self.active_reminder().is_some() || self.mail_ui.pending.is_some() {
+        if self.active_reminder().is_some() || self.messaging.ui.pending.is_some() {
             return;
         }
         if self.screen == Screen::Compose && self.overlay.is_none() {
-            if !self.compose.to.accept_prediction() || !self.compose.body.accept_prediction() {
+            if !self.messaging.compose.to.accept_prediction()
+                || !self.messaging.compose.body.accept_prediction()
+            {
                 self.status = "Text limit reached".into();
                 return;
             }
-            self.compose.to.commit();
-            self.compose.body.commit();
-            self.compose.recipient = !self.compose.recipient;
+            self.messaging.compose.to.commit();
+            self.messaging.compose.body.commit();
+            self.messaging.compose.recipient = !self.messaging.compose.recipient;
         }
     }
     pub fn input_mode(&mut self) {
@@ -553,18 +510,20 @@ impl Phone {
         let (date, minute) = self.local_clock();
         self.check_alarms(date, minute);
         self.check_events(date, minute);
-        let segments = self.snake.body.len();
-        self.snake.tick(elapsed);
-        if self.snake_data.sound && self.snake.body.len() > segments {
+        let segments = self.gaming.model.body.len();
+        self.gaming.model.tick(elapsed);
+        if self.gaming.data.sound && self.gaming.model.body.len() > segments {
             self.cues.push(crate::effects::Cue::Food);
         }
-        if self.snake.over && self.snake_view == snake::SnakeView::Game {
-            if self.snake_data.sound {
+        if self.gaming.model.over && self.gaming.view == snake::SnakeView::Game {
+            if self.gaming.data.sound {
                 self.cues.push(crate::effects::Cue::Over);
             }
-            self.snake_data.record(self.snake.kind, self.snake.score);
-            self.snake_dirty = true;
-            self.snake_view = snake::SnakeView::GameOver;
+            self.gaming
+                .data
+                .record(self.gaming.model.kind, self.gaming.model.score);
+            self.gaming.dirty = true;
+            self.gaming.view = snake::SnakeView::GameOver;
             self.index = 0;
         }
         if self.apps.utilities {
@@ -595,15 +554,15 @@ impl Phone {
             e.tick(now);
         }
         if self.screen != Screen::Music
-            || self.music_view != MusicView::Player
+            || self.playback.view != MusicView::Player
             || self.overlay.is_some()
         {
-            self.music.event(Event {
+            self.playback.model.event(Event {
                 key: Key::End,
                 phase: Phase::Cancel,
             });
         }
-        self.music.tick(dt);
+        self.playback.model.tick(dt);
     }
     pub fn handle(&mut self, event: Event, now: u64) {
         let Event { key, phase } = event;
@@ -613,22 +572,22 @@ impl Phone {
             }
             return;
         }
-        if self.mail_ui.pending.is_some() {
+        if self.messaging.ui.pending.is_some() {
             return;
         }
         if phase == Phase::Cancel {
-            self.music.event(event);
+            self.playback.model.event(event);
             if let Some(e) = self.editor_mut() {
                 e.commit();
             }
             return;
         }
         if self.screen == Screen::Music
-            && self.music_view == MusicView::Player
-            && !self.music_loading
+            && self.playback.view == MusicView::Player
+            && !self.playback.loading
             && self.overlay.is_none()
         {
-            self.music.event(event);
+            self.playback.model.event(event);
         }
         if phase == Phase::Long {
             if self.screen == Screen::Tools(tools::ToolPage::Dial) {
@@ -644,7 +603,7 @@ impl Phone {
         if !matches!(phase, Phase::Down | Phase::Repeat) {
             return;
         }
-        if phase == Phase::Down && self.preferences.keypad_sound && self.cues.len() < 8 {
+        if phase == Phase::Down && self.settings.preferences.keypad_sound && self.cues.len() < 8 {
             self.cues.push(crate::effects::Cue::Key);
         }
         if phase == Phase::Repeat
@@ -667,9 +626,9 @@ impl Phone {
         }
         if key == Key::End
             && matches!(self.screen, Screen::Conversation | Screen::Messages)
-            && self.chat.popup != conversation::Popup::None
+            && self.messaging.chat.popup != conversation::Popup::None
         {
-            self.chat.popup = conversation::Popup::None;
+            self.messaging.chat.popup = conversation::Popup::None;
             return;
         }
         if key == Key::End {
@@ -684,27 +643,27 @@ impl Phone {
             return;
         }
         if matches!(self.screen, Screen::Compose | Screen::Conversation) && self.overlay.is_none() {
-            if key == Key::Star && !self.compose.recipient {
+            if key == Key::Star && !self.messaging.compose.recipient {
                 self.overlay = Some(Overlay::Menu {
                     kind: MenuKind::Symbols,
                     index: 0,
                 });
                 return;
             }
-            if key == Key::Down && self.compose.recipient {
-                self.compose.recipient = false;
+            if key == Key::Down && self.messaging.compose.recipient {
+                self.messaging.compose.recipient = false;
                 return;
             }
             if key == Key::Up
                 && self.screen == Screen::Compose
-                && !self.compose.recipient
+                && !self.messaging.compose.recipient
                 && self.editor_lines.first().is_some_and(|r| {
                     r.stops
                         .iter()
-                        .any(|(offset, _)| *offset == self.compose.body.cursor)
+                        .any(|(offset, _)| *offset == self.messaging.compose.body.cursor)
                 })
             {
-                self.compose.recipient = true;
+                self.messaging.compose.recipient = true;
                 return;
             }
         }
@@ -750,11 +709,13 @@ impl Phone {
             Screen::Drafts | Screen::Outbox | Screen::Inbox => self.mail_list_key(key),
             Screen::Mail(page) => self.mail_key(page, key),
             Screen::Compose | Screen::Conversation => match key {
-                Key::Center if self.compose.recipient => self.compose.recipient = false,
+                Key::Center if self.messaging.compose.recipient => {
+                    self.messaging.compose.recipient = false
+                }
                 Key::Center => self.queue_message(),
                 Key::SoftLeft => {
                     self.overlay = Some(Overlay::Menu {
-                        kind: if self.compose.recipient {
+                        kind: if self.messaging.compose.recipient {
                             MenuKind::SmsRecipient
                         } else {
                             MenuKind::Sms
@@ -769,7 +730,7 @@ impl Phone {
                         self.close_compose();
                     }
                 }
-                Key::Up if self.compose.recipient => {}
+                Key::Up if self.messaging.compose.recipient => {}
                 _ => {}
             },
             Screen::Browser => self.browser_key(key),

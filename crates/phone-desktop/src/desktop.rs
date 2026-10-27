@@ -1,5 +1,5 @@
 use crate::runtime::Time;
-use crate::{audio, config, gpu, host, phone, platform, runtime::Runtime, storage};
+use crate::{audio, config, gpu, host, platform, runtime::Runtime, storage};
 mod smoke;
 use std::{
     path::PathBuf,
@@ -24,8 +24,7 @@ struct App {
     start: Instant,
     next_redraw: Instant,
     occluded: bool,
-    data_dir: PathBuf,
-    utilities: storage::session::Session,
+    store: crate::persistence::Directory,
     smoke: Option<PathBuf>,
     smoke_stage: usize,
     failure: Option<String>,
@@ -41,158 +40,18 @@ impl App {
         self.runtime.release(source);
     }
     fn flush(&mut self) {
-        if let Some(error) = self.runtime.predictor.take_error() {
-            self.runtime.phone.status = format!("输入法错误：{error}");
+        if Instant::now() < self.save_retry_at {
+            return;
         }
-        if Instant::now() >= self.save_retry_at
-            && let Some((data, revision)) = self.runtime.predictor.pending_save()
-        {
-            match storage::save_json(&self.data_dir, "input-native.json", &data, 2 * 1024 * 1024) {
-                Ok(()) => self.runtime.predictor.saved(revision),
-                Err(e) => {
-                    self.save_retry_at = Instant::now() + Duration::from_secs(5);
-                    self.runtime.phone.status = format!("输入记录保存失败：{e}");
-                }
-            }
-        }
-        if Instant::now() >= self.save_retry_at
-            && let Err(e) =
-                self.utilities
-                    .save(&self.data_dir, &mut self.runtime.phone.tools, false)
-        {
+        if let Err(error) = self.runtime.flush(&mut self.store, false) {
             self.save_retry_at = Instant::now() + Duration::from_secs(5);
-            self.runtime.phone.status = format!("计时数据保存失败：{e}");
-        }
-        if self.runtime.phone.snake_dirty && Instant::now() >= self.save_retry_at {
-            match storage::save_json(
-                &self.data_dir,
-                "snake.json",
-                &self.runtime.phone.snake_data,
-                4096,
-            ) {
-                Ok(()) => self.runtime.phone.snake_dirty = false,
-                Err(e) => {
-                    self.save_retry_at = Instant::now() + Duration::from_secs(5);
-                    self.runtime.phone.status = format!("游戏保存失败：{e}");
-                }
-            }
-        }
-        if self.runtime.phone.local_dirty && Instant::now() >= self.save_retry_at {
-            match storage::save_json(
-                &self.data_dir,
-                "organizer.json",
-                &self.runtime.phone.local_data,
-                8 * 1024 * 1024,
-            ) {
-                Ok(()) => self.runtime.phone.local_dirty = false,
-                Err(e) => {
-                    self.save_retry_at = Instant::now() + Duration::from_secs(5);
-                    self.runtime.phone.status = format!("保存失败：{e}");
-                }
-            }
-        }
-        if self.runtime.phone.browser_dirty && Instant::now() >= self.save_retry_at {
-            match storage::save_browser(&self.data_dir, &self.runtime.phone.browser_data) {
-                Ok(()) => self.runtime.phone.browser_dirty = false,
-                Err(e) => {
-                    self.save_retry_at = Instant::now() + Duration::from_secs(5);
-                    self.runtime.phone.status = format!("浏览记录保存失败：{e}");
-                }
-            }
-        }
-        if self.runtime.phone.preferences_dirty && Instant::now() >= self.save_retry_at {
-            match storage::save_preferences(&self.data_dir, &self.runtime.phone.preferences) {
-                Ok(()) => self.runtime.phone.preferences_dirty = false,
-                Err(e) => {
-                    self.save_retry_at = Instant::now() + Duration::from_secs(5);
-                    self.runtime.phone.status = format!("设置保存失败：{e}");
-                }
-            }
-        }
-        if self.runtime.phone.dirty && Instant::now() >= self.save_retry_at {
-            self.save_retry_at = Instant::now() + Duration::from_secs(5);
-            match storage::save(&self.data_dir, &self.runtime.phone.mailbox) {
-                Ok(()) => {
-                    self.runtime.phone.storage_saved();
-                    self.save_retry_at = Instant::now();
-                }
-                Err(e) => {
-                    self.runtime.phone.storage_failed();
-                    self.runtime.phone.status = format!("Save failed: {e}");
-                    eprintln!("{}", self.runtime.phone.status);
-                    self.runtime
-                        .phone
-                        .notice(format!("Save failed; data remains in memory. {e}"));
-                }
-            }
+            self.runtime.report(error);
         }
     }
     fn quit(&mut self, event_loop: &ActiveEventLoop) {
-        if self.runtime.phone.files.busy
-            || self
-                .runtime
-                .phone
-                .files
-                .pending
-                .as_ref()
-                .is_some_and(phone::files::FileRequest::mutating)
-        {
-            self.runtime.phone.notice("文件操作尚未结束，请稍候。");
-            return;
+        if self.runtime.close(&mut self.store) {
+            event_loop.exit();
         }
-        if self.runtime.phone.mail_ui.pending.is_some() {
-            self.save_retry_at = Instant::now();
-            self.flush();
-            // Failed queue writes roll back and leave the original editor open.
-            if matches!(
-                self.runtime.phone.screen,
-                phone::Screen::Compose | phone::Screen::Conversation
-            ) {
-                return;
-            }
-        }
-        if matches!(
-            self.runtime.phone.screen,
-            phone::Screen::Compose | phone::Screen::Conversation
-        ) {
-            if !self.runtime.phone.compose.body.accept_prediction()
-                || !self.runtime.phone.compose.to.accept_prediction()
-            {
-                self.runtime
-                    .phone
-                    .notice("Text limit reached. Confirm or cancel the candidate before closing.");
-                return;
-            }
-            self.runtime.phone.save_draft();
-        }
-        self.save_retry_at = Instant::now();
-        self.flush();
-        if self.runtime.phone.dirty
-            || self.runtime.predictor.pending_save().is_some()
-            || self.runtime.phone.preferences_dirty
-            || self.runtime.phone.browser_dirty
-            || self.runtime.phone.local_dirty
-            || self.runtime.phone.snake_dirty
-        {
-            self.runtime
-                .phone
-                .notice("Save failed. Window stays open so you can keep your text.");
-            return;
-        }
-        if let Err(e) = self
-            .utilities
-            .save(&self.data_dir, &mut self.runtime.phone.tools, true)
-        {
-            self.runtime
-                .phone
-                .notice(format!("计时数据保存失败，窗口保持打开：{e}"));
-            return;
-        }
-        if let Err(e) = self.platform.save(&self.runtime, &self.data_dir, true) {
-            self.runtime.phone.notice(format!("音乐设置保存失败：{e}"));
-            return;
-        }
-        event_loop.exit();
     }
     fn fail(&mut self, event_loop: &ActiveEventLoop, e: String) {
         eprintln!("{e}");
@@ -337,21 +196,13 @@ impl ApplicationHandler for App {
             self.fail(event_loop, error);
             return;
         }
-        if let Err(error) = self.platform.poll(&mut self.runtime) {
-            self.runtime.phone.status = error;
-        }
-        if Instant::now() >= self.save_retry_at
-            && let Err(error) = self.platform.save(&self.runtime, &self.data_dir, false)
-        {
-            self.save_retry_at = Instant::now() + Duration::from_secs(5);
-            self.runtime
-                .phone
-                .notice(format!("音乐设置保存失败：{error}"));
+        if let Err(error) = self.runtime.poll_platform(&mut self.platform) {
+            self.runtime.report(error);
         }
         self.flush();
         if let Some(w) = &self.window {
             if let Err(e) = self.runtime.poll_services() {
-                self.runtime.phone.status = e;
+                self.runtime.report(e);
             }
             if now >= self.next_redraw {
                 self.next_redraw = now + Duration::from_millis(33);
@@ -436,14 +287,13 @@ pub fn run() -> Result<(), Box<dyn std::error::Error>> {
     }
     runtime_config.storage.directory = storage_dir.or(runtime_config.storage.directory);
     runtime_config.storage.read_only |= read_only;
-    let features = runtime_config.effective_features();
     if check_config {
         println!("{}", serde_json::to_string_pretty(&runtime_config)?);
         return Ok(());
     }
-    storage_dir = runtime_config.storage.directory;
+    storage_dir = runtime_config.storage.directory.clone();
     read_only = runtime_config.storage.read_only;
-    let _data_lock = storage::DataLock::acquire(&data_dir)?;
+    let mut store = crate::persistence::Directory::open(&data_dir)?;
     let folder = if smoke.is_none() {
         match storage::setup::select(&data_dir, storage_dir, read_only)? {
             Some(folder) => Some(folder),
@@ -452,31 +302,20 @@ pub fn run() -> Result<(), Box<dyn std::error::Error>> {
     } else {
         None
     };
-    let mailbox = storage::load(&data_dir)?;
-    let mut phone = phone::Phone::new(mailbox);
-    let predictor = Arc::new(phone_core::predict::firmware::Firmware::from_data(
-        storage::load_json(&data_dir, "input-native.json", 2 * 1024 * 1024)?,
-    )?);
-    phone.prediction_engine = predictor.clone();
-    phone.features = features;
-    phone.apps = runtime_config.apps;
-    phone.apply_preferences(storage::load_preferences(&data_dir)?);
-    phone.browser_data = storage::load_browser(&data_dir)?;
-    phone.local_data = storage::load_organizer(&data_dir)?;
-    phone.apply_snake_data(storage::load_snake(&data_dir)?);
-    if smoke.is_some() {
-        phone.accent = 4;
-    }
-    let utilities = storage::session::Session::load(&data_dir, &mut phone.tools)?;
-    let mut runtime = Runtime::from_phone(
-        phone,
-        predictor,
+    let mut runtime = Runtime::load_profile(
+        runtime_config,
         Time {
             elapsed_ms: 0,
             unix_ms: storage::session::wall_ms(),
         },
+        &mut store,
+        Box::new(phone_core::services::Offline),
+        crate::persistence::Resume::WallClock,
     )?;
-    let platform = platform::Native::from_folder(&mut runtime, folder, &data_dir)?;
+    if smoke.is_some() {
+        smoke::theme(&mut runtime);
+    }
+    let platform = platform::Native::from_folder(&runtime, folder);
     let now = Instant::now();
     let mut app = App {
         window: None,
@@ -488,8 +327,7 @@ pub fn run() -> Result<(), Box<dyn std::error::Error>> {
         start: now,
         next_redraw: now,
         occluded: false,
-        data_dir,
-        utilities,
+        store,
         smoke,
         smoke_stage: 0,
         failure: None,

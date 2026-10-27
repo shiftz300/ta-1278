@@ -1,5 +1,8 @@
 //! First-launch folder choice, kept outside the replica's phone UI.
-use crate::{storage, storage::files::Folder};
+use crate::{
+    persistence::{self, Directory, Record},
+    storage::files::Folder,
+};
 use serde::{Deserialize, Serialize};
 use std::path::{Path, PathBuf};
 
@@ -34,7 +37,8 @@ fn resolve(
     read_only: bool,
     choose: impl FnOnce(&Path) -> Result<Option<PathBuf>, String>,
 ) -> Result<Option<Folder>, String> {
-    let saved: Selection = storage::load_json(data, "storage.json", 65536)?;
+    let mut store = Directory::new(data);
+    let saved: Selection = persistence::read(&mut store, Record::Mapping)?;
     if requested.is_none()
         && let Some(path) = &saved.directory
     {
@@ -50,13 +54,12 @@ fn resolve(
         return Ok(None);
     };
     let (directory, folder) = validate(data, &chosen, read_only)?;
-    storage::save_json(
-        data,
-        "storage.json",
+    persistence::write(
+        &mut store,
+        Record::Mapping,
         &Selection {
             directory: Some(directory),
         },
-        65536,
     )?;
     Ok(Some(folder))
 }

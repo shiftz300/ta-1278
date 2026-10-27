@@ -56,9 +56,9 @@ fn game(c: &mut Canvas, s: &Snake) {
     }
 }
 pub(super) fn render(c: &mut Canvas, p: &Phone) {
-    if matches!(p.snake_view, SnakeView::Game | SnakeView::GameOver) {
-        game(c, &p.snake);
-        if p.snake_view == SnakeView::GameOver {
+    if matches!(p.gaming.view, SnakeView::Game | SnakeView::GameOver) {
+        game(c, &p.gaming.model);
+        if p.gaming.view == SnakeView::GameOver {
             // Native 0x88690ac8..0x88690ae6; resource 0x401c002c.
             c.rect(30, 70, 180, 50, crate::theme::rgb565(0x0127));
             let x = (240 - c.width("游戏结束", 20)) / 2;
@@ -69,7 +69,7 @@ pub(super) fn render(c: &mut Canvas, p: &Phone) {
     c.text(
         6,
         1,
-        match p.snake_view {
+        match p.gaming.view {
             SnakeView::Level => "关卡",
             SnakeView::Scores => "最高得分",
             SnakeView::Sound => "声音",
@@ -78,7 +78,7 @@ pub(super) fn render(c: &mut Canvas, p: &Phone) {
         14,
         WHITE,
     );
-    match p.snake_view {
+    match p.gaming.view {
         SnakeView::Level => {
             for i in 0..8 {
                 c.rect(
@@ -86,7 +86,7 @@ pub(super) fn render(c: &mut Canvas, p: &Phone) {
                     160,
                     21,
                     41,
-                    crate::theme::rgb565(if i < p.snake_level_preview as i32 {
+                    crate::theme::rgb565(if i < p.gaming.level_preview as i32 {
                         0x07e0
                     } else {
                         0xad55
@@ -95,7 +95,7 @@ pub(super) fn render(c: &mut Canvas, p: &Phone) {
             }
         }
         SnakeView::Scores => {
-            for (i, score) in p.snake_data.scores[p.snake_data.kind.min(5)]
+            for (i, score) in p.gaming.data.scores[p.gaming.data.kind.min(5)]
                 .iter()
                 .enumerate()
             {
@@ -121,8 +121,8 @@ pub(super) fn render(c: &mut Canvas, p: &Phone) {
                 |i| list::Row {
                     label: &labels[i],
                     enabled: true,
-                    marker: if p.snake_view == SnakeView::Sound {
-                        list::Marker::Radio(i == usize::from(p.snake_data.sound))
+                    marker: if p.gaming.view == SnakeView::Sound {
+                        list::Marker::Radio(i == usize::from(p.gaming.data.sound))
                     } else {
                         list::Marker::None
                     },
@@ -130,13 +130,13 @@ pub(super) fn render(c: &mut Canvas, p: &Phone) {
             );
         }
     }
-    if p.snake_view == SnakeView::Saved {
+    if p.gaming.view == SnakeView::Saved {
         c.dim();
         let x = (240 - c.width("全部完成！", 20)) / 2;
         c.text(x, 241, "全部完成！", 20, WHITE);
         Softkeys::new(Button::None, Button::Text("确认"), Button::None).draw(c);
     } else {
-        Softkeys::back(if p.snake_view == SnakeView::Scores {
+        Softkeys::back(if p.gaming.view == SnakeView::Scores {
             ""
         } else {
             "选择"

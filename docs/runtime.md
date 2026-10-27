@@ -7,7 +7,7 @@ implementations stay outside the UI.
 The existing `phone-desktop` Cargo package now exports the `phone_runtime`
 library. Keeping the package name preserves current build/package commands.
 The public entry points are `Runtime`, `Time`, `Frame`, `Request`, `config`,
-`messaging` and `platform`. `take_cues` exposes bounded short sound effects when a custom host handles them. Internal `Phone` fields are not a public integration API.
+`messaging`, `platform` and `persistence`. `take_cues` exposes bounded short sound effects when a custom host handles them. Internal `Phone` fields are not a public integration API.
 
 ## Use without a window
 
@@ -36,7 +36,7 @@ alarms and animation. The elapsed clock must not go backwards. The wall clock
 controls the display, new message timestamps and alert expiry. Existing phone
 clock/timezone settings apply on top of it. To pause the model, cancel held input
 and stop advancing the clocks; resume using virtual elapsed time that excludes
-the pause. The host separately decides whether to keep polling incoming services.
+the pause. The host separately decides whether to keep polling incoming services. Painting is read-only; input measures derived geometry separately without repainting pixels.
 Native media playback has its own clock; freezing `Time` does not pause an audio
 sink or video helper.
 
@@ -76,12 +76,10 @@ runtime, cannot overwrite the active document. Host-provided pages use the same
 layout, links, fields and forms as the standalone browser. Do not mutate request
 URLs after dispatch. Content providers are responsible for bounded inputs.
 
-`platform::Native` is the existing concrete folder/audio/HTTP adapter, now usable
-without a winit window. Its directory is a direct filesystem mapping. Constructing
+`platform::Native` implements `Platform`/`Documents` and supplies the shared `Sound` and decoder/session ports without a winit window. Custom hosts can supply the same ports. Drive them with `Runtime::poll_platform`; Native::poll remains a compatibility wrapper. Its directory is a direct filesystem mapping. Constructing
 it is explicit, polling may perform requested IO/playback, and configuration must
 match the capabilities the host intends to provide. Runtime construction does not open `config.storage.directory`; pass the directory/read-only choice explicitly to Native. It is bound to one runtime;
-create a fresh adapter for a restored instance. Its `save` retains the existing
-music preference file. macOS image/video support requires the separately built
+create a fresh adapter for a restored instance. It owns no persistence or application state. Use `Runtime::flush` with a Store to retain the existing music preference file. macOS image/video support requires the separately built
 media helper beside the host executable; the no-desktop build does not build it.
 No new VFS, plugin loader or abstract hardware-driver framework was introduced.
 
@@ -112,9 +110,7 @@ It preserves saved timer remaining time without adding time spent outside the
 host. A confirmed open SMS draft returns to the draft list. It does not restore
 an arbitrary UI frame, caret/candidate list, unfinished organizer form, live Snake
 round, current web request, music/video decoder position or external file changes.
-This is a user-data checkpoint, not a process snapshot. The standalone host keeps
-its existing separate JSON files and wall-clock catch-up policy; it does not
-silently migrate existing profiles to this bundle.
+This is a user-data checkpoint, not a process snapshot. The standalone host keeps its separate JSON layout and wall-clock catch-up policy through the same Store and state capture/restore engine. `Resume::Paused` and `Resume::WallClock` select the timer policy explicitly; profiles are not silently migrated to a bundle.
 
 The supplied backend must agree with the host's restored history. Real-world
 messages already sent cannot be undone. Restoring a saved request counter into
@@ -125,8 +121,21 @@ new runtime request IDs only isolate local browser completions.
 
 This first step provides the shared execution/input/frame entry point, a supplied
 clock, message and document ports, optional native adapters and user-data saves.
-The desktop window now uses the same Runtime and Native objects. It retains native
-window/quit behavior and legacy profile persistence. Full transient UI snapshots,
-media pause/restore coordination, and replacing every media service with a custom
-host implementation are separate follow-up work. There is no new actual messaging
+The desktop window now uses the same Runtime and Native objects. It retains native window behavior; `Runtime::close` now owns draft confirmation and failed-save retention. `persistence::Store` owns I/O while Runtime owns record/checkpoint serialization and dirty acknowledgments. Full transient UI snapshots,
+media pause/restore coordination, and coordinating external backend rewind remain separate follow-up work. Media ports are now replaceable; the file capability intentionally remains a direct host folder. There is no new actual messaging
 backend, device access or claim of complete firmware recovery.
+
+## Platform and storage ports
+
+`Platform::instance` returns `Runtime::instance()`. `Documents` exchanges opaque Requests and Pages, `Sound` handles audio/control clock synchronization, and `Decoder` returns pixels or a `Video` session. `Devices` transfers a selected real folder, Sound and Decoder once, on the first platform poll. Runtime owns the transferred media lifetime; create a fresh runtime/adapter when changing hosts. No port receives Phone or application UI fields.
+
+`persistence::Store` reads/writes bounded `Record` keys. `Directory::open` owns the profile lock, atomic writes and backups; `Directory::new` is for callers already owning the transaction/lock.
+
+- `Runtime::load_profile(config, time, store, backend, resume)` and `flush(store, force)` use the existing JSON filenames. Background flush does not confirm or save uncommitted draft text.
+- `save_to(store)` and `restore_from(config, time, store, backend)` use Record::Snapshot. Old version-1 snapshots without music remain readable; new snapshots also retain paused music resume state.
+- Callback `save` and byte-based `restore` use the same capture/validation code. Choose a profile or snapshot layout consistently when restoring; writing a snapshot does not update all profile files.
+- The first record failure stops subsequent writes. Earlier successes remain acknowledged; an unattempted mailbox stays pending. Only an attempted failed mailbox write rolls back a queued Send.
+
+See [the current architecture diagram](overview.md).
+
+The native constructor no longer takes a profile path; use `Native::new(&runtime, directory, read_only)` or `Native::from_folder(&runtime, folder)`. `Native::save` has been replaced by Runtime/Store persistence. The callback Runtime::save API and Native::poll convenience remain available.

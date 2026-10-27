@@ -308,9 +308,9 @@ pub fn layout(c: &mut Canvas, page: &Page, font: u16) -> Layout {
         height: b.y.max(0) as usize,
     }
 }
-pub fn paint(c: &mut Canvas, p: &Phone, layout: &Layout) {
-    let shift = 64 - p.browser.scroll as i32;
-    let font = [12, 14][p.browser_data.settings.font_size.min(1)];
+pub fn paint(c: &mut Canvas, p: &Phone, layout: &Layout, scroll: usize) {
+    let shift = 64 - scroll as i32;
+    let font = [12, 14][p.browsing.data.settings.font_size.min(1)];
     for item in &layout.draws {
         match item {
             Draw::Text {
@@ -325,7 +325,7 @@ pub fn paint(c: &mut Canvas, p: &Phone, layout: &Layout) {
                 if yy + 24 < 64 || yy >= 280 {
                     continue;
                 }
-                let focused = link.is_some_and(|i| i == p.browser.focus);
+                let focused = link.is_some_and(|i| i == p.browsing.model.focus);
                 let color = if link.is_some() {
                     if focused { WHITE } else { LINK }
                 } else {
@@ -348,8 +348,8 @@ pub fn paint(c: &mut Canvas, p: &Phone, layout: &Layout) {
                 if y + h < 64 || y >= 280 {
                     continue;
                 }
-                let focused = *index == p.browser.focus;
-                let Some(e) = p.browser.page.elements.get(*index) else {
+                let focused = *index == p.browsing.model.focus;
+                let Some(e) = p.browsing.model.page.elements.get(*index) else {
                     continue;
                 };
                 match e {

@@ -2,6 +2,10 @@
 
 The public `phone_runtime` library owns phone interaction and CPU drawing. The optional desktop host uses `winit` for the window and input. `wgpu` presents a 240×320 RGBA texture with nearest sampling and letterboxing. CPU drawing uses original fonts/icons and fallback fonts. This is a new interaction program, not execution of the ARM firmware.
 
+## Ownership
+
+[Current functional diagram and review boundaries](overview.md). Runtime now owns host polling, profile/checkpoint persistence and close policy. App-owned state lives in its owning module; `organizer::LocalData` is only a compatibility storage DTO. Views borrow Phone immutably and return derived layout, which is measured without raster writes before input. Platform ports never receive Phone.
+
 ## Modules
 
 Rust source files use one word. Parent directories name the owner: `audio/midi.rs`,
@@ -40,7 +44,7 @@ resource and capture filenames keep their evidence identifiers.
 
 Canvas clipping keeps scrolling form content inside its viewport, including text and images. Calendar uses the shared fields, editor, popup, softkeys and date/time control; file deletion uses the shared checkbox list. Converter coefficients and bounded formatting live in `phone-core/converter.rs`; `phone/converter.rs` owns pair selection and two-field editing, while `views/converter.rs` uses the shared numeric form/editor and softkeys.
 
-Core code has no USB, modem, network or filesystem access. The browser worker receives only a URL and cannot access the mailbox. Only the recovered T9 routines are interpreted in the bounded guest runtime; other firmware code is not executed.
+Core code has no USB, modem, network or filesystem access. The browser worker receives document requests and optional current-page context, and cannot access the mailbox. Only the recovered T9 routines are interpreted in the bounded guest runtime; other firmware code is not executed.
 
 ## Controls
 
@@ -69,7 +73,7 @@ SMS supports one recipient, peer conversations with an inline composer, drafts, 
 
 Browser opens its four-entry start page. `about:demo` is an offline test document. Text pages, links, fields, radios, checkboxes, single/multiple selects and GET forms work. Single-select reopens focused on row zero, separately from its selected marker. A text editor's right softkey deletes until empty, then cancels. Back/Forward restore in-session focus and scroll. Closing a page and exiting the app are separate confirmations. History URLs survive either action and app restart.
 
-HTTP has a 12-second timeout, 2 MiB decoded-body limit and two waiting jobs. Stop invalidates results; it does not abort the worker's underlying request immediately. Back holds 32 pages; persistent history holds 100 URLs, offline storage 20 parsed documents. Offline snapshots restore initial fields and clear passwords. No JS/CSS renderer, POST, WML, images or downloads. Native settings now use one home type, two font sizes and an inline image checkbox. Clear entry/cancel is sampled; local checkbox/commit behavior is documented separately because native commit remains unknown. Restore confirmation remains host policy. Saved pages without flow data still load. See layout evidence (research archive).
+HTTP uses bounded per-request/page deadlines, a 2 MiB decoded-resource limit, a 4 MiB page budget and two waiting jobs. Stop invalidates results; it does not abort the worker's underlying request immediately. Back holds 32 pages; persistent history holds 100 URLs, offline storage 20 parsed documents. Offline snapshots restore initial fields and clear passwords. Basic bounded DOM/JS is supported; there is no full CSS renderer, POST, WML, page images or downloads. See [JavaScript](javascript.md) and [browser capabilities](browser-capabilities.md). Native settings now use one home type, two font sizes and an inline image checkbox. Clear entry/cancel is sampled; local checkbox/commit behavior is documented separately because native commit remains unknown. Restore confirmation remains host policy. Saved pages without flow data still load. See layout evidence (research archive).
 
 Music decodes MP3/WAV from the direct folder access. Playback time comes from the audio sink and continues outside the player; held seek is canceled on navigation. Three synthetic tracks are retained only for screenshot smoke scenes. See [storage](storage.md). Timer/stopwatch state persists; running clocks include elapsed time between launches, while paused clocks stay paused. Radio/flashlight/recording only change local state. Recorder entries contain durations, not sound. Organizer alarms show local dialogs and snooze while running; no OS wake scheduler is implemented. Dates use UTC+8. Snake uses retained maps and artwork with local gameplay code; complete original behavior is not claimed.
 

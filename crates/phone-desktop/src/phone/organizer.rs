@@ -94,8 +94,10 @@ pub enum OrganizerPage {
     DeletePast,
 }
 pub struct Organizer {
+    pub events: Vec<CalendarEvent>,
+    pub alarms: Vec<Alarm>,
+    pub reminders: super::alarm::Reminders,
     pub page: OrganizerPage,
-    pub contact: super::contacts::ContactUi,
     pub alarm: super::alarm::AlarmUi,
     pub event: super::calendar::EventUi,
     pub date: Date,
@@ -109,8 +111,10 @@ pub struct Organizer {
 impl Default for Organizer {
     fn default() -> Self {
         Self {
+            events: vec![],
+            alarms: vec![],
+            reminders: Default::default(),
             page: OrganizerPage::Calendar,
-            contact: Default::default(),
             alarm: super::alarm::AlarmUi::default(),
             event: Default::default(),
             date: Date::default(),
@@ -171,8 +175,8 @@ impl Phone {
                 .map(str::to_owned)
                 .to_vec(),
             Contacts => self
-                .local_data
                 .contacts
+                .records
                 .iter()
                 .map(|c| contact_name(c))
                 .collect(),
@@ -187,7 +191,7 @@ impl Phone {
                 .to_vec(),
             EventRingtone => crate::audio::native::tone_labels("默认"),
             Events => self
-                .local_data
+                .organizer
                 .events
                 .iter()
                 .filter(|e| e.occurs(self.organizer.date))
@@ -210,8 +214,8 @@ impl Phone {
                     .collect()
             }
             ContactDetail => self
-                .local_data
                 .contacts
+                .records
                 .get(self.organizer.selected)
                 .map(|fields| {
                     CONTACT_FIELDS
@@ -232,17 +236,17 @@ impl Phone {
         self.index = 0;
         self.organizer.draft = match page {
             ContactForm => editing
-                .and_then(|i| self.local_data.contacts.get(i).cloned())
+                .and_then(|i| self.contacts.records.get(i).cloned())
                 .unwrap_or_else(|| vec![String::new(); CONTACT_FIELDS.len()]),
             AlarmForm => editing
-                .and_then(|i| self.local_data.alarms.get(i).map(|a| a.fields.clone()))
+                .and_then(|i| self.organizer.alarms.get(i).map(|a| a.fields.clone()))
                 .unwrap_or_else(|| {
                     ["09:00", "不必重复", "闹钟", "Clock1", "10分钟"]
                         .map(str::to_owned)
                         .to_vec()
                 }),
             EventForm => editing
-                .and_then(|i| self.local_data.events.get(i).map(|e| e.fields.clone()))
+                .and_then(|i| self.organizer.events.get(i).map(|e| e.fields.clone()))
                 .unwrap_or_else(|| {
                     ["", "12:00", "关闭", "", "默认", "不重复", ""]
                         .map(str::to_owned)
@@ -264,7 +268,7 @@ impl Phone {
         }
         if page == EventForm {
             self.organizer.event.date = editing
-                .and_then(|i| self.local_data.events.get(i))
+                .and_then(|i| self.organizer.events.get(i))
                 .map_or(self.organizer.date, |event| event.date);
             self.event_load_field(0);
         }
@@ -284,15 +288,15 @@ impl Phone {
                     fields,
                 };
                 if let Some(i) = editing {
-                    self.local_data.events[i] = event;
+                    self.organizer.events[i] = event;
                 } else {
-                    self.local_data.events.push(event);
+                    self.organizer.events.push(event);
                 }
                 self.organizer.page = Calendar;
             }
             _ => return,
         }
-        self.local_dirty = true;
+        self.records_dirty = true;
         self.index = 0;
     }
     pub(super) fn organizer_key(&mut self, key: Key) {
@@ -350,7 +354,7 @@ impl Phone {
                     }
                 };
                 self.index = if matches!(page, EventReminder | EventRepeat | EventRingtone) {
-                    self.organizer.contact.return_index
+                    self.contacts.ui.return_index
                 } else {
                     0
                 };
@@ -367,27 +371,27 @@ impl Phone {
                 let i = self.organizer.selected;
                 self.organizer.page = match page {
                     DeleteAlarm => {
-                        if i < self.local_data.alarms.len() {
-                            self.local_data.alarms.remove(i);
+                        if i < self.organizer.alarms.len() {
+                            self.organizer.alarms.remove(i);
                         }
                         Alarms
                     }
                     DeleteEvent => {
                         let ids = self.day_events();
                         if let Some(&id) = ids.get(i) {
-                            self.local_data.events.remove(id);
+                            self.organizer.events.remove(id);
                         }
                         Events
                     }
                     _ => {
                         let today = self.local_clock().0;
-                        self.local_data.events.retain(|e| {
+                        self.organizer.events.retain(|e| {
                             e.date >= today || e.fields.get(5).is_some_and(|s| s != "不重复")
                         });
                         Calendar
                     }
                 };
-                self.local_dirty = true;
+                self.records_dirty = true;
                 self.index = 0;
             }
             Key::Center if n > 0 => match page {
@@ -428,7 +432,7 @@ impl Phone {
         }
     }
     fn day_events(&self) -> Vec<usize> {
-        self.local_data
+        self.organizer
             .events
             .iter()
             .enumerate()
@@ -444,10 +448,10 @@ impl Phone {
             return;
         }
         self.organizer.last_event_minute = Some((date, minute));
-        if self.local_data.reminders.last_event_fired == Some((date, minute)) {
+        if self.organizer.reminders.last_event_fired == Some((date, minute)) {
             return;
         }
-        for event in &self.local_data.events {
+        for event in &self.organizer.events {
             let lead = match event.fields[2].as_str() {
                 "准时" => 0,
                 "5分钟前" => 5,
@@ -459,15 +463,14 @@ impl Phone {
             let due = minute + lead;
             let day = if due >= 1440 { date.next(1) } else { date };
             let time = &event.fields[1];
-            if self.local_data.reminders.alerts.len() + self.local_data.reminders.snoozed.len()
-                < 1024
+            if self.organizer.reminders.alerts.len() + self.organizer.reminders.snoozed.len() < 1024
                 && event.occurs(day)
                 && valid_time(time)
                 && time == &format!("{:02}:{:02}", due % 1440 / 60, due % 60)
             {
-                self.local_dirty = true;
-                self.local_data.reminders.last_event_fired = Some((date, minute));
-                self.local_data
+                self.records_dirty = true;
+                self.organizer.reminders.last_event_fired = Some((date, minute));
+                self.organizer
                     .reminders
                     .alerts
                     .push_back(super::alarm::Alert {
@@ -491,11 +494,10 @@ impl Phone {
             }
         } else if let Some(v) = self.organizer.draft.get_mut(field) {
             *v = value.clone();
-            if self.organizer.page == OrganizerPage::ContactForm
-                && self.organizer.contact.field == field
+            if self.organizer.page == OrganizerPage::ContactForm && self.contacts.ui.field == field
             {
-                self.organizer.contact.input = Editor::new(&value, 40);
-                self.organizer.contact.input.numeric = (3..=6).contains(&field);
+                self.contacts.ui.input = Editor::new(&value, 40);
+                self.contacts.ui.input.numeric = (3..=6).contains(&field);
             }
         }
     }

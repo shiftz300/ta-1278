@@ -1,6 +1,8 @@
 //! Local mailbox reader/actions. Layout and folder policy are not recovered conversations.
+mod state;
 use super::*;
 use crate::ui::menu::{self, Event as MenuEvent, Item as MenuItem};
+pub use state::State;
 use std::{collections::BTreeMap, sync::OnceLock};
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub enum MailPage {
@@ -85,7 +87,7 @@ pub fn delivery_text(state: &phone_core::services::SubmissionState) -> (&'static
 }
 impl Phone {
     pub fn mail_delivery(&self) -> (&'static str, &str) {
-        let message = self.mailbox.outbox.get(self.mail_ui.item);
+        let message = self.messaging.mailbox.outbox.get(self.messaging.ui.item);
         match message
             .and_then(|m| m.submission.as_ref())
             .map(|s| &s.state)
@@ -97,24 +99,26 @@ impl Phone {
     }
     #[cfg(any(feature = "desktop", test))]
     pub fn receive_message(&mut self, from: String, body: String) -> Result<usize, &'static str> {
-        if self.mail_ui.pending.is_some() {
+        if self.messaging.ui.pending.is_some() {
             return Err("Mailbox save in progress; retry after completion");
         }
         let selected = if self.screen == Screen::Messages && self.index > 0 {
-            self.mailbox
+            self.messaging
+                .mailbox
                 .conversations()
                 .get(self.index - 1)
                 .map(|c| c.peer.clone())
         } else {
             None
         };
-        let index = self.mailbox.receive(from, body)?;
+        let index = self.messaging.mailbox.receive(from, body)?;
         self.received_message(index, selected);
         Ok(index)
     }
     pub(crate) fn received_message(&mut self, index: usize, selected: Option<String>) {
         if let Some(peer) = selected
             && let Some(i) = self
+                .messaging
                 .mailbox
                 .conversations()
                 .iter()
@@ -122,35 +126,39 @@ impl Phone {
         {
             self.index = i + 1;
         }
-        self.dirty = true;
+        self.messaging.dirty = true;
         if self.screen == Screen::Conversation
-            && self.chat.peer.trim() == self.mailbox.inbox[index].from.trim()
+            && self.messaging.chat.peer.trim() == self.messaging.mailbox.inbox[index].from.trim()
             && self.overlay.is_none()
-            && self.chat.popup == conversation::Popup::None
-            && self.chat.focus.is_none()
+            && self.messaging.chat.popup == conversation::Popup::None
+            && self.messaging.chat.focus.is_none()
         {
-            self.mailbox.inbox[index].read = true;
+            self.messaging.mailbox.inbox[index].read = true;
         }
     }
     pub fn mail_count(&self, folder: Screen) -> usize {
         match folder {
-            Screen::Inbox => self.mailbox.inbox.len(),
-            Screen::Drafts => self.mailbox.drafts.len(),
-            _ => self.mailbox.outbox.len(),
+            Screen::Inbox => self.messaging.mailbox.inbox.len(),
+            Screen::Drafts => self.messaging.mailbox.drafts.len(),
+            _ => self.messaging.mailbox.outbox.len(),
         }
     }
     pub fn mail_content(&self, folder: Screen, index: usize) -> Option<MailContent<'_>> {
         if folder == Screen::Inbox {
-            self.mailbox.inbox.get(index).map(|m| MailContent {
-                peer: &m.from,
-                body: &m.body,
-                unread: !m.read,
-            })
+            self.messaging
+                .mailbox
+                .inbox
+                .get(index)
+                .map(|m| MailContent {
+                    peer: &m.from,
+                    body: &m.body,
+                    unread: !m.read,
+                })
         } else {
             let messages = if folder == Screen::Drafts {
-                &self.mailbox.drafts
+                &self.messaging.mailbox.drafts
             } else {
-                &self.mailbox.outbox
+                &self.messaging.mailbox.outbox
             };
             messages.get(index).map(|m| MailContent {
                 peer: &m.to,
@@ -160,7 +168,7 @@ impl Phone {
         }
     }
     pub fn mail_message(&self) -> Option<MailContent<'_>> {
-        self.mail_content(self.mail_ui.folder, self.mail_ui.item)
+        self.mail_content(self.messaging.ui.folder, self.messaging.ui.item)
     }
     pub fn mail_menu(&self) -> &'static [MenuItem<'static, MailAction>] {
         const INBOX: &[MenuItem<'static, MailAction>] = &[
@@ -174,33 +182,33 @@ impl Phone {
             MailAction::Forward.item(),
             MailAction::Delete.item(),
         ];
-        if self.mail_ui.folder == Screen::Inbox {
+        if self.messaging.ui.folder == Screen::Inbox {
             INBOX
         } else {
             OUTBOX
         }
     }
     pub(super) fn mail_return_folder(&mut self) {
-        let count = self.mail_count(self.mail_ui.folder);
-        self.go(self.mail_ui.folder);
-        self.index = self.mail_ui.item.min(count.saturating_sub(1));
+        let count = self.mail_count(self.messaging.ui.folder);
+        self.go(self.messaging.ui.folder);
+        self.index = self.messaging.ui.item.min(count.saturating_sub(1));
     }
     pub(super) fn mail_delete_prompt(&mut self) {
-        self.mail_ui.delete_return = self.screen;
+        self.messaging.ui.delete_return = self.screen;
         self.go(Screen::Mail(MailPage::Delete));
     }
     pub(super) fn mail_open(&mut self, page: MailPage) {
-        self.mail_ui.item = self.index;
-        self.mail_ui.folder = self.screen;
-        self.mail_ui.scroll = 0;
-        self.mail_ui.lines = 0;
+        self.messaging.ui.item = self.index;
+        self.messaging.ui.folder = self.screen;
+        self.messaging.ui.scroll = 0;
+        self.messaging.ui.lines = 0;
         if self.screen == Screen::Inbox
             && page == MailPage::Read
-            && let Some(message) = self.mailbox.inbox.get_mut(self.index)
+            && let Some(message) = self.messaging.mailbox.inbox.get_mut(self.index)
             && !message.read
         {
             message.read = true;
-            self.dirty = true;
+            self.messaging.dirty = true;
         }
         self.go(Screen::Mail(page));
     }
@@ -212,10 +220,10 @@ impl Phone {
         use MailPage::*;
         match page {
             Read => match key {
-                Key::Up => self.mail_ui.scroll = self.mail_ui.scroll.saturating_sub(1),
+                Key::Up => self.messaging.ui.scroll = self.messaging.ui.scroll.saturating_sub(1),
                 Key::Down => {
-                    self.mail_ui.scroll =
-                        (self.mail_ui.scroll + 1).min(self.mail_ui.lines.saturating_sub(7))
+                    self.messaging.ui.scroll = (self.messaging.ui.scroll + 1)
+                        .min(self.messaging.ui.lines.saturating_sub(7))
                 }
                 Key::SoftLeft | Key::Center => self.go(Screen::Mail(Options)),
                 Key::SoftRight => self.mail_return_folder(),
@@ -241,8 +249,8 @@ impl Phone {
                             },
                             ..Default::default()
                         };
-                        self.compose = Compose::from_message(&message, None);
-                        self.compose.recipient = matches!(action, MailAction::Forward);
+                        self.messaging.compose = Compose::from_message(&message, None);
+                        self.messaging.compose.recipient = matches!(action, MailAction::Forward);
                         self.go(Screen::Compose);
                     }
                     MailAction::Delete => self.mail_delete_prompt(),
@@ -251,7 +259,7 @@ impl Phone {
             },
             Delete => match key {
                 Key::SoftRight => {
-                    let back = self.mail_ui.delete_return;
+                    let back = self.messaging.ui.delete_return;
                     if matches!(back, Screen::Drafts | Screen::Outbox | Screen::Inbox) {
                         self.mail_return_folder();
                     } else {
@@ -262,29 +270,29 @@ impl Phone {
                     }
                 }
                 Key::Center => {
-                    match self.mail_ui.folder {
+                    match self.messaging.ui.folder {
                         Screen::Drafts => {
-                            self.mailbox.drafts.remove(self.mail_ui.item);
+                            self.messaging.mailbox.drafts.remove(self.messaging.ui.item);
                         }
                         Screen::Inbox => {
-                            self.mailbox.inbox.remove(self.mail_ui.item);
+                            self.messaging.mailbox.inbox.remove(self.messaging.ui.item);
                         }
                         _ => {
-                            self.mailbox.outbox.remove(self.mail_ui.item);
+                            self.messaging.mailbox.outbox.remove(self.messaging.ui.item);
                         }
                     }
-                    self.dirty = true;
+                    self.messaging.dirty = true;
                     self.mail_return_folder();
                 }
                 _ => {}
             },
-            Result if self.chat.route => match key {
-                Key::Center | Key::SoftRight => self.open_thread(self.chat.peer.clone()),
+            Result if self.messaging.chat.route => match key {
+                Key::Center | Key::SoftRight => self.open_thread(self.messaging.chat.peer.clone()),
                 _ => {}
             },
             Result => match key {
                 Key::Center => {
-                    self.mail_ui.scroll = 0;
+                    self.messaging.ui.scroll = 0;
                     self.go(Screen::Mail(Read));
                 }
                 Key::SoftRight => self.mail_return_folder(),

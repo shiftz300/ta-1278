@@ -24,17 +24,17 @@ fn calendar_inline_fields_commit_together_and_editing_a_recurrence_keeps_start_d
     press(&mut p, Key::SoftRight); // Menu cancel preserves the form.
     assert_eq!(p.organizer.draft[3], "Desk");
     press(&mut p, Key::Center); // Save directly from an inline field.
-    assert_eq!(p.local_data.events.len(), 1);
-    assert_eq!(p.local_data.events[0].date, date);
-    p.local_data.events[0].fields[5] = "每周".into();
+    assert_eq!(p.organizer.events.len(), 1);
+    assert_eq!(p.organizer.events[0].date, date);
+    p.organizer.events[0].fields[5] = "每周".into();
     p.organizer.date = date.next(7);
     p.organizer_form(Page::EventForm, Some(0));
     press(&mut p, Key::Center);
-    assert_eq!(p.local_data.events[0].date, date);
+    assert_eq!(p.organizer.events[0].date, date);
     p.organizer_form(Page::EventForm, Some(0));
     p.text("not saved");
     press(&mut p, Key::End);
-    assert_eq!(p.local_data.events[0].fields[0], "Appointment");
+    assert_eq!(p.organizer.events[0].fields[0], "Appointment");
 }
 
 #[test]
@@ -201,12 +201,12 @@ fn radio_menu_cancel_keeps_tuning_and_disabled_speaker_does_not_mutate() {
 fn music_refresh_wait_blocks_stale_library_activation_but_can_leave() {
     let mut p = Phone::new(Mailbox::default());
     p.launch(Screen::Music);
-    p.music_view = MusicView::Root;
-    p.music.tracks = vec![("old.wav".into(), 2.)];
+    p.playback.view = MusicView::Root;
+    p.playback.model.tracks = vec![("old.wav".into(), 2.)];
     press(&mut p, Key::SoftLeft);
     assert_eq!(p.menu_labels(MenuKind::MusicLibrary), ["手动更新"]);
     press(&mut p, Key::SoftRight); // Cancel must not launch a scan.
-    assert!(!p.music_refresh);
+    assert!(!p.playback.refresh);
     press(&mut p, Key::SoftLeft);
     press(&mut p, Key::Center);
     assert!(p.music_refresh_visible());
@@ -215,17 +215,17 @@ fn music_refresh_wait_blocks_stale_library_activation_but_can_leave() {
     }
     assert_eq!(p.index, 0);
     assert!(p.overlay.is_none());
-    assert!(!p.music.playing);
-    p.music_refresh = false; // Worker consumed the request, still pending.
-    p.music_loading = true;
+    assert!(!p.playback.model.playing);
+    p.playback.refresh = false; // Worker consumed the request, still pending.
+    p.playback.loading = true;
     press(&mut p, Key::Center);
     assert!(p.music_refresh_visible());
     press(&mut p, Key::SoftRight);
     assert_eq!(p.screen, Screen::Music);
-    assert!(p.music_wait_dismissed);
+    assert!(p.playback.wait_dismissed);
     assert!(!p.music_refresh_visible());
-    assert!(p.music_loading); // Leaving does not claim the scan was canceled.
-    p.music_loading = false;
+    assert!(p.playback.loading); // Leaving does not claim the scan was canceled.
+    p.playback.loading = false;
     p.launch(Screen::Music);
     assert!(!p.music_refresh_visible());
     press(&mut p, Key::Down);
@@ -259,11 +259,11 @@ fn optional_apps_cannot_be_opened_by_menu_shortcut_or_direct_route() {
         }
     }
     for shortcut in [4, 5, 6, 7, 9, 10, 11, 12, 13, 15, 16] {
-        p.preferences.left_shortcut = shortcut;
+        p.settings.preferences.left_shortcut = shortcut;
         assert_eq!(p.visible_shortcut(true), 0);
         press(&mut p, Key::SoftLeft);
         assert_eq!(p.screen, Screen::Home);
-        p.settings_page = settings::SettingsPage::Shortcut { left: true };
+        p.settings.page = settings::SettingsPage::Shortcut { left: true };
         assert!(!p.setting_enabled(shortcut));
     }
     press(&mut p, Key::Center);
@@ -305,7 +305,7 @@ fn disabled_app_reminders_stay_saved_without_blocking_input_or_queuing_sound() {
         ReminderSource::Calendar,
         ReminderSource::Legacy,
     ] {
-        p.local_data.reminders.alerts.push_back(Alert {
+        p.organizer.reminders.alerts.push_back(Alert {
             source,
             name: "Fixture".into(),
             tone: "无".into(),
@@ -320,14 +320,14 @@ fn disabled_app_reminders_stay_saved_without_blocking_input_or_queuing_sound() {
     assert!(p.cues.is_empty());
     press(&mut p, Key::Center);
     assert_eq!(p.screen, Screen::Menu);
-    assert_eq!(p.local_data.reminders.alerts.len(), 3);
+    assert_eq!(p.organizer.reminders.alerts.len(), 3);
     p.apps.calendar = true;
     assert!(matches!(
         p.active_reminder().unwrap().source,
         ReminderSource::Calendar
     ));
     press(&mut p, Key::Center); // Dismiss only the active calendar reminder.
-    assert_eq!(p.local_data.reminders.alerts.len(), 2);
+    assert_eq!(p.organizer.reminders.alerts.len(), 2);
     assert!(p.active_reminder().is_none());
     p.apps.alarms = true;
     assert!(matches!(

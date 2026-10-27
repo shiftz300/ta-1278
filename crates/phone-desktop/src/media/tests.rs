@@ -1,4 +1,5 @@
 use super::*;
+use crate::audio::Audio;
 use crate::phone::{files::FileRequest, tools::ToolPage};
 use std::{fs, io::Write};
 fn wav(path: &Path, seconds: u32) {
@@ -49,8 +50,8 @@ fn background_move_updates_links_without_moving_another_apps_focus() {
     let (files, dir) = fixture("move-links", false);
     let mut p = Phone::new(Default::default());
     p.features.music = false;
-    p.preferences.ringtone = "/card/Music/tone.wav".into();
-    p.local_data.playlists.push(crate::phone::Playlist {
+    p.settings.preferences.ringtone = "/card/Music/tone.wav".into();
+    p.playback.playlists.push(crate::phone::Playlist {
         name: "test".into(),
         paths: vec!["/card/Music/tone.wav".into()],
     });
@@ -71,9 +72,9 @@ fn background_move_updates_links_without_moving_another_apps_focus() {
     assert!(!p.files.busy);
     assert_eq!(p.index, 7);
     assert_eq!(p.screen, Screen::Menu);
-    assert_eq!(p.preferences.ringtone, "/card/Songs/tone.wav");
-    assert_eq!(p.local_data.playlists[0].paths, ["/card/Songs/tone.wav"]);
-    assert!(p.local_dirty && p.preferences_dirty);
+    assert_eq!(p.settings.preferences.ringtone, "/card/Songs/tone.wav");
+    assert_eq!(p.playback.playlists[0].paths, ["/card/Songs/tone.wav"]);
+    assert!(p.records_dirty && p.settings.dirty);
     assert!(!dir.join("card/Music").exists());
     assert!(dir.join("card/Songs/tone.wav").exists());
     fs::remove_dir_all(dir).unwrap();
@@ -125,19 +126,19 @@ fn saved_track_uses_virtual_path_and_restarts_paused() {
     let mut phone = Phone::new(Default::default());
     let mut media = Media::new(files, &dir, &mut phone).unwrap();
     let deadline = Instant::now() + Duration::from_secs(5);
-    while media.restore.is_some() && Instant::now() < deadline {
+    while phone.playback.resume.is_some() && Instant::now() < deadline {
         media.tick(&mut phone);
         thread::sleep(Duration::from_millis(5));
     }
-    assert!(media.restore.is_none());
-    assert_eq!(phone.music.tracks.len(), 1);
-    assert_eq!(phone.music.position, 1.5);
-    assert!(!phone.music.playing);
-    assert_eq!(phone.music.volume, 3);
-    assert_eq!(phone.music.repeat, Repeat::One);
-    assert!(phone.music.external_clock);
-    phone.music.tick(100.);
-    assert_eq!(phone.music.position, 1.5);
+    assert!(phone.playback.resume.is_none());
+    assert_eq!(phone.playback.model.tracks.len(), 1);
+    assert_eq!(phone.playback.model.position, 1.5);
+    assert!(!phone.playback.model.playing);
+    assert_eq!(phone.playback.model.volume, 3);
+    assert_eq!(phone.playback.model.repeat, Repeat::One);
+    assert!(phone.playback.model.external_clock);
+    phone.playback.model.tick(100.);
+    assert_eq!(phone.playback.model.position, 1.5);
     media.save(&dir, &phone, true).unwrap();
     let restored: SavedMusic = storage::load_json(&dir, "music.json", 65536).unwrap();
     assert!(restored == saved);
@@ -193,7 +194,7 @@ fn file_navigation_rename_delete_cancel_and_player_return() {
     let (files, dir) = fixture("navigation", false);
     let mut phone = Phone::new(Default::default());
     let mut media = Media::new(files, &dir, &mut phone).unwrap();
-    phone.music_refresh = false;
+    phone.playback.refresh = false;
     let (tracks, warnings) = scan(&media.files);
     media.apply_scan(&mut phone, tracks, warnings);
     phone.launch(Screen::Tools(ToolPage::Files));
@@ -229,7 +230,7 @@ fn file_navigation_rename_delete_cancel_and_player_return() {
     key(&mut phone, Key::Center);
     run(&mut phone, &mut media);
     assert_eq!(phone.screen, Screen::Music);
-    assert!(phone.music.playing);
+    assert!(phone.playback.model.playing);
     key(&mut phone, Key::SoftRight);
     assert_eq!(phone.screen, Screen::Tools(ToolPage::Files));
     assert_eq!(phone.files.path, "/card/Music");
@@ -312,9 +313,9 @@ fn pending_scan_saves_controls_and_keeps_resume_path_even_on_close() {
     storage::save_json(&dir, "music.json", &original, 65536).unwrap();
     let mut p = Phone::new(Default::default());
     let mut media = Media::new(files, &dir, &mut p).unwrap();
-    p.music.volume = 2;
-    p.music.repeat = Repeat::All;
-    p.music.shuffle = true;
+    p.playback.model.volume = 2;
+    p.playback.model.repeat = Repeat::All;
+    p.playback.model.shuffle = true;
     media.save(&dir, &p, true).unwrap();
     let state: SavedMusic = storage::load_json(&dir, "music.json", 65536).unwrap();
     assert_eq!(state.path, original.path);
@@ -325,7 +326,7 @@ fn pending_scan_saves_controls_and_keeps_resume_path_even_on_close() {
     let bytes = fs::read(dir.join("music.json")).unwrap();
     fs::remove_file(dir.join("music.json.bak")).unwrap();
     fs::create_dir(dir.join("music.json.bak")).unwrap();
-    p.music.volume = 3;
+    p.playback.model.volume = 3;
     assert!(media.save(&dir, &p, true).is_err());
     assert_eq!(fs::read(dir.join("music.json")).unwrap(), bytes);
     fs::remove_dir_all(dir).unwrap();
@@ -338,14 +339,14 @@ fn stale_scan_cannot_restore_renamed_or_deleted_track() {
     let mut media = Media::new(files, &dir, &mut p).unwrap();
     let (old, warnings) = scan(&media.files);
     media.apply_scan(&mut p, old.clone(), warnings);
-    p.music_refresh = false;
-    p.music.position = 1.25;
-    p.music_started = true;
+    p.playback.refresh = false;
+    p.playback.model.position = 1.25;
+    p.playback.started = true;
     p.screen = Screen::Music;
-    p.music_view = crate::phone::MusicView::Repeat;
+    p.playback.view = crate::phone::MusicView::Repeat;
     p.index = 2;
     media.prepare_refresh(&mut p);
-    p.music_refresh = false;
+    p.playback.refresh = false;
     media.scanning = true;
     let (tx, rx) = mpsc::channel();
     media.results = rx;
@@ -356,22 +357,22 @@ fn stale_scan_cannot_restore_renamed_or_deleted_track() {
         )
         .unwrap();
     assert_eq!(
-        media.restore.as_ref().unwrap().path.as_deref(),
+        p.playback.resume.as_ref().unwrap().path.as_deref(),
         Some("/card/Songs/tone.wav")
     );
     // File listing affects the shared selection; restore the open repeat picker.
     p.index = 2;
     tx.send((old, vec![])).unwrap();
     media.tick(&mut p);
-    assert!(p.music_loading);
+    assert!(p.playback.loading);
     assert_eq!(p.index, 2);
     p.play_track(0);
-    assert!(!p.music.playing);
+    assert!(!p.playback.model.playing);
     tx.send(scan(&media.files)).unwrap();
     media.tick(&mut p);
-    assert!(!p.music_loading);
+    assert!(!p.playback.loading);
     assert_eq!(media.tracks[0].path, "/card/Songs/tone.wav");
-    assert_eq!(p.music.position, 1.25);
+    assert_eq!(p.playback.model.position, 1.25);
     assert_eq!(p.index, 2);
     p.files.path = "/card/Songs".into();
     media
@@ -381,7 +382,7 @@ fn stale_scan_cannot_restore_renamed_or_deleted_track() {
         )
         .unwrap();
     finish_jobs(&mut media, &mut p);
-    assert!(media.restore.as_ref().unwrap().path.is_none());
+    assert!(p.playback.resume.as_ref().unwrap().path.is_none());
     media.save(&dir, &p, true).unwrap();
     let saved: SavedMusic = storage::load_json(&dir, "music.json", 65536).unwrap();
     assert!(saved.path.is_none());
@@ -399,7 +400,7 @@ fn scanning_a_library_does_not_claim_a_track_was_played() {
     media.save(&dir, &phone, true).unwrap();
     let saved: SavedMusic = storage::load_json(&dir, "music.json", 65536).unwrap();
     assert!(saved.path.is_none());
-    assert!(!phone.music_started);
+    assert!(!phone.playback.started);
     fs::remove_dir_all(dir).unwrap();
 }
 

@@ -1,13 +1,16 @@
 //! Local music library/player navigation. Audio transport is deliberately separate.
+mod state;
 use super::*;
 use phone_core::music::Repeat;
+pub use state::{SavedMusic, State};
 #[derive(Clone, serde::Serialize, serde::Deserialize)]
 pub struct Playlist {
     pub name: String,
     pub paths: Vec<String>,
 }
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Default)]
 pub enum MusicView {
+    #[default]
     Root,
     Songs,
     Playlists,
@@ -21,40 +24,48 @@ pub enum MusicView {
 }
 impl Phone {
     pub fn music_items(&self) -> Vec<String> {
-        match self.music_view {
+        match self.playback.view {
             MusicView::Root => {
                 let mut labels = vec!["全部播放".into(), "歌曲".into(), "播放列表".into()];
-                if self.music_started {
+                if self.playback.started {
                     labels.push(
-                        self.music
+                        self.playback
+                            .model
                             .tracks
-                            .get(self.music.index)
+                            .get(self.playback.model.index)
                             .map_or("", |t| t.0.as_str())
                             .to_owned(),
                     );
                 }
                 labels
             }
-            MusicView::Songs => self.music.tracks.iter().map(|t| t.0.clone()).collect(),
+            MusicView::Songs => self
+                .playback
+                .model
+                .tracks
+                .iter()
+                .map(|t| t.0.clone())
+                .collect(),
             MusicView::Queue => self
-                .music
+                .playback
+                .model
                 .order()
                 .iter()
-                .map(|i| self.music.tracks[*i].0.clone())
+                .map(|i| self.playback.model.tracks[*i].0.clone())
                 .collect(),
             MusicView::Playlists => self
-                .local_data
+                .playback
                 .playlists
                 .iter()
                 .map(|p| p.name.clone())
                 .collect(),
             MusicView::AddPlaylist => std::iter::once("新增播放列表".into())
-                .chain(self.local_data.playlists.iter().map(|p| p.name.clone()))
+                .chain(self.playback.playlists.iter().map(|p| p.name.clone()))
                 .collect(),
             MusicView::Playlist => self
                 .playlist_tracks()
                 .iter()
-                .map(|i| self.music.tracks[*i].0.clone())
+                .map(|i| self.playback.model.tracks[*i].0.clone())
                 .collect(),
             MusicView::PlaylistMenu => ["重命名", "删除播放列表", "移除歌曲"]
                 .map(str::to_owned)
@@ -68,20 +79,20 @@ impl Phone {
         self.last_tick.unwrap_or(0)
     }
     pub fn music_refresh_visible(&self) -> bool {
-        self.music_view == MusicView::Root
-            && !self.music_wait_dismissed
-            && (self.music_refresh || self.music_loading)
+        self.playback.view == MusicView::Root
+            && !self.playback.wait_dismissed
+            && (self.playback.refresh || self.playback.loading)
     }
     pub(super) fn music_key(&mut self, key: Key) {
         if self.music_refresh_visible() {
             // Close the wait page to the library without discarding the pending scan. Home also
             // remains available through the global End route.
             if key == Key::SoftRight {
-                self.music_wait_dismissed = true;
+                self.playback.wait_dismissed = true;
             }
             return;
         }
-        if self.music_view == MusicView::Player {
+        if self.playback.view == MusicView::Player {
             match key {
                 Key::SoftLeft => {
                     self.overlay = Some(Overlay::Menu {
@@ -89,23 +100,23 @@ impl Phone {
                         index: 0,
                     })
                 }
-                Key::SoftRight if self.music_return_file => {
+                Key::SoftRight if self.playback.return_file => {
                     let index = self.files.selected;
                     self.go(Screen::Tools(tools::ToolPage::Files));
                     self.index = index;
-                    self.music_return_file = false;
+                    self.playback.return_file = false;
                 }
                 Key::SoftRight => {
-                    self.music_view = MusicView::Root;
+                    self.playback.view = MusicView::Root;
                     self.index = 0;
                 }
                 _ => {}
             }
             return;
         }
-        let n = match self.music_view {
-            MusicView::Songs => self.music.tracks.len(),
-            MusicView::Queue => self.music.order().len(),
+        let n = match self.playback.view {
+            MusicView::Songs => self.playback.model.tracks.len(),
+            MusicView::Queue => self.playback.model.order().len(),
             MusicView::Playlist => self.playlist_tracks().len(),
             _ => self.music_items().len(),
         };
@@ -113,88 +124,88 @@ impl Phone {
             Key::Up | Key::Down => {
                 vertical(&mut self.index, n, key, Boundary::Wrap);
             }
-            Key::SoftRight => match self.music_view {
+            Key::SoftRight => match self.playback.view {
                 MusicView::Root => self.leave_app(),
                 MusicView::Repeat => {
-                    self.music_view = MusicView::Player;
+                    self.playback.view = MusicView::Player;
                     self.overlay = Some(Overlay::Menu {
                         kind: MenuKind::Music,
                         index: 0,
                     });
                 }
-                MusicView::Queue => self.music_view = MusicView::Player,
+                MusicView::Queue => self.playback.view = MusicView::Player,
                 MusicView::Playlist => {
-                    self.music_view = MusicView::Playlists;
-                    self.index = self.playlist;
+                    self.playback.view = MusicView::Playlists;
+                    self.index = self.playback.playlist;
                 }
                 MusicView::AddPlaylist => {
-                    self.music_view = MusicView::Player;
+                    self.playback.view = MusicView::Player;
                     self.index = 0;
                 }
                 MusicView::PlaylistMenu | MusicView::DeletePlaylist => {
-                    self.music_view = MusicView::Playlist;
-                    self.index = self.playlist_row;
+                    self.playback.view = MusicView::Playlist;
+                    self.index = self.playback.row;
                 }
                 _ => {
-                    self.music_view = MusicView::Root;
+                    self.playback.view = MusicView::Root;
                     self.index = 0;
                 }
             },
-            Key::SoftLeft if self.music_view == MusicView::Root => {
+            Key::SoftLeft if self.playback.view == MusicView::Root => {
                 self.overlay = Some(Overlay::Menu {
                     kind: MenuKind::MusicLibrary,
                     index: 0,
                 })
             }
-            Key::SoftLeft if self.music_view == MusicView::Playlists => {
+            Key::SoftLeft if self.playback.view == MusicView::Playlists => {
                 self.open_local_text(TextTarget::PlaylistName, String::new(), false)
             }
-            Key::SoftLeft if self.music_view == MusicView::Playlist => {
-                self.playlist_row = self.index;
-                self.music_view = MusicView::PlaylistMenu;
+            Key::SoftLeft if self.playback.view == MusicView::Playlist => {
+                self.playback.row = self.index;
+                self.playback.view = MusicView::PlaylistMenu;
                 self.index = 0;
             }
-            Key::Center if n > 0 => match self.music_view {
+            Key::Center if n > 0 => match self.playback.view {
                 MusicView::Root => match self.index {
-                    0 if self.music_loading || self.music_refresh => {
+                    0 if self.playback.loading || self.playback.refresh => {
                         self.notice("正在刷新曲库，请稍候。")
                     }
-                    0 if !self.music.tracks.is_empty() => {
-                        self.music.queue.clear();
+                    0 if !self.playback.model.tracks.is_empty() => {
+                        self.playback.model.queue.clear();
                         self.play_track(0);
                     }
                     0 => self.notice("没有可播放的音乐。"),
                     1 => {
-                        self.music_view = MusicView::Songs;
+                        self.playback.view = MusicView::Songs;
                         self.index = 0;
                     }
                     2 => {
-                        self.music_view = MusicView::Playlists;
+                        self.playback.view = MusicView::Playlists;
                         self.index = 0;
                     }
-                    3 => self.music_view = MusicView::Player,
+                    3 => self.playback.view = MusicView::Player,
                     _ => {}
                 },
                 MusicView::Songs => {
-                    self.music.queue.clear();
+                    self.playback.model.queue.clear();
                     self.play_track(self.index);
                 }
                 MusicView::Queue => {
-                    let order = self.music.order();
+                    let order = self.playback.model.order();
                     if let Some(i) = order.get(self.index) {
                         self.play_track(*i);
                     }
                 }
                 MusicView::Playlists => {
-                    self.playlist = self.index;
-                    self.music_view = MusicView::Playlist;
+                    self.playback.playlist = self.index;
+                    self.playback.view = MusicView::Playlist;
                     self.index = 0;
                 }
                 MusicView::Playlist => {
                     let tracks = self.playlist_tracks();
                     if let Some(i) = tracks.get(self.index) {
                         let i = *i;
-                        self.music.queue = tracks;
+                        self.playback.model.queue = tracks;
                         self.play_track(i);
                     }
                 }
@@ -204,43 +215,44 @@ impl Phone {
                 MusicView::AddPlaylist => {
                     let i = self.index - 1;
                     self.playlist_add(i);
-                    self.music_view = MusicView::Player;
+                    self.playback.view = MusicView::Player;
                 }
                 MusicView::PlaylistMenu => match self.index {
                     0 => self.open_local_text(
                         TextTarget::PlaylistName,
-                        self.local_data.playlists[self.playlist].name.clone(),
+                        self.playback.playlists[self.playback.playlist].name.clone(),
                         false,
                     ),
                     1 => {
-                        self.music_view = MusicView::DeletePlaylist;
+                        self.playback.view = MusicView::DeletePlaylist;
                         self.index = 0;
                     }
                     2 => {
                         let available = self.playlist_tracks();
-                        if let Some(index) = available.get(self.playlist_row) {
-                            let path = &self.music_paths[*index];
-                            self.local_data.playlists[self.playlist]
+                        if let Some(index) = available.get(self.playback.row) {
+                            let path = &self.playback.paths[*index];
+                            self.playback.playlists[self.playback.playlist]
                                 .paths
                                 .retain(|p| p != path);
-                            self.local_dirty = true;
+                            self.records_dirty = true;
                         }
-                        self.music_view = MusicView::Playlist;
+                        self.playback.view = MusicView::Playlist;
                         self.index = 0;
                     }
                     _ => {}
                 },
                 MusicView::DeletePlaylist => {
-                    if self.index == 1 && self.playlist < self.local_data.playlists.len() {
-                        self.local_data.playlists.remove(self.playlist);
-                        self.local_dirty = true;
+                    if self.index == 1 && self.playback.playlist < self.playback.playlists.len() {
+                        self.playback.playlists.remove(self.playback.playlist);
+                        self.records_dirty = true;
                     }
-                    self.music_view = MusicView::Playlists;
+                    self.playback.view = MusicView::Playlists;
                     self.index = 0;
                 }
                 MusicView::Repeat => {
-                    self.music.repeat = [Repeat::Off, Repeat::All, Repeat::One][self.index];
-                    self.music_view = MusicView::Player;
+                    self.playback.model.repeat =
+                        [Repeat::Off, Repeat::All, Repeat::One][self.index];
+                    self.playback.view = MusicView::Player;
                     self.overlay = Some(Overlay::Menu {
                         kind: MenuKind::Music,
                         index: 0,
@@ -256,45 +268,46 @@ impl Phone {
             self.notice("此功能已停用。");
             return;
         }
-        if self.music_loading || self.music_refresh {
+        if self.playback.loading || self.playback.refresh {
             self.notice("正在刷新曲库，请稍候。");
             return;
         }
-        if index >= self.music.tracks.len() {
+        if index >= self.playback.model.tracks.len() {
             return;
         }
-        self.music.play(index);
-        self.music_started = true;
-        self.music_view = MusicView::Player;
+        self.playback.model.play(index);
+        self.playback.started = true;
+        self.playback.view = MusicView::Player;
     }
     pub(super) fn music_action(&mut self, index: usize) {
         match index {
             0 => {
-                self.music_view = MusicView::Repeat;
-                self.index = match self.music.repeat {
+                self.playback.view = MusicView::Repeat;
+                self.index = match self.playback.model.repeat {
                     Repeat::Off => 0,
                     Repeat::All => 1,
                     Repeat::One => 2,
                 };
             }
-            1 => self.music.shuffle = !self.music.shuffle,
+            1 => self.playback.model.shuffle = !self.playback.model.shuffle,
             2 => {
-                self.music_view = MusicView::Queue;
+                self.playback.view = MusicView::Queue;
                 self.index = self
-                    .music
+                    .playback
+                    .model
                     .order()
                     .iter()
-                    .position(|i| *i == self.music.index)
+                    .position(|i| *i == self.playback.model.index)
                     .unwrap_or(0);
             }
             3 => {
-                self.music_view = MusicView::AddPlaylist;
+                self.playback.view = MusicView::AddPlaylist;
                 self.index = 0;
             }
             4 => {
-                if let Some(path) = self.music_paths.get(self.music.index) {
-                    self.preferences.ringtone = path.clone();
-                    self.preferences_dirty = true;
+                if let Some(path) = self.playback.paths.get(self.playback.model.index) {
+                    self.settings.preferences.ringtone = path.clone();
+                    self.settings.dirty = true;
                     self.notice("已设为铃声。");
                 }
             }
@@ -302,9 +315,9 @@ impl Phone {
         }
     }
     pub fn playlist_tracks(&self) -> Vec<usize> {
-        self.local_data
+        self.playback
             .playlists
-            .get(self.playlist)
+            .get(self.playback.playlist)
             .map(|list| {
                 list.paths
                     .iter()
@@ -314,65 +327,67 @@ impl Phone {
             .unwrap_or_default()
     }
     pub fn music_index(&self, path: &str) -> Option<usize> {
-        self.music_lookup.get(path).copied()
+        self.playback.lookup.get(path).copied()
     }
     pub fn set_music_paths(&mut self, paths: Vec<String>) {
-        self.music_lookup = paths
+        self.playback.lookup = paths
             .iter()
             .cloned()
             .enumerate()
             .map(|(i, p)| (p, i))
             .collect();
-        self.music_paths = paths;
+        self.playback.paths = paths;
     }
     pub fn append_music_path(&mut self, path: String) {
-        self.music_lookup
-            .insert(path.clone(), self.music_paths.len());
-        self.music_paths.push(path);
+        self.playback
+            .lookup
+            .insert(path.clone(), self.playback.paths.len());
+        self.playback.paths.push(path);
     }
     fn playlist_add(&mut self, index: usize) {
         if let (Some(list), Some(path)) = (
-            self.local_data.playlists.get_mut(index),
-            self.music_paths.get(self.music.index),
+            self.playback.playlists.get_mut(index),
+            self.playback.paths.get(self.playback.model.index),
         ) && list.paths.len() < 1000
             && !list.paths.contains(path)
         {
             list.paths.push(path.clone());
-            self.local_dirty = true;
+            self.records_dirty = true;
         }
     }
     pub(super) fn playlist_name(&mut self, name: String) {
         let name = name.trim();
         if name.is_empty()
             || name.chars().count() > 80
-            || self.local_data.playlists.iter().enumerate().any(|(i, l)| {
+            || self.playback.playlists.iter().enumerate().any(|(i, l)| {
                 l.name == name
-                    && !(self.music_view == MusicView::PlaylistMenu && i == self.playlist)
+                    && !(self.playback.view == MusicView::PlaylistMenu
+                        && i == self.playback.playlist)
             })
         {
             self.notice("列表名称为空或已存在。");
             return;
         }
-        if self.music_view == MusicView::PlaylistMenu {
-            self.local_data.playlists[self.playlist].name = name.into();
-            self.local_dirty = true;
-            self.music_view = MusicView::Playlist;
-            self.index = self.playlist_row;
+        if self.playback.view == MusicView::PlaylistMenu {
+            self.playback.playlists[self.playback.playlist].name = name.into();
+            self.records_dirty = true;
+            self.playback.view = MusicView::Playlist;
+            self.index = self.playback.row;
             return;
         }
-        if self.local_data.playlists.len() >= 100 {
+        if self.playback.playlists.len() >= 100 {
             self.notice("播放列表已满。");
             return;
         }
-        let index = self.local_data.playlists.len();
-        self.local_data.playlists.push(Playlist {
+        let index = self.playback.playlists.len();
+        self.playback.playlists.push(Playlist {
             name: name.into(),
             paths: vec![],
         });
-        self.local_dirty = true;
-        if self.music_view == MusicView::AddPlaylist {
+        self.records_dirty = true;
+        if self.playback.view == MusicView::AddPlaylist {
             self.playlist_add(index);
-            self.music_view = MusicView::Player;
+            self.playback.view = MusicView::Player;
         } else {
             self.index = index;
         }

@@ -29,8 +29,8 @@ impl Services {
     /// or acknowledged; failed saves leave the event available for retry.
     pub fn tick(&mut self, phone: &mut Phone) -> Result<(), String> {
         let capabilities = self.backend.capabilities();
-        phone.service_backend = capabilities.send_messages.then(|| self.backend.id().into());
-        if phone.dirty || phone.mail_ui.pending.is_some() {
+        phone.messaging.backend = capabilities.send_messages.then(|| self.backend.id().into());
+        if phone.messaging.dirty || phone.messaging.ui.pending.is_some() {
             return Ok(());
         }
         if let Some(envelope) = &self.pending
@@ -46,25 +46,26 @@ impl Services {
             }
         }
         let now = phone.timestamp();
-        let before = phone.mailbox.services.alerts.len();
+        let before = phone.messaging.mailbox.services.alerts.len();
         phone
+            .messaging
             .mailbox
             .services
             .alerts
             .retain(|a| a.alert.expires_ms.is_none_or(|end| end > now));
-        if before != phone.mailbox.services.alerts.len() {
-            phone.dirty = true;
+        if before != phone.messaging.mailbox.services.alerts.len() {
+            phone.messaging.dirty = true;
             return Ok(());
         }
         self.submitted.retain(|id| {
-            phone.mailbox.outbox.iter().any(|m| {
+            phone.messaging.mailbox.outbox.iter().any(|m| {
                 m.submission
                     .as_ref()
                     .is_some_and(|s| s.request_id == *id && s.state.pending())
             })
         });
         if capabilities.send_messages {
-            for message in &phone.mailbox.outbox {
+            for message in &phone.messaging.mailbox.outbox {
                 let Some(s) = &message.submission else {
                     continue;
                 };
@@ -109,6 +110,7 @@ impl Services {
             }
             let selected = if phone.screen == crate::phone::Screen::Messages && phone.index > 0 {
                 phone
+                    .messaging
                     .mailbox
                     .conversations()
                     .get(phone.index - 1)
@@ -117,10 +119,11 @@ impl Services {
                 None
             };
             let result = phone
+                .messaging
                 .mailbox
                 .apply_service_event(self.backend.id(), envelope)?;
             if result != Apply::Replay {
-                phone.dirty = true;
+                phone.messaging.dirty = true;
                 if let Apply::Received(index) = result {
                     phone.received_message(index, selected);
                 }
@@ -142,7 +145,7 @@ impl Phone {
             body,
         }) = &mut self.overlay
         {
-            let live = self.mailbox.services.alerts.iter().find(|a| {
+            let live = self.messaging.mailbox.services.alerts.iter().find(|a| {
                 &a.backend == backend
                     && &a.alert.id == id
                     && !a.dismissed
@@ -164,6 +167,7 @@ impl Phone {
             return;
         }
         if let Some(a) = self
+            .messaging
             .mailbox
             .services
             .alerts

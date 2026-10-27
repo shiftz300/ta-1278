@@ -26,6 +26,7 @@ impl Phone {
             } => {
                 if matches!(key, Key::Center | Key::SoftLeft | Key::SoftRight | Key::End) {
                     if let Some(a) = self
+                        .messaging
                         .mailbox
                         .services
                         .alerts
@@ -33,7 +34,7 @@ impl Phone {
                         .find(|a| a.backend == backend && a.alert.id == id)
                     {
                         a.dismissed = true;
-                        self.dirty = true;
+                        self.messaging.dirty = true;
                     }
                 } else {
                     if key == Key::Up {
@@ -111,8 +112,8 @@ impl Phone {
                             }
                             TextTarget::PlaylistName => self.playlist_name(editor.text()),
                             TextTarget::BrowserHome => {
-                                self.browser_data.settings.home_url = editor.text();
-                                self.browser_dirty = true;
+                                self.browsing.data.settings.home_url = editor.text();
+                                self.browsing.dirty = true;
                             }
                             TextTarget::Address => {
                                 let text = editor.text();
@@ -121,15 +122,15 @@ impl Phone {
                                 } else {
                                     format!("http://{text}")
                                 };
-                                self.browser_view = BrowserView::Page;
-                                self.pending_url = Some(url);
+                                self.browsing.view = BrowserView::Page;
+                                self.browsing.pending = Some(url);
                             }
                             TextTarget::FileName(new) => self.file_name(new, editor.text()),
                             TextTarget::Tool(i) => self.tool_text(i, editor.text()),
                             TextTarget::Organizer(i) => self.organizer_text(i, editor.text()),
                             TextTarget::Field(i) => {
                                 if let Some(Element::Field { value, .. }) =
-                                    self.browser.page.elements.get_mut(i)
+                                    self.browsing.model.page.elements.get_mut(i)
                                 {
                                     *value = editor.text();
                                 }
@@ -180,8 +181,8 @@ impl Phone {
             }
             Overlay::ClosePage => match key {
                 Key::Center | Key::SoftLeft => {
-                    self.browser_view = BrowserView::Start;
-                    self.browser.clear_navigation();
+                    self.browsing.view = BrowserView::Start;
+                    self.browsing.model.clear_navigation();
                     self.index = 0;
                 }
                 Key::SoftRight | Key::End => {}
@@ -189,8 +190,8 @@ impl Phone {
             },
             Overlay::CloseBrowser => match key {
                 Key::Center => {
-                    self.browser_view = BrowserView::Start;
-                    self.browser.clear_navigation();
+                    self.browsing.view = BrowserView::Start;
+                    self.browsing.model.clear_navigation();
                     self.leave_app();
                 }
                 Key::SoftRight | Key::End => {}
@@ -216,7 +217,7 @@ impl Phone {
                 }
                 1 => self.notice("附件服务暂未接入。"),
                 2 => {}
-                3 => self.compose.body.clear(),
+                3 => self.messaging.compose.body.clear(),
                 _ => self.save_and_close(),
             },
             MenuKind::SmsRecipient => {
@@ -236,11 +237,11 @@ impl Phone {
             }
             MenuKind::Symbols | MenuKind::Smileys | MenuKind::Templates => {
                 let value = self.menu_labels(kind)[index].clone();
-                if !self
-                    .compose
-                    .body
-                    .insert(if value == "换行" { "\n" } else { &value })
-                {
+                if !self.messaging.compose.body.insert(if value == "换行" {
+                    "\n"
+                } else {
+                    &value
+                }) {
                     self.status = "Text limit reached".into();
                 }
             }
@@ -258,15 +259,16 @@ impl Phone {
             | MenuKind::BrowserSave => self.browser_menu_action(kind, index),
             MenuKind::Music => self.music_action(index),
             MenuKind::MusicLibrary => {
-                self.music_refresh = true;
-                self.music_wait_dismissed = false;
-                self.music_view = MusicView::Root;
+                self.playback.refresh = true;
+                self.playback.wait_dismissed = false;
+                self.playback.view = MusicView::Root;
                 self.index = 0;
             }
         }
     }
     fn commit_select(&mut self, i: usize, flags: Vec<bool>) {
-        if let Some(Element::Select { selected, .. }) = self.browser.page.elements.get_mut(i) {
+        if let Some(Element::Select { selected, .. }) = self.browsing.model.page.elements.get_mut(i)
+        {
             *selected = flags;
         }
     }

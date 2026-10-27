@@ -1,4 +1,4 @@
-mod atomic;
+pub(crate) mod atomic;
 pub(crate) mod files;
 #[cfg(any(feature = "desktop", test))]
 mod profile;
@@ -9,9 +9,11 @@ pub use profile::*;
 #[cfg(any(feature = "desktop", test))]
 pub mod session;
 pub mod utilities;
-#[cfg(any(feature = "desktop", test))]
+#[cfg(test)]
 pub use atomic::DataLock;
+#[cfg(test)]
 use std::path::Path;
+#[cfg(test)]
 pub fn load_json<T: serde::de::DeserializeOwned + Default>(
     dir: &Path,
     name: &str,
@@ -22,6 +24,7 @@ pub fn load_json<T: serde::de::DeserializeOwned + Default>(
     };
     serde_json::from_slice(&bytes).map_err(|e| format!("Cannot read {name} (retained): {e}"))
 }
+#[cfg(test)]
 pub fn save_json<T: serde::Serialize>(
     dir: &Path,
     name: &str,

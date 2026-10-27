@@ -112,7 +112,7 @@ impl Phone {
                     return true;
                 }
                 if matches!(self.index, 2 | 4 | 5) {
-                    self.organizer.contact.return_index = self.index;
+                    self.contacts.ui.return_index = self.index;
                     self.organizer.page = match self.index {
                         2 => Page::EventReminder,
                         4 => Page::EventRingtone,

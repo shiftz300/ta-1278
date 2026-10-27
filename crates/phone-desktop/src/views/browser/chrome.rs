@@ -69,7 +69,7 @@ pub(in crate::views) fn menu(c: &mut Canvas, p: &Phone, kind: MenuKind, index: u
     c.rect(0, 282, 240, 38, [0, 0, 0, 255]);
     Softkeys::back("选择").draw(c);
 }
-pub(in crate::views) fn editor(c: &mut Canvas, p: &mut Phone, target: TextTarget, e: &Editor) {
+pub(in crate::views) fn editor(c: &mut Canvas, p: &Phone, target: TextTarget, e: &Editor) {
     status(c);
     c.text(
         6,
@@ -82,7 +82,7 @@ pub(in crate::views) fn editor(c: &mut Canvas, p: &mut Phone, target: TextTarget
         14,
         WHITE,
     );
-    let hidden = matches!(target,TextTarget::Field(i) if matches!(p.browser.page.elements.get(i),Some(Element::Field{password:true,..})));
+    let hidden = matches!(target,TextTarget::Field(i) if matches!(p.browsing.model.page.elements.get(i),Some(Element::Field{password:true,..})));
     let (preview, _) = e.preview();
     let text = if hidden {
         "*".repeat(preview.len())
@@ -94,11 +94,13 @@ pub(in crate::views) fn editor(c: &mut Canvas, p: &mut Phone, target: TextTarget
     if hidden {
         let mut masked = Editor::new(&text, e.limit);
         masked.cursor = e.cursor;
-        p.editor_lines = Edit::new([6, 27, 228, height])
-            .sized(16, 23)
-            .draw(c, &masked);
+        c.layout.editor = Some(
+            Edit::new([6, 27, 228, height])
+                .sized(16, 23)
+                .draw(c, &masked),
+        );
     } else {
-        p.editor_lines = Edit::new([6, 27, 228, height]).sized(16, 23).draw(c, e);
+        c.layout.editor = Some(Edit::new([6, 27, 228, height]).sized(16, 23).draw(c, e));
     }
     c.rect(6, 27 + height, 228, 3, c.accent(3));
     crate::ui::editor::input_mode(c, e, 232, 34 + height);
@@ -123,10 +125,10 @@ pub(in crate::views) fn editor(c: &mut Canvas, p: &mut Phone, target: TextTarget
 }
 pub(in crate::views) fn settings(c: &mut Canvas, p: &Phone) {
     let modal = matches!(
-        p.browser_view,
+        p.browsing.view,
         BrowserView::HomeType | BrowserView::FontSize | BrowserView::Clear
     );
-    let active = match p.browser_view {
+    let active = match p.browsing.view {
         BrowserView::HomeType => 2,
         BrowserView::FontSize => 5,
         BrowserView::Clear => 6,
@@ -188,9 +190,9 @@ pub(in crate::views) fn settings(c: &mut Canvas, p: &Phone) {
         let value = match i {
             0 | 1 => "未设置",
             2 => "自定义",
-            3 => p.browser_data.settings.home_url.as_str(),
+            3 => p.browsing.data.settings.home_url.as_str(),
             5 => {
-                if p.browser_data.settings.font_size == 0 {
+                if p.browsing.data.settings.font_size == 0 {
                     "小号字体"
                 } else {
                     "普通字体"
@@ -213,7 +215,7 @@ pub(in crate::views) fn settings(c: &mut Canvas, p: &Phone) {
                     [0, 0, 0, 255]
                 },
             );
-            if p.browser_data.settings.download_images {
+            if p.browsing.data.settings.download_images {
                 check(c, 215, yy + 5);
             }
         } else if i < 7 {
@@ -238,14 +240,14 @@ pub(in crate::views) fn settings(c: &mut Canvas, p: &Phone) {
     if modal {
         c.dim();
         // Native picker owns an opaque panel beyond its highlighted rows.
-        let (panel_top, panel_height) = if p.browser_view == BrowserView::HomeType {
+        let (panel_top, panel_height) = if p.browsing.view == BrowserView::HomeType {
             (76, 170)
         } else {
             (62, 194)
         };
         c.rect(0, panel_top, 240, panel_height, [0, 0, 0, 255]);
         let labels = p.browser_items();
-        let top = if p.browser_view == BrowserView::HomeType {
+        let top = if p.browsing.view == BrowserView::HomeType {
             123
         } else {
             110
@@ -257,7 +259,7 @@ pub(in crate::views) fn settings(c: &mut Canvas, p: &Phone) {
                 c.rect(12, y, 216, 42, c.accent(3));
             }
             c.text(
-                if p.browser_view == BrowserView::Clear {
+                if p.browsing.view == BrowserView::Clear {
                     12
                 } else {
                     18
@@ -267,7 +269,7 @@ pub(in crate::views) fn settings(c: &mut Canvas, p: &Phone) {
                 18,
                 WHITE,
             );
-            if p.browser_view == BrowserView::Clear {
+            if p.browsing.view == BrowserView::Clear {
                 c.rect(201, y + 12, 18, 18, WHITE);
                 c.rect(
                     203,
@@ -280,16 +282,16 @@ pub(in crate::views) fn settings(c: &mut Canvas, p: &Phone) {
                         [0, 0, 0, 255]
                     },
                 );
-                if p.browser_clear[i] {
+                if p.browsing.clear[i] {
                     c.rect(201, y + 12, 18, 18, c.accent(3));
                     check(c, 204, y + 17);
                 }
                 continue;
             }
-            let selected = if p.browser_view == BrowserView::HomeType {
+            let selected = if p.browsing.view == BrowserView::HomeType {
                 0
             } else {
-                p.browser_data.settings.font_size.min(1)
+                p.browsing.data.settings.font_size.min(1)
             };
             list::radio(
                 c,
@@ -304,7 +306,7 @@ pub(in crate::views) fn settings(c: &mut Canvas, p: &Phone) {
             );
         }
     }
-    if p.browser_view == BrowserView::Clear {
+    if p.browsing.view == BrowserView::Clear {
         c.rect(0, 282, 240, 38, [0, 0, 0, 255]);
         Softkeys::new(Button::Text("清除"), Button::Text("选择"), Button::Back).draw(c);
     }

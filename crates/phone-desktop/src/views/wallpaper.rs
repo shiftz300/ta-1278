@@ -7,13 +7,13 @@ use crate::{
 pub(super) fn draw(c: &mut Canvas, p: &Phone) {
     if !matches!(p.screen, Screen::Home | Screen::Menu)
         || !p.features.pictures
-        || !p.preferences.wallpaper_enabled
+        || !p.settings.preferences.wallpaper_enabled
     {
         return;
     }
     let builtin = std::sync::Arc::clone(&c.default_wallpaper);
-    let image = match &p.preferences.wallpaper {
-        Some(path) => p.pictures.get(path),
+    let image = match &p.settings.preferences.wallpaper {
+        Some(path) => p.media.pictures.get(path),
         None => Some(builtin.as_ref()),
     };
     if let Some(image) = image {
@@ -49,8 +49,8 @@ mod tests {
         let source = c.default_wallpaper.get_pixel(76, 198).0;
         assert_eq!(pixel(&c, 80, 200)[0], (u16::from(source[0]) * 3 / 5) as u8);
         p.screen = Screen::Home;
-        p.preferences.wallpaper = Some("/card/custom.png".into());
-        p.pictures.insert(
+        p.settings.preferences.wallpaper = Some("/card/custom.png".into());
+        p.media.pictures.insert(
             "/card/custom.png".into(),
             image::RgbaImage::from_pixel(1, 1, image::Rgba([123, 45, 67, 255])),
         );
@@ -66,7 +66,7 @@ mod tests {
         }
         p.screen = Screen::Home;
         p.features.pictures = true;
-        p.preferences.wallpaper_enabled = false;
+        p.settings.preferences.wallpaper_enabled = false;
         c.background();
         draw(&mut c, &p);
         assert_eq!(pixel(&c, 80, 200), [0, 0, 0, 255]);

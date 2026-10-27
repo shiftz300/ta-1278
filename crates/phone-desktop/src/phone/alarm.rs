@@ -140,7 +140,7 @@ impl Phone {
             && self.index == 2
     }
     pub fn active_reminder(&self) -> Option<&Alert> {
-        self.local_data
+        self.organizer
             .reminders
             .alerts
             .iter()
@@ -152,13 +152,13 @@ impl Phone {
         }
         self.organizer.last_alarm_minute = Some((date, minute));
         let time = format!("{:02}:{:02}", minute / 60, minute % 60);
-        let ui = &mut self.local_data.reminders;
+        let ui = &mut self.organizer.reminders;
         let mut pending = Vec::new();
         for (d, m, mut alert) in ui.snoozed.drain(..) {
             if (d, m) <= (date, minute) && alert.source.enabled(self.apps) {
                 alert.time = time.clone();
                 ui.alerts.push_back(alert);
-                self.local_dirty = true;
+                self.records_dirty = true;
             } else {
                 pending.push((d, m, alert));
             }
@@ -167,7 +167,7 @@ impl Phone {
         if !self.apps.alarms || ui.last_alarm_fired == Some((date, minute)) {
             return;
         }
-        for a in &mut self.local_data.alarms {
+        for a in &mut self.organizer.alarms {
             if !a.enabled || a.fields.first() != Some(&time) {
                 continue;
             }
@@ -178,7 +178,7 @@ impl Phone {
                 && ui.alerts.len() + ui.snoozed.len() < 1024
             {
                 ui.last_alarm_fired = Some((date, minute));
-                self.local_dirty = true;
+                self.records_dirty = true;
                 ui.alerts.push_back(Alert {
                     source: ReminderSource::Alarm,
                     tone: a.fields.get(3).cloned().unwrap_or_else(|| "默认".into()),
@@ -194,14 +194,14 @@ impl Phone {
                 });
                 if once {
                     a.enabled = false;
-                    self.local_dirty = true;
+                    self.records_dirty = true;
                 }
             }
         }
     }
     pub(super) fn alarm_alert_key(&mut self, key: Key) -> bool {
         let Some(index) = self
-            .local_data
+            .organizer
             .reminders
             .alerts
             .iter()
@@ -215,18 +215,18 @@ impl Phone {
                     .organizer
                     .last_alarm_minute
                     .unwrap_or_else(|| self.local_clock());
-                let alert = self.local_data.reminders.alerts.remove(index).unwrap();
-                self.local_dirty = true;
+                let alert = self.organizer.reminders.alerts.remove(index).unwrap();
+                self.records_dirty = true;
                 let total = minute + alert.snooze;
-                self.local_data.reminders.snoozed.push((
+                self.organizer.reminders.snoozed.push((
                     date.next((total / 1440) as i32),
                     total % 1440,
                     alert,
                 ));
             }
             Key::Center | Key::SoftRight | Key::End => {
-                self.local_data.reminders.alerts.remove(index);
-                self.local_dirty = true;
+                self.organizer.reminders.alerts.remove(index);
+                self.records_dirty = true;
             }
             _ => {}
         }
@@ -234,7 +234,7 @@ impl Phone {
     }
     fn alarm_root(&mut self, row: usize) {
         self.organizer.page = OrganizerPage::Alarms;
-        self.index = row.min(self.local_data.alarms.len());
+        self.index = row.min(self.organizer.alarms.len());
     }
     fn alarm_return(&mut self, field: usize) {
         self.organizer.page = OrganizerPage::AlarmForm;
@@ -258,21 +258,21 @@ impl Phone {
             return;
         }
         let row = if let Some(i) = self.organizer.editing {
-            self.local_data.alarms[i].fields = fields;
+            self.organizer.alarms[i].fields = fields;
             i + 1
         } else {
             // The native string states a five-alarm limit; not a recovered capacity branch.
-            if self.local_data.alarms.len() >= 5 {
+            if self.organizer.alarms.len() >= 5 {
                 self.notice("最多只能设置5个闹钟");
                 return;
             }
-            self.local_data.alarms.push(Alarm {
+            self.organizer.alarms.push(Alarm {
                 enabled: true,
                 fields,
             });
-            self.local_data.alarms.len()
+            self.organizer.alarms.len()
         };
-        self.local_dirty = true;
+        self.records_dirty = true;
         self.alarm_root(row);
     }
     pub(super) fn alarm_key(&mut self, key: Key) -> bool {
@@ -283,7 +283,7 @@ impl Phone {
         }
         match page {
             Alarms => {
-                let count = self.local_data.alarms.len() + 1;
+                let count = self.organizer.alarms.len() + 1;
                 match key {
                     Key::Up => self.index = (self.index + count - 1) % count,
                     Key::Down => self.index = (self.index + 1) % count,
@@ -295,9 +295,9 @@ impl Phone {
                         }
                     }
                     Key::Center => {
-                        let a = &mut self.local_data.alarms[self.index - 1];
+                        let a = &mut self.organizer.alarms[self.index - 1];
                         a.enabled = !a.enabled;
-                        self.local_dirty = true;
+                        self.records_dirty = true;
                     }
                     Key::SoftLeft if self.index > 0 => {
                         self.organizer.selected = self.index - 1;
@@ -315,8 +315,8 @@ impl Phone {
                 Key::Center => match self.index {
                     0 => self.organizer_form(AlarmForm, Some(self.organizer.selected)),
                     1 => {
-                        self.local_data.alarms.remove(self.organizer.selected);
-                        self.local_dirty = true;
+                        self.organizer.alarms.remove(self.organizer.selected);
+                        self.records_dirty = true;
                         self.alarm_root(self.organizer.selected + 1);
                     }
                     _ => self.organizer.page = DeleteAllAlarms,
@@ -325,8 +325,8 @@ impl Phone {
             },
             DeleteAllAlarms => match key {
                 Key::Center => {
-                    self.local_data.alarms.clear();
-                    self.local_dirty = true;
+                    self.organizer.alarms.clear();
+                    self.records_dirty = true;
                     self.alarm_root(0);
                 }
                 Key::SoftRight => {

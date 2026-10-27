@@ -8,19 +8,19 @@ impl Phone {
             match key {
                 Key::Center => {
                     if let Some(i) = self
-                        .organizer
-                        .contact
+                        .contacts
+                        .ui
                         .selected_group
                         .take()
-                        .filter(|i| *i < self.local_data.groups.len())
+                        .filter(|i| *i < self.contacts.groups.len())
                     {
-                        let name = self.local_data.groups.remove(i);
-                        for row in &mut self.local_data.contacts {
+                        let name = self.contacts.groups.remove(i);
+                        for row in &mut self.contacts.records {
                             if row[8] == name {
                                 row[8] = "无".into();
                             }
                         }
-                        self.local_dirty = true;
+                        self.records_dirty = true;
                     }
                     self.organizer.page = Page::ContactGroups;
                     self.index = 0;
@@ -48,12 +48,12 @@ impl Phone {
                         self.open_local_text(TextTarget::ContactGroup, String::new(), false);
                     }
                     1 => {
-                        if let Some(i) = self.organizer.contact.selected_group {
-                            let name = self.local_data.groups[i].clone();
+                        if let Some(i) = self.contacts.ui.selected_group {
+                            let name = self.contacts.groups[i].clone();
                             self.open_local_text(TextTarget::ContactGroupRename, name, false);
                         }
                     }
-                    2 if self.organizer.contact.selected_group.is_some() => {
+                    2 if self.contacts.ui.selected_group.is_some() => {
                         self.organizer.page = Page::ContactGroupDelete
                     }
                     _ => {}
@@ -73,7 +73,7 @@ impl Phone {
                     vertical(&mut self.index, n, key, Boundary::Wrap);
                 }
                 Key::SoftLeft if page == Page::ContactGroups => {
-                    self.organizer.contact.selected_group = self.index.checked_sub(1);
+                    self.contacts.ui.selected_group = self.index.checked_sub(1);
                     self.organizer.page = Page::ContactGroupMenu;
                     self.index = 0;
                 }
@@ -93,7 +93,7 @@ impl Phone {
                 }
                 Key::Center if n > 0 => {
                     if page == Page::ContactGroups {
-                        self.organizer.contact.group_filter = if self.index == 0 {
+                        self.contacts.ui.group_filter = if self.index == 0 {
                             None
                         } else {
                             Some(labels[self.index].clone())
@@ -107,7 +107,7 @@ impl Phone {
                     } else if self.index == crate::audio::native::file_index() {
                         self.open_media(media::Purpose::ContactRingtone);
                         self.organizer.page = Page::ContactForm;
-                        self.media_ui.return_index = 7;
+                        self.media.ui.return_index = 7;
                     } else {
                         self.organizer.draft[7] = labels[self.index].clone();
                         self.audio_preview = Some(labels[self.index].clone());
@@ -130,7 +130,7 @@ impl Phone {
         } else {
             "无".to_owned()
         })
-        .chain(self.local_data.groups.iter().cloned())
+        .chain(self.contacts.groups.iter().cloned())
         .collect()
     }
     pub(in crate::phone) fn contact_group_name(&mut self, value: String) {
@@ -139,17 +139,17 @@ impl Phone {
             || value.chars().count() > 128
             || value == "无"
             || value == "全部联系人"
-            || self.local_data.groups.iter().any(|g| g == value)
+            || self.contacts.groups.iter().any(|g| g == value)
         {
             self.notice("组名称为空或已存在。");
             return;
         }
-        if self.local_data.groups.len() >= 64 {
+        if self.contacts.groups.len() >= 64 {
             self.notice("通话组已满。");
             return;
         }
-        self.local_data.groups.push(value.to_owned());
-        self.local_dirty = true;
+        self.contacts.groups.push(value.to_owned());
+        self.records_dirty = true;
     }
     pub(in crate::phone) fn rename_contact_group(&mut self, value: String) {
         let value = value.trim();
@@ -157,24 +157,24 @@ impl Phone {
             || value.chars().count() > 128
             || value == "无"
             || value == "全部联系人"
-            || self.local_data.groups.iter().any(|s| s == value)
+            || self.contacts.groups.iter().any(|s| s == value)
         {
             self.notice("组名称为空或已存在。");
             return;
         }
         if let Some(i) = self
-            .organizer
-            .contact
+            .contacts
+            .ui
             .selected_group
-            .filter(|i| *i < self.local_data.groups.len())
+            .filter(|i| *i < self.contacts.groups.len())
         {
-            let old = std::mem::replace(&mut self.local_data.groups[i], value.into());
-            for row in &mut self.local_data.contacts {
+            let old = std::mem::replace(&mut self.contacts.groups[i], value.into());
+            for row in &mut self.contacts.records {
                 if row[8] == old {
                     row[8] = value.into();
                 }
             }
-            self.local_dirty = true;
+            self.records_dirty = true;
         }
         self.organizer.page = Page::ContactGroups;
         self.index = 0;

@@ -6,7 +6,7 @@ use crate::phone::{
 };
 use crate::ui::form::{self, Field, FieldKind};
 const BLACK: Color = [0, 0, 0, 255];
-pub(super) fn render(c: &mut Canvas, p: &mut Phone) {
+pub(super) fn render(c: &mut Canvas, p: &Phone) {
     match p.organizer.page {
         Page::ContactGroupMenu => {
             chrome::title(c, "选项");
@@ -14,7 +14,7 @@ pub(super) fn render(c: &mut Canvas, p: &mut Phone) {
                 .unshaded()
                 .draw(c, 3, p.index, |i| list::Row {
                     label: ["新增组", "重命名", "删除组"][i],
-                    enabled: i == 0 || p.organizer.contact.selected_group.is_some(),
+                    enabled: i == 0 || p.contacts.ui.selected_group.is_some(),
                     marker: list::Marker::None,
                 });
         }
@@ -53,12 +53,12 @@ pub(super) fn render(c: &mut Canvas, p: &mut Phone) {
         }
         Page::ContactForm => form(c, p, p.index, true),
         Page::ContactFormMenu => {
-            form(c, p, p.organizer.contact.return_index, false);
+            form(c, p, p.contacts.ui.return_index, false);
             PopupMenu::default().draw(c, 1, 0, |_| list::Row::text("保存"));
         }
         Page::ContactDetail => detail(c, p, p.index),
         Page::ContactMenu => {
-            detail(c, p, p.organizer.contact.return_index);
+            detail(c, p, p.contacts.ui.return_index);
             PopupMenu::default().draw(c, DETAIL_MENU.len(), p.index, |i| list::Row {
                 label: DETAIL_MENU[i],
                 enabled: p.contact_menu_enabled(i),
@@ -74,22 +74,22 @@ pub(super) fn render(c: &mut Canvas, p: &mut Phone) {
         _ => {}
     }
 }
-fn root(c: &mut Canvas, p: &mut Phone) {
+fn root(c: &mut Canvas, p: &Phone) {
     chrome::title(c, "通讯录");
-    if !p.organizer.contact.query.units.is_empty() {
-        p.editor_lines = Edit::new([6, 27, 228, 26]).draw(c, &p.organizer.contact.query);
+    if !p.contacts.ui.query.units.is_empty() {
+        c.layout.editor = Some(Edit::new([6, 27, 228, 26]).draw(c, &p.contacts.ui.query));
     }
     c.rect(0, 57, 240, 3, MUTED);
     let ids = p.contact_ids();
     let selected = if p.organizer.page == Page::ContactsMenu {
-        p.organizer.contact.return_index
+        p.contacts.ui.return_index
     } else {
         p.index
     }
     .min(ids.len().saturating_sub(1));
     let names: Vec<_> = ids
         .iter()
-        .map(|&i| contact_name(&p.local_data.contacts[i]))
+        .map(|&i| contact_name(&p.contacts.records[i]))
         .collect();
     list::draw(
         c,
@@ -119,7 +119,7 @@ fn root(c: &mut Canvas, p: &mut Phone) {
         contact_picture(
             c,
             p,
-            &p.local_data.contacts[ids[i]][0],
+            &p.contacts.records[ids[i]][0],
             7,
             72 + (i - first) as i32 * 52,
         );
@@ -127,7 +127,7 @@ fn root(c: &mut Canvas, p: &mut Phone) {
     // The handset empty-store caption has not been sampled: keep the list empty.
     Softkeys::menu(if ids.is_empty() { "" } else { "打开" }).draw(c);
 }
-fn form(c: &mut Canvas, p: &mut Phone, index: usize, active: bool) {
+fn form(c: &mut Canvas, p: &Phone, index: usize, active: bool) {
     chrome::title(c, "新联系人");
     // Mixed edit/date/list children have distinct native row metrics.
     const TOPS: [i32; 9] = [24, 86, 154, 222, 290, 358, 426, 486, 550];
@@ -189,24 +189,19 @@ fn form(c: &mut Canvas, p: &mut Phone, index: usize, active: bool) {
         if i == index && active && (1..=5).contains(&i) {
             // Clear the placeholder before the common edit control paints this field.
             c.rect(6, y + 25, 228, 26, BLACK);
-            if p.organizer.contact.input.units.is_empty() {
+            if p.contacts.ui.input.units.is_empty() {
                 c.text(6, y + 27, placeholder, 20, MUTED);
                 c.rect(6, y + 28, 1, 23, WHITE);
                 c.caret = Some((6, y + 27, 26));
             } else {
-                p.editor_lines = Edit::new(rect).draw(c, &p.organizer.contact.input);
+                c.layout.editor = Some(Edit::new(rect).draw(c, &p.contacts.ui.input));
             }
-            crate::ui::editor::input_mode(c, &p.organizer.contact.input, 228, y + 4);
+            crate::ui::editor::input_mode(c, &p.contacts.ui.input, 228, y + 4);
         }
     }
     if index == 6 && active {
         let y = TOPS[6] - scroll;
-        form::date(
-            c,
-            &p.organizer.draft[6],
-            y + 25,
-            p.organizer.contact.date_digit,
-        );
+        form::date(c, &p.organizer.draft[6], y + 25, p.contacts.ui.date_digit);
     }
     c.rect(236, 28, 4, 248, [40, 45, 40, 255]);
     let thumb = 248 * 248 / 606;
@@ -216,15 +211,14 @@ fn form(c: &mut Canvas, p: &mut Phone, index: usize, active: bool) {
     chrome::title(c, "新联系人");
     Softkeys::new(
         Button::Menu,
-        if active && p.organizer.contact.input.prediction.active() {
+        if active && p.contacts.ui.input.prediction.active() {
             Button::Text("选择")
         } else {
             Button::None
         },
         if active
             && (1..=5).contains(&index)
-            && (!p.organizer.contact.input.units.is_empty()
-                || p.organizer.contact.input.prediction.active())
+            && (!p.contacts.ui.input.units.is_empty() || p.contacts.ui.input.prediction.active())
         {
             Button::Delete
         } else {
@@ -237,7 +231,7 @@ fn detail(c: &mut Canvas, p: &Phone, index: usize) {
     let name = p.selected_contact_name();
     chrome::title(c, &name);
     form::avatar(c, 7, 31, name.chars().next(), [90, 95, 90, 255]);
-    if let Some(row) = p.local_data.contacts.get(p.organizer.selected) {
+    if let Some(row) = p.contacts.records.get(p.organizer.selected) {
         contact_picture(c, p, &row[0], 7, 31);
     }
     c.fit(52, 41, &name, 16, WHITE, 178);
@@ -276,7 +270,7 @@ fn detail(c: &mut Canvas, p: &Phone, index: usize) {
     .draw(c);
 }
 fn contact_picture(c: &mut Canvas, p: &Phone, path: &str, x: i32, y: i32) {
-    if let Some(img) = p.pictures.get(path) {
+    if let Some(img) = p.media.pictures.get(path) {
         let img = image::imageops::thumbnail(img, 40, 40);
         c.image(
             &img,

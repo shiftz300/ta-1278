@@ -1,6 +1,6 @@
 //! Native two-field conversion form; pair navigation uses the shared list.
 use super::*;
-pub(super) fn render(c: &mut Canvas, p: &mut Phone) {
+pub(super) fn render(c: &mut Canvas, p: &Phone) {
     let labels = p.conversion_pair().labels;
     let state = &p.tools.conversion;
     for (i, label) in labels.iter().enumerate() {
@@ -12,7 +12,7 @@ pub(super) fn render(c: &mut Canvas, p: &mut Phone) {
             24 + i as i32 * 74,
         );
         if i == state.focus {
-            p.editor_lines = lines;
+            c.layout.editor = Some(lines);
         }
     }
     let nonempty = !state.fields[state.focus].units.is_empty();

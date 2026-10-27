@@ -1,6 +1,6 @@
 use super::*;
 use crate::phone::organizer::OrganizerPage;
-pub(super) fn render(c: &mut Canvas, p: &mut Phone) {
+pub(super) fn render(c: &mut Canvas, p: &Phone) {
     use OrganizerPage::*;
     if crate::phone::alarm::is_alarm(p.organizer.page) {
         super::alarm::render(c, p);
@@ -106,12 +106,12 @@ fn calendar(c: &mut Canvas, p: &Phone) {
             14,
             if d.month == date.month { WHITE } else { MUTED },
         );
-        if p.local_data.events.iter().any(|e| e.occurs(d)) {
+        if p.organizer.events.iter().any(|e| e.occurs(d)) {
             c.rect(x - 2, y + 11, 4, 2, WHITE);
         }
     }
 }
-fn event_form(c: &mut Canvas, p: &mut Phone) {
+fn event_form(c: &mut Canvas, p: &Phone) {
     use crate::ui::form::{Field, FieldKind};
     chrome::title(c, "新建事件");
     let focus = if p.organizer.page == OrganizerPage::EventFormMenu {
@@ -176,7 +176,8 @@ fn event_form(c: &mut Canvas, p: &mut Phone) {
             }
             .draw_sized(c, y, height, true);
             if editable && active {
-                p.editor_lines = Edit::new([6, y + 33, 228, 26]).draw(c, &p.organizer.event.input);
+                c.layout.editor =
+                    Some(Edit::new([6, y + 33, 228, 26]).draw(c, &p.organizer.event.input));
                 c.text(201, y + 8, mode(&p.organizer.event.input), 16, MUTED);
             }
             if i == 1 {

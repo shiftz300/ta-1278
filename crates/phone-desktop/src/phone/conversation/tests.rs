@@ -44,40 +44,41 @@ fn inline_reply_save_failure_receive_and_restart_preserve_text() {
     let mut p = phone();
     p.receive_message("12345".into(), "first".into()).unwrap();
     p.open_thread("12345".into());
-    assert_eq!(p.mailbox.unread(), 0);
+    assert_eq!(p.messaging.mailbox.unread(), 0);
     p.text("unfinished reply");
     p.receive_message("67890".into(), "background".into())
         .unwrap();
-    assert_eq!(p.compose.body.text(), "unfinished reply");
-    assert_eq!(p.mailbox.unread(), 1);
+    assert_eq!(p.messaging.compose.body.text(), "unfinished reply");
+    assert_eq!(p.messaging.mailbox.unread(), 1);
     p.receive_message("12345".into(), "visible".into()).unwrap();
-    assert_eq!(p.mailbox.unread(), 1);
+    assert_eq!(p.messaging.mailbox.unread(), 1);
     p.storage_saved();
     press(&mut p, Key::Center);
-    assert!(p.mail_ui.pending.is_some());
+    assert!(p.messaging.ui.pending.is_some());
     p.storage_failed();
     assert_eq!(p.screen, Screen::Conversation);
-    assert_eq!(p.compose.body.text(), "unfinished reply");
-    assert!(p.mailbox.outbox.is_empty());
+    assert_eq!(p.messaging.compose.body.text(), "unfinished reply");
+    assert!(p.messaging.mailbox.outbox.is_empty());
     press(&mut p, Key::Center);
     p.storage_saved();
     assert_eq!(p.screen, Screen::Mail(mail::MailPage::Result));
     press(&mut p, Key::Center);
     assert_eq!(p.screen, Screen::Conversation);
-    assert!(p.compose.body.units.is_empty());
-    assert!(!p.mailbox.outbox[0].sent);
+    assert!(p.messaging.compose.body.units.is_empty());
+    assert!(!p.messaging.mailbox.outbox[0].sent);
     // Empty inline composer must not create a recipient-only draft on close.
     p.save_draft();
-    assert!(p.mailbox.drafts.is_empty());
+    assert!(p.messaging.mailbox.drafts.is_empty());
     p.text("saved draft");
     p.save_draft();
-    let mut restored =
-        Phone::new(serde_json::from_str(&serde_json::to_string(&p.mailbox).unwrap()).unwrap());
+    let mut restored = Phone::new(
+        serde_json::from_str(&serde_json::to_string(&p.messaging.mailbox).unwrap()).unwrap(),
+    );
     restored.open_thread("12345".into());
-    assert_eq!(restored.compose.body.text(), "saved draft");
-    restored.compose.body.clear();
+    assert_eq!(restored.messaging.compose.body.text(), "saved draft");
+    restored.messaging.compose.body.clear();
     restored.save_draft();
-    assert!(restored.mailbox.drafts.is_empty());
+    assert!(restored.messaging.mailbox.drafts.is_empty());
 }
 
 #[test]
@@ -87,17 +88,17 @@ fn bubble_number_actions_and_dialer_return_keep_reply() {
         .unwrap();
     p.open_thread("12345".into());
     p.text("my draft");
-    p.compose.body.cursor = 0;
+    p.messaging.compose.body.cursor = 0;
     press(&mut p, Key::Up);
-    assert_eq!(p.chat.focus, Some(0));
+    assert_eq!(p.messaging.chat.focus, Some(0));
     press(&mut p, Key::Up);
-    assert!(p.chat.number_focus);
+    assert!(p.messaging.chat.number_focus);
     press(&mut p, Key::SoftLeft);
-    assert!(p.chat.popup == Popup::Number);
+    assert!(p.messaging.chat.popup == Popup::Number);
     press(&mut p, Key::Center);
     assert_eq!(p.screen, Screen::Tools(tools::ToolPage::Dial));
     assert_eq!(p.calls.number.text(), "67890");
-    assert_eq!(p.compose.body.text(), "my draft");
+    assert_eq!(p.messaging.compose.body.text(), "my draft");
     press(&mut p, Key::SoftLeft);
     press(&mut p, Key::Down);
     press(&mut p, Key::Center);
@@ -106,26 +107,26 @@ fn bubble_number_actions_and_dialer_return_keep_reply() {
     assert_eq!(p.organizer.draft[3], "67890");
     press(&mut p, Key::SoftRight);
     assert_eq!(p.screen, Screen::Conversation);
-    assert_eq!(p.compose.body.text(), "my draft");
-    p.chat.number_focus = false;
+    assert_eq!(p.messaging.compose.body.text(), "my draft");
+    p.messaging.chat.number_focus = false;
     press(&mut p, Key::SoftLeft);
     press(&mut p, Key::Center);
-    assert!(p.chat.popup == Popup::Delete);
+    assert!(p.messaging.chat.popup == Popup::Delete);
     press(&mut p, Key::SoftRight);
-    assert_eq!(p.mailbox.inbox.len(), 1);
+    assert_eq!(p.messaging.mailbox.inbox.len(), 1);
     press(&mut p, Key::SoftLeft);
     press(&mut p, Key::Down);
     press(&mut p, Key::Center);
     assert_eq!(p.screen, Screen::Compose);
-    assert!(p.compose.to.units.is_empty());
-    assert_eq!(p.compose.body.text(), "call 67890 later");
-    assert_eq!(p.mailbox.drafts[0].body, "my draft");
+    assert!(p.messaging.compose.to.units.is_empty());
+    assert_eq!(p.messaging.compose.body.text(), "call 67890 later");
+    assert_eq!(p.messaging.mailbox.drafts[0].body, "my draft");
     p.open_thread("12345".into());
-    p.chat.focus = Some(0);
+    p.messaging.chat.focus = Some(0);
     press(&mut p, Key::Delete);
     press(&mut p, Key::Center);
-    assert!(p.mailbox.inbox.is_empty());
-    assert_eq!(p.compose.body.text(), "my draft");
+    assert!(p.messaging.mailbox.inbox.is_empty());
+    assert_eq!(p.messaging.compose.body.text(), "my draft");
 }
 
 #[test]
@@ -137,7 +138,7 @@ fn calls_enabled_from_menu_home_shortcut_and_direct_route() {
     press(&mut p, Key::Call);
     assert_eq!(p.screen, Screen::Tools(tools::ToolPage::Calls));
     p.go(Screen::Home);
-    p.preferences.left_shortcut = 2;
+    p.settings.preferences.left_shortcut = 2;
     press(&mut p, Key::SoftLeft);
     assert_eq!(p.screen, Screen::Tools(tools::ToolPage::Calls));
     p.go(Screen::Menu);
@@ -145,11 +146,11 @@ fn calls_enabled_from_menu_home_shortcut_and_direct_route() {
     press(&mut p, Key::Center);
     assert_eq!(p.screen, Screen::Tools(tools::ToolPage::Calls));
     p.go(Screen::Settings);
-    p.settings_page = settings::SettingsPage::Shortcut { left: true };
+    p.settings.page = settings::SettingsPage::Shortcut { left: true };
     p.index = 2;
-    p.preferences.left_shortcut = 3;
+    p.settings.preferences.left_shortcut = 3;
     press(&mut p, Key::Center);
-    assert_eq!(p.preferences.left_shortcut, 2);
+    assert_eq!(p.settings.preferences.left_shortcut, 2);
 }
 
 #[test]
@@ -163,11 +164,11 @@ fn long_conversation_scroll_and_clipping_preserve_fixed_composer() {
     let bottom = c.pixels[220 * 240 * 4..].to_vec();
     press(&mut p, Key::Up);
     crate::views::render(&mut c, &mut p);
-    assert_eq!(p.chat.scroll, 0);
-    assert!(p.chat.max_scroll > 0);
+    assert_eq!(p.messaging.chat.scroll, 0);
+    assert!(p.messaging.chat.max_scroll > 0);
     press(&mut p, Key::Right);
     crate::views::render(&mut c, &mut p);
-    assert_eq!(p.chat.scroll, 48);
+    assert_eq!(p.messaging.chat.scroll, 48);
     press(&mut p, Key::SoftRight);
     crate::views::render(&mut c, &mut p);
     assert_eq!(&c.pixels[220 * 240 * 4..], bottom.as_slice());

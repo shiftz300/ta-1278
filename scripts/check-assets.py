@@ -6,13 +6,13 @@ from pathlib import Path
 import hashlib,json
 from fontTools.ttLib import TTFont
 root=Path(__file__).resolve().parents[1]
-for row in json.loads((root/'assets/runtime.json').read_text())['files']:
+for row in json.loads((root/'assets/runtime.json').read_text(encoding="utf-8"))['files']:
  p=root/row['file'];assert p.stat().st_size==row['bytes'];assert hashlib.sha256(p.read_bytes()).hexdigest()==row['sha256'],row['file']
-wallpaper=json.loads((root/'assets/ui/owner-wallpaper.json').read_text())
+wallpaper=json.loads((root/'assets/ui/owner-wallpaper.json').read_text(encoding="utf-8"))
 p=root/wallpaper['file'];assert p.stat().st_size==wallpaper['bytes'];assert hashlib.sha256(p.read_bytes()).hexdigest()==wallpaper['sha256']
-for row in json.loads((root/'assets/sources.json').read_text()):
+for row in json.loads((root/'assets/sources.json').read_text(encoding="utf-8")):
  p=root/'assets'/row['file'];assert p.stat().st_size==row['size'];assert hashlib.sha256(p.read_bytes()).hexdigest()==row['sha256'],row['file']
-derived=json.loads((root/'assets/fonts/subsets/manifest.json').read_text())
+derived=json.loads((root/'assets/fonts/subsets/manifest.json').read_text(encoding="utf-8"))
 for row in derived['fonts']:
  p=root/row['file'];assert p.stat().st_size==row['bytes'];assert hashlib.sha256(p.read_bytes()).hexdigest()==row['sha256']
  assert hashlib.sha256((root/row['source']).read_bytes()).hexdigest()==row['source_sha256']
@@ -24,5 +24,5 @@ for i,path in enumerate(paths):
 sample='你好繁體漢字髙龘喆𠮷こんにちはカタカナ안녕하세요→←✓★♫😀🙂🤔👍✨'
 assert all(ord(c) in all_chars for c in sample)
 report={'method':'Unicode cmap union in renderer fallback order; not full shaping or emoji sequence support','before':before,'after':len(all_chars),'added':len(all_chars)-before,'fonts':rows}
-(root/'assets/font-coverage.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
+(root/'assets/font-coverage.json').write_bytes((json.dumps(report,ensure_ascii=False,indent=2)+'\n').encode('utf-8'))
 print('Resource SHA-256 checks passed; coverage %s -> %s codepoints.'%(before,len(all_chars)))

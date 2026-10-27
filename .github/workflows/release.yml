@@ -4,9 +4,15 @@ on:
   push:
     tags: ['v*']
   workflow_dispatch:
+    inputs:
+      ci_run:
+        description: 'Reuse verified CI artifacts from this run (blank to rebuild)'
+        type: string
+        default: ''
 
 permissions:
   contents: read
+  actions: read
 
 concurrency:
   group: release-${{ github.ref }}
@@ -14,22 +20,33 @@ concurrency:
 
 jobs:
   build:
+    if: inputs.ci_run == ''
     uses: ./.github/workflows/build.yml
     with:
       release: true
   publish:
     needs: build
+    if: always() && !cancelled() && (needs.build.result == 'success' || (needs.build.result == 'skipped' && inputs.ci_run != ''))
     runs-on: ubuntu-24.04
     permissions:
       contents: write
+      actions: read
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
           fetch-depth: 0
           persist-credentials: false
+      - name: Verify CI commit, workflow and successful builds
+        if: inputs.ci_run != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CI_RUN: ${{ inputs.ci_run }}
+        run: python3 scripts/release.py --ci-run "$CI_RUN"
       - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7
         with:
           pattern: ta1278-*
+          github-token: ${{ github.token }}
+          run-id: ${{ inputs.ci_run || github.run_id }}
           merge-multiple: true
           path: target/release-artifacts
       - name: Verify all packages and publish

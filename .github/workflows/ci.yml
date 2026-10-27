@@ -34,4 +34,4 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           RELEASE_TAG: ${{ steps.tag.outputs.tag }}
-        run: gh workflow run release.yml --ref "$RELEASE_TAG"
+        run: gh workflow run release.yml --ref "$RELEASE_TAG" -f ci_run="$GITHUB_RUN_ID"

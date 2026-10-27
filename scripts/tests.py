@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
 """Release integrity checks, using isolated workspaces and a local bare Git remote."""
 import os
+from copy import deepcopy
 from pathlib import Path
 import subprocess
 import tempfile
 import unittest
 from unittest.mock import patch
 import version
+import release as publishing
 
 
 class Versions(unittest.TestCase):
@@ -85,6 +87,54 @@ class Versions(unittest.TestCase):
             with self.assertRaises(ValueError):
                 version.tag(self.root)
         self.assertEqual(self.command("git", "tag", "-l"), "")
+
+    def ci_source(self):
+        self.git()
+        self.command("git", "tag", "-a", "v0.2.2", "-m", "Test version")
+        source = {
+            "head_sha": self.command("git", "rev-parse", "HEAD"),
+            "head_branch": "main", "path": ".github/workflows/ci.yml", "event": "push",
+            "repository": {"full_name": "owner/app"}, "head_repository": {"full_name": "owner/app"},
+            "status": "in_progress", "conclusion": None,
+        }
+        jobs = [{"name": "build / " + name, "status": "completed", "conclusion": "success"}
+                for name in ["checks", *publishing.TARGETS.values()]]
+        # CI dispatches Release while its final tagging job is still finishing.
+        jobs.append({"name": "tag", "status": "in_progress", "conclusion": None})
+        return source, {"jobs": jobs}
+
+    def verify_source(self, source, jobs):
+        with patch.dict(os.environ, {"GITHUB_REPOSITORY": "owner/app", "GITHUB_REF": "refs/tags/v0.2.2"}), patch.object(publishing, "github", side_effect=[source, jobs]):
+            publishing.verify_source("123", self.root)
+
+    def test_release_reuses_only_matching_successful_ci_builds(self):
+        source, jobs = self.ci_source()
+        self.verify_source(source, jobs)
+        source.update(status="completed", conclusion="success", event="workflow_dispatch")
+        self.verify_source(source, jobs)
+        for changes in (
+            {"head_sha": "0" * 40}, {"head_branch": "other"}, {"event": "pull_request"},
+            {"path": ".github/workflows/other.yml"}, {"repository": {"full_name": "other/app"}},
+            {"head_repository": {"full_name": "fork/app"}}, {"conclusion": "failure"},
+            {"status": "queued"},
+        ):
+            with self.subTest(changes=changes), self.assertRaises(ValueError):
+                self.verify_source(dict(source, **changes), jobs)
+        for status, conclusion in (("completed", "failure"), ("in_progress", None), ("completed", "skipped")):
+            incomplete = deepcopy(jobs)
+            incomplete["jobs"][1].update(status=status, conclusion=conclusion)
+            with self.subTest(status=status, conclusion=conclusion), self.assertRaises(ValueError):
+                self.verify_source(source, incomplete)
+        with self.assertRaises(ValueError):
+            self.verify_source(source, {"jobs": jobs["jobs"][1:]})
+        with patch.object(publishing, "github") as api:
+            for value in ("", "0", "-1", "1/jobs", "１２３"):
+                with self.subTest(value=value), self.assertRaises(ValueError):
+                    publishing.verify_source(value, self.root)
+            api.assert_not_called()
+        self.command("git", "commit", "--allow-empty", "-m", "Different commit")
+        with self.assertRaises(ValueError):
+            self.verify_source(source, jobs)
 
 
 if __name__ == "__main__":

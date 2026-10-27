@@ -11,8 +11,8 @@
 | Choices | Checkbox, grouped radio, single/multiple select, form reset | Native select commit/cancel rules retained; complete DOM side effects are absent |
 | Submission | GET forms, hidden fields, selected values and clicked submit button | No POST, upload, authentication UI or persistent login/cookie handling |
 | Saved data | Bookmarks, history, offline pages and custom homepage | Offline saves parsed local documents, not an exact website archive; field values reset and passwords clear |
-| Settings | Small/normal font, homepage, saved image-download toggle | Image toggle has no fetching backend; SIM APN entries are unavailable; Clear opens but cannot commit |
-| Page tools | Title/URL details | Share link only displays the URL; no SMS dispatch. Download manager has no backend. Save submenu follows the native order and supports setting home, bookmarks and offline pages; image saving is disabled |
+| Settings | Small/normal font, homepage, saved image-download toggle | Image toggle has no fetching backend; SIM APN entries are unavailable; Clear selects history/cache and commits locally |
+| Page tools | Title/URL details | Share link prepares a new SMS draft, preserving unfinished text; no dispatch. Download manager has no backend. Save submenu follows the native order and supports setting home, bookmarks and offline pages; image saving is disabled |
 
 Bounds: 12-second request timeout, 2 MiB decoded response, two waiting requests, 1200 parsed elements, parse depth 128, 32 Back entries, 100 persistent history entries, 20 offline pages and 1000 bookmarks. These are host limits, not recovered handset capacities. In-memory navigation restores focus/scroll; reopening the process does not restore a live browser session.
 
@@ -34,7 +34,7 @@ These code anchors are the Dorado branch. The firmware also contains an Opera Mi
 
 The initial-copy fix preserves valid Unicode characters if a UTF-16 limit would split a surrogate pair. Native code copies raw units; this small host difference is deliberate. Generic editor initialization is unchanged, so loading existing SMS drafts is unaffected.
 
-Remaining fidelity gaps include native URL conversion/validation, input-mask behavior, authentication, download lifecycles, exact focus/scroll geometry, all clearing/reset branches and native callback semantics. The earlier research reference model implements some rules that the desktop adapter does not; its passing tests alone do not prove that the desktop has those features.
+Remaining fidelity gaps include native URL conversion/validation, input-mask behavior, authentication, download lifecycles, exact focus/scroll geometry, exact native clearing/reset branches and native callback semantics. The earlier research reference model implements some rules that the desktop adapter does not; its passing tests alone do not prove that the desktop has those features.
 
 ## Repeat checks
 

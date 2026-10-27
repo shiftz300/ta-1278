@@ -217,6 +217,12 @@ impl Browser {
         self.bounds.clear();
         self.error = None;
     }
+    /// Drop cached navigation documents without deleting the visible page or saved copies.
+    pub fn clear_cache(&mut self) {
+        self.stop();
+        self.history.clear();
+        self.future.clear();
+    }
     pub fn visited(&self) -> Vec<(String, String)> {
         self.history
             .iter()

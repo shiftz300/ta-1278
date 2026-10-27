@@ -11,6 +11,10 @@ fn main() {
             ("PINYIN", "assets/input/pinyin_simp.dict.yaml"),
             ("STROKE", "assets/input/stroke.dict.yaml"),
             ("ENGLISH", "assets/input/en_50k.txt"),
+            ("T9_CODE", "assets/input/t9/engine.arm"),
+            ("T9_TABLES", "assets/input/t9/character-tables.bin"),
+            ("T9_ENGLISH", "assets/input/t9/english.ldb"),
+            ("T9_CHINESE", "assets/input/t9/chinese.ldb"),
         ],
     );
 }

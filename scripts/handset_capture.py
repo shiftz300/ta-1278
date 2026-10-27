@@ -27,6 +27,7 @@ def main():
             p.add_argument('--key', required=True)
             p.add_argument('--name', required=True)
             p.add_argument('--settle-ms', type=int, default=600)
+            p.add_argument('--hold-ms', type=int, default=0, help='0 for tap, 20..1000 for explicit down/up')
     region = sub.add_parser('hash-region', help='Make a pre/postcondition from an acquired screenshot')
     region.add_argument('image', type=Path)
     region.add_argument('--roi', type=int, nargs=4, default=[0, 24, 240, 296])
@@ -75,7 +76,7 @@ def main():
             if reference.size != (240, 320):
                 raise ValueError('Expected an observed 240x320 handset screen')
             plan = {'schema': 1, 'steps': [{'name': args.name, 'key': args.key,
-                    'settle_ms': args.settle_ms,
+                    'settle_ms': args.settle_ms, 'hold_ms': args.hold_ms,
                     'before': {'roi': args.roi, 'sha256': region_hash(reference, args.roi)}}]}
     if plan is not None:
         validate_plan(plan)

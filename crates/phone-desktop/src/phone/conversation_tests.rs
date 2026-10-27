@@ -26,6 +26,7 @@ fn conversation_migration_order_and_queue_never_invents_delivery() {
             body: "local".into(),
             time: 50,
             sent: true,
+            submission: None,
         },
     )
     .unwrap();

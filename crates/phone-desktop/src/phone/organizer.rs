@@ -62,6 +62,7 @@ pub enum OrganizerPage {
     CalendarMenu,
     Events,
     EventForm,
+    EventFormMenu,
     EventReminder,
     EventRepeat,
     EventRingtone,
@@ -93,6 +94,7 @@ pub struct Organizer {
     pub page: OrganizerPage,
     pub contact: super::contacts::ContactUi,
     pub alarm: super::alarm::AlarmUi,
+    pub event: super::calendar_form::EventUi,
     pub date: Date,
     pub draft: Vec<String>,
     pub editing: Option<usize>,
@@ -107,6 +109,7 @@ impl Default for Organizer {
             page: OrganizerPage::Calendar,
             contact: Default::default(),
             alarm: super::alarm::AlarmUi::default(),
+            event: Default::default(),
             date: Date::default(),
             draft: vec![],
             editing: None,
@@ -136,7 +139,8 @@ impl Phone {
             Calendar => "日历",
             CalendarMenu | ContactMenu | ContactsMenu | ContactFormMenu => "选项",
             Events => "日程",
-            EventForm => "添加事件",
+            EventForm => "新建事件",
+            EventFormMenu => "选项",
             EventReminder => "提醒",
             EventRepeat => "重复",
             EventRingtone => "铃声",
@@ -255,8 +259,14 @@ impl Phone {
             self.organizer.alarm.name = Editor::new(&self.organizer.draft[2], 20);
             self.organizer.alarm.digit = 0;
         }
+        if page == EventForm {
+            self.organizer.event.date = editing
+                .and_then(|i| self.local_data.events.get(i))
+                .map_or(self.organizer.date, |event| event.date);
+            self.event_load_field(0);
+        }
     }
-    fn organizer_save(&mut self) {
+    pub(super) fn organizer_save(&mut self) {
         use OrganizerPage::*;
         let fields = self.organizer.draft.clone();
         let editing = self.organizer.editing;
@@ -267,7 +277,7 @@ impl Phone {
                     return;
                 }
                 let event = CalendarEvent {
-                    date: self.organizer.date,
+                    date: self.organizer.event.date,
                     fields,
                 };
                 if let Some(i) = editing {
@@ -289,6 +299,9 @@ impl Phone {
             return;
         }
         if self.alarm_key(key) {
+            return;
+        }
+        if self.event_form_key(key) {
             return;
         }
         if page == Calendar {
@@ -338,7 +351,6 @@ impl Phone {
                     0
                 };
             }
-            Key::SoftLeft if page == EventForm => self.organizer_save(),
             Key::SoftLeft if page == Events => self.organizer_form(EventForm, None),
             Key::Delete if n > 0 && matches!(page, Alarms | Events) => {
                 self.organizer.selected = self.index;
@@ -384,15 +396,6 @@ impl Phone {
                     ),
                     _ => self.organizer.page = DeletePast,
                 },
-                EventForm if matches!(self.index, 2 | 4 | 5) => {
-                    self.organizer.contact.return_index = self.index;
-                    self.organizer.page = match self.index {
-                        2 => EventReminder,
-                        4 => EventRingtone,
-                        _ => EventRepeat,
-                    };
-                    self.index = 0;
-                }
                 EventReminder | EventRepeat => {
                     let field = if page == EventReminder { 2 } else { 5 };
                     self.organizer.draft[field] = self.organizer_items()[self.index].clone();
@@ -411,11 +414,6 @@ impl Phone {
                         self.index = 4;
                     }
                 }
-                EventForm => self.open_local_text(
-                    TextTarget::Organizer(self.index),
-                    self.organizer.draft[self.index].clone(),
-                    false,
-                ),
                 Events => {
                     let id = self.day_events()[self.index];
                     self.organizer_form(EventForm, Some(id));

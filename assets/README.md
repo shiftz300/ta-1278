@@ -1,6 +1,6 @@
 # Additional fonts and prediction dictionaries
 
-These are new replica resources. They are not extracted Nokia fonts or the original T9 engine. Downloads are fixed to commits and checked by SHA-256 in `sources.json`. No upstream executable code is run.
+This folder contains supplemental replica resources and explicitly identified firmware derivatives. `input/t9/` contains the original T9 engine slice, character tables and public databases; see its manifest. Downloads are fixed to commits and checked by SHA-256 in `sources.json`. No upstream executable code is run.
 
 | Resource | Source and license | Use |
 |---|---|---|
@@ -14,7 +14,7 @@ Attribution for the English data: hermitdave / Dave, FrequencyWords, 2018 Englis
 
 Original downloaded fonts remain unmodified here. Shipping builds use derived fallback subsets under `fonts/subsets/`, removing glyphs already covered by earlier fonts and unused shaping features. Derived font families are renamed `TA1278 Fallback…`; copyright and OFL notices are retained. Reproduce with `python3 scripts/subset-fallback-fonts.py` (developer-only fontTools; normal Rust builds use the checked-in outputs). The original three fonts retain first priority. This adds a fallback system to the app without altering the original firmware evidence. Current union: 49,332 Unicode codepoints, versus 8,744 in the earlier two-font renderer; this is cmap coverage, not a claim to support all Unicode scripts, shaping, emoji sequences or color emoji. See `font-coverage.json`. Unsupported codepoints can still show a missing-glyph box.
 
-The new prediction implementation maps letters/pinyin to keys 2–9, ranks exact matches before completions, then editor-session selections and frequency. It uses only these offline lists and is not the original T9 algorithm. It does not train on or import phone data, send text to a server, or save learned selections across restarts.
+The optional `Builtin` predictor uses the public lists below and independent learning. The desktop now uses `input/t9/` instead, with the original routines interpreted locally and new native-format user dictionaries saved outside the repository. No handset user dictionary is imported or uploaded.
 
 ## Recovered UI values
 
@@ -35,3 +35,6 @@ The stroke mode uses the unmodified Rime `stroke.dict.yaml` at the revision and 
 `audio/gm1_A21.sf2` is the unmodified bank recovered from the hash-verified system image. Two Snake SMFs and the generated preset catalog are in the same directory. `scripts/recover-audio.py` reproduces extraction and the per-file hash/provenance manifest. Other original audio inputs remain in the existing extracted resource tree. See [native audio](../docs/native-audio.md); the original data retains its original rights.
 
 Fonts, prediction dictionaries and SF2 samples are losslessly compressed at build time using miniz_oxide. All packed files are roundtrip-checked. Native fonts remain unchanged; the subset acceptance test compares all 31,768 visible fallback characters at 18/20/24 px against the full source fonts.
+## Owner-selected wallpaper
+
+`ui/owner-wallpaper.png` is the green character wallpaper selected by the owner for the replica default. It is decoded from the verified handset wallpaper cache, not generated or taken from a UI screenshot. Only RGB pixels are bundled; the raw cache and trailer remain private. [Dimensions, hashes and reproduction](ui/owner-wallpaper.json). This is personal artwork, not a claimed Nokia factory default; its artist/license is not established.

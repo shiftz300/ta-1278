@@ -40,7 +40,7 @@ pub(super) fn render(c: &mut Canvas, p: &mut Phone) {
                 c.rect(0, 24, 240, 38, PAPER);
                 c.rect(2, 27, 235, 28, if i == p.index { FOCUS } else { PAPER });
                 c.rect(3, 28, 233, 26, PAPER);
-                c.icon(22, 3, 29, 24);
+                c.icon(20, 3, 29, 24);
                 c.text(30, 31, label, 14, INK);
             } else {
                 if i == p.index {

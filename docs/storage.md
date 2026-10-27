@@ -1,72 +1,42 @@
 # Phone storage
 
-The app uses a **VFS inside the process**. It does not mount a disk in macOS, use FUSE, or import media into a separate library. The selected directory is a volume; file browsing and music share it. This replaces the earlier import-copy proposal at the owner's request.
+The desktop uses one local folder directly through `std::fs`. There is no VFS crate, mount table, `Volume` trait, memory-card slot, disk image or import library.
 
-| Virtual path | Default backend |
-|---|---|
-| `/phone` | `<data-dir>/files/` |
-| `/card` | `<data-dir>/card/`, or the existing directory passed to `--mount-card` |
+## First launch
 
-Private app records (messages, contacts, settings, browser data, reminders and utility/music state) remain beside these folders, outside the browsable volumes. Existing records are preserved. An app-owned default data directory can be backed up as a whole. An external card directory must be backed up separately.
+On macOS, first launch opens a folder chooser. Choose an existing folder or create one in the chooser. Cancel exits without saving a selection. The app remembers its absolute location in `storage.json` under the private profile. Later launches reuse it. `--storage-dir DIRECTORY` explicitly selects or changes the folder and saves the choice. Other desktop platforms require this flag for first setup.
 
-## Flags
+Only **手机存储** appears on the Files start page. Opening it shows the selected folder's contents. Music, pictures, video, wallpaper and ringtone selection all use that same folder. File operations directly affect the selected files. There is no import or copy-on-import step.
 
-| Flag | Effect |
-|---|---|
-| `--mount-card DIRECTORY` | Mount an existing directory directly at `/card`. No copy. Writes affect that directory. |
-| `--no-card` | Do not mount `/card`. Conflicts with `--mount-card`. |
-| `--read-only-storage` | Block mkdir, rename, delete and copy/move destinations in both media volumes. Does not disable private app-record saves. |
-| `--disable music` | Block music launch and file-to-player dispatch; no music scan or music-player output. Alert sounds are controlled separately. |
-| `--disable files` | Block file-manager launch and all file-manager service requests. Music may still read the volume. |
-| `--disable pictures` | Block image choosers, previews and saved wallpaper decoding. |
-| `--disable video` | Block video launch and file-to-video dispatch. |
-| `--disable sounds` | Mute key, Snake, message and alarm cues. Music/video volume is separate. |
-| `--disable network` | Reject external browser requests before dispatch. Local demo and saved pages remain usable. |
+Private JSON records remain in the profile (`~/Library/Application Support/TA1278 Replica/` by default on macOS), outside the browsable folder. A folder containing the private profile is rejected. Back up the profile and selected folder separately. The app does not upload either.
 
-Combine disabled features with commas. These are runtime capabilities, not native phone settings. They keep the sampled menu order and reject unavailable actions instead of rearranging the menu. They do not remove compiled dependencies.
+## Controls and flags
 
-## Modules
+- `--storage-dir DIRECTORY`: choose the single folder; it must exist.
+- `--read-only-storage`: disallow create, rename, delete, copy and move. Messages and settings can still save.
+- `--data-dir PATH`: independent private profile, including its own folder choice.
+- `--disable music,files,pictures,video,sounds,network`: existing runtime feature controls.
+- `--mount-card` and `--no-card` have been removed.
 
-- `phone-vfs`: mount table, `Volume` backend interface, seekable streams, virtual path validation, per-mount write permission and unmount API.
-- `phone-vfs/directory.rs`: local directory implementation. Does not return host paths to consumers.
-- `media.rs`: shared VFS service, bounded background music scan, file operations and playback settings persistence.
-- `audio.rs`: Rodio/Symphonia decoding and real output. Uses stream length and seek support from the VFS.
-- `phone/files.rs`, `views/files.rs`: file-manager state and rendering, separate from filesystem operations.
+An unavailable saved folder stops startup with an error instead of silently creating empty storage. Reconnect the drive or explicitly select its new location with `--storage-dir`. Existing `files/` and `card/` folders are never moved or deleted. Old volume-prefixed playlist/picture references are retained but are not automatically rebound; choose media again or rebuild playlists after selecting storage.
 
-Another backend can implement `Volume` and be mounted without changing the player. **Only directory backends are shipped.** There is no FAT image, NAND, OS disk or USB mass-storage emulation. The mount table supports unmounting; desktop live insertion/ejection controls are not yet provided.
+## Implementation
 
-## Files and playback
+- `storage_setup.rs`: first-launch choice, validation and atomic configuration save.
+- `local_files.rs`: one concrete folder; direct file streams, listing, permissions and bounded copy/move. No replaceable filesystem backends.
+- `media.rs` and `media/files.rs`: background music scan and file operations.
+- `phone/files.rs` and `views/files.rs`: navigation, confirmations and native-shaped storage overview.
+- `audio.rs`: MP3/WAV decoding from `std::fs::File`.
+- `visual_media.rs`: bounded temporary copies for the existing macOS image/video helper; these are decoder inputs, not an imported media library.
 
-Files can browse folders, inspect size, create a folder, rename without overwrite and delete with confirmation. A failed folder read leaves the path, selection and Back history intact; leaving Files cancels pending file navigation. Deleting a nonempty directory fails; no recursive erase. Opening MP3/WAV enters the music player; Back returns to the originating folder. Unsupported formats report an error. Folder menus/geometry are conservative local implementations; their native fidelity is not claimed.
+Internal saved media names are slash-prefixed paths relative to the chosen folder (`/Music/song.wav`), not host absolute paths. Root writes/removal, traversal, symlinks and special files are rejected. Names must be UTF-8. This is a trusted local-folder interface, not an adversarial OS sandbox; concurrent host path replacement remains outside its guarantee.
 
-Music scans the volumes on startup and with Music → menu → 手动刷新. External edits need refresh. A refresh pauses playback immediately and preserves the same virtual path/position when available. Playback requests wait for the scan. A file mutation invalidates older scan results; folder renames update the saved virtual path, and deletion clears it. Volume/repeat/shuffle still save if the app closes during a scan. The scan has a 10000-entry and 16-level bound, skips hidden entries, and reports invalid files. Files are streamed, not loaded wholly into memory. Track names currently come from filenames. MP3 and PCM WAV are enabled; other codecs and cover art remain unimplemented; playlist editing is available.
+Copy is bounded to 10,000 visible entries, depth 16 and 512 MiB. Failed copies attempt to remove their newly created files. Existing destinations are never overwritten. Move uses filesystem rename; crossing host filesystem boundaries fails without deleting the source. Folder deletion is nonrecursive. Successful rename/move updates media references. Music refresh rescans external edits; physical hot-unplug recovery remains limited.
 
-Center pauses/resumes; Up/Down changes volume; a short Left/Right changes track; a held Left/Right seeks. Repeat and shuffle follow the existing control model. Elapsed time comes from the audio sink, including outside the player. Volume, repeat, shuffle, virtual path and position save periodically and on normal close. Restart restores a paused track. Music-save failure blocks normal close. Audio initialization/seek errors stop playback visibly.
+## Native page evidence
 
-Directory backends reject `..`, empty path segments, links and special files. Names must be UTF-8. Only mounted roots are visible. This adapter is for trusted user-selected local folders, not an adversarial OS sandbox: concurrent host replacement between validation and I/O is not prevented. Mounting a real external volume by its directory does not provide robust physical hot-unplug detection; use a stable local directory for now.
-
-See [validation evidence](evidence/storage-audio-validation.json) for the tested build and fixture hashes.
+The Files overview and Details layout follow `docs/handset-samples/20261025/files-{root,options,details}.png` and the fresh 20261027 overview: one 64-pixel storage row, Open softkey, bottom options and four detail fields. The handset's fixed 31.2 MB is not copied: capacity displays the actual filesystem containing the selected folder, including usage outside this folder. Format is grey and inert. The newer [native-page audit](native-page-audit.md) adds folder-option ordering, move destination and folder-name form evidence. The observed checkbox page now backs multi-selection. Delete/select-all and the final confirmation are explicit local policies: all selected paths (up to 1,000) are checked before deletion, and directories must be empty. A preflight error changes nothing. Concurrent external changes can still cause a partial result after preflight; the result reports successes/failures and retains failed selections. Work runs in the background and survives returning home. These completion and transfer outcomes are not fully sampled native flows.
 
 ## Verification
 
-`cargo test --workspace --locked` covers virtual roots, read-only mutations, traversal/link rejection, no-overwrite rename, nonempty-folder refusal, scanning/decoding errors, file navigation/delete cancel, file-to-player return, disabled services and paused restart.
-
-An explicit hardware test opens the real CoreAudio stream with a generated silent WAV and checks advancing time, pause, seek and EOF:
-
-```sh
-cargo test --locked -p phone-desktop real_output_pause_seek_and_eof -- --ignored --nocapture
-```
-
-The same test accepts `TA1278_AUDIO_FIXTURE=/absolute/path/to/generated.mp3`. Both WAV and a locally generated MP3 passed on this Mac outside the sandbox. This proves output-stream operation, not a listening-quality assessment or complete native-player fidelity. No private media or phone data was used.
-
-Primary API references: [Rodio sink](https://docs.rs/rodio/0.21.1/rodio/struct.Sink.html), [decoder builder](https://docs.rs/rodio/0.21.1/rodio/decoder/struct.DecoderBuilder.html). Versions and checksums are pinned in Cargo.lock.
-
-## Local media completion
-
-Files also support bounded background copy/move between mounts, without overwrite. Copies/cross-volume moves have limits of 10,000 visible entries, depth 16 and 512 MiB; same-volume moves use rename. A failed copy attempts to remove newly created entries; inaccessible storage can prevent cleanup. A move removes sources only after copying all targets; source cleanup can fail separately. Folder deletion stays nonrecursive. Successful rename/move updates saved picture/ringtone/playlist references.
-
-Images and video use a shared VFS browser. On macOS a small helper, built from our Swift source with Apple SDKs, decodes a bounded temporary local copy; there is no external URL or upload. PNG/JPEG previews and H.264/AAC MP4 playback were exercised. GIF uses its first frame. Other system codecs, video rotation metadata and native gallery/player geometry are not fully verified. [Flows, controls and limits](local-completion.md).
-
-## App data
-
-See [persistence](persistence.md) for record files, version checks, single-instance locking, backups and manual recovery. These records stay outside the browsable VFS. An external card is not included in a data-directory backup.
+The workspace tests cover chooser cancellation/reuse, missing storage, profile isolation, read-only operations, traversal and link rejection, no-overwrite copies, subtree-copy refusal, nonrecursive deletion, file-to-player return, failed-navigation retention and media persistence. `--smoke-test` uses synthetic pages without opening a folder picker or reading user media.

@@ -14,9 +14,11 @@ pub struct Line {
 }
 pub struct Canvas {
     pub pixels: Vec<u8>,
+    clip: [i32; 4],
     fonts: Vec<Font>,
     glyphs: HashMap<(char, u16), (Metrics, Vec<u8>)>,
     pub icons: Vec<image::RgbaImage>,
+    pub default_wallpaper: std::sync::Arc<image::RgbaImage>,
     sprites: Vec<image::RgbaImage>,
     softkey_icons: [image::RgbaImage; 4],
     pub theme: crate::theme::Theme,
@@ -113,14 +115,6 @@ impl Canvas {
             )
             .as_slice(),
             include_bytes!(
-                "../../../nokia-ta1278-research/analysis/extracted/png/01340-icon-000ddcd0.png"
-            )
-            .as_slice(),
-            include_bytes!(
-                "../../../nokia-ta1278-research/analysis/extracted/png/01341-icon-000de0f4.png"
-            )
-            .as_slice(),
-            include_bytes!(
                 "../../../nokia-ta1278-research/analysis/extracted/png/00421-icon-00056b70.png"
             )
             .as_slice(),
@@ -145,10 +139,17 @@ impl Canvas {
             accent: theme.startup_fallback_accent,
             theme,
             caret: None,
+            clip: [0, 0, W as i32, H as i32],
             pixels: vec![0; (W * H * 4) as usize],
             fonts,
             glyphs: HashMap::new(),
             icons,
+            default_wallpaper: image::load_from_memory(include_bytes!(
+                "../../../assets/ui/owner-wallpaper.png"
+            ))
+            .map_err(|e| e.to_string())?
+            .to_rgba8()
+            .into(),
             softkey_icons: [
                 image::load_from_memory(include_bytes!(
                     "../../../nokia-ta1278-research/analysis/extracted/png/00397-icon-00052900.png"
@@ -190,16 +191,36 @@ impl Canvas {
             .sum::<f32>()
             .ceil() as i32
     }
+    /// Intersect a temporary content viewport; restores the caller's clip.
+    pub fn clipped(&mut self, [x, y, w, h]: [i32; 4], draw: impl FnOnce(&mut Self)) {
+        let old = self.clip;
+        self.clip = [
+            x.max(old[0]),
+            y.max(old[1]),
+            (x + w).min(old[2]),
+            (y + h).min(old[3]),
+        ];
+        draw(self);
+        self.clip = old;
+    }
     pub fn rect(&mut self, x: i32, y: i32, w: i32, h: i32, c: Color) {
-        for yy in y.max(0)..(y + h).min(H as i32) {
-            for xx in x.max(0)..(x + w).min(W as i32) {
+        for yy in y.max(self.clip[1]).max(0)..(y + h).min(self.clip[3]).min(H as i32) {
+            for xx in x.max(self.clip[0]).max(0)..(x + w).min(self.clip[2]).min(W as i32) {
                 let i = ((yy * W as i32 + xx) * 4) as usize;
                 self.pixels[i..i + 4].copy_from_slice(&c);
             }
         }
     }
-    fn blend_into(pixels: &mut [u8], x: i32, y: i32, c: Color, alpha: u8) {
-        if x < 0 || y < 0 || x >= W as i32 || y >= H as i32 {
+    fn blend_into(pixels: &mut [u8], clip: [i32; 4], x: i32, y: i32, c: Color, alpha: u8) {
+        if x < 0
+            || y < 0
+            || x >= W as i32
+            || y >= H as i32
+            || x < clip[0]
+            || y < clip[1]
+            || x >= clip[2]
+            || y >= clip[3]
+        {
             return;
         }
         let i = ((y * W as i32 + x) * 4) as usize;
@@ -220,6 +241,7 @@ impl Canvas {
                 for xx in 0..m.width {
                     Self::blend_into(
                         &mut self.pixels,
+                        self.clip,
                         cursor.round() as i32 + m.xmin + xx as i32,
                         top + yy as i32,
                         c,
@@ -281,7 +303,14 @@ impl Canvas {
     }
     pub fn image(&mut self, image: &image::RgbaImage, x: i32, y: i32) {
         for (dx, dy, pixel) in image.enumerate_pixels() {
-            Self::blend_into(&mut self.pixels, x + dx as i32, y + dy as i32, pixel.0, 255);
+            Self::blend_into(
+                &mut self.pixels,
+                self.clip,
+                x + dx as i32,
+                y + dy as i32,
+                pixel.0,
+                255,
+            );
         }
     }
     /// Clipped nearest-neighbour blit without allocating a scaled image.
@@ -295,11 +324,21 @@ impl Canvas {
             let sy = ((py - y) as u64 * image.height() as u64 / h as u64) as u32;
             for px in x.max(cx).max(0)..(x + w).min(cx + cw).min(W as i32) {
                 let sx = ((px - x) as u64 * image.width() as u64 / w as u64) as u32;
-                Self::blend_into(&mut self.pixels, px, py, image.get_pixel(sx, sy).0, 255);
+                Self::blend_into(
+                    &mut self.pixels,
+                    self.clip,
+                    px,
+                    py,
+                    image.get_pixel(sx, sy).0,
+                    255,
+                );
             }
         }
     }
     pub fn icon(&mut self, index: usize, x: i32, y: i32, size: u32) {
+        self.icon_enabled(index, x, y, size, true);
+    }
+    pub fn icon_enabled(&mut self, index: usize, x: i32, y: i32, size: u32, enabled: bool) {
         if size == 0 {
             return;
         }
@@ -310,8 +349,19 @@ impl Canvas {
             for ox in 0..size {
                 let sx = (((ox as f32 + 0.5) * x_ratio) as u32).min(img.width() - 1);
                 let sy = (((oy as f32 + 0.5) * y_ratio) as u32).min(img.height() - 1);
-                let p = img.get_pixel(sx, sy);
-                Self::blend_into(&mut self.pixels, x + ox as i32, y + oy as i32, p.0, 255);
+                let mut pixel = img.get_pixel(sx, sy).0;
+                if !enabled {
+                    let grey = (pixel[..3].iter().map(|&v| u16::from(v)).sum::<u16>() / 5) as u8;
+                    pixel[..3].fill(grey);
+                }
+                Self::blend_into(
+                    &mut self.pixels,
+                    self.clip,
+                    x + ox as i32,
+                    y + oy as i32,
+                    pixel,
+                    255,
+                );
             }
         }
     }
@@ -325,12 +375,9 @@ impl Canvas {
         if matches!(shortcut, 12 | 3) {
             self.softkey_image(usize::from(shortcut == 3), x, y);
         } else {
-            let icons = [0, 4, 3, 0, 2, 7, 11, 9, 12, 21, 6, 15, 1, 14, 5, 16, 17, 18];
+            let icons = [0, 4, 3, 0, 2, 7, 11, 9, 12, 19, 6, 15, 1, 14, 5, 16, 17];
             if let Some(icon) = icons.get(shortcut) {
-                self.icon(*icon, x, y, 26);
-                if shortcut == 2 {
-                    self.grey(x, y, 26, 26);
-                }
+                self.icon_enabled(*icon, x, y, 26, shortcut != 2);
             }
         }
     }
@@ -341,6 +388,7 @@ impl Canvas {
         for (ox, oy, pixel) in self.softkey_icons[index].enumerate_pixels() {
             Self::blend_into(
                 &mut self.pixels,
+                self.clip,
                 x + ox as i32,
                 y + oy as i32,
                 pixel.0,
@@ -354,34 +402,32 @@ impl Canvas {
         for oy in 0..height.min(img.height().saturating_sub(sy)) {
             for ox in 0..width.min(img.width().saturating_sub(sx)) {
                 let p = img.get_pixel(sx + ox, sy + oy);
-                Self::blend_into(&mut self.pixels, x + ox as i32, y + oy as i32, p.0, 255);
+                Self::blend_into(
+                    &mut self.pixels,
+                    self.clip,
+                    x + ox as i32,
+                    y + oy as i32,
+                    p.0,
+                    255,
+                );
             }
         }
     }
     pub fn accent(&self, shade: usize) -> Color {
         self.theme.color(self.accent, shade)
     }
-    pub fn grey(&mut self, x: i32, y: i32, w: i32, h: i32) {
-        for yy in y.max(0)..(y + h).min(H as i32) {
-            for xx in x.max(0)..(x + w).min(W as i32) {
-                let i = ((yy * W as i32 + xx) * 4) as usize;
-                let v = ((self.pixels[i] as u16
-                    + self.pixels[i + 1] as u16
-                    + self.pixels[i + 2] as u16)
-                    / 5) as u8;
-                self.pixels[i..i + 3].fill(v);
-            }
-        }
-    }
     pub fn dim(&mut self) {
+        self.shade(51);
+    }
+    pub fn shade(&mut self, brightness: u8) {
         for px in self.pixels.chunks_exact_mut(4) {
             for v in &mut px[..3] {
-                *v = (*v as u16 / 5) as u8;
+                *v = (u16::from(*v) * u16::from(brightness) / 255) as u8;
             }
         }
     }
     pub fn background(&mut self) {
-        // Handset owner confirmed black. Available wallpaper assets do not prove defaults.
+        // Application pages stay black; Home/Menu add their shared wallpaper.
         self.rect(0, 0, W as i32, H as i32, [0, 0, 0, 255]);
     }
     pub fn ring(&mut self, x: i32, y: i32, radius: i32, color: Color) {

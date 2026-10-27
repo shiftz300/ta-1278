@@ -22,30 +22,23 @@ fn wav(path: &Path, seconds: u32) {
     f.write_all(&size.to_le_bytes()).unwrap();
     f.write_all(&vec![0; size as usize]).unwrap();
 }
-fn fixture(name: &str, read_only: bool) -> (Vfs, std::path::PathBuf) {
+fn fixture(name: &str, read_only: bool) -> (Folder, std::path::PathBuf) {
     let dir = std::env::temp_dir().join(format!("ta1278-media-{name}-{}", std::process::id()));
     fs::create_dir_all(dir.join("card/Music")).unwrap();
     wav(&dir.join("card/Music/tone.wav"), 3);
-    let mut vfs = Vfs::default();
-    vfs.mount(
-        "card",
-        "存储卡",
-        Box::new(phone_vfs::Directory::new(dir.join("card")).unwrap()),
-        read_only,
-    )
-    .unwrap();
-    (vfs, dir)
+    let files = Folder::new(&dir, read_only).unwrap();
+    (files, dir)
 }
 #[test]
 fn scan_decode_corrupt_and_stream_seek() {
-    let (vfs, dir) = fixture("scan", false);
+    let (files, dir) = fixture("scan", false);
     fs::write(dir.join("card/bad.mp3"), b"not audio").unwrap();
     fs::write(dir.join("card/notes.txt"), b"notes").unwrap();
-    let (tracks, errors) = scan(&vfs);
+    let (tracks, errors) = scan(&files);
     assert_eq!(tracks.len(), 1);
     assert_eq!(errors.len(), 1);
     assert!((tracks[0].seconds - 3.).abs() < 0.01);
-    let mut source = audio::decode(&vfs, &tracks[0].path).unwrap();
+    let mut source = audio::decode(&files, &tracks[0].path).unwrap();
     source.try_seek(Duration::from_secs(2)).unwrap();
     assert!(source.count() <= 8001);
     assert_eq!(fs::read(dir.join("card/bad.mp3")).unwrap(), b"not audio");
@@ -53,7 +46,7 @@ fn scan_decode_corrupt_and_stream_seek() {
 }
 #[test]
 fn background_move_updates_links_without_moving_another_apps_focus() {
-    let (vfs, dir) = fixture("move-links", false);
+    let (files, dir) = fixture("move-links", false);
     let mut p = Phone::new(Default::default());
     p.features.music = false;
     p.preferences.ringtone = "/card/Music/tone.wav".into();
@@ -61,7 +54,7 @@ fn background_move_updates_links_without_moving_another_apps_focus() {
         name: "test".into(),
         paths: vec!["/card/Music/tone.wav".into()],
     });
-    let mut media = Media::new(vfs, &dir, &mut p).unwrap();
+    let mut media = Media::new(files, &dir, &mut p).unwrap();
     media
         .file_request(
             &mut p,
@@ -87,10 +80,10 @@ fn background_move_updates_links_without_moving_another_apps_focus() {
 }
 #[test]
 fn file_actions_and_flags_reach_service_boundary() {
-    let (vfs, dir) = fixture("files", true);
+    let (files, dir) = fixture("files", true);
     let mut phone = Phone::new(Default::default());
     phone.features.music = false;
-    let mut media = Media::new(vfs, &dir, &mut phone).unwrap();
+    let mut media = Media::new(files, &dir, &mut phone).unwrap();
     media
         .file_request(&mut phone, FileRequest::List("/card".into()))
         .unwrap();
@@ -119,7 +112,7 @@ fn file_actions_and_flags_reach_service_boundary() {
 }
 #[test]
 fn saved_track_uses_virtual_path_and_restarts_paused() {
-    let (vfs, dir) = fixture("save", false);
+    let (files, dir) = fixture("save", false);
     let saved = SavedMusic {
         path: Some("/card/Music/tone.wav".into()),
         position: 1.5,
@@ -130,7 +123,7 @@ fn saved_track_uses_virtual_path_and_restarts_paused() {
     };
     storage::save_json(&dir, "music.json", &saved, 65536).unwrap();
     let mut phone = Phone::new(Default::default());
-    let mut media = Media::new(vfs, &dir, &mut phone).unwrap();
+    let mut media = Media::new(files, &dir, &mut phone).unwrap();
     let deadline = Instant::now() + Duration::from_secs(5);
     while media.restore.is_some() && Instant::now() < deadline {
         media.tick(&mut phone);
@@ -153,40 +146,40 @@ fn saved_track_uses_virtual_path_and_restarts_paused() {
 #[test]
 #[ignore = "requires a real audio output; plays a silent WAV for under two seconds"]
 fn real_output_pause_seek_and_eof() {
-    let (vfs, dir) = fixture("audio", false);
+    let (files, dir) = fixture("audio", false);
     let path = if let Ok(fixture) = std::env::var("TA1278_AUDIO_FIXTURE") {
         fs::copy(fixture, dir.join("card/Music/test.mp3")).unwrap();
         "/card/Music/test.mp3"
     } else {
         "/card/Music/tone.wav"
     };
-    let duration = probe(&vfs, path).unwrap().seconds;
+    let duration = probe(&files, path).unwrap().seconds;
     let mut music = phone_core::music::Music::default();
     music.external_clock = true;
     music.tracks = vec![("tone".into(), duration)];
     music.play(0);
     let mut audio = Audio::default();
     let path = Some(path);
-    audio.sync(&vfs, path, &mut music).unwrap();
+    audio.sync(&files, path, &mut music).unwrap();
     thread::sleep(Duration::from_millis(200));
-    audio.sync(&vfs, path, &mut music).unwrap();
+    audio.sync(&files, path, &mut music).unwrap();
     assert!(music.position > 0.05, "output clock did not advance");
     music.playing = false;
-    audio.sync(&vfs, path, &mut music).unwrap();
+    audio.sync(&files, path, &mut music).unwrap();
     thread::sleep(Duration::from_millis(60));
-    audio.sync(&vfs, path, &mut music).unwrap();
+    audio.sync(&files, path, &mut music).unwrap();
     let paused = music.position;
     thread::sleep(Duration::from_millis(150));
-    audio.sync(&vfs, path, &mut music).unwrap();
+    audio.sync(&files, path, &mut music).unwrap();
     assert!((music.position - paused).abs() < 0.04);
     music.position = duration - 0.2;
     music.seek_revision += 1;
     music.playing = true;
-    audio.sync(&vfs, path, &mut music).unwrap();
+    audio.sync(&files, path, &mut music).unwrap();
     let deadline = Instant::now() + Duration::from_secs(2);
     while music.playing && Instant::now() < deadline {
         thread::sleep(Duration::from_millis(30));
-        audio.sync(&vfs, path, &mut music).unwrap();
+        audio.sync(&files, path, &mut music).unwrap();
     }
     assert!(!music.playing, "EOF not delivered");
     assert_eq!(music.position, duration);
@@ -197,11 +190,11 @@ fn real_output_pause_seek_and_eof() {
 #[test]
 fn file_navigation_rename_delete_cancel_and_player_return() {
     use phone_core::input::{Event, Key, Phase};
-    let (vfs, dir) = fixture("navigation", false);
+    let (files, dir) = fixture("navigation", false);
     let mut phone = Phone::new(Default::default());
-    let mut media = Media::new(vfs, &dir, &mut phone).unwrap();
+    let mut media = Media::new(files, &dir, &mut phone).unwrap();
     phone.music_refresh = false;
-    let (tracks, warnings) = scan(&media.vfs);
+    let (tracks, warnings) = scan(&media.files);
     media.apply_scan(&mut phone, tracks, warnings);
     phone.launch(Screen::Tools(ToolPage::Files));
     let run = |p: &mut Phone, m: &mut Media| {
@@ -219,6 +212,9 @@ fn file_navigation_rename_delete_cancel_and_player_return() {
         )
     };
     run(&mut phone, &mut media);
+    assert_eq!(phone.files.view, FileView::Storage);
+    key(&mut phone, Key::Center);
+    run(&mut phone, &mut media);
     key(&mut phone, Key::Center);
     run(&mut phone, &mut media);
     key(&mut phone, Key::Center);
@@ -226,10 +222,8 @@ fn file_navigation_rename_delete_cancel_and_player_return() {
     assert_eq!(phone.files.path, "/card/Music");
     key(&mut phone, Key::SoftLeft);
     key(&mut phone, Key::Down);
-    key(&mut phone, Key::Down);
-    key(&mut phone, Key::Down);
     key(&mut phone, Key::Center);
-    assert_eq!(phone.files.view, FileView::Delete);
+    assert_eq!(phone.files.view, FileView::DeleteSelect);
     key(&mut phone, Key::SoftRight);
     assert!(dir.join("card/Music/tone.wav").exists());
     key(&mut phone, Key::Center);
@@ -249,18 +243,19 @@ fn file_navigation_rename_delete_cancel_and_player_return() {
     media
         .file_request(
             &mut phone,
-            FileRequest::Remove("/card/Music/new.wav".into()),
+            FileRequest::RemoveMany(vec!["/card/Music/new.wav".into()]),
         )
         .unwrap();
+    finish_jobs(&mut media, &mut phone);
     assert!(phone.files.entries.is_empty());
     fs::remove_dir_all(dir).unwrap();
 }
 
 #[test]
 fn failed_directory_navigation_preserves_history_and_focus() {
-    let (vfs, dir) = fixture("failed-nav", false);
+    let (files, dir) = fixture("failed-nav", false);
     let mut p = Phone::new(Default::default());
-    let mut media = Media::new(vfs, &dir, &mut p).unwrap();
+    let mut media = Media::new(files, &dir, &mut p).unwrap();
     media
         .file_request(&mut p, FileRequest::List("/".into()))
         .unwrap();
@@ -307,7 +302,7 @@ fn failed_directory_navigation_preserves_history_and_focus() {
 
 #[test]
 fn pending_scan_saves_controls_and_keeps_resume_path_even_on_close() {
-    let (vfs, dir) = fixture("pending-save", false);
+    let (files, dir) = fixture("pending-save", false);
     let original = SavedMusic {
         path: Some("/card/Music/tone.wav".into()),
         position: 1.25,
@@ -316,7 +311,7 @@ fn pending_scan_saves_controls_and_keeps_resume_path_even_on_close() {
     };
     storage::save_json(&dir, "music.json", &original, 65536).unwrap();
     let mut p = Phone::new(Default::default());
-    let mut media = Media::new(vfs, &dir, &mut p).unwrap();
+    let mut media = Media::new(files, &dir, &mut p).unwrap();
     p.music.volume = 2;
     p.music.repeat = Repeat::All;
     p.music.shuffle = true;
@@ -338,10 +333,10 @@ fn pending_scan_saves_controls_and_keeps_resume_path_even_on_close() {
 
 #[test]
 fn stale_scan_cannot_restore_renamed_or_deleted_track() {
-    let (vfs, dir) = fixture("stale-scan", false);
+    let (files, dir) = fixture("stale-scan", false);
     let mut p = Phone::new(Default::default());
-    let mut media = Media::new(vfs, &dir, &mut p).unwrap();
-    let (old, warnings) = scan(&media.vfs);
+    let mut media = Media::new(files, &dir, &mut p).unwrap();
+    let (old, warnings) = scan(&media.files);
     media.apply_scan(&mut p, old.clone(), warnings);
     p.music_refresh = false;
     p.music.position = 1.25;
@@ -372,7 +367,7 @@ fn stale_scan_cannot_restore_renamed_or_deleted_track() {
     assert_eq!(p.index, 2);
     p.play_track(0);
     assert!(!p.music.playing);
-    tx.send(scan(&media.vfs)).unwrap();
+    tx.send(scan(&media.files)).unwrap();
     media.tick(&mut p);
     assert!(!p.music_loading);
     assert_eq!(media.tracks[0].path, "/card/Songs/tone.wav");
@@ -380,8 +375,12 @@ fn stale_scan_cannot_restore_renamed_or_deleted_track() {
     assert_eq!(p.index, 2);
     p.files.path = "/card/Songs".into();
     media
-        .file_request(&mut p, FileRequest::Remove("/card/Songs/tone.wav".into()))
+        .file_request(
+            &mut p,
+            FileRequest::RemoveMany(vec!["/card/Songs/tone.wav".into()]),
+        )
         .unwrap();
+    finish_jobs(&mut media, &mut p);
     assert!(media.restore.as_ref().unwrap().path.is_none());
     media.save(&dir, &p, true).unwrap();
     let saved: SavedMusic = storage::load_json(&dir, "music.json", 65536).unwrap();
@@ -392,14 +391,23 @@ fn stale_scan_cannot_restore_renamed_or_deleted_track() {
 
 #[test]
 fn scanning_a_library_does_not_claim_a_track_was_played() {
-    let (vfs, dir) = fixture("unplayed", false);
+    let (files, dir) = fixture("unplayed", false);
     let mut phone = Phone::new(Default::default());
-    let mut media = Media::new(vfs, &dir, &mut phone).unwrap();
-    let (tracks, warnings) = scan(&media.vfs);
+    let mut media = Media::new(files, &dir, &mut phone).unwrap();
+    let (tracks, warnings) = scan(&media.files);
     media.apply_scan(&mut phone, tracks, warnings);
     media.save(&dir, &phone, true).unwrap();
     let saved: SavedMusic = storage::load_json(&dir, "music.json", 65536).unwrap();
     assert!(saved.path.is_none());
     assert!(!phone.music_started);
     fs::remove_dir_all(dir).unwrap();
+}
+
+fn finish_jobs(media: &mut Media, phone: &mut Phone) {
+    let deadline = Instant::now() + Duration::from_secs(5);
+    while phone.files.busy && Instant::now() < deadline {
+        media.finish_file_jobs(phone);
+        thread::sleep(Duration::from_millis(1));
+    }
+    assert!(!phone.files.busy);
 }

@@ -8,7 +8,7 @@ W19 MMI/T9 框架参考仅发布 URL、固定版本和文本哈希；不将整�
 
 仓库尚未为其余原创代码或文档指定统一开源许可证。
 
-桌面程序新增 Noto CJK / Symbols 2 / Emoji（SIL OFL）、Rime 简体拼音词库（Apache 2.0）和 FrequencyWords 英文词频数据（CC BY-SA 4.0，不是其代码的 MIT 许可）。来源固定版本、SHA-256、作者与完整许可见 [assets/README.md](assets/README.md) 和相邻许可文件。新九键算法是复刻程序实现，不是原机 T9 的恢复结果。
+桌面程序新增 Noto CJK / Symbols 2 / Emoji（SIL OFL）、Rime 简体拼音词库（Apache 2.0）和 FrequencyWords 英文词频数据（CC BY-SA 4.0，不是其代码的 MIT 许可）。来源固定版本、SHA-256、作者与完整许可见 [assets/README.md](assets/README.md) 和相邻许可文件。上述公共词库仅供可选替代预测器使用；桌面程序已切换到 `assets/input/t9/` 中的原机例程与字库，通过本项目的有界 ARM 解释器运行。原机 T9 代码、字符表及字库属于固件衍生资料，不适用 Rime、FrequencyWords 或本项目自编代码的许可；权利归其原权利人，见资源清单与固件发布边界。
 
 - Rime stroke dictionary: rime/rime-stroke, revision `1e8fff9b9494ddec23b0cbc526bcfd8171a6fd48`. Original text, authors and LGPL-3.0 license retained under `assets/input/`. Used as replacement five-stroke data, not original Nokia input code. Runtime ranking also uses the existing pinyin frequencies.
 
@@ -33,3 +33,6 @@ These audio components are host implementations, not recovered Nokia code. Other
 The application source in this checkout can be modified and rebuilt to replace these LGPL libraries; reverse engineering to debug modifications to these libraries is permitted. Unpack an archive, modify the library, add a local `[patch.crates-io]` path in the root Cargo.toml and rebuild with `cargo build --release -p phone-desktop` (refresh Cargo.lock when changing the source). `scripts/package-macos.sh` then packages and ad-hoc signs the replacement executable. Keep the matching application source and these notices with any distribution.
 
 `assets/audio/gm1_A21.sf2` is original firmware data, copyright 2010 SPRDCorporation according to its metadata. The original MIDI and MP3 resources are also firmware data. None is relicensed under the synthesizer's LGPL or the parser's license. Recovered notes/samples do not imply recovery of the proprietary DSP implementation.
+## Owner-selected artwork
+
+`assets/ui/owner-wallpaper.png` contains the handset owner's selected background. Its original artist and license are not established. It is not represented as Nokia factory artwork or original project artwork. Provenance and pixel-decoding details are in `assets/ui/owner-wallpaper.json`.

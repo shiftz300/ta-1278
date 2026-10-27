@@ -20,6 +20,7 @@ pub struct Content<'a> {
     pub time: u64,
     pub incoming: bool,
     pub unsent: bool,
+    pub delivery: Option<&'a crate::services::SubmissionState>,
 }
 impl Mailbox {
     pub fn content(&self, item: Item) -> Option<Content<'_>> {
@@ -29,12 +30,14 @@ impl Mailbox {
                 time: m.time,
                 incoming: true,
                 unsent: false,
+                delivery: None,
             }),
             Item::Outgoing(i) => self.outbox.get(i).map(|m| Content {
                 body: &m.body,
                 time: m.time,
                 incoming: false,
                 unsent: !m.sent,
+                delivery: m.submission.as_ref().map(|s| &s.state),
             }),
         }
     }

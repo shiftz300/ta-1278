@@ -48,6 +48,12 @@ impl Calculator {
             self.entry.insert(0, '-');
         }
     }
+    /// Unary percent is a local arithmetic policy; native chaining is unverified.
+    pub fn percent(&mut self) {
+        if let Ok(value) = self.entry.parse::<f64>() {
+            self.entry = format_number(value / 100.);
+        }
+    }
     pub fn clear(&mut self) {
         *self = Self::default();
     }

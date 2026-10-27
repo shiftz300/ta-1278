@@ -1,6 +1,6 @@
 use super::*;
 use phone_core::input::{Event, Key, Phase};
-fn press(p: &mut Phone, key: Key) {
+pub(super) fn press(p: &mut Phone, key: Key) {
     p.handle(
         Event {
             key,
@@ -19,9 +19,137 @@ fn press(p: &mut Phone, key: Key) {
 fn phone() -> Phone {
     Phone::new(Mailbox::default())
 }
+#[test]
+fn native_timer_form_requires_name_and_returns_to_other_with_separate_restart_and_stop() {
+    use tools::ToolPage;
+    let mut p = phone();
+    p.launch(Screen::Tools(ToolPage::Timer));
+    press(&mut p, Key::Center);
+    assert!(!p.tools.timer.running); // Empty native name leaves Start disabled.
+    press(&mut p, Key::Right);
+    press(&mut p, Key::Right);
+    press(&mut p, Key::Digit(9)); // Minutes tens cannot become 9.
+    assert_eq!(p.tools.timer_edit.seconds, 60);
+    assert_eq!(p.tools.timer_edit.digit, 2);
+    press(&mut p, Key::Down);
+    p.text("A");
+    press(&mut p, Key::Center);
+    assert!(p.tools.timer.running);
+    assert_eq!(p.tools.page, ToolPage::Other);
+    assert_eq!(p.tools.timer_name, "A");
+    p.tick(0, 0.);
+    p.tick(60_000, 0.);
+    assert!(matches!(p.overlay, Some(Overlay::TimerElapsed)));
+    press(&mut p, Key::SoftLeft);
+    assert!(matches!(p.overlay, Some(Overlay::TimerElapsed)));
+    press(&mut p, Key::Center); // Restart is not a dismissal.
+    assert!(p.tools.timer.running && !p.tools.timer.expired);
+    assert_eq!(p.tools.timer.remaining_ms, 60_000);
+    p.tick(120_000, 0.);
+    assert!(matches!(p.overlay, Some(Overlay::TimerElapsed)));
+    press(&mut p, Key::SoftRight);
+    assert!(!p.tools.timer.running && !p.tools.timer.expired);
+    press(&mut p, Key::Center);
+    assert_eq!(p.tools.page, ToolPage::Timer);
+    assert!(p.tools.timer_edit.name.units.is_empty());
+}
+#[test]
+fn native_timer_running_menu_cancel_keeps_clock_and_stop_ends_it() {
+    use tools::ToolPage;
+    let mut p = phone();
+    p.launch(Screen::Tools(ToolPage::Timer));
+    p.tools.timer_edit.name.insert("A");
+    press(&mut p, Key::Center);
+    press(&mut p, Key::Center);
+    assert_eq!(p.tools.page, ToolPage::TimerMenu);
+    press(&mut p, Key::Center);
+    assert_eq!(p.tools.page, ToolPage::Timer);
+    assert_eq!(p.tools.timer_edit.name.text(), "A");
+    p.tools.timer_edit.seconds = 10;
+    press(&mut p, Key::SoftRight);
+    assert_eq!(p.tools.timer_seconds, 60);
+    assert!(p.tools.timer.running);
+    press(&mut p, Key::Center);
+    press(&mut p, Key::Down);
+    press(&mut p, Key::Center);
+    assert_eq!(p.tools.page, ToolPage::Other);
+    assert!(!p.tools.timer.running);
+}
+#[test]
+fn calculator_percent_and_back_match_visible_controls() {
+    use tools::ToolPage;
+    let mut p = phone();
+    p.go(Screen::Menu);
+    p.launch(Screen::Tools(ToolPage::Calculator));
+    press(&mut p, Key::Digit(5));
+    press(&mut p, Key::Digit(0));
+    press(&mut p, Key::SoftLeft);
+    assert_eq!(p.tools.calculator.display(), "0.5");
+    assert_eq!(p.screen, Screen::Tools(ToolPage::Calculator));
+    p.tools.calculator.clear();
+    press(&mut p, Key::SoftRight);
+    assert_eq!(p.screen, Screen::Menu);
+}
+#[test]
+fn folder_destination_cancel_restores_origin_and_copy_respects_read_only() {
+    use files::{FileRequest, FileView};
+    use tools::ToolPage;
+    let mut p = phone();
+    p.go(Screen::Tools(ToolPage::Files));
+    p.tools.page = ToolPage::Files;
+    p.files.pending = None;
+    p.files.view = FileView::Browse;
+    p.files.path = "/Music".into();
+    p.files.history = vec![("/".into(), 2)];
+    p.files.entries = vec![crate::local_files::Entry {
+        name: "Album".into(),
+        path: "/Music/Album".into(),
+        directory: true,
+        len: 0,
+    }];
+    assert!(!p.file_action_enabled(3));
+    p.files.writable = true;
+    press(&mut p, Key::SoftLeft);
+    p.index = 2;
+    press(&mut p, Key::Center);
+    assert_eq!(p.files.view, FileView::Storage);
+    assert!(p.files.transfer.as_ref().unwrap().moving);
+    press(&mut p, Key::SoftRight);
+    assert!(p.files.transfer.is_none());
+    assert_eq!(p.files.history, vec![("/".into(), 2)]);
+    assert!(matches!(p.files.pending.take(), Some(FileRequest::List(ref s)) if s == "/Music"));
+    press(&mut p, Key::SoftLeft);
+    p.index = 3;
+    press(&mut p, Key::Center);
+    press(&mut p, Key::SoftLeft);
+    assert!(
+        matches!(p.files.pending, Some(FileRequest::Transfer(ref from, ref to, false))
+        if from == "/Music/Album" && to == "/Album")
+    );
+}
 fn option(p: &mut Phone, kind: MenuKind, index: usize) {
     p.overlay = Some(Overlay::Menu { kind, index });
     press(p, Key::Center);
+}
+#[test]
+fn default_wallpaper_and_explicit_none_survive_preferences_reload() {
+    use settings::{Preferences, SettingsPage};
+    let legacy: Preferences = serde_json::from_str(r#"{"wallpaper":null}"#).unwrap();
+    assert!(legacy.wallpaper_enabled);
+    let mut p = phone();
+    p.go(Screen::Settings);
+    p.settings_page = SettingsPage::Wallpaper;
+    p.index = 1; // Explicit None must remain different from the default.
+    press(&mut p, Key::Center);
+    let saved = serde_json::to_string(&p.preferences).unwrap();
+    let restored: Preferences = serde_json::from_str(&saved).unwrap();
+    assert!(!restored.wallpaper_enabled);
+    assert!(restored.wallpaper.is_none());
+    p.settings_page = SettingsPage::Wallpaper;
+    p.index = 0;
+    press(&mut p, Key::Center);
+    assert!(p.preferences.wallpaper_enabled);
+    assert!(p.preferences.wallpaper.is_none());
 }
 #[test]
 fn compose_save_reopen_and_queue_is_local() {
@@ -145,12 +273,19 @@ fn nine_key_confirmation_never_sends_or_closes_field() {
     let mut p = phone();
     p.go(Screen::Compose);
     p.compose.recipient = false;
-    for d in [6, 4, 4, 2, 6] {
+    for d in [6, 4] {
         press(&mut p, Key::Digit(d));
     }
     assert_eq!(p.compose.body.text(), "");
     press(&mut p, Key::Center);
     assert!(p.compose.body.text().is_empty());
+    press(&mut p, Key::Center);
+    assert_eq!(p.compose.body.text(), "你");
+    assert!(p.compose.body.prediction.associating());
+    for d in [4, 2, 6] {
+        press(&mut p, Key::Digit(d));
+    }
+    press(&mut p, Key::Center);
     press(&mut p, Key::Center);
     assert_eq!(p.compose.body.text(), "你好");
     assert!(p.overlay.is_none());
@@ -241,11 +376,11 @@ fn grid_edges_and_app_return_preserve_focus() {
     let mut p = phone();
     p.go(Screen::Menu);
     assert_eq!(p.index, 4);
-    p.index = 17;
+    p.index = crate::menu::ENTRIES.len() - 1;
     press(&mut p, Key::Right);
     assert_eq!(p.index, 0);
     press(&mut p, Key::Left);
-    assert_eq!(p.index, 17);
+    assert_eq!(p.index, crate::menu::ENTRIES.len() - 1);
     p.index = 6;
     press(&mut p, Key::Center);
     assert_eq!(p.screen, Screen::Messages);
@@ -553,10 +688,11 @@ fn timer_continues_offscreen_and_browser_clear_cancel_preserves_data() {
     let mut p = Phone::new(Mailbox::default());
     p.tick(0, 0.);
     p.launch(Screen::Tools(T::Timer));
-    p.tools.timer_seconds = 1;
+    p.tools.timer_edit.seconds = 1;
+    p.tools.timer_edit.name.insert("A");
     p.handle(
         Event {
-            key: Key::SoftLeft,
+            key: Key::Center,
             phase: Phase::Down,
         },
         0,
@@ -565,7 +701,7 @@ fn timer_continues_offscreen_and_browser_clear_cancel_preserves_data() {
     p.tick(999, 0.);
     assert!(p.overlay.is_none());
     p.tick(1000, 0.);
-    assert!(matches!(p.overlay, Some(Overlay::Notice(_))));
+    assert!(matches!(p.overlay, Some(Overlay::TimerElapsed)));
     p.launch(Screen::Browser);
     p.browser_data
         .history
@@ -577,9 +713,13 @@ fn timer_continues_offscreen_and_browser_clear_cancel_preserves_data() {
     assert_eq!((p.browser_view, p.index), (BrowserView::Settings, 6));
     assert_eq!(p.browser_data.history.len(), 1);
     press(&mut p, Key::Center);
-    press(&mut p, Key::Center);
-    assert!(matches!(p.overlay, Some(Overlay::Notice(_))));
+    press(&mut p, Key::Center); // Toggle History; no deletion yet.
+    assert!(p.overlay.is_none());
     assert_eq!(p.browser_data.history.len(), 1);
+    press(&mut p, Key::SoftLeft); // Explicit Clear.
+    assert!(matches!(p.overlay, Some(Overlay::Notice(_))));
+    assert!(p.browser_data.history.is_empty());
+    assert!(p.browser_dirty);
 }
 
 #[test]
@@ -605,8 +745,8 @@ fn local_alarm_once_disables_and_does_not_repeat_same_minute() {
 #[test]
 fn all_enabled_menu_entries_have_routes_and_cancel_without_backend_actions() {
     let mut p = Phone::new(Mailbox::default());
-    for (i, entry) in crate::menu::ENTRIES.iter().enumerate().take(16) {
-        let expected = entry.screen.expect("non-excluded entry needs a route");
+    for (i, entry) in crate::menu::ENTRIES.iter().enumerate() {
+        let expected = entry.screen;
         p.go(Screen::Menu);
         p.index = i;
         p.handle(
@@ -1791,4 +1931,80 @@ fn browser_native_save_actions_use_home_bookmark_page_order_and_persist() {
     option(&mut p, MenuKind::BrowserOpen, 0);
     assert_eq!(p.pending_url.as_deref(), Some("about:demo"));
     assert_eq!(p.browser_view, BrowserView::Page);
+}
+
+#[test]
+fn browser_share_preserves_draft_and_never_queues_a_message() {
+    let mut p = Phone::new(Default::default());
+    p.compose.to = Editor::new("123", 40);
+    p.compose.body = Editor::new("原草稿", 4096);
+    p.browser = Browser::new(crate::web::parse("https://example.com/", "<p>page</p>"));
+    p.screen = Screen::Browser;
+    p.browser_view = BrowserView::Page;
+    p.browser_menu_action(MenuKind::Browser, 4);
+    assert_eq!(p.screen, Screen::Compose);
+    assert!(p.compose.to.units.is_empty());
+    assert_eq!(p.compose.body.text(), "https://example.com/");
+    assert_eq!(
+        p.compose.body.prediction.language,
+        Some(phone_core::predict::Language::Chinese)
+    );
+    assert_eq!(p.mailbox.drafts[0].body, "原草稿");
+    assert!(p.mailbox.outbox.is_empty());
+}
+#[test]
+fn browser_clear_cache_keeps_visible_page_bookmarks_and_saved_pages() {
+    let mut p = Phone::new(Default::default());
+    p.browser = Browser::new(crate::web::parse("https://example.com/one", "one"));
+    let id = p.browser.start();
+    p.browser
+        .complete(id, Ok(crate::web::parse("https://example.com/two", "two")));
+    p.browser_data.visit(&p.browser.page);
+    p.browser_data
+        .bookmarks
+        .push(("keep".into(), "https://example.com".into()));
+    p.browser_data.save_page(&p.browser.page);
+    p.screen = Screen::Browser;
+    p.browser_view = BrowserView::Clear;
+    press(&mut p, Key::SoftLeft);
+    assert!(!p.browser.can_back());
+    assert_eq!(p.browser.page.url, "https://example.com/two");
+    assert_eq!(p.browser_data.history.len(), 1);
+    assert_eq!(p.browser_data.bookmarks.len(), 1);
+    assert_eq!(p.browser_data.offline.len(), 1);
+}
+
+#[test]
+fn browser_share_does_not_resave_already_queued_text() {
+    let mut p = Phone::new(Default::default());
+    p.compose.to = Editor::new("123", 40);
+    p.compose.body = Editor::new("queued", 4096);
+    p.mailbox.outbox.push(p.message());
+    p.browser = Browser::new(crate::web::parse("https://example.com/", "page"));
+    p.screen = Screen::Browser;
+    p.browser_menu_action(MenuKind::Browser, 4);
+    assert!(p.mailbox.drafts.is_empty());
+    assert_eq!(p.mailbox.outbox.len(), 1);
+    assert_eq!(p.compose.body.text(), "https://example.com/");
+}
+
+#[test]
+fn hash_cycles_editor_modes_through_phone_events_without_inserting_text() {
+    let mut p = phone();
+    p.go(Screen::Compose);
+    p.compose.recipient = false;
+    assert_eq!(p.compose.body.mode_label(), "拼");
+    for label in ["笔", "Abc", "abc", "ABC", "123", "拼"] {
+        press(&mut p, Key::Hash);
+        assert_eq!(p.compose.body.mode_label(), label);
+        assert_eq!(p.compose.body.text(), "");
+    }
+    // Switching with a candidate open must commit it through the same editor.
+    press(&mut p, Key::Digit(6));
+    press(&mut p, Key::Digit(4));
+    assert!(p.compose.body.prediction.active());
+    press(&mut p, Key::Hash);
+    assert_eq!(p.compose.body.mode_label(), "笔");
+    assert_eq!(p.compose.body.text(), "你");
+    assert!(!p.compose.body.prediction.active());
 }

@@ -22,9 +22,9 @@ The owner subsequently asked to finish the deferred local flows. Contacts pictur
 
 ## Outside current acceptance
 
-Real call/SMS services, exact T9 internals, complex web compatibility, Alipay and Ximalaya remain excluded. Full native advanced settings and exhaustive native error/interrupt branches remain outside this implementation. File/gallery/video now have working local workflows, with the codec and fidelity limits stated above. Unsupported entries must not pretend to work.
+Real call/SMS backends, complex web compatibility, Alipay and Ximalaya remain excluded. The latest request adds T9 algorithm recovery and replaceable input/service interfaces; the original candidate engine is now integrated through bounded ARM interpretation, including spelling/page selection, associations and native dictionary persistence. Full semantic decompilation and exhaustive handset parity remain unclaimed. See [T9 recovery](t9-recovery.md) and [interfaces](input-engine.md). Full native advanced settings and exhaustive native error/interrupt branches remain outside this implementation. File/gallery/video now have working local workflows, with the codec and fidelity limits stated above. Unsupported entries must not pretend to work.
 
-Music must support actual local audio playback. The owner's later decision replaces the import-copy proposal: use an in-process VFS, mounting storage volumes without an import UI. Directory volumes, runtime capability flags, MP3/WAV output and basic file operations are implemented. Disk-image/FAT backends and full native file-manager fidelity remain outside the current implementation. Playlist editing is implemented. See [storage](storage.md).
+Music must support actual local audio playback. The latest storage decision removes VFS entirely: first launch selects one host folder, and Files, music, images and video access it directly through `std::fs`. Only 手机存储 is shown. There is no import UI or memory-card mount. Older VFS reports describe a superseded implementation. See [storage](storage.md).
 
 ## Evidence and decisions
 
@@ -43,3 +43,16 @@ Ask the owner when uncertainty changes a visible interaction, supported capabili
 Pending alerts and snoozes, timer/stopwatch state and radio preferences now survive restart. JSON stores share bounded reads, atomic writes, one previous backup and an exclusive profile lock. [Checks and remaining limits](persistence.md). These are host data policies, not newly recovered handset behavior.
 
 The normal-process follow-up also verified draft recovery, timer expiration, paused/running stopwatch recovery and save-failure protection through actual macOS windows. It fixed Cmd-Q bypassing the save path. These checks close the persistence acceptance gap for the exercised local flows; they do not extend the native-fidelity or backend scope above. [Restart evidence](evidence/restart-validation.json).
+
+## Current closure — 2026-10-27
+
+The previously outstanding original T9 runtime integration is now delivered: native candidate order, spelling groups, page selection, context associations and private native-format dictionary persistence are wired into all shared editors. Invalid keys retain composition; suggestions require explicit confirmation. # (Shift+3) switches the observed input modes through the shared phone key path; the F4/F5 shortcuts have been removed. System IME and the two excluded application entries remain removed.
+
+The supported local scope has passed the final automated and window checks in [T9 runtime validation](evidence/t9-runtime-validation.json). Remaining work is the declared backend/hardware scope and unsampled native fidelity, not an unconnected predictor or missing local storage path. Exhaustive firmware reconstruction is still not claimed. Further screenshot discrepancies should be handled against their concrete references.
+
+## 2026-10-27: new native-page audit
+
+The owner requested a new audit of all retained applications and replacement of VFS with one directly mapped local folder. This supersedes the earlier storage design and broad closure wording above. Direct folder mapping, inline calendar editing, timer pages and confirmed multi-file deletion are implemented and tested; working local flows are not blanket native acceptance. The handset has been reconnected through its hub and firmware 17.00.17.02 has been freshly verified. Raw tap acknowledgment did not change the first screen; explicit 100 ms down/up did. The desktop has no real call/SMS backend, and calls and the two excluded services remain outside scope.
+
+
+The current per-application evidence and remaining gaps are in [the native-page audit](native-page-audit.md). Since the owner's quiet-time request, handset key tests and all audio/vibration tests are suspended; offline inspection and CPU rendering continue. A separate muted desktop folder-chooser check was attempted; its process started but the automation tool could not attach, so visual acceptance remains open.

@@ -7,7 +7,7 @@ pub enum ToolPage {
     Calculator,
     Stopwatch,
     Timer,
-    TimerRunning,
+    TimerMenu,
     Converter,
     Conversion(usize),
     Flashlight,
@@ -31,6 +31,7 @@ pub struct Tools {
     pub timer: Timer,
     pub timer_seconds: u64,
     pub timer_name: String,
+    pub timer_edit: super::timer::TimerEdit,
     pub torch: bool,
     pub frequency: u16,
     pub radio_on: bool,
@@ -53,6 +54,7 @@ impl Default for Tools {
             timer: Default::default(),
             timer_seconds: 60,
             timer_name: String::new(),
+            timer_edit: Default::default(),
             torch: false,
             frequency: 875,
             radio_on: false,
@@ -73,7 +75,7 @@ impl Phone {
             Other => "其他",
             Calculator => "计算器",
             Stopwatch => "秒表",
-            Timer | TimerRunning => "定时器",
+            Timer | TimerMenu => "定时器",
             Converter | Conversion(_) => "单位换算器",
             Flashlight => "手电筒",
             Radio => "收音机",
@@ -191,8 +193,11 @@ impl Phone {
                     Key::Star => c.sign(),
                     Key::Hash => c.decimal(),
                     Key::Center => c.evaluate(),
+                    Key::SoftRight if c.entry.is_empty() && c.expression.is_empty() => {
+                        self.leave_app()
+                    }
                     Key::SoftRight | Key::Delete => c.backspace(),
-                    Key::SoftLeft => self.leave_app(),
+                    Key::SoftLeft => c.percent(),
                     _ => {}
                 }
                 return;
@@ -209,19 +214,8 @@ impl Phone {
                 }
                 return;
             }
-            TimerRunning => {
-                match key {
-                    Key::Center => self.tools.timer.running = !self.tools.timer.running,
-                    Key::SoftLeft => {
-                        self.tools.timer = Default::default();
-                        self.tools.page = Timer;
-                    }
-                    Key::SoftRight => {
-                        self.tools.page = Other;
-                        self.index = 0;
-                    }
-                    _ => {}
-                }
+            Timer | TimerMenu => {
+                self.timer_key(key);
                 return;
             }
             Conversion(_) => {
@@ -340,28 +334,20 @@ impl Phone {
                 }
                 _ => self.leave_app(),
             },
-            Key::SoftLeft if self.tools.page == Timer => {
-                self.tools.timer.start(self.tools.timer_seconds);
-                self.tools.page = TimerRunning;
-            }
             Key::Center if n > 0 => match self.tools.page {
                 Other => {
-                    self.tools.page = if self.index == 0 && self.tools.timer.remaining_ms > 0 {
-                        TimerRunning
-                    } else {
-                        [Timer, Stopwatch, Flashlight, Converter][self.index]
-                    };
-                    self.index = 0;
-                }
-                Timer => self.open_local_text(
-                    TextTarget::Tool(self.index),
                     if self.index == 0 {
-                        self.tools.timer_seconds.to_string()
+                        if self.tools.timer.running {
+                            self.tools.page = TimerMenu;
+                            self.index = 0;
+                        } else {
+                            self.open_timer();
+                        }
                     } else {
-                        self.tools.timer_name.clone()
-                    },
-                    self.index == 0,
-                ),
+                        self.tools.page = [Timer, Stopwatch, Flashlight, Converter][self.index];
+                        self.index = 0;
+                    }
+                }
                 Converter if self.index < 5 => {
                     self.tools.page = Conversion(self.index);
                     self.tools.conversion_input = "0".into();

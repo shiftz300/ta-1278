@@ -12,6 +12,7 @@ pub struct Editor {
     pub selection: Option<(usize, usize)>,
     pub limit: usize,
     pending: Option<(u8, usize, usize, u64)>,
+    predicted_key: Option<(u8, usize)>,
     pub numeric: bool,
     pub uppercase: bool,
     pub titlecase: bool,
@@ -46,6 +47,7 @@ impl Editor {
             selection: None,
             limit,
             pending: None,
+            predicted_key: None,
             numeric: false,
             uppercase: false,
             titlecase: false,
@@ -59,6 +61,7 @@ impl Editor {
     }
     pub fn commit(&mut self) {
         self.pending = None;
+        self.predicted_key = None;
     }
     pub fn tick(&mut self, now: u64) {
         if self
@@ -76,6 +79,22 @@ impl Editor {
         }
     }
     pub fn accept_prediction(&mut self) -> bool {
+        // Suggestions are never silently appended by Send, movement, mode changes or typing.
+        if self.prediction.associating() {
+            self.prediction.clear();
+            return true;
+        }
+        self.commit_candidate()
+    }
+    pub fn choose_prediction(&mut self) -> bool {
+        if !self.commit_candidate() {
+            return false;
+        }
+        let context = String::from_utf16_lossy(&self.units[..self.cursor]);
+        self.prediction.show_associations(&context);
+        true
+    }
+    fn commit_candidate(&mut self) -> bool {
         if !self.prediction.active() {
             return true;
         }
@@ -131,6 +150,7 @@ impl Editor {
         let pending = self
             .prediction
             .current()
+            .filter(|_| !self.prediction.associating())
             .map_or(0, |c| c.text.encode_utf16().count());
         let selected = self.selection.map_or(0, |(a, b)| a.abs_diff(b));
         if self.units.len() - selected + pending + text.encode_utf16().count() > self.limit {
@@ -269,7 +289,7 @@ impl Editor {
         let Some(candidate) = self
             .prediction
             .current()
-            .filter(|_| self.prediction.active())
+            .filter(|_| self.prediction.active() && !self.prediction.associating())
         else {
             return (units, None);
         };
@@ -310,16 +330,32 @@ impl Editor {
             return;
         }
         self.tick(now);
+        if self.prediction.associating() {
+            self.prediction.clear();
+        }
+        let start = self
+            .selection
+            .map(|(a, b)| a.min(b))
+            .unwrap_or(self.cursor)
+            .min(self.units.len());
+        self.prediction
+            .set_context(&String::from_utf16_lossy(&self.units[..start]));
         if self.prediction.language == Some(Language::Stroke) {
             self.commit();
+            let before = self.prediction.digits.len();
             self.prediction.push(key);
+            self.predicted_key =
+                (self.prediction.digits.len() > before).then_some((key, before + 1));
             return;
         }
         if self.prediction.language.is_some() {
             match key {
                 2..=9 => {
                     self.commit();
+                    let before = self.prediction.digits.len();
                     self.prediction.push(key);
+                    self.predicted_key =
+                        (self.prediction.digits.len() > before).then_some((key, before + 1));
                 }
                 0 => {
                     if self.prediction.language == Some(Language::English)
@@ -388,9 +424,11 @@ impl Editor {
             self.insert("0");
             return;
         }
-        if self.prediction.language.is_some() && (2..=9).contains(&key) {
+        if self.prediction.language.is_some() && (2..=9).contains(&key)
+            || self.prediction.language == Some(Language::Stroke) && key == 1
+        {
             let original = self.prediction.clone();
-            if self.prediction.digits.ends_with((b'0' + key) as char) {
+            if self.predicted_key.take() == Some((key, self.prediction.digits.len())) {
                 self.prediction.pop();
             }
             if !self.insert(&key.to_string()) {
@@ -410,9 +448,15 @@ impl Editor {
 #[cfg(test)]
 mod tests {
     use super::*;
+    pub(super) fn replacement_editor(text: &str, limit: usize) -> Editor {
+        let mut e = Editor::new(text, limit);
+        e.prediction
+            .set_engine(std::sync::Arc::new(crate::predict::Builtin::default()));
+        e
+    }
     #[test]
     fn predictive_commit_selection_limit_and_long_digits() {
-        let mut e = Editor::new("ab", 3);
+        let mut e = replacement_editor("ab", 3);
         e.select_all();
         e.prediction.set_language(Some(Language::Chinese));
         for d in [6, 4, 4, 2, 6] {
@@ -458,7 +502,7 @@ mod tests {
     }
     #[test]
     fn multitap_middle_timeout_selection() {
-        let mut e = Editor::new("xy", 20);
+        let mut e = replacement_editor("xy", 20);
         e.cursor = 1;
         e.digit(2, 0);
         e.digit(2, 100);
@@ -471,7 +515,7 @@ mod tests {
     }
     #[test]
     fn utf16_and_limit() {
-        let mut e = Editor::new("中😀", 3);
+        let mut e = replacement_editor("中😀", 3);
         assert_eq!(e.cursor, 3);
         assert!(!e.insert("a"));
         e.backspace();
@@ -493,10 +537,11 @@ mod tests {
 
 #[cfg(test)]
 mod visual_tests {
+    use super::tests::replacement_editor;
     use super::*;
     #[test]
     fn proportional_vertical_motion_keeps_x_across_short_lines() {
-        let mut e = Editor::new("中ab\ni\n中文文", 100);
+        let mut e = replacement_editor("中ab\ni\n中文文", 100);
         e.cursor = 2;
         let rows = vec![
             VisualRow {
@@ -519,7 +564,7 @@ mod visual_tests {
     }
     #[test]
     fn preview_replaces_selection_without_committing() {
-        let mut e = Editor::new("A中😀B", 100);
+        let mut e = replacement_editor("A中😀B", 100);
         e.selection = Some((1, 4));
         e.prediction.set_language(Some(Language::Chinese));
         for d in [6, 4, 4, 2, 6] {
@@ -551,7 +596,7 @@ mod visual_tests {
     }
     #[test]
     fn stroke_replacement_is_usable_and_commits_a_character() {
-        let mut e = Editor::default();
+        let mut e = replacement_editor("", 4096);
         e.prediction.set_language(Some(Language::Stroke));
         for d in [3, 2, 3, 5, 5, 3, 4] {
             e.digit(d, 0);
@@ -565,5 +610,99 @@ mod visual_tests {
         e.prediction.selected = i;
         assert!(e.accept_prediction());
         assert_eq!(e.text(), "你");
+    }
+}
+
+#[cfg(test)]
+mod original_input_tests {
+    use super::*;
+    fn chinese(limit: usize) -> Editor {
+        let mut e = Editor::new("", limit);
+        e.prediction.set_engine(std::sync::Arc::new(
+            crate::predict::firmware::Firmware::default(),
+        ));
+        e.prediction.set_language(Some(Language::Chinese));
+        e
+    }
+    fn ni(e: &mut Editor) {
+        e.digit(6, 0);
+        e.digit(4, 10);
+        assert!(e.choose_prediction());
+    }
+    #[test]
+    fn reject_invalid_keys_page_spelling_and_commit_single_syllables() {
+        let mut e = chinese(10);
+        e.digit(6, 0);
+        e.digit(4, 10);
+        e.digit(4, 20);
+        assert_eq!(e.prediction.digits, "64");
+        e.prediction.cycle(1);
+        assert_eq!(e.prediction.current().unwrap().text, "米");
+        e.prediction.cycle(-1);
+        e.prediction.spelling_focus = false;
+        for _ in 0..4 {
+            e.prediction.cycle(1);
+        }
+        assert_eq!(e.prediction.current().unwrap().text, "逆");
+        e.prediction.selected = 0;
+        assert!(e.choose_prediction());
+        assert_eq!(e.text(), "你");
+        assert!(e.prediction.associating());
+        assert_eq!(e.preview().0, e.units);
+        for d in [4, 2, 6] {
+            e.digit(d, 50);
+        }
+        assert!(e.choose_prediction());
+        assert_eq!(e.text(), "你好");
+    }
+    #[test]
+    fn suggestions_never_commit_on_send_movement_or_unrelated_typing() {
+        let mut e = chinese(10);
+        ni(&mut e);
+        assert!(e.prediction.associating());
+        assert!(e.accept_prediction());
+        assert_eq!(e.text(), "你");
+        assert!(!e.prediction.active());
+        e.clear();
+        ni(&mut e);
+        assert!(e.insert("!"));
+        assert_eq!(e.text(), "你!");
+        e.clear();
+        ni(&mut e);
+        e.move_horizontal(-1);
+        assert_eq!(e.text(), "你");
+        assert_eq!(e.cursor, 0);
+        e.clear();
+        ni(&mut e);
+        e.backspace();
+        assert_eq!(e.text(), "你");
+        assert!(!e.prediction.active());
+        e.clear();
+        ni(&mut e);
+        assert!(e.choose_prediction());
+        assert_eq!(e.text(), "你们");
+        let mut full = chinese(1);
+        ni(&mut full);
+        assert!(!full.choose_prediction());
+        assert_eq!(full.text(), "你");
+        let mut private = chinese(10);
+        private.prediction.set_learning_enabled(false);
+        ni(&mut private);
+        assert!(!private.prediction.active());
+    }
+    #[test]
+    fn rejected_press_cannot_remove_an_earlier_identical_key_on_hold() {
+        let mut e = chinese(10);
+        for d in [6, 4, 4] {
+            e.digit(d, 0);
+        }
+        assert_eq!(e.prediction.digits, "64");
+        e.long_digit(4);
+        assert_eq!(e.text(), "你4");
+        let mut e = chinese(10);
+        e.prediction.set_language(Some(Language::Stroke));
+        e.digit(1, 0);
+        e.long_digit(1);
+        assert_eq!(e.text(), "1");
     }
 }

@@ -4,6 +4,52 @@ impl Phone {
     pub(super) fn overlay_event(&mut self, key: Key, now: u64) {
         let overlay = self.overlay.take().unwrap();
         match overlay {
+            Overlay::TimerElapsed => {
+                if key == Key::Center {
+                    self.tools.timer.start(self.tools.timer_seconds);
+                    self.tools.timer_notice = false;
+                    self.tools.dirty = true;
+                } else if matches!(key, Key::SoftRight | Key::End) {
+                    self.tools.timer = Default::default();
+                    self.tools.timer_notice = false;
+                    self.tools.dirty = true;
+                } else {
+                    self.overlay = Some(Overlay::TimerElapsed);
+                }
+            }
+            Overlay::ServiceAlert {
+                backend,
+                id,
+                title,
+                body,
+            } => {
+                if matches!(key, Key::Center | Key::SoftLeft | Key::SoftRight | Key::End) {
+                    if let Some(a) = self
+                        .mailbox
+                        .services
+                        .alerts
+                        .iter_mut()
+                        .find(|a| a.backend == backend && a.alert.id == id)
+                    {
+                        a.dismissed = true;
+                        self.dirty = true;
+                    }
+                } else {
+                    if key == Key::Up {
+                        self.notice_scroll = self.notice_scroll.saturating_sub(1);
+                    }
+                    if key == Key::Down {
+                        self.notice_scroll =
+                            (self.notice_scroll + 1).min(self.notice_lines.saturating_sub(11));
+                    }
+                    self.overlay = Some(Overlay::ServiceAlert {
+                        backend,
+                        id,
+                        title,
+                        body,
+                    });
+                }
+            }
             Overlay::Notice(s) => {
                 if key == Key::Up {
                     self.notice_scroll = self.notice_scroll.saturating_sub(1);
@@ -14,10 +60,6 @@ impl Phone {
                 }
                 if !matches!(key, Key::Center | Key::SoftRight | Key::SoftLeft | Key::End) {
                     self.overlay = Some(Overlay::Notice(s));
-                } else if self.tools.timer_notice {
-                    self.tools.timer.expired = false;
-                    self.tools.timer_notice = false;
-                    self.tools.dirty = true;
                 }
             }
             Overlay::Menu { kind, mut index } => {
@@ -55,6 +97,7 @@ impl Phone {
             }
             Overlay::Text { target, mut editor } => {
                 match key {
+                    Key::SoftLeft if matches!(target, TextTarget::FileName(_)) => return,
                     Key::End => return,
                     Key::SoftRight if editor.units.is_empty() => return,
                     Key::SoftRight => editor.backspace(),

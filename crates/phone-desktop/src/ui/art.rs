@@ -37,6 +37,62 @@ fn images() -> &'static Vec<image::RgbaImage> {
                 "../../../../nokia-ta1278-research/analysis/extracted/png/02509-icon-00aba4bc.png"
             )
             .as_slice(),
+            include_bytes!(
+                "../../../../nokia-ta1278-research/analysis/extracted/png/02658-icon-00ae03e0.png"
+            )
+            .as_slice(),
+            include_bytes!(
+                "../../../../nokia-ta1278-research/analysis/extracted/png/02523-icon-00abc90c.png"
+            )
+            .as_slice(),
+            include_bytes!(
+                "../../../../nokia-ta1278-research/analysis/extracted/png/02656-icon-00ae01b4.png"
+            )
+            .as_slice(),
+            include_bytes!(
+                "../../../../nokia-ta1278-research/analysis/extracted/png/02657-icon-00ae028c.png"
+            )
+            .as_slice(),
+            include_bytes!(
+                "../../../../nokia-ta1278-research/analysis/extracted/png/02484-icon-00ab93e4.png"
+            )
+            .as_slice(),
+            include_bytes!(
+                "../../../../nokia-ta1278-research/analysis/extracted/png/02486-icon-00ab9454.png"
+            )
+            .as_slice(),
+            include_bytes!(
+                "../../../../nokia-ta1278-research/analysis/extracted/png/02488-icon-00ab9500.png"
+            )
+            .as_slice(),
+            include_bytes!(
+                "../../../../nokia-ta1278-research/analysis/extracted/png/02490-icon-00ab9658.png"
+            )
+            .as_slice(),
+            include_bytes!(
+                "../../../../nokia-ta1278-research/analysis/extracted/png/02492-icon-00ab9714.png"
+            )
+            .as_slice(),
+            include_bytes!(
+                "../../../../nokia-ta1278-research/analysis/extracted/png/02493-icon-00ab9748.png"
+            )
+            .as_slice(),
+            include_bytes!(
+                "../../../../nokia-ta1278-research/analysis/extracted/png/02461-icon-00ab4cf8.png"
+            )
+            .as_slice(),
+            include_bytes!(
+                "../../../../nokia-ta1278-research/analysis/extracted/png/02474-icon-00ab7dbc.png"
+            )
+            .as_slice(),
+            include_bytes!(
+                "../../../../nokia-ta1278-research/analysis/extracted/png/02524-icon-00abcbc8.png"
+            )
+            .as_slice(),
+            include_bytes!(
+                "../../../../nokia-ta1278-research/analysis/extracted/png/02525-icon-00abcd24.png"
+            )
+            .as_slice(),
         ]
         .into_iter()
         .map(|bytes| {
@@ -52,4 +108,30 @@ pub fn power(c: &mut Canvas, on: bool) {
 }
 pub fn phone(c: &mut Canvas, x: i32) {
     c.image(&images()[7], x, 287);
+}
+
+pub fn storage(c: &mut Canvas, x: i32, y: i32) {
+    c.image(&images()[8], x, y);
+}
+pub fn hourglass(c: &mut Canvas, x: i32, y: i32) {
+    c.image(&images()[9], x, y);
+}
+
+#[derive(Clone, Copy)]
+pub enum UtilityIcon {
+    Folder = 10,
+    File,
+    Plus,
+    Minus,
+    Multiply,
+    Divide,
+    Equals,
+    Percent,
+    Recordings,
+    Record,
+    Reset,
+    Lap,
+}
+pub fn utility(c: &mut Canvas, icon: UtilityIcon, x: i32, y: i32) {
+    c.image(&images()[icon as usize], x, y);
 }

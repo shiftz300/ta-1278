@@ -1,6 +1,7 @@
 // Bounded image/video decoding with the installed Apple frameworks.
-// Only media copied from a mounted VFS volume is accepted. No network URLs.
+// Local file decoding, storage capacity and first-launch folder selection. No network URLs.
 import Foundation
+import AppKit
 import AVFoundation
 import CoreImage
 import ImageIO
@@ -8,6 +9,33 @@ import UniformTypeIdentifiers
 
 func fail(_ message: String) -> Never {
     FileHandle.standardError.write(Data((message + "\n").utf8)); exit(1)
+}
+if CommandLine.arguments.count == 3 && CommandLine.arguments[1] == "folder-stats" {
+    let attrs = try FileManager.default.attributesOfFileSystem(forPath: CommandLine.arguments[2])
+    let total = (attrs[.systemSize] as? NSNumber)?.uint64Value ?? 0
+    let free = (attrs[.systemFreeSize] as? NSNumber)?.uint64Value ?? 0
+    FileHandle.standardOutput.write(try JSONEncoder().encode([total, free]))
+    exit(0)
+}
+if CommandLine.arguments.count == 3 && CommandLine.arguments[1] == "choose-folder" {
+    let app = NSApplication.shared
+    app.setActivationPolicy(.accessory)
+    let panel = NSOpenPanel()
+    panel.title = "选择手机存储文件夹"
+    panel.message = "手机中的文件操作会直接修改这个文件夹。设置和消息另行保存。"
+    panel.prompt = "使用此文件夹"
+    panel.canChooseFiles = false
+    panel.canChooseDirectories = true
+    panel.allowsMultipleSelection = false
+    panel.canCreateDirectories = true
+    if !CommandLine.arguments[2].isEmpty {
+        panel.directoryURL = URL(fileURLWithPath: CommandLine.arguments[2])
+    }
+    app.activate(ignoringOtherApps: true)
+    guard panel.runModal() == .OK, let selected = panel.url else { exit(2) }
+    let bytes = try JSONEncoder().encode(selected.path)
+    FileHandle.standardOutput.write(bytes)
+    exit(0)
 }
 guard CommandLine.arguments.count == 3 else { fail("Expected image|video and a local file") }
 let url = URL(fileURLWithPath: CommandLine.arguments[2])

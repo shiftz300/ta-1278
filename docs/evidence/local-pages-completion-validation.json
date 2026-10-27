@@ -1,0 +1,167 @@
+{
+  "date": "2026-10-27",
+  "scope": "Direct folder storage and offline native-page completion follow-up; not complete firmware or handset parity.",
+  "quiet_time": {
+    "handset_commands_sent": 0,
+    "audio_output_tests_run": false,
+    "vibration_tests_run": false,
+    "cpu_frames": 24,
+    "normal_phone_window_verified": false
+  },
+  "checks": {
+    "core_tests": 51,
+    "integration_tests": 2,
+    "desktop_tests": 128,
+    "total_passed": 181,
+    "ignored_real_output_tests": 4,
+    "clippy": "passed, -D warnings",
+    "fmt": "passed",
+    "git_diff_check": "passed",
+    "vfs_references_in_crates_and_cargo": "none",
+    "firmware": [
+      "calendar-files.json",
+      "native-timer.json",
+      "utility-art.json"
+    ]
+  },
+  "commands": [
+    "cargo test --workspace --locked",
+    "cargo clippy --workspace --all-targets --locked -- -D warnings",
+    "cargo fmt --all -- --check",
+    "git diff --check",
+    "python3 scripts/check-calendar-files.py",
+    "python3 scripts/check-native-timer.py",
+    "python3 scripts/check-utility-art.py",
+    "TA1278_AUDIT_FRAMES=/tmp/ta1278-frames cargo test -p phone-desktop --locked views::audit_tests",
+    "sh scripts/package-macos.sh"
+  ],
+  "chooser_check": {
+    "profile": "isolated temporary profile",
+    "flags": "--disable sounds,music,video,network",
+    "sandbox_attempt": "helper returned failure",
+    "desktop_attempt": "main and chooser processes started; automation attachment failed with invalid helper app and app timeout",
+    "cleanup": "both owned test processes terminated",
+    "visual_acceptance": "not passed",
+    "automated_coverage": "injected chooser cancel/choose/reuse; real temporary folders, missing path, profile isolation, read-only"
+  },
+  "bundle": {
+    "path": "target/TA1278.app",
+    "binary_bytes": 18812112,
+    "binary_sha256": "0d31ab13bc53c604c9fc81cdc4f619d7e02bb9b6cb541cda0d846b320201d319",
+    "total_file_bytes": 19216362,
+    "signature": "codesign --verify --deep --strict passed in packaging"
+  },
+  "replica_frames": [
+    {
+      "file": "docs/images/local-pages-completion-20261027/calculator.png",
+      "sha256": "850ca38e9389357db3ad919210b53664ccc0e1e759ad574ef6937ff8c12968c5"
+    },
+    {
+      "file": "docs/images/local-pages-completion-20261027/calendar-form-menu.png",
+      "sha256": "fecd31da7c32015c26cb9a2c69b421f2380faec09c1c1550cb8353050c5a6f2e"
+    },
+    {
+      "file": "docs/images/local-pages-completion-20261027/calendar-inline-empty.png",
+      "sha256": "a5cd4c5e958dc25d578da58e696c98794422782bb59607a0699fdf435e249e8a"
+    },
+    {
+      "file": "docs/images/local-pages-completion-20261027/calendar-inline-note-filled.png",
+      "sha256": "242613dd0f59464437887ee3297906b6623bfdff3921117a5b8bf719f29f0f64"
+    },
+    {
+      "file": "docs/images/local-pages-completion-20261027/calendar-inline-note.png",
+      "sha256": "092e01bcb2f104b535df5191fc272a94b0d1beb85b94afc56910a8e399e9a75f"
+    },
+    {
+      "file": "docs/images/local-pages-completion-20261027/files-delete-checked.png",
+      "sha256": "30e73ab08eb73f045886172fff3eba2b01dd40af5728a84d40db608f81589892"
+    },
+    {
+      "file": "docs/images/local-pages-completion-20261027/files-delete-confirm.png",
+      "sha256": "84d0895a3b4239edc94baa67d7e674a9c4e1b299397b72f126137b477f536f56"
+    },
+    {
+      "file": "docs/images/local-pages-completion-20261027/files-delete-options.png",
+      "sha256": "4c1b656092a593386bc63a1a273f889b7f6852796dddcb2415b84875ac931cc3"
+    },
+    {
+      "file": "docs/images/local-pages-completion-20261027/files-delete-select.png",
+      "sha256": "eef0a6082c9103ed32a05184f04ade9b69dff9cee0007dd37892c57eb5de1f21"
+    },
+    {
+      "file": "docs/images/local-pages-completion-20261027/files-details.png",
+      "sha256": "9b8922ceca5d18dab0890de585c10265883e0da4111e836acaa7a499b36b1663"
+    },
+    {
+      "file": "docs/images/local-pages-completion-20261027/files-folders.png",
+      "sha256": "13a9b82539865d312aeca18c590161fce6734dd656b0e56a71ffc4cb7f8ee5d3"
+    },
+    {
+      "file": "docs/images/local-pages-completion-20261027/files-options.png",
+      "sha256": "4b95b592e33d564321b0d31bd2dc215f1aa61620ddf381e2ebe8c1f69519abac"
+    },
+    {
+      "file": "docs/images/local-pages-completion-20261027/files-root.png",
+      "sha256": "93019e8ec75ea9deae223a320e8b36d752b43ac5320e46b2a7dae07fefc83d2b"
+    },
+    {
+      "file": "docs/images/local-pages-completion-20261027/folder-name.png",
+      "sha256": "65a578d11101512f324bbb3e0575f4998faff4c55a69491bf5c8862a9f2e3395"
+    },
+    {
+      "file": "docs/images/local-pages-completion-20261027/folder-options.png",
+      "sha256": "ff5cf0ced0d2432aa64ad2880b2b3e873843e96c9d0c90c03e3d597c06d92e8f"
+    },
+    {
+      "file": "docs/images/local-pages-completion-20261027/other.png",
+      "sha256": "6b7b69129e9c4ea7307ccf0a40011402e6e9e78b05c9822cdbf2b0e4209f144d"
+    },
+    {
+      "file": "docs/images/local-pages-completion-20261027/radio.png",
+      "sha256": "276076a776e45a6c7a9f252f26594c271c070aabb5ec9f2e2319b3c54942a450"
+    },
+    {
+      "file": "docs/images/local-pages-completion-20261027/recorder.png",
+      "sha256": "b2021bbc9fa38b0bb059d5356742d2d0caf3cb9d29b4e1b116ba747437c8564f"
+    },
+    {
+      "file": "docs/images/local-pages-completion-20261027/stopwatch.png",
+      "sha256": "4aa2acbd11841b494fe013caae77d042adbdc101e485c37d8365f596f5491922"
+    },
+    {
+      "file": "docs/images/local-pages-completion-20261027/timer-empty.png",
+      "sha256": "63da18190f948aaf0129acb607a43472fd39924ee2eda20e0c53c0043291a304"
+    },
+    {
+      "file": "docs/images/local-pages-completion-20261027/timer-expired.png",
+      "sha256": "ead54d86486f17ef299328ba0f1f51b887b1fefebfcf0083e30b7762eeaaf1b0"
+    },
+    {
+      "file": "docs/images/local-pages-completion-20261027/timer-long-name.png",
+      "sha256": "fd6bc8d7b4768dbc6ac1772892acf0e946a0765bd6a009c067339a98ca48070b"
+    },
+    {
+      "file": "docs/images/local-pages-completion-20261027/timer-menu.png",
+      "sha256": "8cfa4763033e9f1df2e5c0c1c3e23d933f35a670bad3e6a9608a19a98f670bbb"
+    },
+    {
+      "file": "docs/images/local-pages-completion-20261027/timer-named.png",
+      "sha256": "9bf878deb2d19351240ee9857dc58ea7dd015e5a6fc04b0c531a078df425a7b7"
+    }
+  ],
+  "limitations": [
+    "File select-all, confirmation, nonrecursive preflight and concurrency outcomes are local policies.",
+    "Calendar defaults, recurrence, datetime validation and Save popup are local policies; three 40-unit text children and center Save are firmware verified.",
+    "Native chooser and full winit presentation still need visual acceptance.",
+    "Recorder microphone audio and FM service are absent; all retained app fidelity gaps are listed in native-page-audit.md.",
+    "No commit or push; unrelated existing changes preserved."
+  ],
+  "release_build": {
+    "version": "0.2.2",
+    "validation": "version-only follow-up; locked Cargo metadata, format, resource hashes, diff check, optimized build and signature verification passed",
+    "binary_sha256": "0996ff1d5a1ca0668f4d8554bdbae0c2856304277177979fc560c15cf53c64ed",
+    "binary_bytes": 18812112,
+    "total_file_bytes": 19216362,
+    "audio_output_run": false
+  }
+}

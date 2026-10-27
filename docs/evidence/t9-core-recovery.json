@@ -1,0 +1,268 @@
+{
+  "source": "nokia-ta1278-research/firmware/original/system-20261025T054301+0800/user.bin",
+  "sha256": "8f0db2dc82f9e763cb700c2e5781b7ca7125a4d250f4c075dbec793eb549c1ca",
+  "mode": "Thumb wrapper calls ARM engine via BLX",
+  "api_calls": [
+    {
+      "name": "T9AWInitialize",
+      "call": "0x88a780a2",
+      "target_arm": "0x880e4e44",
+      "log_adr": "0x88a780aa",
+      "log_string": "0x88a783f0",
+      "text": "[MMIIM] T9AWInitialize sStatus=%d"
+    },
+    {
+      "name": "T9AWClrLdbCompletion",
+      "call": "0x88a780de",
+      "target_arm": "0x880e56c8",
+      "log_adr": "0x88a780e4",
+      "log_string": "0x88a78438",
+      "text": "[MMIIM] T9AWClrLdbCompletion sStatus=%d"
+    },
+    {
+      "name": "T9AWClrUdbCustWordCompletion",
+      "call": "0x88a780ec",
+      "target_arm": "0x880e55b8",
+      "log_adr": "0x88a780f4",
+      "log_string": "0x88a78460",
+      "text": "[MMIIM] T9AWClrUdbCustWordCompletion sStatus=%d"
+    },
+    {
+      "name": "T9CCInitialize",
+      "call": "0x88a78c54",
+      "target_arm": "0x880d7718",
+      "log_adr": "0x88a78c5c",
+      "log_string": "0x88a78f2c",
+      "text": "[MMIIM] T9CCInitialize sStatus=%d"
+    },
+    {
+      "name": "T9CCSetDynCtxtFence",
+      "call": "0x88a78cfe",
+      "target_arm": "0x880d71d0",
+      "log_adr": "0x88a78d06",
+      "log_string": "0x88a79020",
+      "text": "[MMIIM] T9CCSetDynCtxtFence sStatus=%d"
+    },
+    {
+      "name": "T9CCSetDynCtxtSearchDepth",
+      "call": "0x88a78d12",
+      "target_arm": "0x880d6ff8",
+      "log_adr": "0x88a78d1a",
+      "log_string": "0x88a79048",
+      "text": "[MMIIM] T9CCSetDynCtxtSearchDepth sStatus=%d"
+    }
+  ],
+  "ranges": [
+    {
+      "mode": "thumb",
+      "start": "0x88a78014",
+      "end": "0x88a78106",
+      "sha256": "37c312592e6681543da6bbf2a82aae73761e4f83b42aa393b52ec002c8e21e64"
+    },
+    {
+      "mode": "thumb",
+      "start": "0x88a78b8c",
+      "end": "0x88a78d2c",
+      "sha256": "87905ecbdbfcd416c202e7b50c8c6542478f9da56313eb5b90a2c5f6b49a8866"
+    },
+    {
+      "mode": "arm",
+      "start": "0x880d929c",
+      "end": "0x880d9314",
+      "sha256": "e1ba54036c49d1f966f321325491aa81787400a8ef1d366f328eee5a55f1fbeb"
+    },
+    {
+      "mode": "arm",
+      "start": "0x880e6950",
+      "end": "0x880e69a4",
+      "sha256": "4bdccd49eb924911b2b5a0f0682a65e087094cf163e687e64397b5c646e0f760"
+    },
+    {
+      "mode": "arm",
+      "start": "0x880d6ff8",
+      "end": "0x880d7054",
+      "sha256": "f669294f021a0f116b61237d4211b4c9b0fc5c003f5b79c22b6b5aca940be890"
+    },
+    {
+      "mode": "arm",
+      "start": "0x880d71d0",
+      "end": "0x880d7230",
+      "sha256": "4315bce7c0bf7b569e22feeab060190beb986a2342ab9ea1f2b11e5b951cb905"
+    },
+    {
+      "mode": "arm",
+      "start": "0x880e55b8",
+      "end": "0x880e55fc",
+      "sha256": "91a9999ffdc259843cd5ecf496d2af04df04bab4dff539a307b8ea46edb9c2ba"
+    },
+    {
+      "mode": "arm",
+      "start": "0x880e56c8",
+      "end": "0x880e570c",
+      "sha256": "7c4957a62e20433ea34d6b4412b634dbc7049c0ca2713abc8412c31c33e90305"
+    }
+  ],
+  "checked_words": {
+    "0x880d92a8": "0xe202003f",
+    "0x880d92ac": "0xe1b02322",
+    "0x880d92b0": "0xe2800001",
+    "0x880d92b8": "0xe2800003",
+    "0x880d92c4": "0x2801001",
+    "0x880d92c8": "0x1a010a1",
+    "0x880d92cc": "0x810080",
+    "0x880d92d8": "0x2800001",
+    "0x880d92dc": "0x3a01005",
+    "0x880d92e0": "0x8100a0",
+    "0x880d92e8": "0xe350003f",
+    "0x880d9308": "0xe2800001",
+    "0x880d930c": "0xe3c00801",
+    "0x880e699c": "0xe1800401",
+    "0x880d7020": "0xe3540008",
+    "0x880d7024": "0x93a00e3b",
+    "0x880d7028": "0x918040b5",
+    "0x880e56fc": "0xe3c00801",
+    "0x880e55ec": "0xe3c00b02"
+  },
+  "confirmed": {
+    "aw_state_bytes_cleared": 1452,
+    "cc_state_bytes_cleared": 2068,
+    "aw_disabled_completion_masks": [
+      "0x10000",
+      "0x800"
+    ],
+    "cc_depth_default": 4,
+    "cc_depth_max": 8,
+    "cc_fence_argument": "u16(wrapper+0x340) >> 1",
+    "record_tag": "top two bits choose class, low six bits plus one = n",
+    "record_span_classes": [
+      "n+3",
+      "2*n+ceil(n/2)+3",
+      "ceil(n/2)+5",
+      "n unless tag ff: BE16(next bytes)+1 modulo 65536"
+    ],
+    "record_extended_endian": "big",
+    "record_helper": "runtime circular-buffer records, not established as an LDB trie parser"
+  },
+  "english_key_alphabets": [
+    {
+      "file": "nokia-ta1278-research/analysis/ui/t9/t9-aw-0109-variant-0.ldb",
+      "sha256": "7c85dc8eb53b275475d3d13e82198eae8c57c9e64fe91a2d8adffa9ba72176a7",
+      "groups": [
+        {
+          "digit": "1",
+          "offset": "0x80",
+          "symbols": ".'-)*(/?&1:;"
+        },
+        {
+          "digit": "2",
+          "offset": "0x98",
+          "symbols": "acb2"
+        },
+        {
+          "digit": "3",
+          "offset": "0xa0",
+          "symbols": "def3"
+        },
+        {
+          "digit": "4",
+          "offset": "0xa8",
+          "symbols": "igh4"
+        },
+        {
+          "digit": "5",
+          "offset": "0xb0",
+          "symbols": "lkj5"
+        },
+        {
+          "digit": "6",
+          "offset": "0xb8",
+          "symbols": "mon6"
+        },
+        {
+          "digit": "7",
+          "offset": "0xc0",
+          "symbols": "srpq7"
+        },
+        {
+          "digit": "8",
+          "offset": "0xca",
+          "symbols": "tvu8"
+        },
+        {
+          "digit": "9",
+          "offset": "0xd2",
+          "symbols": "yxzw9"
+        },
+        {
+          "digit": "0",
+          "offset": "0xdc",
+          "symbols": "0"
+        }
+      ],
+      "status": "decoded data layout; not a proven candidate ordering"
+    },
+    {
+      "file": "nokia-ta1278-research/analysis/ui/t9/t9-aw-0109-variant-1.ldb",
+      "sha256": "85fcfff29dbff0fa943c7c9a2edaf196ee4d3437686cf90437b8c5507a8de8d8",
+      "groups": [
+        {
+          "digit": "1",
+          "offset": "0x80",
+          "symbols": ".'-)*(/?&1:;"
+        },
+        {
+          "digit": "2",
+          "offset": "0x98",
+          "symbols": "acb2"
+        },
+        {
+          "digit": "3",
+          "offset": "0xa0",
+          "symbols": "def3"
+        },
+        {
+          "digit": "4",
+          "offset": "0xa8",
+          "symbols": "igh4"
+        },
+        {
+          "digit": "5",
+          "offset": "0xb0",
+          "symbols": "lkj5"
+        },
+        {
+          "digit": "6",
+          "offset": "0xb8",
+          "symbols": "mon6"
+        },
+        {
+          "digit": "7",
+          "offset": "0xc0",
+          "symbols": "srpq7"
+        },
+        {
+          "digit": "8",
+          "offset": "0xca",
+          "symbols": "tvu8"
+        },
+        {
+          "digit": "9",
+          "offset": "0xd2",
+          "symbols": "yxzw9"
+        },
+        {
+          "digit": "0",
+          "offset": "0xdc",
+          "symbols": "0"
+        }
+      ],
+      "status": "decoded data layout; not a proven candidate ordering"
+    }
+  ],
+  "limits": [
+    "Native candidate traversal/ranking and Chinese block interpretation are not yet recovered.",
+    "Guard/rebuild functions called by the translated setters are not emulated.",
+    "No private learning database was accessed and no original engine code was executed.",
+    "Shared persistent/context learning in the replica is a new implementation, not native algorithm equivalence."
+  ]
+}

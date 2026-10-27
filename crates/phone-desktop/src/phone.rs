@@ -1,9 +1,11 @@
 pub mod alarm;
 mod browser;
 pub mod browser_data;
+pub mod calendar_form;
 mod contact_groups;
 pub mod contacts;
 pub mod conversation;
+mod file_delete;
 pub mod files;
 pub mod mail;
 pub mod media_browser;
@@ -12,6 +14,7 @@ pub mod organizer;
 mod overlays;
 mod sms;
 pub mod snake;
+mod timer;
 pub mod tools;
 pub use music::{MusicView, Playlist};
 pub mod settings;
@@ -94,6 +97,13 @@ pub enum Overlay {
     ClosePage,
     CloseBrowser,
     Notice(String),
+    TimerElapsed,
+    ServiceAlert {
+        backend: String,
+        id: String,
+        title: String,
+        body: String,
+    },
 }
 pub struct Compose {
     pub to: Editor,
@@ -136,6 +146,8 @@ pub struct Phone {
     pub index: usize,
     pub overlay: Option<Overlay>,
     pub mailbox: Mailbox,
+    pub service_backend: Option<String>,
+    pub prediction_engine: std::sync::Arc<dyn phone_core::predict::Engine>,
     pub compose: Compose,
     pub mail_ui: mail::MailUi,
     pub chat: conversation::ChatUi,
@@ -171,6 +183,7 @@ pub struct Phone {
     pub browser_settings_origin: BrowserView,
     pub browser_data: browser_data::BrowserData,
     pub browser_dirty: bool,
+    pub browser_clear: [bool; 2],
     pub requested_url: String,
 }
 impl Phone {
@@ -193,6 +206,8 @@ impl Phone {
             index: 0,
             overlay: None,
             mailbox,
+            service_backend: None,
+            prediction_engine: phone_core::predict::default_engine(),
             compose: Compose::default(),
             mail_ui: mail::MailUi::default(),
             chat: Default::default(),
@@ -236,6 +251,7 @@ impl Phone {
             browser_settings_origin: BrowserView::Start,
             browser_data: Default::default(),
             browser_dirty: false,
+            browser_clear: [false, true],
             requested_url: String::new(),
         }
     }
@@ -253,7 +269,13 @@ impl Phone {
             self.notice("此功能已停用。");
             return;
         }
-        if s != Screen::Tools(tools::ToolPage::Files) {
+        if s != Screen::Tools(tools::ToolPage::Files)
+            && !self
+                .files
+                .pending
+                .as_ref()
+                .is_some_and(files::FileRequest::mutating)
+        {
             self.files.pending = None;
         }
         self.music.event(Event {
@@ -279,6 +301,17 @@ impl Phone {
         self.overlay = None;
     }
     pub fn launch(&mut self, screen: Screen) {
+        if screen == Screen::Tools(tools::ToolPage::Files)
+            && (self.files.busy
+                || self
+                    .files
+                    .pending
+                    .as_ref()
+                    .is_some_and(files::FileRequest::mutating))
+        {
+            self.notice("文件操作尚未结束，请稍候。");
+            return;
+        }
         if crate::menu::phone_disabled(screen) {
             return;
         }
@@ -292,6 +325,9 @@ impl Phone {
         };
         if let Screen::Tools(page) = screen {
             self.tools.page = page;
+            if page == tools::ToolPage::Timer {
+                self.open_timer();
+            }
         }
         if let Screen::Organizer(page) = screen {
             self.organizer.page = page;
@@ -313,7 +349,7 @@ impl Phone {
         }
         if screen == Screen::Tools(tools::ToolPage::Files) && self.features.files {
             self.files = Default::default();
-            self.files.pending = Some(files::FileRequest::List("/".into()));
+            self.files.pending = Some(files::FileRequest::Storage);
         }
         if screen == Screen::Organizer(organizer::OrganizerPage::Alarms)
             && !self.local_data.alarms.is_empty()
@@ -330,7 +366,6 @@ impl Phone {
         self.organizer.date = self.local_clock().0;
     }
     pub fn notice(&mut self, s: impl Into<String>) {
-        self.tools.timer_notice = false;
         self.notice_scroll = 0;
         self.notice_lines = 0;
         self.overlay = Some(Overlay::Notice(s.into()));
@@ -434,6 +469,10 @@ impl Phone {
                         &self.organizer.contact.input
                     },
                 ),
+                Screen::Tools(_) if self.timer_name_active() => Some(&self.tools.timer_edit.name),
+                Screen::Organizer(_) if self.event_editor_active() => {
+                    Some(&self.organizer.event.input)
+                }
                 Screen::Organizer(_) if self.alarm_name_active() => {
                     Some(&self.organizer.alarm.name)
                 }
@@ -445,7 +484,7 @@ impl Phone {
         if !self.local_data.reminders.alerts.is_empty() || self.mail_ui.pending.is_some() {
             return None;
         }
-        match &mut self.overlay {
+        let editor: Option<&mut Editor> = match &mut self.overlay {
             Some(Overlay::Text { editor, .. }) => Some(editor),
             Some(_) => None,
             None => match self.screen {
@@ -473,6 +512,17 @@ impl Phone {
                         },
                     )
                 }
+                Screen::Tools(_)
+                    if self.tools.page == tools::ToolPage::Timer && self.index == 1 =>
+                {
+                    Some(&mut self.tools.timer_edit.name)
+                }
+                Screen::Organizer(_)
+                    if self.organizer.page == organizer::OrganizerPage::EventForm
+                        && matches!(self.index, 0 | 3 | 6) =>
+                {
+                    Some(&mut self.organizer.event.input)
+                }
                 Screen::Organizer(_)
                     if self.organizer.page == organizer::OrganizerPage::AlarmForm
                         && self.index == 2 =>
@@ -481,6 +531,12 @@ impl Phone {
                 }
                 _ => None,
             },
+        };
+        if let Some(e) = editor {
+            e.prediction.set_engine(self.prediction_engine.clone());
+            Some(e)
+        } else {
+            None
         }
     }
     pub fn text(&mut self, s: &str) {
@@ -528,7 +584,7 @@ impl Phone {
                     e.prediction.spelling_focus = false;
                     return true;
                 }
-                if !e.accept_prediction() {
+                if !e.choose_prediction() {
                     self.status = "Text limit reached".into();
                 }
             }
@@ -575,7 +631,7 @@ impl Phone {
             && self.local_data.reminders.alerts.is_empty()
         {
             self.cues.push(crate::effects::Cue::Alert);
-            self.notice(format!("{}\n时间到", self.tools.timer_name));
+            self.overlay = Some(Overlay::TimerElapsed);
             self.tools.timer_notice = true;
         }
 
@@ -694,7 +750,10 @@ impl Phone {
             }
         }
         if self.editor().is_some()
-            && !((self.alarm_name_active() || self.contact_editor_active())
+            && !((self.alarm_name_active()
+                || self.contact_editor_active()
+                || self.event_editor_active()
+                || self.timer_name_active())
                 && matches!(key, Key::Up | Key::Down))
             && self.edit_key(key, now)
         {
@@ -714,19 +773,7 @@ impl Phone {
                 }
                 Key::Center | Key::SoftLeft => {
                     let entry = &crate::menu::ENTRIES[self.index];
-                    if let Some(screen) = entry.screen {
-                        self.launch(screen);
-                    } else {
-                        self.notice(format!(
-                            "{}{}",
-                            entry.label,
-                            if self.index >= 16 {
-                                "不在本次复刻范围。"
-                            } else {
-                                "尚未实现。"
-                            }
-                        ));
-                    }
+                    self.launch(entry.screen);
                 }
                 Key::SoftRight => self.go(Screen::Home),
                 _ => {}
@@ -817,6 +864,8 @@ impl Phone {
     }
 }
 
+#[cfg(test)]
+mod completion_tests;
 #[cfg(test)]
 mod conversation_tests;
 #[cfg(test)]

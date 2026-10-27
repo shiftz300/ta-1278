@@ -4,6 +4,8 @@
 
 **Nokia 215 4G（2020），TA-1278** 固件研究及可运行的桌面交互程序，固件版本 **17.00.17.02**。
 
+[消息、通话及预警接口（默认离线）](docs/services.md) · [T9 开销与未恢复项](docs/t9-cost.md) · [输入引擎接口](docs/input-engine.md) · [T9 算法证据](docs/t9-recovery.md)
+
 ## 运行
 
 需要 Rust 和图形驱动。已在 macOS arm64 验证。
@@ -16,24 +18,23 @@ cargo run --release --locked -p phone-desktop
 
 - **短信：** 拼音、笔画、Abc/abc/ABC 多击和直接输入、光标移动、换行、字符计数、草稿、会话列表、收发气泡、底部续写、转发、确认删除和本地待发记录。
 - **浏览器：** HTTP(S) 文本网页、链接、输入框、单选/复选框、选择框及 GET 表单；书签、历史和离线页面可保存。内置演示无需联网。[浏览器功能与边界](docs/browser-capabilities.md)。
-- **音乐：** 从虚拟手机存储和存储卡真实播放 MP3/WAV，支持暂停、切歌、长按快进退、音量、循环、随机播放和持久化播放列表。联系人图片、壁纸和铃声共用文件选择器；可从“文件”打开本地图片和视频。
+- **音乐：** 从选定的手机存储文件夹真实播放 MP3/WAV，支持暂停、切歌、长按快进退、音量、循环、随机播放和持久化播放列表。联系人图片、壁纸和铃声共用文件选择器；可从“文件”打开本地图片和视频。
 - 日历、闹钟、本地联系人、计算器、定时器、秒表和使用原机地图与素材的贪吃蛇已可操作。电话及通话记录入口置灰并禁用。**桌面程序不会拨号或发送真实短信。**
 
 方向键导航，Enter 确认，F1/F2 为软键，Escape 也可作右软键。鼠标**左/右/中键**分别触发**左软键/右软键/确认键**，不看点击位置。Home 返回主屏或提示保存短信。
 
-编辑时，0–9 按当前模式输入，长按输入数字；F4 切换 拼 → 笔 → Abc → abc → ABC → 123。候选框中，上下选词，左右切换拼音与文字列；确认键选词。也支持直接输入字母和桌面输入法。Tab 切换收件人与正文；Shift+Enter 换行；Backspace 删除；Cmd/Ctrl+A 全选。[操作与模块说明](docs/architecture.md)。
+编辑时，0–9 按当前模式输入，长按输入数字；#（电脑键盘 Shift+3）切换 拼 → 笔 → Abc → abc → ABC → 123。候选框中，上下选词，左右切换拼音与文字列；确认键选词。电脑键盘按固定美式键位输入英文和符号（Shift 切换大写/符号），屏蔽系统输入法；中文使用手机内部输入法。Tab 切换收件人与正文；Shift+Enter 换行；Backspace 删除；Cmd/Ctrl+A 全选。[操作与模块说明](docs/architecture.md)。
 
-macOS 本地消息、设置、浏览记录及日历/联系人数据位于 `~/Library/Application Support/TA1278 Replica/`。可用 `--data-dir PATH` 指定测试目录。计时器、秒表分段和待处理提醒也会保留到下次启动。[保存与恢复](docs/persistence.md)。程序不打开固件和采集存档；媒体只从配置的 VFS 卷读取。
+macOS 本地消息、设置、浏览记录及日历/联系人数据位于 `~/Library/Application Support/TA1278 Replica/`。可用 `--data-dir PATH` 指定测试目录。计时器、秒表分段和待处理提醒也会保留到下次启动。[保存与恢复](docs/persistence.md)。程序不打开固件和采集存档；媒体只从选择的本地文件夹读取。
 
-存储使用程序内部的 VFS，不设导入按钮、不安装系统驱动。默认将数据目录中的 `files/` 和 `card/` 挂到 `/phone` 和 `/card`。把音乐放进去，再在“音乐 → 菜单 → 手动刷新”更新曲库。“文件”应用浏览相同的卷。
+首次启动选择一个文件夹作为**手机存储**，之后自动记住。文件、音乐、图片和视频直接使用这个文件夹，操作会影响其中的文件。不再使用 VFS，也没有导入按钮。放入音乐后，在“音乐 → 菜单 → 手动刷新”更新曲库。
 
 ```sh
-cargo run --release --locked -p phone-desktop -- --mount-card /你的/存储卡目录
-# 可选：--read-only-storage --disable network,music,files,pictures,video,sounds
-# 不挂存储卡：--no-card
+cargo run --release --locked -p phone-desktop -- --storage-dir /你的/手机文件目录
+# 可选：--read-only-storage
 ```
 
-`--mount-card` 直接使用指定目录，手机内的文件操作会影响该目录。只读开关只限制媒体卷写入，不影响短信和设置保存。[存储、开关与边界](docs/storage.md)。
+`--storage-dir` 可以更换保存的目录。短信和设置仍在独立的程序数据目录保存。[存储、开关与边界](docs/storage.md)。
 
 [贪吃蛇代码依据](docs/snake-recovery.md) · [闹钟代码证据](docs/alarm-recovery.md) · [短信读写流程](docs/sms-lifecycle.md) · [本地收件测试](docs/sms-inbox.md) · [体积与优化检查](docs/build-size.md)
 
@@ -43,7 +44,7 @@ cargo run --release --locked -p phone-desktop -- --mount-card /你的/存储卡�
 
 ## 研究状态
 
-**逆向仍未完成，当前程序也尚未通过原机逐项比对。** 背景已按用户实机反馈改为纯黑，接入六组固件主题色、三列图标和浮动候选，并修正短信菜单及保存退出流程。预测算法按要求使用替代实现，原机字体优先、Noto 补缺字。新增实机采样后，浏览器和短信排版已继续修正，共有 172 张公开参考截图。见[浏览器与短信对照](docs/browser-layout.md)、[本轮证据与改动](docs/native-ui.md)和[剩余差距](docs/fidelity.md)。
+**逆向仍未完成，当前程序也尚未通过原机逐项比对。** 背景已按用户实机反馈改为纯黑，接入六组固件主题色、三列图标和浮动候选，并修正短信菜单及保存退出流程。预测输入现已接入原机 T9 指令解释执行及中英文字库，原机字体优先、Noto 补缺字。新增实机采样后，浏览器和短信排版已继续修正，共有 172 张公开参考截图。见[浏览器与短信对照](docs/browser-layout.md)、[本轮证据与改动](docs/native-ui.md)和[剩余差距](docs/fidelity.md)。
 
 - [实现依据与边界](nokia-ta1278-research/analysis/ui/replica-readiness.md)
 - [短信、浏览器、音乐规则](nokia-ta1278-research/analysis/ui/apps/interaction-core.md)

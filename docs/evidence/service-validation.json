@@ -1,0 +1,22 @@
+{
+  "workspace_tests_passed": 152,
+  "ignored": 4,
+  "checks": [
+    "cargo test --workspace --locked",
+    "cargo clippy --workspace --all-targets --locked -- -D warnings",
+    "cargo fmt --all -- --check",
+    "git diff --check",
+    "python3 scripts/verify-service-evidence.py",
+    "sh scripts/package-macos.sh"
+  ],
+  "bundle_bytes": 20832536,
+  "bundle_delta_vs_owner_wallpaper_build_bytes": 33120,
+  "executable_bytes": 20437056,
+  "executable_sha256": "2ac0730ccabc5a381131899c3ee01dfd2cb019c74c46b53aa35456c87db66394",
+  "limits": [
+    "No real service, call, SMS, or external alert was transmitted.",
+    "Adapter tests use an in-memory test backend and synthetic messages.",
+    "Rendering exercised by Canvas tests; no new handset UI or protocol acceptance.",
+    "This is an uncommitted local build, not a new release."
+  ]
+}

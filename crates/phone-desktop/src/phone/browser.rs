@@ -88,7 +88,34 @@ impl Phone {
             (MenuKind::Browser, 1) => self.overlay = submenu(MenuKind::BrowserNavigation),
             (MenuKind::Browser, 2) => self.overlay = submenu(MenuKind::BrowserSave),
             (MenuKind::Browser, 3) => self.notice("没有下载任务"),
-            (MenuKind::Browser, 4) => self.notice(self.browser.page.url.clone()),
+            (MenuKind::Browser, 4) => {
+                // Sharing prepares a new draft; it never dispatches a service command.
+                if self.browser.page.url.is_empty() {
+                    return;
+                }
+                if !self.compose.body.accept_prediction() || !self.compose.to.accept_prediction() {
+                    self.notice("请先处理尚未完成的信息输入");
+                    return;
+                }
+                let previous = self.message();
+                let already_queued = self.compose.draft.is_none()
+                    && self.mailbox.outbox.iter().any(|m| {
+                        m.time == previous.time && m.to == previous.to && m.body == previous.body
+                    });
+                if !already_queued && (!previous.body.is_empty() || !previous.to.is_empty()) {
+                    self.save_draft();
+                }
+                self.compose = Compose::from_message(
+                    &Message {
+                        body: self.browser.page.url.clone(),
+                        time: phone_core::sms::timestamp(),
+                        ..Default::default()
+                    },
+                    None,
+                );
+                self.chat = Default::default();
+                self.go(Screen::Compose);
+            }
             (MenuKind::Browser, 5) => self.notice(format!(
                 "{}\n{}",
                 self.browser.page.title, self.browser.page.url
@@ -253,6 +280,12 @@ impl Phone {
                         ..
                     }) => {
                         let mut editor = Editor::new(&value, limit);
+                        if matches!(
+                            self.browser.page.elements.get(i),
+                            Some(Element::Field { password: true, .. })
+                        ) {
+                            editor.prediction.set_learning_enabled(false);
+                        }
                         // Native XHTML constructor 0x88b48fa0 caps the initial
                         // copy too. Keep the host's scalar-safe UTF-16 policy.
                         editor.units.truncate(limit);
@@ -301,6 +334,19 @@ impl Phone {
     fn browser_settings_key(&mut self, key: Key) {
         use BrowserView::*;
         let n = self.browser_items().len();
+        if self.browser_view == Clear && key == Key::SoftLeft {
+            if self.browser_clear[0] {
+                self.browser_data.history.clear();
+                self.browser_dirty = true;
+            }
+            if self.browser_clear[1] {
+                self.browser.clear_cache();
+            }
+            self.browser_view = Settings;
+            self.index = 6;
+            self.notice("清除完成");
+            return;
+        }
         match key {
             Key::Up => self.index = (self.index + n - 1) % n,
             Key::Down => self.index = (self.index + 1) % n,
@@ -344,6 +390,7 @@ impl Phone {
                     }
                     6 => {
                         self.browser_view = Clear;
+                        self.browser_clear = [false, true];
                         self.index = 0;
                     }
                     _ => {
@@ -364,8 +411,7 @@ impl Phone {
                     self.browser_dirty = true;
                 }
                 Clear => {
-                    // Native entry/cancel sampled; checkbox commit semantics are still unknown.
-                    self.notice("暂不支持清除浏览器数据。");
+                    self.browser_clear[self.index] = !self.browser_clear[self.index];
                 }
                 Restore => {
                     if self.index == 1 {

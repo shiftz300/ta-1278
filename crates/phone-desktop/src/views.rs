@@ -14,6 +14,7 @@ mod pickers;
 mod settings;
 mod snake;
 mod tools;
+mod wallpaper;
 use crate::ui::chrome::status;
 use crate::ui::softkeys::{Button, Softkeys};
 use crate::ui::{chrome, editor::Edit, list, softkeys, text};
@@ -29,19 +30,10 @@ pub fn render(c: &mut Canvas, p: &mut Phone) {
     };
     c.caret = None;
     c.background();
+    wallpaper::draw(c, p);
     status(c);
     match p.screen {
         Screen::Home => {
-            if let Some(img) = p
-                .preferences
-                .wallpaper
-                .as_ref()
-                .and_then(|path| p.pictures.get(path))
-                .filter(|_| p.features.pictures)
-            {
-                c.image_rect(img, [0, 0, 240, 320], [0, 0, 240, 320]);
-                status(c);
-            }
             let (date, minutes) = p.local_clock();
             let hour = minutes / 60;
             let time = format!(
@@ -53,16 +45,17 @@ pub fn render(c: &mut Canvas, p: &mut Phone) {
                 },
                 minutes % 60
             );
-            let w = c.width(&time, 54);
-            c.text((240 - w) / 2, 88, &time, 54, WHITE);
+            let w = c.width(&time, 40);
+            c.text((240 - w) / 2, 42, &time, 40, WHITE);
             let s = format!(
-                "{}月{}日 星期{}",
+                "星期{}, {:04}.{:02}.{:02}",
+                ["一", "二", "三", "四", "五", "六", "日"][date.weekday()],
+                date.year,
                 date.month,
-                date.day,
-                ["一", "二", "三", "四", "五", "六", "日"][date.weekday()]
+                date.day
             );
-            let w = c.width(&s, 18);
-            c.text((240 - w) / 2, 153, &s, 18, WHITE);
+            let w = c.width(&s, 14);
+            c.text((240 - w) / 2, 96, &s, 14, WHITE);
             if !p.preferences.greeting.is_empty() {
                 c.fit(6, 190, &p.preferences.greeting, 18, WHITE, 228);
             }
@@ -80,10 +73,7 @@ pub fn render(c: &mut Canvas, p: &mut Phone) {
                 1,
                 entries[p.index].label,
                 14,
-                if entries[p.index]
-                    .screen
-                    .is_some_and(crate::menu::phone_disabled)
-                {
+                if crate::menu::phone_disabled(entries[p.index].screen) {
                     MUTED
                 } else {
                     WHITE
@@ -96,10 +86,13 @@ pub fn render(c: &mut Canvas, p: &mut Phone) {
                 if p.index == i {
                     c.ring(x, y, 31, c.accent(2));
                 }
-                c.icon(entry.icon, x - 38, y - 38, 76);
-                if entry.screen.is_some_and(crate::menu::phone_disabled) {
-                    c.grey(x - 38, y - 38, 76, 76);
-                }
+                c.icon_enabled(
+                    entry.icon,
+                    x - 38,
+                    y - 38,
+                    76,
+                    !crate::menu::phone_disabled(entry.screen),
+                );
             }
             c.rect(0, 288, 240, 32, [0, 0, 0, 255]);
             Softkeys::menu("").draw(c);
@@ -140,15 +133,28 @@ pub fn render(c: &mut Canvas, p: &mut Phone) {
                 overlay,
                 Overlay::Menu { .. } | Overlay::ClosePage | Overlay::CloseBrowser
             );
-        if browser_modal {
+        let file_editor = matches!(
+            overlay,
+            Overlay::Text {
+                target: TextTarget::FileName(_),
+                ..
+            }
+        );
+        if browser_modal || file_editor || matches!(overlay, Overlay::TimerElapsed) {
             c.dim();
         } else {
             c.background();
         }
         match overlay {
-            Overlay::Notice(s) => {
-                c.text(12, 51, "提示", 18, WHITE);
-                let lines = c.wrap(&s, 15, 212);
+            Overlay::TimerElapsed => tools::timer_elapsed(c, p),
+            Overlay::Notice(_) | Overlay::ServiceAlert { .. } => {
+                let (title, s) = match &overlay {
+                    Overlay::Notice(s) => ("提示", s),
+                    Overlay::ServiceAlert { title, body, .. } => (title.as_str(), body),
+                    _ => unreachable!(),
+                };
+                c.fit(12, 51, title, 18, WHITE, 212);
+                let lines = c.wrap(s, 15, 212);
                 p.notice_lines = lines.len();
                 for (i, l) in lines.iter().skip(p.notice_scroll).take(11).enumerate() {
                     c.text(12, 86 + i as i32 * 18, &l.text, 15, WHITE);
@@ -176,6 +182,28 @@ pub fn render(c: &mut Canvas, p: &mut Phone) {
             Overlay::Text { target, editor: e } => {
                 if p.screen == Screen::Browser {
                     browser_chrome::editor(c, p, target, &e);
+                } else if matches!(target, TextTarget::FileName(_)) {
+                    c.rect(0, 184, 240, 136, [0, 0, 0, 255]);
+                    let folder = target == TextTarget::FileName(true)
+                        || p.files
+                            .entries
+                            .get(p.files.selected)
+                            .is_some_and(|e| e.directory);
+                    c.text(
+                        6,
+                        193,
+                        if folder {
+                            "文件夹名称"
+                        } else {
+                            "文件名"
+                        },
+                        20,
+                        WHITE,
+                    );
+                    p.editor_lines = Edit::new([7, 221, 227, 28]).sized(20, 26).draw(c, &e);
+                    c.rect(6, 251, 229, 3, c.accent(3));
+                    c.text(205, 260, mode(&e), 16, MUTED);
+                    Softkeys::new(Button::Close, Button::Text("确认"), Button::Delete).draw(c);
                 } else {
                     c.text(
                         6,
@@ -258,6 +286,8 @@ fn mode(e: &Editor) -> &'static str {
 }
 
 #[cfg(test)]
+mod audit_tests;
+#[cfg(test)]
 mod tests {
     use super::*;
     #[test]
@@ -295,6 +325,12 @@ mod tests {
                     index: 0,
                 },
                 Overlay::Notice("Saved".into()),
+                Overlay::ServiceAlert {
+                    backend: "test".into(),
+                    id: "weather".into(),
+                    title: "天气提醒".into(),
+                    body: "测试预警内容\n请留意天气变化。".into(),
+                },
             ] {
                 p.overlay = Some(overlay);
                 render(&mut c, &mut p);
@@ -392,7 +428,7 @@ mod shared_controls_tests {
         for screen in [
             Screen::Settings,
             Screen::Snake,
-            Screen::Tools(crate::phone::tools::ToolPage::Other),
+            Screen::Tools(crate::phone::tools::ToolPage::Converter),
             Screen::Browser,
         ] {
             p.launch(screen);

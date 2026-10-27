@@ -12,6 +12,12 @@ pub enum Button<'a> {
     Delete,
     Contacts,
     Phone,
+    Lap,
+    Reset,
+    Record,
+    Recordings,
+    Percent,
+    Transfer,
     Shortcut(usize),
 }
 #[derive(Clone, Copy)]
@@ -62,6 +68,25 @@ fn draw_button(c: &mut Canvas, slot: usize, button: Button<'_>) {
     let x = [5, 107, 208][slot];
     match button {
         Button::None => {}
+        Button::Lap | Button::Reset | Button::Record | Button::Recordings | Button::Percent => {
+            use super::art::UtilityIcon;
+            let icon = match button {
+                Button::Lap => UtilityIcon::Lap,
+                Button::Reset => UtilityIcon::Reset,
+                Button::Record => UtilityIcon::Record,
+                Button::Recordings => UtilityIcon::Recordings,
+                _ => UtilityIcon::Percent,
+            };
+            super::art::utility(c, icon, x, 287);
+        }
+        Button::Transfer => {
+            c.rect(x, 302, 17, 1, WHITE);
+            for d in 0..10 {
+                c.rect(x + 16 + d, 302 - d, 1, 1, WHITE);
+            }
+            c.rect(x + 20, 293, 6, 1, WHITE);
+            c.rect(x + 25, 293, 1, 7, WHITE);
+        }
         Button::Phone => super::art::phone(c, x),
         Button::Text(label) | Button::Disabled(label) => {
             let width = c.width(label, 20);
@@ -97,7 +122,7 @@ fn draw_button(c: &mut Canvas, slot: usize, button: Button<'_>) {
             c.rect(x + 23, 291, 2, 17, WHITE);
             for d in 0..9 {
                 c.rect(x + 2 + d, 299 - d, 2, 2, WHITE);
-                c.rect(x + 2 + d, 299 + d, 2, 2, WHITE);
+                c.rect(x + 2 + d, 298 + d, 2, 2, WHITE);
             }
             for d in 0..7 {
                 c.rect(x + 12 + d, 296 + d, 1, 1, WHITE);

@@ -1,0 +1,30 @@
+{
+  "file": "assets/ui/owner-wallpaper.png",
+  "bytes": 75122,
+  "sha256": "54d8df48411e6493d90e58fc89c25dcb4cacda11c643f0208860d83b4759b5e7",
+  "source": "Owner-selected wallpaper.dat in private verified FAT12 storage backup; not a Nokia factory wallpaper",
+  "source_cache_bytes": 146635,
+  "source_cache_sha256": "c308c0d219dd48e488ca96143053a8a02f3f7c41038df0f913ebf4e5dd13994e",
+  "format": "232x316 little-endian RGB565; ignore 11-byte trailer; replicate high bits into 8-bit channels",
+  "derived": "RGB PNG with no original filename, trailer or personal metadata embedded",
+  "authorization": "Owner selected the green character wallpaper as the replica default on 2026-10-26",
+  "placement": {
+    "x": 4,
+    "y": 2,
+    "width": 232,
+    "height": 316,
+    "clip": [
+      4,
+      24,
+      232,
+      258
+    ],
+    "basis": "Best visual alignment with archived handset Home/Menu captures; not recovered layout code"
+  },
+  "menu_brightness": {
+    "fraction": "3/5",
+    "basis": "Visual approximation to measured ~0.58 in lossy capture; Home uses full decoded pixels"
+  },
+  "artist_license": "Not established; owner-provided artwork, not represented as Nokia or project-authored art",
+  "reproduce": "python3 scripts/extract-owner-wallpaper.py PRIVATE_FAT12_BACKUP NEW_OUTPUT_DIRECTORY"
+}

@@ -1,9 +1,20 @@
-//! Offline nine-key prediction, newly implemented for the replica (not the Nokia T9 engine).
-use std::{
-    collections::{HashMap, HashSet},
-    sync::OnceLock,
-};
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
+//! Shared input state for the bounded original engine and optional replacement providers.
+mod dictionary;
+mod engine;
+pub mod firmware;
+mod learning;
+pub mod native;
+pub use engine::{Builtin, Engine};
+pub use learning::LearningData;
+use serde::{Deserialize, Serialize};
+use std::{collections::HashSet, sync::Arc};
+pub fn default_engine() -> Arc<dyn Engine> {
+    static ENGINE: std::sync::OnceLock<Arc<firmware::Firmware>> = std::sync::OnceLock::new();
+    ENGINE
+        .get_or_init(|| Arc::new(firmware::Firmware::default()))
+        .clone()
+}
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum Language {
     Chinese,
     Stroke,
@@ -13,12 +24,6 @@ pub enum Language {
 pub struct Candidate {
     pub text: String,
     pub spelling: String,
-}
-struct Entry {
-    text: &'static str,
-    spelling: &'static str,
-    code: String,
-    weight: u64,
 }
 pub fn encode(text: &str) -> Option<String> {
     let mut code = String::new();
@@ -39,98 +44,7 @@ pub fn encode(text: &str) -> Option<String> {
     }
     (!code.is_empty()).then_some(code)
 }
-fn dictionary(language: Language) -> &'static [Entry] {
-    static CN: OnceLock<Vec<Entry>> = OnceLock::new();
-    static EN: OnceLock<Vec<Entry>> = OnceLock::new();
-    static ST: OnceLock<Vec<Entry>> = OnceLock::new();
-    static CN_SOURCE: OnceLock<String> = OnceLock::new();
-    static ST_SOURCE: OnceLock<String> = OnceLock::new();
-    static EN_SOURCE: OnceLock<String> = OnceLock::new();
-    mod packed {
-        include!(concat!(env!("OUT_DIR"), "/packed.rs"));
-    }
-    let (slot, source, packed) = match language {
-        Language::Chinese => (&CN, &CN_SOURCE, packed::PINYIN),
-        Language::Stroke => (&ST, &ST_SOURCE, packed::STROKE),
-        Language::English => (&EN, &EN_SOURCE, packed::ENGLISH),
-    };
-    slot.get_or_init(|| {
-        let data = source.get_or_init(|| {
-            String::from_utf8(crate::embedded::decode(packed).expect("Embedded dictionary"))
-                .expect("UTF-8 dictionary")
-        });
-        let mut entries = Vec::new();
-        let weights: HashMap<&str, u64> = if language == Language::Stroke {
-            let mut weights = HashMap::new();
-            for e in dictionary(Language::Chinese) {
-                let w = weights.entry(e.text).or_insert(0);
-                *w = (*w).max(e.weight);
-            }
-            weights
-        } else {
-            HashMap::new()
-        };
-        for line in data.lines() {
-            let (text, spelling, weight) = if language == Language::Chinese {
-                let mut p = line.split('\t');
-                let Some(text) = p.next() else { continue };
-                let Some(spelling) = p.next() else { continue };
-                let Some(weight) = p.next() else { continue };
-                (text, spelling, weight)
-            } else if language == Language::Stroke {
-                let mut fields = line.split('\t');
-                let Some(text) = fields.next() else { continue };
-                let Some(strokes) = fields.next() else {
-                    continue;
-                };
-                (text, strokes, "1")
-            } else {
-                let Some((text, weight)) = line.split_once(' ') else {
-                    continue;
-                };
-                if !text.bytes().all(|b| b.is_ascii_lowercase()) {
-                    continue;
-                }
-                (text, text, weight)
-            };
-            let code = if language == Language::Stroke {
-                spelling
-                    .chars()
-                    .map(|c| match c {
-                        'h' => Some('1'),
-                        's' => Some('2'),
-                        'p' => Some('3'),
-                        'n' => Some('4'),
-                        'z' => Some('5'),
-                        _ => None,
-                    })
-                    .collect::<Option<String>>()
-            } else {
-                encode(spelling)
-            };
-            let Some(code) = code else {
-                continue;
-            };
-            let Ok(mut weight) = weight.trim().parse::<u64>() else {
-                continue;
-            };
-            if language == Language::Stroke {
-                weight = weights.get(text).copied().unwrap_or(weight);
-            }
-            if code.len() <= 36 {
-                entries.push(Entry {
-                    text,
-                    spelling,
-                    code,
-                    weight,
-                });
-            }
-        }
-        entries.sort_by(|a, b| a.code.cmp(&b.code));
-        entries
-    })
-}
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct Prediction {
     pub language: Option<Language>,
     pub digits: String,
@@ -140,7 +54,28 @@ pub struct Prediction {
     pub spelling_selected: usize,
     pub spelling_focus: bool,
     alternatives: Vec<Candidate>,
-    learned: HashMap<(Language, String), u32>,
+    engine: Arc<dyn Engine>,
+    context: String,
+    learning_enabled: bool,
+    association: bool,
+}
+impl Default for Prediction {
+    fn default() -> Self {
+        Self {
+            language: None,
+            digits: String::new(),
+            candidates: vec![],
+            selected: 0,
+            spellings: vec![],
+            spelling_selected: 0,
+            spelling_focus: false,
+            alternatives: vec![],
+            engine: default_engine(),
+            context: String::new(),
+            learning_enabled: true,
+            association: false,
+        }
+    }
 }
 impl Prediction {
     pub fn set_language(&mut self, language: Option<Language>) {
@@ -148,6 +83,7 @@ impl Prediction {
         self.language = language;
     }
     pub fn clear(&mut self) {
+        self.association = false;
         self.digits.clear();
         self.candidates.clear();
         self.selected = 0;
@@ -157,7 +93,24 @@ impl Prediction {
         self.spelling_focus = false;
     }
     pub fn active(&self) -> bool {
-        !self.digits.is_empty()
+        !self.digits.is_empty() || (self.association && !self.candidates.is_empty())
+    }
+    pub fn associating(&self) -> bool {
+        self.association
+    }
+    pub fn show_associations(&mut self, context: &str) {
+        self.clear();
+        if !self.learning_enabled {
+            return;
+        }
+        self.set_context(context);
+        if let Some(language) = self.language {
+            self.candidates = self.engine.associations(language, &self.context);
+            self.candidates
+                .retain(|c| !c.text.is_empty() && c.text.encode_utf16().count() <= 64);
+            self.candidates.truncate(256);
+            self.association = !self.candidates.is_empty();
+        }
     }
     pub fn push(&mut self, digit: u8) {
         if (if self.language == Some(Language::Stroke) {
@@ -166,11 +119,20 @@ impl Prediction {
             (2..=9).contains(&digit)
         }) && self.digits.len() < 36
         {
+            let previous = self.clone();
+            self.association = false;
             self.digits.push((b'0' + digit) as char);
             self.update();
+            if self.engine.strict() && self.candidates.is_empty() {
+                *self = previous;
+            }
         }
     }
     pub fn pop(&mut self) {
+        if self.association {
+            self.clear();
+            return;
+        }
         self.digits.pop();
         self.update();
     }
@@ -193,7 +155,7 @@ impl Prediction {
                 .alternatives
                 .iter()
                 .filter(|c| &c.spelling == spelling)
-                .take(24)
+                .take(256)
                 .cloned()
                 .collect();
             self.selected = 0;
@@ -202,10 +164,41 @@ impl Prediction {
     pub fn current(&self) -> Option<&Candidate> {
         self.candidates.get(self.selected)
     }
+    pub fn set_engine(&mut self, engine: Arc<dyn Engine>) {
+        if !Arc::ptr_eq(&self.engine, &engine) {
+            self.engine = engine;
+            self.update();
+        }
+    }
+    pub fn set_context(&mut self, before_cursor: &str) {
+        if !self.learning_enabled {
+            self.context.clear();
+            return;
+        }
+        self.context = before_cursor
+            .chars()
+            .rev()
+            .take(16)
+            .collect::<Vec<_>>()
+            .into_iter()
+            .rev()
+            .collect();
+    }
     pub fn learn(&mut self, text: &str) {
-        if let Some(language) = self.language {
-            let n = self.learned.entry((language, text.into())).or_default();
-            *n = n.saturating_add(1);
+        if !self.learning_enabled {
+            return;
+        }
+        if let Some(language) = self.language
+            && let Some(candidate) = self.candidates.iter().find(|c| c.text == text)
+        {
+            self.engine
+                .learn(language, &self.digits, &self.context, candidate);
+        }
+    }
+    pub fn set_learning_enabled(&mut self, enabled: bool) {
+        self.learning_enabled = enabled;
+        if !enabled {
+            self.context.clear();
         }
     }
     fn update(&mut self) {
@@ -221,44 +214,14 @@ impl Prediction {
         if self.digits.is_empty() {
             return;
         }
-        let dict = dictionary(language);
-        let start = dict.partition_point(|e| e.code.as_str() < self.digits.as_str());
-        let mut matching: Vec<_> = dict[start..]
-            .iter()
-            .take_while(|e| e.code.starts_with(&self.digits))
-            .collect();
-        matching.sort_by_cached_key(|e| {
-            let learned = self
-                .learned
-                .get(&(language, e.text.into()))
-                .copied()
-                .unwrap_or(0);
-            (
-                e.code != self.digits,
-                std::cmp::Reverse(learned),
-                std::cmp::Reverse(e.weight),
-                e.code.len(),
-                e.text,
-            )
+        self.candidates = self.engine.query(language, &self.digits, &self.context);
+        // Providers cannot break the shared candidate UI with unbounded output.
+        self.candidates.retain(|c| {
+            !c.text.is_empty()
+                && c.text.encode_utf16().count() <= 64
+                && c.spelling.chars().count() <= 96
         });
-        let mut seen = HashSet::new();
-        for e in matching {
-            if seen.insert(e.text) {
-                self.candidates.push(Candidate {
-                    text: e.text.into(),
-                    spelling: e.spelling.into(),
-                });
-                if self.candidates.len()
-                    == if language == Language::Chinese {
-                        256
-                    } else {
-                        24
-                    }
-                {
-                    break;
-                }
-            }
-        }
+        self.candidates.truncate(256);
         if language == Language::Chinese && !self.candidates.is_empty() {
             let mut spellings = HashSet::new();
             for c in &self.candidates {
@@ -271,7 +234,7 @@ impl Prediction {
             self.spelling_focus = true;
         }
         // Unknown words can always be entered as digits; direct typing/multi-tap is also available.
-        if self.candidates.is_empty() {
+        if self.candidates.is_empty() && !self.engine.strict() {
             self.candidates.push(Candidate {
                 text: self.digits.clone(),
                 spelling: "digits · no match".into(),
@@ -285,6 +248,7 @@ mod tests {
     #[test]
     fn chinese_phrase_and_english_ambiguity() {
         let mut p = Prediction::default();
+        p.set_engine(Arc::new(Builtin::default()));
         p.set_language(Some(Language::Chinese));
         for d in [6, 4, 4, 2, 6] {
             p.push(d)
@@ -301,6 +265,7 @@ mod tests {
     #[test]
     fn cancel_delete_learning_and_no_match() {
         let mut p = Prediction::default();
+        p.set_engine(Arc::new(Builtin::default()));
         p.set_language(Some(Language::English));
         for d in [4, 6, 6, 3] {
             p.push(d)
@@ -317,5 +282,114 @@ mod tests {
         assert_eq!(p.current().unwrap().text, "9".repeat(36));
         p.push(9);
         assert_eq!(p.digits.len(), 36);
+    }
+}
+
+#[cfg(test)]
+mod engine_tests {
+    use super::*;
+    #[test]
+    fn shared_learning_survives_new_editor_and_serialization() {
+        let engine = Arc::new(Builtin::default());
+        let mut first = Prediction::default();
+        first.set_engine(engine.clone());
+        first.set_language(Some(Language::English));
+        for digit in [4, 6, 6, 3] {
+            first.push(digit);
+        }
+        first.learn("home");
+        let (data, revision) = engine.pending_save().unwrap();
+        let bytes = serde_json::to_vec(&data).unwrap();
+        engine.saved(revision);
+        assert!(engine.pending_save().is_none());
+        let restored =
+            Arc::new(Builtin::from_data(serde_json::from_slice(&bytes).unwrap()).unwrap());
+        let mut second = Prediction::default();
+        second.set_engine(restored);
+        second.set_language(Some(Language::English));
+        for digit in [4, 6, 6, 3] {
+            second.push(digit);
+        }
+        assert_eq!(second.current().unwrap().text, "home");
+        first.learn("good");
+        assert!(engine.pending_save().is_some());
+    }
+    #[test]
+    fn replaceable_engine_sees_context_without_changing_editor_or_service_api() {
+        #[derive(Debug)]
+        struct Fixed;
+        impl Engine for Fixed {
+            fn query(&self, _: Language, digits: &str, context: &str) -> Vec<Candidate> {
+                assert_eq!((digits, context), ("4", "你好 "));
+                vec![Candidate {
+                    text: "home".into(),
+                    spelling: "home".into(),
+                }]
+            }
+        }
+        let mut e = crate::editor::Editor::new("你好 ", 100);
+        e.prediction.set_engine(Arc::new(Fixed));
+        e.prediction.set_language(Some(Language::English));
+        e.digit(4, 0);
+        assert!(e.accept_prediction());
+        assert_eq!(e.text(), "你好 home");
+    }
+    #[test]
+    fn bad_learning_version_is_rejected_and_context_can_change_ranking() {
+        let data = LearningData {
+            version: 2,
+            ..Default::default()
+        };
+        assert!(Builtin::from_data(data).is_err());
+        let mut p = Prediction::default();
+        p.set_engine(Arc::new(Builtin::default()));
+        p.set_language(Some(Language::English));
+        p.set_context("go ");
+        for d in [4, 6, 6, 3] {
+            p.push(d);
+        }
+        p.learn("home");
+        p.clear();
+        p.set_context("very ");
+        for d in [4, 6, 6, 3] {
+            p.push(d);
+        }
+        p.learn("good");
+        p.learn("good");
+        p.clear();
+        p.set_context("go ");
+        for d in [4, 6, 6, 3] {
+            p.push(d);
+        }
+        assert_eq!(p.current().unwrap().text, "home");
+    }
+}
+
+#[cfg(test)]
+mod privacy_tests {
+    use super::*;
+    #[test]
+    fn private_editor_neither_passes_context_nor_records_candidates() {
+        #[derive(Debug)]
+        struct Private;
+        impl Engine for Private {
+            fn query(&self, _: Language, _: &str, context: &str) -> Vec<Candidate> {
+                assert!(context.is_empty());
+                vec![Candidate {
+                    text: "home".into(),
+                    spelling: "home".into(),
+                }]
+            }
+            fn learn(&self, _: Language, _: &str, _: &str, _: &Candidate) {
+                panic!("Private input reached learning");
+            }
+        }
+        let mut e = crate::editor::Editor::new("secret ", 100);
+        e.prediction.set_engine(Arc::new(Private));
+        e.prediction.set_learning_enabled(false);
+        e.prediction.set_language(Some(Language::English));
+        e.digit(4, 0);
+        assert!(e.accept_prediction());
+        assert_eq!(e.text(), "secret home");
     }
 }

@@ -128,6 +128,14 @@ impl App {
             115 => "alarm-ringtones",
             116 => "calendar-ringtones",
             117 => "contact-ringtones",
+            118 => "t9-spelling-ni",
+            119 => "t9-spelling-mi",
+            120 => "t9-next-page",
+            121 => "t9-association",
+            122 => "t9-context-hao",
+            123 => "t9-committed",
+            124 => "t9-learning-selection",
+            125 => "t9-learning-committed",
             _ => {
                 eprintln!(
                     "SMOKE PASS: {} presented frames",
@@ -175,7 +183,7 @@ impl App {
                 self.phone.compose.to.insert("12345");
                 self.phone.compose.body.insert("明天见！\n");
                 self.phone.go(Screen::Compose);
-                for digit in [6, 4, 4, 2, 6] {
+                for digit in [6, 4] {
                     self.dispatch(Event {
                         key: Key::Digit(digit),
                         phase: Phase::Down,
@@ -626,6 +634,7 @@ impl App {
                     body: "明天见。".into(),
                     time: 1_792_944_000_000,
                     sent: true,
+                    submission: None,
                 });
                 self.phone
                     .receive_message("12345".into(), "好的，联系 67890。".into())
@@ -831,13 +840,13 @@ impl App {
                 self.phone
                     .open_media(phone::media_browser::Purpose::Pictures);
                 self.phone.media_ui.entries = vec![
-                    phone_vfs::Entry {
+                    crate::local_files::Entry {
                         name: "手机存储".into(),
                         path: "/phone".into(),
                         directory: true,
                         len: 0,
                     },
-                    phone_vfs::Entry {
+                    crate::local_files::Entry {
                         name: "存储卡".into(),
                         path: "/card".into(),
                         directory: true,
@@ -847,7 +856,7 @@ impl App {
             }
             104 => {
                 self.phone.media_ui.path = "/card".into();
-                self.phone.media_ui.entries = vec![phone_vfs::Entry {
+                self.phone.media_ui.entries = vec![crate::local_files::Entry {
                     name: "sample.png".into(),
                     path: "/card/sample.png".into(),
                     directory: false,
@@ -921,6 +930,89 @@ impl App {
                 self.phone.organizer.draft = vec![String::new(); 10];
                 self.phone.organizer.draft[7] = "Clock1".into();
                 self.phone.index = 2;
+            }
+            117 => {
+                self.phone.overlay = None;
+                self.phone.compose = Compose::default();
+                self.phone.compose.recipient = false;
+                self.phone.go(Screen::Compose);
+                for digit in [6, 4] {
+                    self.dispatch(Event {
+                        key: Key::Digit(digit),
+                        phase: Phase::Down,
+                    });
+                }
+            }
+            118 => self.dispatch(Event {
+                key: Key::Down,
+                phase: Phase::Down,
+            }),
+            119 => {
+                self.dispatch(Event {
+                    key: Key::Up,
+                    phase: Phase::Down,
+                });
+                self.dispatch(Event {
+                    key: Key::Right,
+                    phase: Phase::Down,
+                });
+                for _ in 0..4 {
+                    self.dispatch(Event {
+                        key: Key::Down,
+                        phase: Phase::Down,
+                    });
+                }
+            }
+            120 => {
+                self.phone.compose.body.prediction.selected = 0;
+                self.dispatch(Event {
+                    key: Key::Center,
+                    phase: Phase::Down,
+                });
+            }
+            121 => {
+                for digit in [4, 2, 6] {
+                    self.dispatch(Event {
+                        key: Key::Digit(digit),
+                        phase: Phase::Down,
+                    });
+                }
+            }
+            122 => {
+                self.dispatch(Event {
+                    key: Key::Center,
+                    phase: Phase::Down,
+                });
+                self.dispatch(Event {
+                    key: Key::Center,
+                    phase: Phase::Down,
+                });
+                assert_eq!(self.phone.compose.body.text(), "你好");
+                self.phone.compose.body.prediction.clear();
+            }
+            123 => {
+                self.phone.compose.body.clear();
+                for digit in [6, 4] {
+                    self.dispatch(Event {
+                        key: Key::Digit(digit),
+                        phase: Phase::Down,
+                    });
+                }
+                let p = &mut self.phone.compose.body.prediction;
+                p.spelling_focus = false;
+                p.selected = p
+                    .candidates
+                    .iter()
+                    .position(|c| c.text == "酿")
+                    .expect("Native learning fixture");
+            }
+            124 => {
+                self.dispatch(Event {
+                    key: Key::Center,
+                    phase: Phase::Down,
+                });
+                assert_eq!(self.phone.compose.body.text(), "酿");
+                self.flush();
             }
             _ => {}
         }

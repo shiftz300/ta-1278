@@ -1,11 +1,11 @@
 //! Audio device transport. The phone owns controls; the sink owns elapsed time.
+use crate::local_files::Folder;
 use phone_core::music::Music;
-use phone_vfs::Vfs;
 use rodio::{Decoder, OutputStream, OutputStreamBuilder, Sink, Source};
 use std::{io::BufReader, time::Duration};
-pub type AudioDecoder = Decoder<BufReader<Box<dyn phone_vfs::ReadSeek>>>;
-pub fn decode(vfs: &Vfs, path: &str) -> Result<AudioDecoder, String> {
-    let file = vfs.open(path).map_err(|e| e.to_string())?;
+pub type AudioDecoder = Decoder<BufReader<std::fs::File>>;
+pub fn decode(files: &Folder, path: &str) -> Result<AudioDecoder, String> {
+    let file = files.open(path).map_err(|e| e.to_string())?;
     Decoder::builder()
         .with_data(BufReader::new(file.reader))
         .with_byte_len(file.len)
@@ -32,16 +32,16 @@ mod native_tests {
         assert!(audio.effect.as_ref().unwrap().get_pos() > Duration::from_millis(20));
         audio.effect_volume(0);
         assert!(audio.effect.is_none() && audio.pending_effect.is_none());
-        let vfs = Vfs::default();
+        let files = Folder::new(std::env::temp_dir(), true).unwrap();
         let deadline = Instant::now() + Duration::from_secs(10);
         while audio.alarm.is_none() && Instant::now() < deadline {
-            audio.alert(&vfs, Some("Clock1"), 1).unwrap();
+            audio.alert(&files, Some("Clock1"), 1).unwrap();
             std::thread::sleep(Duration::from_millis(5));
         }
         assert!(audio.alarm.is_some());
         std::thread::sleep(Duration::from_millis(80));
         assert!(!audio.alarm.as_ref().unwrap().empty());
-        audio.alert(&vfs, None, 0).unwrap();
+        audio.alert(&files, None, 0).unwrap();
         assert!(audio.alarm.is_none());
         eprintln!("Original Snake food and Clock1 reached CoreAudio; mute and alert stop passed.");
     }
@@ -104,7 +104,7 @@ impl Audio {
         self.effect = Some(sink);
         Ok(())
     }
-    pub fn preview(&mut self, vfs: &Vfs, path: &str, volume: u8) -> Result<(), String> {
+    pub fn preview(&mut self, files: &Folder, path: &str, volume: u8) -> Result<(), String> {
         self.pending_effect = None;
         self.effect = None;
         if path == "无" {
@@ -119,18 +119,18 @@ impl Audio {
             self.pending_effect = Some((key.into(), volume));
             return self.poll_effects();
         }
-        let file = vfs.open(path).map_err(|e| e.to_string())?;
+        let file = files.open(path).map_err(|e| e.to_string())?;
         if file.len > 20 * 1024 * 1024 {
             return Err("铃声文件超过 20 MiB。".into());
         }
-        let source = decode(vfs, path)?.take_duration(Duration::from_secs(15));
+        let source = decode(files, path)?.take_duration(Duration::from_secs(15));
         let sink = Sink::connect_new(self.output()?.mixer());
         sink.set_volume(volume as f32 / 10.);
         sink.append(source);
         self.effect = Some(sink);
         Ok(())
     }
-    pub fn alert(&mut self, vfs: &Vfs, tone: Option<&str>, volume: u8) -> Result<(), String> {
+    pub fn alert(&mut self, files: &Folder, tone: Option<&str>, volume: u8) -> Result<(), String> {
         let Some(tone) = tone.filter(|s| *s != "无" && volume > 0) else {
             self.alarm = None;
             self.alarm_tone = None;
@@ -145,10 +145,10 @@ impl Audio {
         if self.alarm.is_none() && !self.alarm_failed {
             let result = (|| -> Result<Option<Sink>, String> {
                 if tone.starts_with('/') {
-                    if vfs.open(tone).map_err(|e| e.to_string())?.len > 20 * 1024 * 1024 {
+                    if files.open(tone).map_err(|e| e.to_string())?.len > 20 * 1024 * 1024 {
                         return Err("铃声文件超过 20 MiB。".into());
                     }
-                    let source = decode(vfs, tone)?
+                    let source = decode(files, tone)?
                         .take_duration(Duration::from_secs(15))
                         .repeat_infinite();
                     let sink = Sink::connect_new(self.output()?.mixer());
@@ -187,15 +187,25 @@ impl Audio {
         self.sink.take();
         self.loaded = None;
     }
-    pub fn sync(&mut self, vfs: &Vfs, path: Option<&str>, music: &mut Music) -> Result<(), String> {
-        let result = self.update(vfs, path, music);
+    pub fn sync(
+        &mut self,
+        files: &Folder,
+        path: Option<&str>,
+        music: &mut Music,
+    ) -> Result<(), String> {
+        let result = self.update(files, path, music);
         if result.is_err() {
             self.stop();
             music.playing = false;
         }
         result
     }
-    fn update(&mut self, vfs: &Vfs, path: Option<&str>, music: &mut Music) -> Result<(), String> {
+    fn update(
+        &mut self,
+        files: &Folder,
+        path: Option<&str>,
+        music: &mut Music,
+    ) -> Result<(), String> {
         let Some(path) = path else {
             self.stop();
             music.playing = false;
@@ -210,7 +220,7 @@ impl Audio {
             if !music.playing {
                 return Ok(());
             }
-            let source = decode(vfs, path)?;
+            let source = decode(files, path)?;
             if let Some(duration) = source.total_duration() {
                 music.tracks[music.index].1 = duration.as_secs_f32();
             }

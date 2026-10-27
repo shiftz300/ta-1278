@@ -27,7 +27,13 @@ pub fn save(dir: &Path, mailbox: &Mailbox) -> Result<(), String> {
     save_json(dir, "messages.json", mailbox, 8 * 1024 * 1024)
 }
 pub fn load_preferences(dir: &Path) -> Result<Preferences, String> {
-    let prefs: Preferences = load_json(dir, "preferences.json", 65536)?;
+    let mut prefs: Preferences = load_json(dir, "preferences.json", 65536)?;
+    // Retired shortcut ID from older profiles. Keep all surviving IDs stable.
+    for shortcut in [&mut prefs.left_shortcut, &mut prefs.right_shortcut] {
+        if *shortcut == 17 {
+            *shortcut = 0;
+        }
+    }
     prefs.validate()?;
     Ok(prefs)
 }

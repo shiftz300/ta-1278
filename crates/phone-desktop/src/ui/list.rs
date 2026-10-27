@@ -72,7 +72,11 @@ pub fn draw<'a>(
         }
         let check = matches!(item.marker, Marker::Check(_));
         c.fit(
-            if check { 36 } else { style.inset },
+            if check {
+                style.inset.max(36)
+            } else {
+                style.inset
+            },
             y + style.text_y,
             item.label,
             style.font,
@@ -138,4 +142,23 @@ pub fn popup<'a>(c: &mut Canvas, count: usize, index: usize, row: impl FnMut(usi
         [0, 0, 0, 255],
     );
     draw(c, count, index, style, row);
+}
+
+/// Native two-line rows used by storage and the Other menu.
+pub fn detail_rows<'a>(
+    c: &mut Canvas,
+    count: usize,
+    index: usize,
+    mut row: impl FnMut(usize) -> (&'a str, &'a str),
+) {
+    let start = index.saturating_sub(3);
+    for i in start..count.min(start + 4) {
+        let (label, value) = row(i);
+        let y = 24 + (i - start) as i32 * 64;
+        if i == index {
+            c.rect(0, y, 240, 64, c.accent(3));
+        }
+        c.text(6, y + 10, label, 20, WHITE);
+        c.text(6, y + 38, value, 16, MUTED);
+    }
 }

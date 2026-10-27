@@ -16,6 +16,8 @@ pub struct Message {
     pub time: u64,
     #[serde(default)]
     pub sent: bool,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub submission: Option<crate::services::Submission>,
 }
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
 pub struct ReceivedMessage {
@@ -28,6 +30,8 @@ pub struct ReceivedMessage {
 }
 #[derive(Default, Serialize, Deserialize)]
 pub struct Mailbox {
+    #[serde(default)]
+    pub services: crate::services::ServiceState,
     #[serde(default)]
     pub inbox: Vec<ReceivedMessage>,
     pub drafts: Vec<Message>,
@@ -76,7 +80,17 @@ impl Mailbox {
     pub fn stage_queue(
         &mut self,
         index: Option<usize>,
+        message: Message,
+    ) -> Result<QueueChange, &'static str> {
+        self.stage_service_queue(index, message, None)
+    }
+    /// Only newly confirmed sends can opt in to a backend. Old/local messages
+    /// have no submission and must never be uploaded when a service is added.
+    pub fn stage_service_queue(
+        &mut self,
+        index: Option<usize>,
         mut message: Message,
+        backend: Option<&str>,
     ) -> Result<QueueChange, &'static str> {
         if message.to.is_empty()
             || !message
@@ -90,6 +104,26 @@ impl Mailbox {
         }
         if message.body.is_empty() {
             return Err("Message is empty");
+        }
+        message.submission = None;
+        if let Some(backend) = backend {
+            if backend.is_empty()
+                || backend.len() > 64
+                || !backend
+                    .bytes()
+                    .all(|b| b.is_ascii_alphanumeric() || b"._-:".contains(&b))
+                || message.to.len() > 64
+                || message.body.encode_utf16().count() > 4096
+            {
+                return Err("Invalid service message");
+            }
+            let id = self.services.next_request.max(1);
+            self.services.next_request = id.checked_add(1).ok_or("Request ids exhausted")?;
+            message.submission = Some(crate::services::Submission {
+                backend: backend.into(),
+                request_id: id,
+                state: crate::services::SubmissionState::Queued,
+            });
         }
         message.sent = false;
         let change = QueueChange {

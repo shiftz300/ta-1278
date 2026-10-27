@@ -6,6 +6,8 @@ from pathlib import Path
 import hashlib,json
 from fontTools.ttLib import TTFont
 root=Path(__file__).resolve().parents[1]
+wallpaper=json.loads((root/'assets/ui/owner-wallpaper.json').read_text())
+p=root/wallpaper['file'];assert p.stat().st_size==wallpaper['bytes'];assert hashlib.sha256(p.read_bytes()).hexdigest()==wallpaper['sha256']
 for row in json.loads((root/'assets/sources.json').read_text()):
  p=root/'assets'/row['file'];assert p.stat().st_size==row['size'];assert hashlib.sha256(p.read_bytes()).hexdigest()==row['sha256'],row['file']
 derived=json.loads((root/'assets/fonts/subsets/manifest.json').read_text())

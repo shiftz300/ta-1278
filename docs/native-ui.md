@@ -24,6 +24,10 @@ The small listings in [evidence](evidence/native-ui-ranges.json) include source-
 
 Only the page/video was viewed. Third-party photos/video were not bundled into the application. The owner reports a pure-black default background and color selection in Settings (2026-10-25). The replica now uses black for page backgrounds. This is owner-provided handset evidence, not an independently captured screenshot or a recovered firmware default. Available assets alone do not establish where or when they are drawn.
 
+On 2026-10-26 the owner explicitly selected the green character wallpaper shown on their own handset as the replica default. The intact `wallpaper.dat` was recovered from the existing private FAT12 backup and decoded as 232×316 RGB565; this is not a screenshot with UI painted out and is not a factory-default claim. Home and Menu share one clipped background renderer. App pages stay black. Position (4,2), clip (4,24,232,258) and the Menu's 3/5 brightness follow capture comparison; the brightness is an approximation. [Asset provenance](../assets/ui/owner-wallpaper.json).
+
+Wallpaper settings now offer Default, None and Choose from files. Older profiles with no selected file adopt the new default; saved custom files retain priority. Explicit None persists through `wallpaper_enabled=false`. `--disable pictures` suppresses both built-in and custom wallpapers. A missing selected custom file stays black instead of silently substituting the default. The raw cache, its trailer and complete private captures remain outside the repository.
+
 - `IMAGE_THEME_BG`, `native-images/00291-icon-00049864.png`: decoded 240×320 gradient. Preserved in the research archive; not used as the replica default.
 - `IMAGE_WALLPAPER_1`, `native-images/02851-icon-00b02630.png`: decoded moon wallpaper, matching the type shown in the public menu photo. Preserved in the research archive; not used as the replica default.
 - The grid now uses all 18 observed entries and their original icons. The two owner-excluded services are inactive. Original 76×76 icons contain transparent margins, so they are drawn without the earlier extra downscale. Theme preview additionally uses the original camera/game icons. Opening an entry is not full implementation of its service.
@@ -43,4 +47,4 @@ Chinese labels for Insert options, smiley, symbol, template, Clear text and Save
 
 ## Still host implementations
 
-Replacement Rime/FrequencyWords prediction and ordering; left/right to switch spelling/text columns; session learning; font rasterization and fallback; the exact speech-bubble dimensions and tail; status icons; unsampled list edge cases; local persistence; HTTP text layout and synthetic music. These are explicitly not claimed as recovered native behavior. The original dictionary engine, complete UI framework and service state machines remain unfinished.
+Replacement Rime/FrequencyWords prediction and ordering; left/right to switch spelling/text columns; persistent selection/context learning; font rasterization and fallback; the exact speech-bubble dimensions and tail; status icons; unsampled list edge cases; local persistence; HTTP text layout and synthetic music. These are explicitly not claimed as recovered native behavior. The original dictionary engine, complete UI framework and service state machines remain unfinished.

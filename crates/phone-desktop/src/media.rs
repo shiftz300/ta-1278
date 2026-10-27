@@ -1,5 +1,6 @@
-//! Shared VFS service for file browsing and the music library.
+//! Shared local folder service for file browsing and the music library.
 mod files;
+use crate::local_files::Folder;
 use crate::{
     audio::{self, Audio},
     phone::{
@@ -9,7 +10,6 @@ use crate::{
     storage,
 };
 use phone_core::music::Repeat;
-use phone_vfs::Vfs;
 use rodio::Source;
 use serde::{Deserialize, Serialize};
 use std::{
@@ -64,11 +64,11 @@ pub fn supported(path: &str) -> bool {
         .next()
         .is_some_and(|e| e.eq_ignore_ascii_case("mp3") || e.eq_ignore_ascii_case("wav"))
 }
-pub fn probe(vfs: &Vfs, path: &str) -> Result<Track, String> {
+pub fn probe(files: &Folder, path: &str) -> Result<Track, String> {
     if !supported(path) {
         return Err("暂不支持此文件类型。支持 MP3 和 WAV。".into());
     }
-    let decoder = audio::decode(vfs, path)?;
+    let decoder = audio::decode(files, path)?;
     let seconds = decoder
         .total_duration()
         .ok_or("无法识别音频时长。")?
@@ -82,13 +82,13 @@ pub fn probe(vfs: &Vfs, path: &str) -> Result<Track, String> {
         seconds,
     })
 }
-fn scan(vfs: &Vfs) -> (Vec<Track>, Vec<String>) {
+fn scan(files: &Folder) -> (Vec<Track>, Vec<String>) {
     let mut queue = vec![("/".to_owned(), 0)];
     let mut tracks = vec![];
     let mut warnings = vec![];
     let mut visited = 0;
     while let Some((dir, depth)) = queue.pop() {
-        let entries = match vfs.list(&dir) {
+        let entries = match files.list(&dir) {
             Ok(e) => e,
             Err(e) => {
                 warnings.push(format!("{dir}: {e}"));
@@ -108,7 +108,7 @@ fn scan(vfs: &Vfs) -> (Vec<Track>, Vec<String>) {
                     warnings.push(format!("Scan depth limit: {}", e.path));
                 }
             } else if supported(&e.path) {
-                match probe(vfs, &e.path) {
+                match probe(files, &e.path) {
                     Ok(t) => tracks.push(t),
                     Err(err) => warnings.push(format!("{}: {err}", e.path)),
                 }
@@ -124,12 +124,19 @@ struct TransferResult {
     to: String,
     moving: bool,
 }
+enum FileResult {
+    Transfer(TransferResult),
+    Remove {
+        removed: Vec<String>,
+        failed: Vec<(String, String)>,
+    },
+}
 pub struct Media {
     unread: usize,
-    transfers: mpsc::Receiver<TransferResult>,
-    transfer_results: mpsc::Sender<TransferResult>,
+    transfers: mpsc::Receiver<FileResult>,
+    transfer_results: mpsc::Sender<FileResult>,
     visual: crate::visual_media::VisualMedia,
-    pub vfs: Arc<Vfs>,
+    pub files: Arc<Folder>,
     pub tracks: Vec<Track>,
     audio: Audio,
     jobs: mpsc::SyncSender<()>,
@@ -140,7 +147,7 @@ pub struct Media {
     last_save: Instant,
 }
 impl Media {
-    pub fn new(vfs: Vfs, dir: &Path, phone: &mut Phone) -> Result<Self, String> {
+    pub fn new(files: Folder, dir: &Path, phone: &mut Phone) -> Result<Self, String> {
         let saved: SavedMusic = storage::load_json(dir, "music.json", 65536)?;
         if saved.volume.is_some_and(|v| v > 10)
             || saved.repeat > 2
@@ -154,8 +161,8 @@ impl Media {
         phone.music.shuffle = saved.shuffle;
         phone.music.tracks.clear();
         phone.music.external_clock = true;
-        let vfs = Arc::new(vfs);
-        let worker = vfs.clone();
+        let files = Arc::new(files);
+        let worker = files.clone();
         let (jobs, rx) = mpsc::sync_channel(1);
         let (tx, results) = mpsc::channel();
         thread::spawn(move || {
@@ -172,8 +179,8 @@ impl Media {
             unread: phone.mailbox.unread(),
             transfers,
             transfer_results,
-            visual: crate::visual_media::VisualMedia::new(vfs.clone()),
-            vfs,
+            visual: crate::visual_media::VisualMedia::new(files.clone()),
+            files,
             tracks: vec![],
             audio: Audio::default(),
             jobs,
@@ -241,7 +248,7 @@ impl Media {
         }
     }
     pub fn tick(&mut self, phone: &mut Phone) {
-        self.visual.tick(&self.vfs, phone);
+        self.visual.tick(&self.files, phone);
         let volume = if phone.preferences.silent || !phone.features.sounds {
             0
         } else {
@@ -267,7 +274,7 @@ impl Media {
                 }
             }
             if let Some(path) = phone.audio_preview.take()
-                && let Err(e) = self.audio.preview(&self.vfs, &path, volume)
+                && let Err(e) = self.audio.preview(&self.files, &path, volume)
             {
                 phone.notice(format!("无法播放铃声：{e}"));
             }
@@ -296,30 +303,10 @@ impl Media {
                 phone.media_ui.playing = false;
             }
         }
-        if let Err(e) = self.audio.alert(&self.vfs, tone, volume) {
+        if let Err(e) = self.audio.alert(&self.files, tone, volume) {
             phone.status = format!("闹钟声音不可用：{e}");
         }
-        while let Ok(TransferResult {
-            result,
-            from,
-            to,
-            moving,
-        }) = self.transfers.try_recv()
-        {
-            phone.files.busy = false;
-            if let Err(e) = result {
-                phone.notice(format!("复制/移动失败：{e}"));
-            } else {
-                phone.files.clipboard = None;
-                self.prepare_refresh(phone);
-                if moving {
-                    self.remap_links(phone, &from, &to);
-                }
-            }
-            if let Err(e) = self.list(phone, phone.files.path.clone()) {
-                phone.notice(e);
-            }
-        }
+        self.finish_file_jobs(phone);
         if let Some(request) = phone.files.pending.take()
             && let Err(e) = self.file_request(phone, request)
         {
@@ -346,7 +333,7 @@ impl Media {
         }
         if phone.features.music && !phone.music_loading {
             let path = self.tracks.get(phone.music.index).map(|t| t.path.as_str());
-            if let Err(e) = self.audio.sync(&self.vfs, path, &mut phone.music) {
+            if let Err(e) = self.audio.sync(&self.files, path, &mut phone.music) {
                 phone.notice(format!("无法播放：{e}"));
             }
         } else {

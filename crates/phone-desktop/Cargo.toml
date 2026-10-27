@@ -5,7 +5,6 @@ edition.workspace = true
 
 [dependencies]
 phone-core = { path = "../phone-core" }
-phone-vfs = { path = "../phone-vfs" }
 rodio = { version = "0.21.1", default-features = false, features = ["playback", "symphonia-mp3", "symphonia-wav", "symphonia-pcm"] }
 serde.workspace = true
 serde_json.workspace = true

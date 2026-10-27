@@ -82,7 +82,7 @@ Final checks: 56 Rust tests (24 core, 32 desktop), Clippy with warnings denied, 
 
 The final winit/wgpu Metal run generated **43 framebuffer previews with 44 presented frames**. Eleven labeled handset/replica comparisons were generated with `scripts/compare-handset-layout.py` and visually reviewed. These PNGs remain CPU framebuffers presented through wgpu, not GPU readbacks. The final local `target/TA1278.app` was rebuilt and its ad-hoc signature verified. No install or push was performed.
 
-The browser-layout pass used several measured iterations: inline flow first, then footer/popup geometry, then focused settings row heights. The final previews include the actual two-choice font and clear menus. Clear activation remains unavailable, rather than pretending the previously invented bookmarks/offline clear list is native. Fonts, rounded controls, complex HTML and unobserved app branches still differ; test success is not full replica acceptance.
+The browser-layout pass used several measured iterations: inline flow first, then footer/popup geometry, then focused settings row heights. The final previews include the actual two-choice font and clear menus. Clear activation was unavailable during that pass. The input/browser follow-up now adds an explicit local history/cache commit policy; it does not claim a sampled native commit. Fonts, rounded controls, complex HTML and unobserved app branches still differ; test success is not full replica acceptance.
 
 The 256 temporary layout-run files were moved to `../ta-1278-source/replica-validation/20261025-browser-layout/` and checked by SHA-256 before removing their temporary copies. Raw device sessions 284–312 were likewise retained in the verified external handset archive; duplicate temporary directories were removed. Public comparisons and replica previews remain in the project.
 
@@ -211,3 +211,24 @@ The final music rendering cleanup retained 113 of 114 scene images byte-for-byte
 127 default tests passed (31 core, 90 desktop, 6 VFS), with 3 hardware/media tests excluded by default. All 23 bundled original MIDI resources synthesize finite nonzero PCM using the extracted bank. All 128 melodic presets and bank-128 drums can be selected without fallback. Tempo-map ordering, malformed/oversized input and reused-synth state are checked. Warnings-denied Clippy, formatting and diff checks passed.
 
 The opt-in CoreAudio test separately passed: original Snake food and Clock1 output advanced, mute removed playback/pending output, and stopping the alarm dropped its sink. A signed-bundle Metal run saved 118 CPU-framebuffer scenes with 119 presented frames, including the shared settings/contact/calendar/alarm ringtone controls. Tone-picker previews were visually reviewed. These checks establish local output/rendering, not original handset acoustic or pixel parity. [Hashes and build details](evidence/native-audio-validation.json), [source evidence and DSP limits](native-audio.md).
+
+
+## Input and browser follow-up — 2026-10-26
+
+162 tests passed, 4 targeted audio/video/font checks remained ignored. Clippy, formatting, resource checks and T9/service/browser static byte checks passed. The optimized, ad-hoc signed app passed the 119-frame winit/Metal smoke run and wrote 118 images. The first final-build run timed out when its window was occluded; the visible-window retry passed. No handset or real service was contacted.
+
+Reviewed examples: [Home](images/input-browser-home.png), [browser popup](images/input-browser-browser-page-popup.png), [clear picker](images/input-browser-browser-clear-picker.png). These are desktop renders. The Home geometry was compared with the stored native session 187 frame; this is not an all-screen equivalence result.
+
+[Build hashes, size and checks](evidence/input-browser-validation.json), [algorithm evidence and gaps](t9-recovery.md), [input interface](input-engine.md).
+
+## Original input runtime completion — 2026-10-27
+
+173 default tests pass; four external-fixture/specialty checks remain ignored. Warnings-denied workspace Clippy, formatting and diff checks pass. Twenty Python-interpreter fixture sequences agree with the Rust original-engine bridge. Tests exercise native Chinese/English dictionary changes and reload, corrupt dictionary refusal, invalid input rollback, explicit associations, length/privacy rules and rejected-key long holds.
+
+Two separate window processes passed 127 presented frames and 126 PNGs each, using the same synthetic native dictionary across restart, with network/sounds disabled. The added scenes cover ni/mi spelling groups, candidate paging, following-character suggestions, `64 → 你`, `426 → 好`, and learning a late “酿” selection. This is local original-engine validation, not new handset sampling.
+
+A separate window check used real host key events: F5 then 4663 displayed good/home/gone/hood; Down/Enter committed home; Cmd-Q exited normally and saved both its draft and native dictionary. [Screenshot](images/t9-keyboard-english.png), [validation record](evidence/t9-runtime-validation.json), [package hashes](evidence/t9-package.json).
+
+### 2026-10-27: hash-key input switching
+
+Shift+3 and a dedicated keypad hash now dispatch `Key::Hash`; F4/F5 mode shortcuts are removed. The phone-event regression checks the full 拼 → 笔 → Abc → abc → ABC → 123 → 拼 cycle, confirms no literal hash is inserted, and confirms an active candidate is committed on switching. Host mapping tests check both hash keys and inactive F4/F5. `cargo test --workspace --locked`: 174 passed, 4 ignored. Earlier F5 window evidence records the previous binding and is not evidence for the new hash binding.

@@ -1,5 +1,11 @@
 # App size and build changes
 
+## Current T9 runtime build — 2026-10-27
+
+The signed app is **19,192,682 bytes (18.30 MiB)**; its executable is **18,795,584 bytes**. Original T9 code, character tables and both databases occupy **211,813 compressed bytes**. Byte checks confirm all four packed native inputs are present and all three old replacement dictionary payloads are absent from the executable. The optional provider and source dictionaries remain in the repository for library users/tests. Fonts, media support and the owner wallpaper are unchanged. [Hashes and payload checks](evidence/t9-package.json), [input CPU/data cost](t9-cost.md).
+
+The sections below record earlier builds.
+
 The first optimization pass replaced a **debug** executable in `TA1278.app` with a release build using optimization level 2 and ThinLTO. The current size-focused build is measured at the end of this document. Debug builds remain available for development.
 
 | Item | Bytes | MiB |
@@ -64,3 +70,10 @@ Changes:
 The 118-frame comparisons against the initial build differ only at the live Home clock. Original `snake-over` MIDI renders to the same WAV bytes before/after compression and compiler changes. The warmed standalone render path took roughly 23–27 ms at opt2/s and 33–37 ms at z in a small three-run sample; it includes process startup and is not a full playback/frame-time benchmark. This tradeoff was retained for the smaller package. No general CPU or memory improvement is claimed. Compressed dictionaries retain their decompressed source in memory after first use.
 
 Reproduce with `scripts/package-macos.sh`, `python3 scripts/report-package-size.py`, and the explicit `fallback_subsets_preserve_every_visible_glyph` ignored test. Packing validation and limitations are in [the size checks](evidence/size-audit-validation.json); the later lifecycle build is recorded in [restart checks](evidence/restart-validation.json). Earlier measurements above are historical. The shared `build/pack.rs` source is explicitly allowed by the repository ignore rules so a new checkout retains the build helper.
+
+## Owner wallpaper working build, 2026-10-26
+
+The current signed working build is **20,799,416 bytes (19.84 MiB)**, 68,021 bytes above release 0.2.1. It adds the owner's 75,122-byte RGB PNG, provenance, wallpaper controls and icon transparency fix. The raw private storage backup/cache is not bundled. Fonts, dictionaries and sound bank retain the same packed representations. [Current breakdown](evidence/wallpaper-package-size.json), [checks](evidence/wallpaper-validation.json).
+
+
+The shared-input/browser follow-up measures **20,849,048 bytes** (19.88 MiB) for the signed app and **20,453,568 bytes** for the executable. No new dependency or dictionary was added. [Exact build hash](evidence/input-browser-validation.json).

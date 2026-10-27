@@ -15,18 +15,22 @@ pub struct Field<'a> {
 }
 impl Field<'_> {
     pub fn draw(&self, c: &mut Canvas, y: i32) -> [i32; 4] {
+        self.draw_sized(c, y, 68, false)
+    }
+    /// Schedule fields share the same controls with shorter choice rows.
+    pub fn draw_sized(&self, c: &mut Canvas, y: i32, height: i32, compact: bool) -> [i32; 4] {
         let choice = matches!(self.kind, FieldKind::Choice);
         if choice && self.focused {
-            c.rect(0, y, 240, 68, c.accent(3));
+            c.rect(0, y, 240, height, c.accent(3));
         }
         c.fit(
             6,
-            y + if choice { 8 } else { 4 },
+            y + if choice || compact { 8 } else { 4 },
             self.label,
-            if choice { 20 } else { 16 },
+            if choice && !compact { 20 } else { 16 },
             if self.focused && !choice {
                 c.accent(3)
-            } else if choice {
+            } else if choice && !compact {
                 WHITE
             } else {
                 MUTED
@@ -37,6 +41,8 @@ impl Field<'_> {
             6,
             y + if choice {
                 37
+            } else if compact {
+                33
             } else if matches!(self.kind, FieldKind::Date) {
                 25
             } else {
@@ -54,7 +60,7 @@ impl Field<'_> {
             } else {
                 20
             },
-            if choice || self.value.is_empty() {
+            if (choice && !compact) || self.value.is_empty() {
                 MUTED
             } else {
                 WHITE
@@ -64,7 +70,9 @@ impl Field<'_> {
         if !choice {
             c.rect(
                 6,
-                y + if matches!(self.kind, FieldKind::Date) {
+                y + if compact {
+                    height - 10
+                } else if matches!(self.kind, FieldKind::Date) {
                     53
                 } else {
                     51
@@ -108,5 +116,23 @@ pub fn date(c: &mut Canvas, value: &str, y: i32, digit: usize) {
         let width = c.width(glyph, 16);
         c.rect(x, y + 3, width, 19, WHITE);
         c.text(x, y, glyph, 16, [0, 0, 0, 255]);
+    }
+}
+pub fn datetime(c: &mut Canvas, date: &str, time: &str, y: i32, digit: Option<usize>) {
+    c.text(6, y, date, 16, WHITE);
+    c.text(124, y, time, 16, WHITE);
+    if let Some(digit) = digit.filter(|d| *d < 12) {
+        let (value, offset, left) = if digit < 8 {
+            (date, phone_core::calendar::Date::DIGIT_OFFSETS[digit], 6)
+        } else {
+            (time, [0, 1, 3, 4][digit - 8], 124)
+        };
+        if value.is_ascii() && offset < value.len() {
+            let x = left + c.width(&value[..offset], 16);
+            let glyph = &value[offset..offset + 1];
+            let w = c.width(glyph, 16);
+            c.rect(x, y + 3, w, 19, WHITE);
+            c.text(x, y, glyph, 16, [0, 0, 0, 255]);
+        }
     }
 }

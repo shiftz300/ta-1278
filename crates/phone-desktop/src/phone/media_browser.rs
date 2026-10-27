@@ -1,6 +1,6 @@
-//! One VFS browser for media libraries and callers choosing a file.
+//! One local folder browser for media libraries and callers choosing a file.
 use super::*;
-use phone_vfs::Entry;
+use crate::local_files::Entry;
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Purpose {
     Pictures,
@@ -133,6 +133,7 @@ impl Phone {
             }
             Purpose::Wallpaper => {
                 self.preferences.wallpaper = Some(path);
+                self.preferences.wallpaper_enabled = true;
                 self.preferences_dirty = true;
             }
             Purpose::Ringtone => {

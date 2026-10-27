@@ -28,7 +28,10 @@ pub(super) fn menu(c: &mut Canvas, p: &Phone, kind: MenuKind, index: usize) {
             WHITE,
         );
     }
-    c.rect(0, top, 240, count as i32 * row, [0, 0, 0, 255]);
+    // Root popup also owns the gap below its last row. Otherwise the dimmed
+    // web page shows through at y=276..281 as a false horizontal scrollbar.
+    let panel_height = if child { count as i32 * row } else { 282 - top };
+    c.rect(0, top, 240, panel_height, [0, 0, 0, 255]);
     list::draw(
         c,
         labels.len(),
@@ -54,9 +57,9 @@ pub(super) fn menu(c: &mut Canvas, p: &Phone, kind: MenuKind, index: usize) {
         }
     }
     if labels.len() > 6 {
-        c.rect(235, top, 4, count as i32 * row, [46, 51, 46, 255]);
+        c.rect(236, top, 4, count as i32 * row, [46, 51, 46, 255]);
         c.rect(
-            235,
+            236,
             top + (start as i32 * count as i32 * row / labels.len() as i32),
             4,
             (count * count * row as usize / labels.len()) as i32,
@@ -269,7 +272,7 @@ pub(super) fn settings(c: &mut Canvas, p: &Phone) {
                         [0, 0, 0, 255]
                     },
                 );
-                if i == 1 {
+                if p.browser_clear[i] {
                     c.rect(201, y + 12, 18, 18, c.accent(3));
                     check(c, 204, y + 17);
                 }
@@ -294,6 +297,10 @@ pub(super) fn settings(c: &mut Canvas, p: &Phone) {
                 c.rect(210, y + 18, 6, 6, [32, 51, 43, 255]);
             }
         }
+    }
+    if p.browser_view == BrowserView::Clear {
+        c.rect(0, 282, 240, 38, [0, 0, 0, 255]);
+        Softkeys::new(Button::Text("清除"), Button::Text("选择"), Button::Back).draw(c);
     }
 }
 

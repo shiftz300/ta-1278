@@ -69,7 +69,28 @@ impl MailAction {
         }
     }
 }
+pub fn delivery_text(state: &phone_core::services::SubmissionState) -> (&'static str, &str) {
+    use phone_core::services::SubmissionState::*;
+    match state {
+        Queued => ("待发送", "信息已保存在本机"),
+        Accepted => ("发送中", "服务已接受请求"),
+        Sent => ("已发送", "尚未收到送达回执"),
+        Delivered => ("已送达", "已收到送达回执"),
+        Failed { reason } => ("发送失败", reason),
+    }
+}
 impl Phone {
+    pub fn mail_delivery(&self) -> (&'static str, &str) {
+        let message = self.mailbox.outbox.get(self.mail_ui.item);
+        match message
+            .and_then(|m| m.submission.as_ref())
+            .map(|s| &s.state)
+        {
+            Some(state) => delivery_text(state),
+            None if message.is_some_and(|m| m.sent) => ("已发送", ""),
+            None => ("未发送", "短信服务未连接"),
+        }
+    }
     pub fn receive_message(&mut self, from: String, body: String) -> Result<usize, &'static str> {
         if self.mail_ui.pending.is_some() {
             return Err("Mailbox save in progress; retry after completion");
@@ -83,6 +104,10 @@ impl Phone {
             None
         };
         let index = self.mailbox.receive(from, body)?;
+        self.received_message(index, selected);
+        Ok(index)
+    }
+    pub(crate) fn received_message(&mut self, index: usize, selected: Option<String>) {
         if let Some(peer) = selected
             && let Some(i) = self
                 .mailbox
@@ -101,7 +126,6 @@ impl Phone {
         {
             self.mailbox.inbox[index].read = true;
         }
-        Ok(index)
     }
     pub fn mail_count(&self, folder: Screen) -> usize {
         match folder {

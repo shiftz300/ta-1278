@@ -5,6 +5,7 @@ mod config;
 mod effects;
 mod gpu;
 mod host_input;
+mod local_files;
 #[cfg(target_os = "macos")]
 mod macos_lifecycle;
 mod media;
@@ -13,9 +14,11 @@ mod midi_synth;
 mod native_audio;
 mod packed;
 mod phone;
+mod services;
 mod smoke;
 mod snake_art;
 mod storage;
+mod storage_setup;
 mod theme;
 mod ui;
 mod views;
@@ -30,7 +33,7 @@ use std::{
 use winit::{
     application::ApplicationHandler,
     dpi::LogicalSize,
-    event::{ElementState, Ime, WindowEvent},
+    event::{ElementState, WindowEvent},
     event_loop::{ActiveEventLoop, ControlFlow, EventLoop},
     keyboard::{KeyCode, ModifiersState, PhysicalKey},
     window::{Window, WindowId},
@@ -40,13 +43,12 @@ struct App {
     gpu: Option<gpu::Gpu>,
     canvas: canvas::Canvas,
     phone: phone::Phone,
+    services: services::Services,
+    predictor: Arc<phone_core::predict::firmware::Firmware>,
     input: Input,
     web: web::Web,
     media: Option<media::Media>,
     modifiers: ModifiersState,
-    ime: bool,
-    ime_allowed: bool,
-    preedit: String,
     save_retry_at: Instant,
     start: Instant,
     last: Instant,
@@ -86,6 +88,20 @@ impl App {
         }
     }
     fn flush(&mut self) {
+        if let Some(error) = self.predictor.take_error() {
+            self.phone.status = format!("输入法错误：{error}");
+        }
+        if Instant::now() >= self.save_retry_at
+            && let Some((data, revision)) = self.predictor.pending_save()
+        {
+            match storage::save_json(&self.data_dir, "input-native.json", &data, 2 * 1024 * 1024) {
+                Ok(()) => self.predictor.saved(revision),
+                Err(e) => {
+                    self.save_retry_at = Instant::now() + Duration::from_secs(5);
+                    self.phone.status = format!("输入记录保存失败：{e}");
+                }
+            }
+        }
         if Instant::now() >= self.save_retry_at
             && let Err(e) = self
                 .utilities
@@ -154,10 +170,12 @@ impl App {
     }
     fn quit(&mut self, event_loop: &ActiveEventLoop) {
         if self.phone.files.busy
-            || matches!(
-                self.phone.files.pending,
-                Some(phone::files::FileRequest::Transfer(..))
-            )
+            || self
+                .phone
+                .files
+                .pending
+                .as_ref()
+                .is_some_and(phone::files::FileRequest::mutating)
         {
             self.phone.notice("文件操作尚未结束，请稍候。");
             return;
@@ -189,6 +207,7 @@ impl App {
         self.save_retry_at = Instant::now();
         self.flush();
         if self.phone.dirty
+            || self.predictor.pending_save().is_some()
             || self.phone.preferences_dirty
             || self.phone.browser_dirty
             || self.phone.local_dirty
@@ -269,19 +288,10 @@ impl ApplicationHandler for App {
                     self.dispatch(e);
                 }
                 self.modifiers = ModifiersState::empty();
-                self.ime = false;
-                self.preedit.clear();
             }
             WindowEvent::ModifiersChanged(m) => self.modifiers = m.state(),
-            WindowEvent::Ime(Ime::Preedit(s, _)) => {
-                self.ime = !s.is_empty();
-                self.preedit = s;
-            }
-            WindowEvent::Ime(Ime::Commit(s)) => {
-                self.ime = false;
-                self.preedit.clear();
-                self.phone.text(&s);
-            }
+            // Ignore even late IME events queued before the window disabled composition.
+            WindowEvent::Ime(_) => {}
             WindowEvent::MouseInput { state, button, .. } => {
                 if let Some((source, key)) = host_input::mouse(button) {
                     if state == ElementState::Pressed {
@@ -302,9 +312,6 @@ impl ApplicationHandler for App {
                         self.release(source);
                         return;
                     }
-                    if self.ime {
-                        return;
-                    }
                     if self.modifiers.super_key() || self.modifiers.control_key() {
                         if code == KeyCode::KeyA {
                             if let Some(e) = self.phone.editor_mut() {
@@ -321,36 +328,16 @@ impl ApplicationHandler for App {
                         }
                         return;
                     }
-                    if code == KeyCode::F4 {
-                        if !event.repeat {
-                            self.phone.input_mode();
-                        }
+                    // Option/Alt must not open a second, host-controlled text path.
+                    if self.modifiers.alt_key() {
                         return;
                     }
-                    if self.modifiers.shift_key() {
-                        if code == KeyCode::Enter {
-                            self.phone.text("\n");
-                            return;
-                        }
-                        if let Some(text) = event
-                            .text
-                            .as_deref()
-                            .filter(|s| s.chars().all(|c| !c.is_control()))
-                        {
-                            self.phone.text(text);
-                            return;
-                        }
-                    }
-                    if let Some(key) = host_input::keyboard(code) {
-                        if !event.repeat {
+                    match host_input::key(code, self.modifiers.shift_key()) {
+                        Some(host_input::Keyboard::Phone(key)) if !event.repeat => {
                             self.press(source, key);
                         }
-                    } else if let Some(text) = event
-                        .text
-                        .as_deref()
-                        .filter(|s| s.chars().all(|c| !c.is_control()))
-                    {
-                        self.phone.text(text);
+                        Some(host_input::Keyboard::Text(ch)) => self.phone.text(&ch.to_string()),
+                        _ => {}
                     }
                 }
             }
@@ -360,13 +347,6 @@ impl ApplicationHandler for App {
                 }
                 let before = self.gpu.as_ref().map_or(0, |g| g.presented);
                 views::render(&mut self.canvas, &mut self.phone);
-                if !self.preedit.is_empty() {
-                    self.canvas.rect(4, 250, 232, 44, self.canvas.accent(3));
-                    self.canvas
-                        .fit(10, 254, &self.preedit, 16, canvas::WHITE, 220);
-                    self.canvas
-                        .text(10, 275, "IME · confirm candidate", 12, canvas::WHITE);
-                }
                 if let Some(gpu) = &mut self.gpu
                     && let Err(e) = gpu.render(&self.canvas.pixels)
                 {
@@ -441,18 +421,9 @@ impl ApplicationHandler for App {
         }
         self.flush();
         if let Some(w) = &self.window {
-            let enabled = self.phone.editor().is_some();
-            if enabled != self.ime_allowed {
-                w.set_ime_allowed(enabled);
-                self.ime_allowed = enabled;
-                self.ime = false;
-                self.preedit.clear();
+            if let Err(e) = self.services.tick(&mut self.phone) {
+                self.phone.status = e;
             }
-            let size = w.inner_size().to_logical::<f64>(w.scale_factor());
-            w.set_ime_cursor_area(
-                winit::dpi::LogicalPosition::new(20., size.height * 0.8),
-                LogicalSize::new(200., 24.),
-            );
             if now >= self.next_redraw {
                 self.next_redraw = now + Duration::from_millis(33);
                 if !self.occluded {
@@ -468,8 +439,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut data_dir = storage::default_dir();
     let mut smoke = None;
     let mut features = config::Features::default();
-    let mut card = None;
-    let mut no_card = false;
+    let mut storage_dir = None;
     let mut read_only = false;
     let mut args = std::env::args().skip(1);
     while let Some(arg) = args.next() {
@@ -493,12 +463,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 return Ok(());
             }
             "--data-dir" => data_dir = PathBuf::from(args.next().ok_or("--data-dir needs a path")?),
-            "--mount-card" => {
-                card = Some(PathBuf::from(
-                    args.next().ok_or("--mount-card needs a directory")?,
-                ))
+            "--storage-dir" => {
+                storage_dir = Some(PathBuf::from(
+                    args.next().ok_or("--storage-dir needs a directory")?,
+                ));
             }
-            "--no-card" => no_card = true,
             "--read-only-storage" => read_only = true,
             "--disable" => features.disable(
                 &args
@@ -516,19 +485,28 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             }
             "--help" => {
                 println!(
-                    "cargo run -p phone-desktop -- [--data-dir PATH] [--mount-card DIRECTORY | --no-card] [--read-only-storage] [--disable music,files,network,pictures,video,sounds] [--smoke-test OUTPUT]\nOffline tone preview: --render-tone NAME OUTPUT.wav (creates a new file)\nArrows: navigate; Enter: center; F1/F2: softkeys; F3: disabled; Home: end/home; Tab: recipient/body; F4: input mode. Mouse left/right/middle = left/right/center key."
+                    "cargo run -p phone-desktop -- [--data-dir PATH] [--storage-dir DIRECTORY] [--read-only-storage] [--disable music,files,network,pictures,video,sounds] [--smoke-test OUTPUT]\nOffline tone preview: --render-tone NAME OUTPUT.wav (creates a new file)\nArrows: navigate; Enter: center; F1/F2: softkeys; F3: disabled; Home: end/home; Tab: recipient/body; # (Shift+3): input mode. Mouse left/right/middle = left/right/center key."
                 );
                 return Ok(());
             }
             _ => return Err(format!("Unknown option: {arg}").into()),
         }
     }
-    if no_card && card.is_some() {
-        return Err("--no-card conflicts with --mount-card".into());
-    }
     let _data_lock = storage::DataLock::acquire(&data_dir)?;
+    let folder = if smoke.is_none() {
+        match storage_setup::select(&data_dir, storage_dir, read_only)? {
+            Some(folder) => Some(folder),
+            None => return Ok(()),
+        }
+    } else {
+        None
+    };
     let mailbox = storage::load(&data_dir)?;
     let mut phone = phone::Phone::new(mailbox);
+    let predictor = Arc::new(phone_core::predict::firmware::Firmware::from_data(
+        storage::load_json(&data_dir, "input-native.json", 2 * 1024 * 1024)?,
+    )?);
+    phone.prediction_engine = predictor.clone();
     phone.features = features;
     phone.apply_preferences(storage::load_preferences(&data_dir)?);
     phone.browser_data = storage::load_browser(&data_dir)?;
@@ -537,35 +515,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     if smoke.is_some() {
         phone.accent = 4;
     }
-    let media = if smoke.is_none() {
-        let mut vfs = phone_vfs::Vfs::default();
-        let phone_root = data_dir.join("files");
-        std::fs::create_dir_all(&phone_root)?;
-        vfs.mount(
-            "phone",
-            "手机存储",
-            Box::new(phone_vfs::Directory::new(phone_root)?),
-            read_only,
-        )?;
-        if !no_card {
-            let card_root = if let Some(path) = card {
-                path
-            } else {
-                let path = data_dir.join("card");
-                std::fs::create_dir_all(&path)?;
-                path
-            };
-            vfs.mount(
-                "card",
-                "存储卡",
-                Box::new(phone_vfs::Directory::new(card_root)?),
-                read_only,
-            )?;
-        }
-        Some(media::Media::new(vfs, &data_dir, &mut phone)?)
-    } else {
-        None
-    };
+    let media = folder
+        .map(|folder| media::Media::new(folder, &data_dir, &mut phone))
+        .transpose()?;
     let utilities = storage::utilities::Session::load(&data_dir, &mut phone.tools)?;
     let now = Instant::now();
     let mut app = App {
@@ -573,13 +525,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         gpu: None,
         canvas: canvas::Canvas::new()?,
         phone,
+        services: services::Services::default(),
+        predictor,
         input: Input::default(),
         web: web::Web::new(features.network),
         media,
         modifiers: ModifiersState::empty(),
-        ime: false,
-        ime_allowed: false,
-        preedit: String::new(),
         save_retry_at: now,
         start: now,
         last: now,

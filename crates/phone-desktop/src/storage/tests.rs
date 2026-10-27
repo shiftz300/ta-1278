@@ -290,7 +290,7 @@ fn running_and_paused_clocks_restore_elapsed_time_without_restarting_a_finished_
         .apply(&mut p.tools, 40000);
     p.tick(0, 0.);
     assert!(p.tools.timer_notice && p.tools.timer.expired);
-    press(&mut p, Key::Center);
+    press(&mut p, Key::SoftRight);
     assert!(!p.tools.timer.expired);
     utilities::Snapshot::capture(&p.tools, 40000)
         .save(&dir.0)
@@ -320,7 +320,7 @@ fn timer_expiry_does_not_destroy_an_open_editor_and_can_be_acknowledged_later() 
     press(&mut p, Key::End);
     p.tick(1100, 0.);
     assert!(p.tools.timer_notice);
-    press(&mut p, Key::Center);
+    press(&mut p, Key::SoftRight);
     assert!(!p.tools.timer.expired);
 }
 #[test]
@@ -352,4 +352,18 @@ fn utility_future_schema_is_rejected_and_failed_checkpoint_remains_retryable() {
         std::fs::read(dir.0.join("utilities.json")).unwrap(),
         original
     );
+}
+
+#[test]
+fn retired_shortcut_loads_as_none_without_changing_other_settings() {
+    let dir = std::env::temp_dir().join(format!("ta1278-retired-shortcut-{}", std::process::id()));
+    std::fs::create_dir_all(&dir).unwrap();
+    std::fs::write(
+        dir.join("preferences.json"),
+        br#"{"left_shortcut":17,"right_shortcut":3,"volume":4}"#,
+    )
+    .unwrap();
+    let p = load_preferences(&dir).unwrap();
+    assert_eq!((p.left_shortcut, p.right_shortcut, p.volume), (0, 3, 4));
+    std::fs::remove_dir_all(dir).unwrap();
 }

@@ -1,9 +1,62 @@
 //! File I/O, bounded transfers and path-reference updates.
 use super::*;
 impl Media {
+    pub(super) fn finish_file_jobs(&mut self, phone: &mut Phone) {
+        while let Ok(result) = self.transfers.try_recv() {
+            phone.files.busy = false;
+            match result {
+                FileResult::Transfer(TransferResult {
+                    result,
+                    from,
+                    to,
+                    moving,
+                }) => {
+                    if let Err(e) = result {
+                        phone.notice(format!("复制/移动失败：{e}"));
+                    } else {
+                        phone.finish_file_transfer();
+                        self.prepare_refresh(phone);
+                        if moving {
+                            self.remap_links(phone, &from, &to);
+                        }
+                    }
+                    if let Err(e) = self.list(phone, phone.files.path.clone()) {
+                        phone.notice(e);
+                    }
+                }
+                FileResult::Remove { removed, failed } => {
+                    if !removed.is_empty() {
+                        self.prepare_refresh(phone);
+                        if let Some(saved) = &mut self.restore
+                            && saved
+                                .path
+                                .as_ref()
+                                .is_some_and(|p| removed.iter().any(|r| path_contains(r, p)))
+                        {
+                            saved.path = None;
+                            saved.position = 0.;
+                        }
+                    }
+                    phone.files.marked.retain(|p| !removed.contains(p));
+                    if let Err(e) = self.list(phone, phone.files.path.clone()) {
+                        phone.notice(e);
+                    }
+                    if let Some((_, error)) = failed.first() {
+                        phone.files.view = FileView::DeleteSelect;
+                        phone.notice(format!("已删除 {} 项；未完成：{}", removed.len(), error));
+                    } else {
+                        phone.files.marked.clear();
+                    }
+                }
+            }
+        }
+    }
     pub(super) fn list(&self, phone: &mut Phone, path: String) -> Result<(), String> {
-        let entries = self.vfs.list(&path).map_err(|e| e.to_string())?;
-        phone.files.writable = self.vfs.writable(&path);
+        let mut entries = self.files.list(&path).map_err(|e| e.to_string())?;
+        if phone.files.transfer.is_some() {
+            entries.retain(|e| e.directory);
+        }
+        phone.files.writable = self.files.writable(&path);
         phone.files.path = path;
         phone.files.entries = entries;
         phone.files.view = FileView::Browse;
@@ -21,18 +74,35 @@ impl Media {
             return Err("文件功能已停用。".into());
         }
         match request {
+            FileRequest::Storage => {
+                phone.files.capacity = self.files.capacity();
+                phone.files.view = FileView::Storage;
+                Ok(())
+            }
             FileRequest::Transfer(from, to, moving) => {
                 phone.files.busy = true;
-                let vfs = self.vfs.clone();
+                let files = self.files.clone();
                 let tx = self.transfer_results.clone();
                 thread::spawn(move || {
-                    let result = vfs.transfer(&from, &to, moving).map_err(|e| e.to_string());
-                    let _ = tx.send(TransferResult {
+                    let result = files
+                        .transfer(&from, &to, moving)
+                        .map_err(|e| e.to_string());
+                    let _ = tx.send(FileResult::Transfer(TransferResult {
                         result,
                         from,
                         to,
                         moving,
-                    });
+                    }));
+                });
+                Ok(())
+            }
+            FileRequest::RemoveMany(paths) => {
+                phone.files.busy = true;
+                let files = self.files.clone();
+                let tx = self.transfer_results.clone();
+                thread::spawn(move || {
+                    let (removed, failed) = files.remove_many(&paths);
+                    let _ = tx.send(FileResult::Remove { removed, failed });
                 });
                 Ok(())
             }
@@ -83,7 +153,7 @@ impl Media {
                 if !phone.features.music {
                     return Err("音乐功能已停用。".into());
                 }
-                let track = probe(&self.vfs, &path)?;
+                let track = probe(&self.files, &path)?;
                 let index = if let Some(i) = self.tracks.iter().position(|t| t.path == path) {
                     i
                 } else {
@@ -104,22 +174,11 @@ impl Media {
                 Ok(())
             }
             FileRequest::Mkdir(path) => {
-                self.vfs.mkdir(&path).map_err(|e| e.to_string())?;
-                self.list(phone, phone.files.path.clone())
-            }
-            FileRequest::Remove(path) => {
-                self.vfs.remove(&path).map_err(|e| e.to_string())?;
-                self.prepare_refresh(phone);
-                if let Some(saved) = &mut self.restore
-                    && saved.path.as_ref().is_some_and(|p| path_contains(&path, p))
-                {
-                    saved.path = None;
-                    saved.position = 0.;
-                }
+                self.files.mkdir(&path).map_err(|e| e.to_string())?;
                 self.list(phone, phone.files.path.clone())
             }
             FileRequest::Rename(from, to) => {
-                self.vfs.rename(&from, &to).map_err(|e| e.to_string())?;
+                self.files.rename(&from, &to).map_err(|e| e.to_string())?;
                 self.prepare_refresh(phone);
                 self.remap_links(phone, &from, &to);
                 self.list(phone, phone.files.path.clone())

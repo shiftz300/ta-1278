@@ -1,0 +1,32 @@
+{
+  "source": "nokia-ta1278-research/firmware/original/system-20261025T054301+0800/user.bin",
+  "engine_start": "0x880cc000",
+  "engine_end": "0x880e9000",
+  "readonly_character_tables": [
+    "0x884ac300",
+    "0x884acc00"
+  ],
+  "kernel_helpers": {
+    "0x881009cc": "unsigned divmod",
+    "0x88100844": "signed divmod"
+  },
+  "runtime": "bounded ARM instruction interpretation; no native loading or device access",
+  "files": {
+    "engine.arm": {
+      "bytes": 118784,
+      "sha256": "9d638a2955fef31ae36a41a211173a69b70cc7e11baa1a6e25d3536f719b5c7e"
+    },
+    "character-tables.bin": {
+      "bytes": 2304,
+      "sha256": "2d33b20131f6a89cfd4b61acf4a6a82f7ce9661e3f85b36006404330f47ca7fe"
+    },
+    "english.ldb": {
+      "bytes": 36651,
+      "sha256": "7c85dc8eb53b275475d3d13e82198eae8c57c9e64fe91a2d8adffa9ba72176a7"
+    },
+    "chinese.ldb": {
+      "bytes": 135848,
+      "sha256": "ea0435d16b27147db877284d099444a0300aece87a6670fed9ab9e780408cee9"
+    }
+  }
+}

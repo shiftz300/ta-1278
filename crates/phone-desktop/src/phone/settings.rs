@@ -2,7 +2,7 @@
 use super::*;
 use serde::{Deserialize, Serialize};
 
-pub const SHORTCUTS: [&str; 18] = [
+pub const SHORTCUTS: [&str; 17] = [
     "无",
     "通讯录",
     "通话历史记录",
@@ -20,7 +20,6 @@ pub const SHORTCUTS: [&str; 18] = [
     "设置",
     "其他",
     "计数器",
-    "支付宝",
 ];
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
@@ -31,6 +30,7 @@ pub struct Preferences {
     pub right_shortcut: usize,
     pub greeting: String,
     pub wallpaper: Option<String>,
+    pub wallpaper_enabled: bool,
     pub ringtone: String,
     pub volume: u8,
     pub silent: bool,
@@ -49,6 +49,7 @@ impl Default for Preferences {
             right_shortcut: 3,
             greeting: String::new(),
             wallpaper: None,
+            wallpaper_enabled: true,
             ringtone: "预设".into(),
             volume: 6,
             silent: false,
@@ -143,7 +144,7 @@ impl Phone {
             SettingsPage::Time => vec!["时间", "日期", "时区", "时间格式"],
             SettingsPage::Security => vec!["SIM 卡 PIN 码", "手机锁"],
             SettingsPage::Sounds => vec!["静音", "铃声音量", "铃声", "按键音"],
-            SettingsPage::Wallpaper => vec!["无", "从文件选择"],
+            SettingsPage::Wallpaper => vec!["默认", "无", "从文件选择"],
             SettingsPage::Ringtone => vec!["预设", "无", "从文件选择"],
             SettingsPage::Reset => vec!["取消", "恢复设置"],
         }
@@ -221,7 +222,7 @@ impl Phone {
                     self.preferences.mobile_data = !self.preferences.mobile_data;
                     self.preferences_dirty = true;
                 }
-                (Connections, 2) => self.notice("存储由 VFS 提供。USB 设备模式不可用。"),
+                (Connections, 2) => self.notice("存储由 local folder 提供。USB 设备模式不可用。"),
                 (Personalization, 0) => self.open_local_text(
                     TextTarget::Setting(0),
                     self.preferences.greeting.clone(),
@@ -243,12 +244,13 @@ impl Phone {
                     self.preferences.keypad_sound = !self.preferences.keypad_sound;
                     self.preferences_dirty = true;
                 }
-                (Wallpaper, 0) => {
+                (Wallpaper, 0..=1) => {
                     self.preferences.wallpaper = None;
+                    self.preferences.wallpaper_enabled = self.index == 0;
                     self.preferences_dirty = true;
                     self.settings_open(Personalization, 2);
                 }
-                (Wallpaper, 1) => self.open_media(media_browser::Purpose::Wallpaper),
+                (Wallpaper, 2) => self.open_media(media_browser::Purpose::Wallpaper),
                 (Ringtone, i) if i == crate::native_audio::file_index() => {
                     self.open_media(media_browser::Purpose::Ringtone)
                 }
@@ -319,7 +321,7 @@ impl Phone {
                 | (SettingsPage::Connections, 1)
                 | (SettingsPage::Security, _)
                 | (SettingsPage::Keyboard, 0)
-                | (SettingsPage::Shortcut { .. }, 2 | 17)
+                | (SettingsPage::Shortcut { .. }, 2)
         )
     }
     pub fn local_clock(&self) -> (phone_core::calendar::Date, u64) {
@@ -435,10 +437,7 @@ impl Phone {
             15 => Screen::Tools(tools::ToolPage::Other),
             16 => Screen::Tools(tools::ToolPage::Counter),
             14 => Screen::Settings,
-            _ => {
-                self.notice(format!("{}尚未实现。", SHORTCUTS[index]));
-                return;
-            }
+            _ => return,
         };
         self.launch(screen);
     }

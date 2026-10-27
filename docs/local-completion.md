@@ -2,6 +2,8 @@
 
 2026-10-26. This pass fills working local app flows. It does **not** establish full handset or firmware equivalence. No handset command, firmware write or personal-data capture was performed.
 
+This is a historical implementation report. Its VFS/mount descriptions were superseded on 2026-10-27 by [direct folder storage](storage.md). The [current native-page audit](native-page-audit.md) records unresolved fidelity gaps; the earlier local-flow checks do not establish full reconstruction.
+
 ## Added
 
 | Area | Working behavior | Evidence boundary |
@@ -46,7 +48,7 @@ The replica now uses this ring update and two-draw mapping. Its initial words an
 - Calls stay grey and inert. SMS uses local incoming records and an unsent queue, with no modem backend.
 - Browser scope remains text, links, basic GET forms and saved pages; it is not the original browser engine.
 - Original prediction internals, font hinting, all native error/interrupt branches, exact status/lock behavior and every scroll edge are not recovered.
-- Snake boot randomness, exact scheduler timing, exact native DSP waveforms, transient death/win frames and overflow/full-board parity are not established.
+- Snake boot randomness, exact scheduler timing, exact native DSP waveforms, unsampled end-state transitions and overflow/full-board parity are not established.
 - Bluetooth, SIM PIN/STK, USB device mode, LED/FM and microphone services have no host backend. Recorder timing is not an audio recording. Speed dial stays disabled with calling.
 - Alarms/reminders require the app to be running. There is no system wake service. Pending alerts and snoozes now survive quitting; overdue snoozes appear on restart. Scheduled occurrences entirely missed while closed are not replayed. See [persistence](persistence.md). Music/video pause for an alert and require explicit resume.
 - The UI is Chinese. Additional system-language UI and unsupported native security settings are not implemented.
@@ -68,4 +70,12 @@ target/TA1278.app/Contents/MacOS/phone-desktop --smoke-test /tmp/ta1278-screens
 
 The generated video used `ffmpeg -f lavfi -i testsrc2=size=240x180:rate=10 -f lavfi -i sine=frequency=440:sample_rate=16000 -t 6 -c:v libx264 -pix_fmt yuv420p -c:a aac clip.mp4`. Run `TA1278_VIDEO_FIXTURE=/absolute/path/clip.mp4 cargo test -p phone-desktop --locked native_video_frames_pause_seek_and_cleanup -- --ignored --nocapture` in a normal macOS session. The separate `real_output_pause_seek_and_eof` test generates a WAV, or accepts `TA1278_AUDIO_FIXTURE` for MP3. These tests do not use the handset.
 
-The current distributable is about 19.77 MiB after resource packing and font deduplication. Library paths are indexed once per scan/update, and visible music rows borrow track titles. This avoids per-frame full-library title copies and repeated linear path searches. [Size and image comparison](build-size.md).
+The current distributable is about 18.30 MiB after resource packing, font deduplication, the owner-selected wallpaper and replacement of the older dictionaries with the original T9 engine data. Library paths are indexed once per scan/update, and visible music rows borrow track titles. This avoids per-frame full-library title copies and repeated linear path searches. [Size and image comparison](build-size.md).
+
+## Input and browser follow-up
+
+Shared prediction, bounded persistent selection/context learning, password learning exclusion and an engine replacement interface are now implemented. The subsequent runtime pass integrates the original ARM candidate engine, spelling/page selection, context associations and native dictionary persistence through bounded interpretation. Complete semantic decompilation and exhaustive handset comparison are not claimed. [Algorithm evidence](t9-recovery.md) and [engine contract](input-engine.md).
+
+Browser Clear now toggles history/cache and commits locally. Cache clearing retains the visible page and saved pages/bookmarks. Sharing a URL opens a new SMS draft and preserves unfinished text without sending or duplicating an already queued message. These are usable host policies, not newly established native branches.
+
+The Home clock and date were adjusted to the stored native reference `ta1278-native-187/home-left-softkey-before.png`: clock top 42 at size 40; date top 96 at size 14 with weekday and numeric date. This does not reproduce native font rasterization, status icons or emergency-call overlays.

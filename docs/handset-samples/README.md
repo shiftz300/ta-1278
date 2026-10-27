@@ -18,3 +18,8 @@ Useful comparisons:
 | Editors | [New event](20261025/calendar-new-event.png), [new alarm](20261025/alarm-new.png), [new contact](20261025/contact-new.png) |
 
 JPEG is lossy. Some headers were reconstructed from verified native quantization tables; raw responses and repair metadata are retained outside Git. PNG is a decoded capture, not raw framebuffer evidence. The test phone has modified test settings. Frames with original contacts/alarms, inbox previews, personal wallpaper, call history or media names are excluded. The displayed a0000/1230000 contact is a verified test-mode-generated fixture.
+
+
+## 2026-10-27
+
+[14 further native frames](20261027/index.json) cover Files and Timer. Each PNG is verified against the original session capture hash. Two originally misleading action names are corrected in the index: the supposed move-picker capture was actually delete selection (cancelled without deleting), and the timer stop attempt captured expiration before a guard stopped the key. These frames predate the owner’s request for silence; no further key or audible test is run during quiet time.

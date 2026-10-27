@@ -1,0 +1,97 @@
+{
+  "date": "2026-10-27",
+  "scope": "Original T9 routines interpreted locally; synthetic profiles only; no handset/network/backend access.",
+  "tests": {
+    "passed": 173,
+    "ignored": 4,
+    "command": "cargo test --workspace --locked"
+  },
+  "clippy": "cargo clippy --workspace --all-targets --locked -- -D warnings: passed",
+  "python_differential_cases": 20,
+  "window_runs": [
+    {
+      "run": "ta1278-t9-final-smoke",
+      "presented_frames": 127,
+      "screenshots": 126,
+      "same_native_profile": true,
+      "network": false,
+      "sound": false
+    },
+    {
+      "run": "ta1278-t9-restart-smoke",
+      "presented_frames": 127,
+      "screenshots": 126,
+      "same_native_profile": true,
+      "network": false,
+      "sound": false
+    }
+  ],
+  "manual_keys": {
+    "profile": "temporary isolated profile",
+    "sequence": [
+      "Enter",
+      "Right",
+      "Right",
+      "Enter",
+      "Enter",
+      "Tab",
+      "F5",
+      "4",
+      "6",
+      "6",
+      "3",
+      "Down",
+      "Enter",
+      "Cmd-Q"
+    ],
+    "observed_candidates": [
+      "good",
+      "home",
+      "gone",
+      "hood"
+    ],
+    "committed_text": "home",
+    "draft_saved": true,
+    "native_dictionary_lengths": [
+      4096,
+      110
+    ],
+    "normal_exit_code": 0
+  },
+  "limits": [
+    "Not a full semantic decompilation or exhaustive handset comparison",
+    "Only simplified Chinese, stroke and one English LDB",
+    "Other firmware entry points, native timers and languages not supported",
+    "Four separate audio/video/font tests remain ignored by the default suite; this pass did not rerun those external-fixture tests"
+  ],
+  "images": {
+    "docs/images/t9-association.png": {
+      "sha256": "43dd40089fc0cf628892ed71eb38f4dbc3aaa758be86a6c1a83909558b8a94ec",
+      "bytes": 13664
+    },
+    "docs/images/t9-committed.png": {
+      "sha256": "0fe01d7897882a64a6c469070f3ac2e02b95695abfcd28a8000967dc47f8e2e2",
+      "bytes": 12160
+    },
+    "docs/images/t9-context-hao.png": {
+      "sha256": "54f4cc083a7b636e0eec1524ba68fe9d6de29f97dc9e9b287915773d72566173",
+      "bytes": 18651
+    },
+    "docs/images/t9-keyboard-english.png": {
+      "sha256": "b4e81baa47f8b00d349d31fd4dcfbb5f65624ad88cfcf3821d39022e2be76d96",
+      "bytes": 84718
+    },
+    "docs/images/t9-next-page.png": {
+      "sha256": "5add9c916530909e5843aba699dec82f2281a8c174c1ae870b7894dcabbdc893",
+      "bytes": 15462
+    },
+    "docs/images/t9-spelling-mi.png": {
+      "sha256": "c34ab60c6c32174c0e3f66793e43af19bad4ad17627bdcd6f632ef499c6996e4",
+      "bytes": 15632
+    },
+    "docs/images/t9-spelling-ni.png": {
+      "sha256": "603a9bca9195d6e0d2ecf114dac576077fd51eb8f09eef2807dec88b83ebdf4a",
+      "bytes": 14730
+    }
+  }
+}

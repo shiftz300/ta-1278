@@ -1902,7 +1902,7 @@ dependencies = [
 
 [[package]]
 name = "phone-core"
-version = "0.2.1"
+version = "0.2.2"
 dependencies = [
  "miniz_oxide 0.8.9",
  "serde",
@@ -1911,7 +1911,7 @@ dependencies = [
 
 [[package]]
 name = "phone-desktop"
-version = "0.2.1"
+version = "0.2.2"
 dependencies = [
  "fontdue",
  "image",
@@ -1922,7 +1922,6 @@ dependencies = [
  "objc2-foundation 0.2.2",
  "oxisynth",
  "phone-core",
- "phone-vfs",
  "pollster",
  "rodio",
  "scraper",
@@ -1933,10 +1932,6 @@ dependencies = [
  "wgpu",
  "winit",
 ]
-
-[[package]]
-name = "phone-vfs"
-version = "0.2.1"
 
 [[package]]
 name = "pin-project"

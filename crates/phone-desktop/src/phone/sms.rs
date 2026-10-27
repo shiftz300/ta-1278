@@ -34,7 +34,11 @@ impl Phone {
             self.notice(mail::operation_label(4).unwrap());
             return;
         }
-        match self.mailbox.stage_queue(self.compose.draft, m) {
+        match self.mailbox.stage_service_queue(
+            self.compose.draft,
+            m,
+            self.service_backend.as_deref(),
+        ) {
             Ok(change) => {
                 self.mail_ui.pending = Some(mail::PendingQueue {
                     change,

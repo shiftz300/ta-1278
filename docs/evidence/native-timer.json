@@ -1,0 +1,181 @@
+{
+  "source": "nokia-ta1278-research/firmware/original/system-20261025T054301+0800/user.bin",
+  "sha256": "8f0db2dc82f9e763cb700c2e5781b7ca7125a4d250f4c075dbec793eb549c1ca",
+  "windows": [
+    {
+      "offset": "0x70ffd4",
+      "size": 44,
+      "sha256": "83b3d77b22832f2a11ac237824f74ca476cb01deed49f5510c884f860b31d721",
+      "window_id": "0x17000b",
+      "name": "MMIACC_COUTIME_WIN_ID",
+      "handler_thumb": "0x880a3c57",
+      "attributes": [
+        {
+          "opcode": "0xf010",
+          "arguments": [
+            "0x170069"
+          ],
+          "strings": {},
+          "framework_opcode": "MMK_CREATE_EDIT_TIME",
+          "framework_macro": "CREATE_EDIT_TIME_CTRL",
+          "operand_schema_match": true,
+          "named_arguments": {
+            "_CTRL_ID_": "0x170069"
+          }
+        },
+        {
+          "opcode": "0xf020",
+          "arguments": [
+            "0x4000094c",
+            "0x40000001",
+            "0x40000012"
+          ],
+          "strings": {
+            "0x4000094c": {
+              "0": "Start",
+              "1": "Start",
+              "2": "Start"
+            },
+            "0x40000001": {
+              "0": "",
+              "1": "",
+              "2": ""
+            },
+            "0x40000012": {
+              "0": "Return",
+              "1": "返回",
+              "2": "返回"
+            }
+          },
+          "framework_opcode": "MMK_CREATE_SOFTKEY",
+          "framework_macro": "WIN_SOFTKEY",
+          "operand_schema_match": true,
+          "named_arguments": {
+            "_LEFT_SOFT_ID_": "0x4000094c",
+            "_MID_SOFT_ID_": "0x40000001",
+            "_RIGHT_SOFT_ID_": "0x40000012"
+          }
+        }
+      ]
+    },
+    {
+      "offset": "0x710000",
+      "size": 84,
+      "sha256": "29d2eb6d84d2eba3b9ecc56f15c0255d00bb1b4d34b7803220b89472285c277e",
+      "window_id": "0x170021",
+      "name": "MMIACC_PRIMO_CT_WIN_ID",
+      "handler_thumb": "0x880a437f",
+      "attributes": [
+        {
+          "opcode": "0xf025",
+          "arguments": [
+            "0x0",
+            "0x170075"
+          ],
+          "strings": {},
+          "framework_opcode": "MMK_CREATE_FORM",
+          "framework_macro": "CREATE_FORM_CTRL",
+          "operand_schema_match": true,
+          "named_arguments": {
+            "_LAYOUT_": "0x0",
+            "_CTRL_ID_": "0x170075"
+          }
+        },
+        {
+          "opcode": "0xf107",
+          "arguments": [
+            "0x1",
+            "0x170078",
+            "0x170075"
+          ],
+          "strings": {},
+          "framework_opcode": "CREATE_CHILD_EDIT_TIME",
+          "framework_macro": "CHILD_EDIT_TIME_CTRL",
+          "operand_schema_match": true,
+          "named_arguments": {
+            "_IS_GET_ACTIVE_": "0x1",
+            "_CTRL_ID_": "0x170078",
+            "_PARENT_CTRL_ID_": "0x170075"
+          }
+        },
+        {
+          "opcode": "0xf101",
+          "arguments": [
+            "0x1",
+            "0x14",
+            "0x170079",
+            "0x170075"
+          ],
+          "strings": {},
+          "framework_opcode": "CREATE_CHILD_EDIT_TEXT",
+          "framework_macro": "CHILD_EDIT_TEXT_CTRL",
+          "operand_schema_match": true,
+          "named_arguments": {
+            "_IS_GET_ACTIVE_": "0x1",
+            "_STR_MAX_LEN_": "0x14",
+            "_CTRL_ID_": "0x170079",
+            "_PARENT_CTRL_ID_": "0x170075"
+          }
+        },
+        {
+          "opcode": "0xf020",
+          "arguments": [
+            "0x40000000",
+            "0x40000b2c",
+            "0x40000480"
+          ],
+          "strings": {
+            "0x40000b2c": {
+              "0": "Start",
+              "1": "开始",
+              "2": "開始"
+            },
+            "0x40000480": {
+              "0": "Freedom",
+              "1": "Freedom",
+              "2": "Freedom"
+            }
+          },
+          "framework_opcode": "MMK_CREATE_SOFTKEY",
+          "framework_macro": "WIN_SOFTKEY",
+          "operand_schema_match": true,
+          "named_arguments": {
+            "_LEFT_SOFT_ID_": "0x40000000",
+            "_MID_SOFT_ID_": "0x40000b2c",
+            "_RIGHT_SOFT_ID_": "0x40000480"
+          }
+        }
+      ]
+    }
+  ],
+  "code": [
+    {
+      "start": "0x880a437e",
+      "end": "0x880a4730",
+      "sha256": "44c6a581847948cf3f83b4af1f182515215773ea8499bfd8d3787adc57a7fde0"
+    }
+  ],
+  "verified": [
+    "Current form has separate time and text children.",
+    "Text child maximum is 20 UTF-16 units.",
+    "Start belongs to the center softkey, unlike the older countdown descriptor."
+  ],
+  "limits": [
+    "The two-byte readiness predicate at 0x880a46fa has not been fully traced to named fields.",
+    "Nonempty-name gating and running/expired transitions are handset observations, not conclusions from descriptor presence alone.",
+    "Native arithmetic, timer scheduling and every invalid-entry branch remain unverified."
+  ],
+  "hourglass": {
+    "resource_id": "0x4017002e",
+    "offset": "0xabc90c",
+    "size": 698,
+    "raw_sha256": "2ebc6ba9d879c3ec6d482d4d758cad5edbb8e7c47daff0e7d427a1cc37eeb9d0",
+    "png": "nokia-ta1278-research/analysis/extracted/png/02523-icon-00abc90c.png",
+    "png_sha256": "80ec61319ecfa85c516bd0ff9acc5c63b177441ba02d0956d1d8ef3028ec1ee9",
+    "placement": [
+      94,
+      132
+    ],
+    "basis": "Original 52x52 asset visually matched to timer-expired.png. Render-call chain not yet traced."
+  }
+}

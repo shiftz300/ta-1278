@@ -52,7 +52,16 @@ fn read(c: &mut Canvas, p: &mut Phone) {
         return;
     };
     let incoming = p.mail_ui.folder == Screen::Inbox;
-    chrome::title(c, if incoming { "信息" } else { "未发送" });
+    chrome::title(
+        c,
+        if incoming {
+            "信息"
+        } else if p.mail_ui.folder == Screen::Drafts {
+            "草稿"
+        } else {
+            p.mail_delivery().0
+        },
+    );
     c.fit(
         7,
         29,
@@ -98,9 +107,12 @@ pub(super) fn render(c: &mut Canvas, p: &mut Phone, page: MailPage) {
         }
         Result => {
             chrome::title(c, "信息");
-            c.text(84, 91, "未发送", 24, WHITE);
-            c.text(22, 141, "短信服务未连接", 20, WHITE);
-            c.text(22, 172, "信息已保存在本机", 18, MUTED);
+            let (status, detail) = p.mail_delivery();
+            c.text(84, 91, status, 24, WHITE);
+            c.fit(22, 141, detail, 20, WHITE, 202);
+            if status == "未发送" {
+                c.text(22, 172, "信息已保存在本机", 18, MUTED);
+            }
             Softkeys::new(Button::Text("重试"), Button::Text("查看"), Button::Back).draw(c);
         }
     }

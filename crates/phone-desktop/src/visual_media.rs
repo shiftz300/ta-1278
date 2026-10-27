@@ -1,9 +1,9 @@
-//! Decode media outside the event loop. The native helper receives local VFS copies only.
+//! Decode media outside the event loop. The native helper receives local file copies only.
+use crate::local_files::Folder;
 use crate::phone::{
     Phone, Screen,
     media_browser::{Purpose, Request},
 };
-use phone_vfs::Vfs;
 use std::{
     collections::HashSet,
     io::{Read, Write},
@@ -22,8 +22,8 @@ impl Drop for Temp {
         let _ = std::fs::remove_file(&self.0);
     }
 }
-fn materialize(vfs: &Vfs, path: &str, max: u64) -> Result<Temp, String> {
-    let mut file = vfs.open(path).map_err(|e| e.to_string())?;
+fn materialize(files: &Folder, path: &str, max: u64) -> Result<Temp, String> {
+    let mut file = files.open(path).map_err(|e| e.to_string())?;
     if file.len > max {
         return Err("文件过大。".into());
     }
@@ -51,7 +51,7 @@ fn materialize(vfs: &Vfs, path: &str, max: u64) -> Result<Temp, String> {
     }
     let temp = Temp(dest);
     let mut out = options.open(&temp.0).map_err(|e| e.to_string())?;
-    let copied = std::io::copy(&mut file.reader.by_ref().take(max + 1), &mut out)
+    let copied = std::io::copy(&mut Read::by_ref(&mut file.reader).take(max + 1), &mut out)
         .map_err(|e| e.to_string())?;
     if copied > max {
         return Err("文件过大。".into());
@@ -96,9 +96,9 @@ enum Loaded {
     Image(image::RgbaImage),
     Video(Video),
 }
-fn load(vfs: &Vfs, path: &str, video: bool) -> Result<Loaded, String> {
+fn load(files: &Folder, path: &str, video: bool) -> Result<Loaded, String> {
     let temp = materialize(
-        vfs,
+        files,
         path,
         if video {
             512 * 1024 * 1024
@@ -164,12 +164,12 @@ pub struct VisualMedia {
     video: Option<Video>,
 }
 impl VisualMedia {
-    pub fn new(vfs: Arc<Vfs>) -> Self {
+    pub fn new(files: Arc<Folder>) -> Self {
         let (jobs, rx) = mpsc::channel::<(String, bool)>();
         let (tx, results) = mpsc::channel();
         thread::spawn(move || {
             while let Ok((path, video)) = rx.recv() {
-                let result = load(&vfs, &path, video);
+                let result = load(&files, &path, video);
                 if tx.send((path, result)).is_err() {
                     break;
                 }
@@ -189,13 +189,13 @@ impl VisualMedia {
             self.queue.push((path, video));
         }
     }
-    pub fn tick(&mut self, vfs: &Vfs, p: &mut Phone) {
+    pub fn tick(&mut self, files: &Folder, p: &mut Phone) {
         for request in std::mem::take(&mut p.media_ui.pending) {
             if p.screen != Screen::Media && !matches!(request, Request::Stop) {
                 continue;
             }
             match request {
-                Request::List(path) => match vfs.list(&path) {
+                Request::List(path) => match files.list(&path) {
                     Ok(entries) => {
                         p.media_ui.entries = entries
                             .into_iter()
@@ -317,35 +317,28 @@ mod tests {
     use super::*;
     #[test]
     fn disabled_pictures_do_not_decode_saved_wallpaper() {
-        let vfs = Arc::new(Vfs::default());
-        let mut service = VisualMedia::new(vfs.clone());
+        let files = Arc::new(Folder::new(std::env::temp_dir(), true).unwrap());
+        let mut service = VisualMedia::new(files.clone());
         let mut p = Phone::new(Default::default());
         p.features.pictures = false;
-        p.preferences.wallpaper = Some("/card/photo.png".into());
+        p.preferences.wallpaper = Some("/photo.png".into());
         p.pictures
-            .insert("/card/photo.png".into(), image::RgbaImage::new(1, 1));
-        service.tick(&vfs, &mut p);
+            .insert("/photo.png".into(), image::RgbaImage::new(1, 1));
+        service.tick(&files, &mut p);
         assert!(p.pictures.is_empty());
         assert!(!service.busy);
         assert!(service.queue.is_empty());
     }
-    fn fixture(name: &str) -> (Vfs, PathBuf) {
+    fn fixture(name: &str) -> (Folder, PathBuf) {
         let root =
             std::env::temp_dir().join(format!("ta1278-visual-{name}-{}", std::process::id()));
         std::fs::create_dir_all(&root).unwrap();
-        let mut vfs = Vfs::default();
-        vfs.mount(
-            "card",
-            "card",
-            Box::new(phone_vfs::Directory::new(&root).unwrap()),
-            false,
-        )
-        .unwrap();
-        (vfs, root)
+        let files = Folder::new(&root, false).unwrap();
+        (files, root)
     }
     #[test]
     fn native_image_decode_is_bounded_and_temp_copy_is_removed() {
-        let (vfs, root) = fixture("image");
+        let (files, root) = fixture("image");
         let mut image = image::RgbaImage::from_pixel(40, 20, image::Rgba([255, 0, 0, 255]));
         for y in 10..20 {
             for x in 0..40 {
@@ -353,12 +346,12 @@ mod tests {
             }
         }
         image.save(root.join("photo.png")).unwrap();
-        let temp = materialize(&vfs, "/card/photo.png", 65536).unwrap();
+        let temp = materialize(&files, "/photo.png", 65536).unwrap();
         let path = temp.0.clone();
         assert!(path.exists());
         drop(temp);
         assert!(!path.exists());
-        let Loaded::Image(decoded) = load(&vfs, "/card/photo.png", false).unwrap() else {
+        let Loaded::Image(decoded) = load(&files, "/photo.png", false).unwrap() else {
             panic!("Expected image")
         };
         assert_eq!(decoded.dimensions(), (40, 20));
@@ -366,21 +359,21 @@ mod tests {
         assert_eq!(decoded.get_pixel(0, 19).0, [0, 0, 255, 255]);
         let oversized = std::fs::File::create(root.join("large.png")).unwrap();
         oversized.set_len(16 * 1024 * 1024 + 1).unwrap();
-        assert!(load(&vfs, "/card/large.png", false).is_err());
+        assert!(load(&files, "/large.png", false).is_err());
         std::fs::write(root.join("bad.png"), b"not an image").unwrap();
-        assert!(load(&vfs, "/card/bad.png", false).is_err());
+        assert!(load(&files, "/bad.png", false).is_err());
         std::fs::remove_dir_all(root).unwrap();
     }
     #[test]
     #[ignore = "Requires TA1278_VIDEO_FIXTURE and native video/audio output"]
     fn native_video_frames_pause_seek_and_cleanup() {
-        let (vfs, root) = fixture("video");
+        let (files, root) = fixture("video");
         std::fs::copy(
             std::env::var_os("TA1278_VIDEO_FIXTURE").expect("set TA1278_VIDEO_FIXTURE"),
             root.join("clip.mp4"),
         )
         .unwrap();
-        let Loaded::Video(mut video) = load(&vfs, "/card/clip.mp4", true).unwrap() else {
+        let Loaded::Video(mut video) = load(&files, "/clip.mp4", true).unwrap() else {
             panic!("Expected video")
         };
         let temp = video._temp.0.clone();

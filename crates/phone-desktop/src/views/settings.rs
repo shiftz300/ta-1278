@@ -18,7 +18,7 @@ pub(super) fn render(c: &mut Canvas, p: &Phone) {
             }
         }
         c.text(6, 68, "预览", 14, WHITE);
-        for (i, icon) in [17, 4, 6, 1, 0, 7, 5, 20, 21].iter().enumerate() {
+        for (i, icon) in [17, 4, 6, 1, 0, 7, 5, 18, 19].iter().enumerate() {
             let x = 38 + (i % 3) as i32 * 81;
             let y = 128 + (i / 3) as i32 * 78;
             if i == 4 {

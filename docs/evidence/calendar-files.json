@@ -1,0 +1,957 @@
+{
+  "source": "nokia-ta1278-research/firmware/original/system-20261025T054301+0800/user.bin",
+  "source_sha256": "8f0db2dc82f9e763cb700c2e5781b7ca7125a4d250f4c075dbec793eb549c1ca",
+  "windows": [
+    {
+      "offset": "0x1fe738",
+      "size": 44,
+      "sha256": "ba5a059bfb473d482a45d00d26eddf380785d1e5fb1a15a1155de0a7147da1a3",
+      "window_id": "0x230018",
+      "name": "MMIFMM_COPY_SELECT_FILE_WIN_ID",
+      "handler_thumb": "0x885bab91",
+      "attributes": [
+        {
+          "opcode": "0xf01a",
+          "arguments": [
+            "0x4"
+          ],
+          "strings": {},
+          "framework_opcode": "MMK_WINDOW_STYLE",
+          "framework_macro": "WIN_STYLE",
+          "operand_schema_match": true,
+          "named_arguments": {
+            "_WIN_STYLE_": "0x4"
+          }
+        },
+        {
+          "opcode": "0xf020",
+          "arguments": [
+            "0x40000000",
+            "0x40000001",
+            "0x40000480"
+          ],
+          "strings": {
+            "0x40000001": {
+              "0": "",
+              "1": "",
+              "2": ""
+            },
+            "0x40000480": {
+              "0": "Freedom",
+              "1": "Freedom",
+              "2": "Freedom"
+            }
+          },
+          "framework_opcode": "MMK_CREATE_SOFTKEY",
+          "framework_macro": "WIN_SOFTKEY",
+          "operand_schema_match": true,
+          "named_arguments": {
+            "_LEFT_SOFT_ID_": "0x40000000",
+            "_MID_SOFT_ID_": "0x40000001",
+            "_RIGHT_SOFT_ID_": "0x40000480"
+          }
+        }
+      ]
+    },
+    {
+      "offset": "0x204aa0",
+      "size": 616,
+      "sha256": "8924fbddb42461d78ed4985448bfb353b7bf708f5954123712a4585dcfe7ca49",
+      "window_id": "0x180026",
+      "name": "MMISCH_EDIT_WIN_ID",
+      "handler_thumb": "0x880572d9",
+      "attributes": [
+        {
+          "opcode": "0xf025",
+          "arguments": [
+            "0x0",
+            "0x1800a7"
+          ],
+          "strings": {},
+          "framework_opcode": "MMK_CREATE_FORM",
+          "framework_macro": "CREATE_FORM_CTRL",
+          "operand_schema_match": true,
+          "named_arguments": {
+            "_LAYOUT_": "0x0",
+            "_CTRL_ID_": "0x1800a7"
+          }
+        },
+        {
+          "opcode": "0xf110",
+          "arguments": [
+            "0x1",
+            "0x0",
+            "0x1800aa",
+            "0x1800a7"
+          ],
+          "strings": {},
+          "framework_opcode": "CREATE_CHILD_FORM",
+          "framework_macro": "CHILD_FORM_CTRL",
+          "operand_schema_match": true,
+          "named_arguments": {
+            "_IS_GET_ACTIVE_": "0x1",
+            "_LAYOUT_": "0x0",
+            "_CTRL_ID_": "0x1800aa",
+            "_PARENT_CTRL_ID_": "0x1800a7"
+          }
+        },
+        {
+          "opcode": "0xf101",
+          "arguments": [
+            "0x1",
+            "0x28",
+            "0x1800ac",
+            "0x1800aa"
+          ],
+          "strings": {},
+          "framework_opcode": "CREATE_CHILD_EDIT_TEXT",
+          "framework_macro": "CHILD_EDIT_TEXT_CTRL",
+          "operand_schema_match": true,
+          "named_arguments": {
+            "_IS_GET_ACTIVE_": "0x1",
+            "_STR_MAX_LEN_": "0x28",
+            "_CTRL_ID_": "0x1800ac",
+            "_PARENT_CTRL_ID_": "0x1800aa"
+          }
+        },
+        {
+          "opcode": "0xf110",
+          "arguments": [
+            "0x1",
+            "0x1",
+            "0x1800ae",
+            "0x1800a7"
+          ],
+          "strings": {},
+          "framework_opcode": "CREATE_CHILD_FORM",
+          "framework_macro": "CHILD_FORM_CTRL",
+          "operand_schema_match": true,
+          "named_arguments": {
+            "_IS_GET_ACTIVE_": "0x1",
+            "_LAYOUT_": "0x1",
+            "_CTRL_ID_": "0x1800ae",
+            "_PARENT_CTRL_ID_": "0x1800a7"
+          }
+        },
+        {
+          "opcode": "0xf106",
+          "arguments": [
+            "0x1",
+            "0x1800b0",
+            "0x1800ae"
+          ],
+          "strings": {},
+          "framework_opcode": "CREATE_CHILD_EDIT_DATE",
+          "framework_macro": "CHILD_EDIT_DATE_CTRL",
+          "operand_schema_match": true,
+          "named_arguments": {
+            "_IS_GET_ACTIVE_": "0x1",
+            "_CTRL_ID_": "0x1800b0",
+            "_PARENT_CTRL_ID_": "0x1800ae"
+          }
+        },
+        {
+          "opcode": "0xf107",
+          "arguments": [
+            "0x1",
+            "0x1800b4",
+            "0x1800ae"
+          ],
+          "strings": {},
+          "framework_opcode": "CREATE_CHILD_EDIT_TIME",
+          "framework_macro": "CHILD_EDIT_TIME_CTRL",
+          "operand_schema_match": true,
+          "named_arguments": {
+            "_IS_GET_ACTIVE_": "0x1",
+            "_CTRL_ID_": "0x1800b4",
+            "_PARENT_CTRL_ID_": "0x1800ae"
+          }
+        },
+        {
+          "opcode": "0xf110",
+          "arguments": [
+            "0x1",
+            "0x0",
+            "0x180077",
+            "0x1800a7"
+          ],
+          "strings": {},
+          "framework_opcode": "CREATE_CHILD_FORM",
+          "framework_macro": "CHILD_FORM_CTRL",
+          "operand_schema_match": true,
+          "named_arguments": {
+            "_IS_GET_ACTIVE_": "0x1",
+            "_LAYOUT_": "0x0",
+            "_CTRL_ID_": "0x180077",
+            "_PARENT_CTRL_ID_": "0x1800a7"
+          }
+        },
+        {
+          "opcode": "0xf10a",
+          "arguments": [
+            "0x1",
+            "0x0",
+            "0x180078",
+            "0x180077"
+          ],
+          "strings": {},
+          "framework_opcode": "CREATE_CHILD_LABEL",
+          "framework_macro": "CHILD_LABEL_CTRL",
+          "operand_schema_match": true,
+          "named_arguments": {
+            "_ALIGN_": "0x1",
+            "_IS_GET_ACTIVE_": "0x0",
+            "_CTRL_ID_": "0x180078",
+            "_PARENT_CTRL_ID_": "0x180077"
+          }
+        },
+        {
+          "opcode": "0xf10a",
+          "arguments": [
+            "0x1",
+            "0x1",
+            "0x18007a",
+            "0x180077"
+          ],
+          "strings": {},
+          "framework_opcode": "CREATE_CHILD_LABEL",
+          "framework_macro": "CHILD_LABEL_CTRL",
+          "operand_schema_match": true,
+          "named_arguments": {
+            "_ALIGN_": "0x1",
+            "_IS_GET_ACTIVE_": "0x1",
+            "_CTRL_ID_": "0x18007a",
+            "_PARENT_CTRL_ID_": "0x180077"
+          }
+        },
+        {
+          "opcode": "0xf110",
+          "arguments": [
+            "0x1",
+            "0x0",
+            "0x1800cf",
+            "0x1800a7"
+          ],
+          "strings": {},
+          "framework_opcode": "CREATE_CHILD_FORM",
+          "framework_macro": "CHILD_FORM_CTRL",
+          "operand_schema_match": true,
+          "named_arguments": {
+            "_IS_GET_ACTIVE_": "0x1",
+            "_LAYOUT_": "0x0",
+            "_CTRL_ID_": "0x1800cf",
+            "_PARENT_CTRL_ID_": "0x1800a7"
+          }
+        },
+        {
+          "opcode": "0xf101",
+          "arguments": [
+            "0x1",
+            "0x28",
+            "0x1800d1",
+            "0x1800cf"
+          ],
+          "strings": {},
+          "framework_opcode": "CREATE_CHILD_EDIT_TEXT",
+          "framework_macro": "CHILD_EDIT_TEXT_CTRL",
+          "operand_schema_match": true,
+          "named_arguments": {
+            "_IS_GET_ACTIVE_": "0x1",
+            "_STR_MAX_LEN_": "0x28",
+            "_CTRL_ID_": "0x1800d1",
+            "_PARENT_CTRL_ID_": "0x1800cf"
+          }
+        },
+        {
+          "opcode": "0xf110",
+          "arguments": [
+            "0x1",
+            "0x0",
+            "0x1800f3",
+            "0x1800a7"
+          ],
+          "strings": {},
+          "framework_opcode": "CREATE_CHILD_FORM",
+          "framework_macro": "CHILD_FORM_CTRL",
+          "operand_schema_match": true,
+          "named_arguments": {
+            "_IS_GET_ACTIVE_": "0x1",
+            "_LAYOUT_": "0x0",
+            "_CTRL_ID_": "0x1800f3",
+            "_PARENT_CTRL_ID_": "0x1800a7"
+          }
+        },
+        {
+          "opcode": "0xf10a",
+          "arguments": [
+            "0x1",
+            "0x0",
+            "0x1800b9",
+            "0x1800f3"
+          ],
+          "strings": {},
+          "framework_opcode": "CREATE_CHILD_LABEL",
+          "framework_macro": "CHILD_LABEL_CTRL",
+          "operand_schema_match": true,
+          "named_arguments": {
+            "_ALIGN_": "0x1",
+            "_IS_GET_ACTIVE_": "0x0",
+            "_CTRL_ID_": "0x1800b9",
+            "_PARENT_CTRL_ID_": "0x1800f3"
+          }
+        },
+        {
+          "opcode": "0xf10a",
+          "arguments": [
+            "0x1",
+            "0x1",
+            "0x1800ba",
+            "0x1800f3"
+          ],
+          "strings": {},
+          "framework_opcode": "CREATE_CHILD_LABEL",
+          "framework_macro": "CHILD_LABEL_CTRL",
+          "operand_schema_match": true,
+          "named_arguments": {
+            "_ALIGN_": "0x1",
+            "_IS_GET_ACTIVE_": "0x1",
+            "_CTRL_ID_": "0x1800ba",
+            "_PARENT_CTRL_ID_": "0x1800f3"
+          }
+        },
+        {
+          "opcode": "0xf110",
+          "arguments": [
+            "0x1",
+            "0x0",
+            "0x1800bb",
+            "0x1800a7"
+          ],
+          "strings": {},
+          "framework_opcode": "CREATE_CHILD_FORM",
+          "framework_macro": "CHILD_FORM_CTRL",
+          "operand_schema_match": true,
+          "named_arguments": {
+            "_IS_GET_ACTIVE_": "0x1",
+            "_LAYOUT_": "0x0",
+            "_CTRL_ID_": "0x1800bb",
+            "_PARENT_CTRL_ID_": "0x1800a7"
+          }
+        },
+        {
+          "opcode": "0xf10a",
+          "arguments": [
+            "0x1",
+            "0x0",
+            "0x1800bc",
+            "0x1800bb"
+          ],
+          "strings": {},
+          "framework_opcode": "CREATE_CHILD_LABEL",
+          "framework_macro": "CHILD_LABEL_CTRL",
+          "operand_schema_match": true,
+          "named_arguments": {
+            "_ALIGN_": "0x1",
+            "_IS_GET_ACTIVE_": "0x0",
+            "_CTRL_ID_": "0x1800bc",
+            "_PARENT_CTRL_ID_": "0x1800bb"
+          }
+        },
+        {
+          "opcode": "0xf10a",
+          "arguments": [
+            "0x1",
+            "0x1",
+            "0x1800bf",
+            "0x1800bb"
+          ],
+          "strings": {},
+          "framework_opcode": "CREATE_CHILD_LABEL",
+          "framework_macro": "CHILD_LABEL_CTRL",
+          "operand_schema_match": true,
+          "named_arguments": {
+            "_ALIGN_": "0x1",
+            "_IS_GET_ACTIVE_": "0x1",
+            "_CTRL_ID_": "0x1800bf",
+            "_PARENT_CTRL_ID_": "0x1800bb"
+          }
+        },
+        {
+          "opcode": "0xf110",
+          "arguments": [
+            "0x1",
+            "0x1",
+            "0x1800c4",
+            "0x1800a7"
+          ],
+          "strings": {},
+          "framework_opcode": "CREATE_CHILD_FORM",
+          "framework_macro": "CHILD_FORM_CTRL",
+          "operand_schema_match": true,
+          "named_arguments": {
+            "_IS_GET_ACTIVE_": "0x1",
+            "_LAYOUT_": "0x1",
+            "_CTRL_ID_": "0x1800c4",
+            "_PARENT_CTRL_ID_": "0x1800a7"
+          }
+        },
+        {
+          "opcode": "0xf10b",
+          "arguments": [
+            "0x1",
+            "0x40180003",
+            "0x1800c5",
+            "0x1800c4"
+          ],
+          "strings": {
+            "0x40180003": {
+              "0": "Alarm3",
+              "1": "Alarm3",
+              "2": "Alarm3"
+            }
+          },
+          "framework_opcode": "CREATE_CHILD_BUTTON",
+          "framework_macro": "CHILD_BUTTON_CTRL",
+          "operand_schema_match": true,
+          "named_arguments": {
+            "_IS_GET_ACTIVE_": "0x1",
+            "_BG_IMAGE_ID": "0x40180003",
+            "_CTRL_ID_": "0x1800c5",
+            "_PARENT_CTRL_ID_": "0x1800c4"
+          }
+        },
+        {
+          "opcode": "0xf10b",
+          "arguments": [
+            "0x1",
+            "0x40180003",
+            "0x1800c6",
+            "0x1800c4"
+          ],
+          "strings": {
+            "0x40180003": {
+              "0": "Alarm3",
+              "1": "Alarm3",
+              "2": "Alarm3"
+            }
+          },
+          "framework_opcode": "CREATE_CHILD_BUTTON",
+          "framework_macro": "CHILD_BUTTON_CTRL",
+          "operand_schema_match": true,
+          "named_arguments": {
+            "_IS_GET_ACTIVE_": "0x1",
+            "_BG_IMAGE_ID": "0x40180003",
+            "_CTRL_ID_": "0x1800c6",
+            "_PARENT_CTRL_ID_": "0x1800c4"
+          }
+        },
+        {
+          "opcode": "0xf10b",
+          "arguments": [
+            "0x1",
+            "0x40180003",
+            "0x1800c7",
+            "0x1800c4"
+          ],
+          "strings": {
+            "0x40180003": {
+              "0": "Alarm3",
+              "1": "Alarm3",
+              "2": "Alarm3"
+            }
+          },
+          "framework_opcode": "CREATE_CHILD_BUTTON",
+          "framework_macro": "CHILD_BUTTON_CTRL",
+          "operand_schema_match": true,
+          "named_arguments": {
+            "_IS_GET_ACTIVE_": "0x1",
+            "_BG_IMAGE_ID": "0x40180003",
+            "_CTRL_ID_": "0x1800c7",
+            "_PARENT_CTRL_ID_": "0x1800c4"
+          }
+        },
+        {
+          "opcode": "0xf10b",
+          "arguments": [
+            "0x1",
+            "0x40180003",
+            "0x1800c8",
+            "0x1800c4"
+          ],
+          "strings": {
+            "0x40180003": {
+              "0": "Alarm3",
+              "1": "Alarm3",
+              "2": "Alarm3"
+            }
+          },
+          "framework_opcode": "CREATE_CHILD_BUTTON",
+          "framework_macro": "CHILD_BUTTON_CTRL",
+          "operand_schema_match": true,
+          "named_arguments": {
+            "_IS_GET_ACTIVE_": "0x1",
+            "_BG_IMAGE_ID": "0x40180003",
+            "_CTRL_ID_": "0x1800c8",
+            "_PARENT_CTRL_ID_": "0x1800c4"
+          }
+        },
+        {
+          "opcode": "0xf10b",
+          "arguments": [
+            "0x1",
+            "0x40180003",
+            "0x1800c9",
+            "0x1800c4"
+          ],
+          "strings": {
+            "0x40180003": {
+              "0": "Alarm3",
+              "1": "Alarm3",
+              "2": "Alarm3"
+            }
+          },
+          "framework_opcode": "CREATE_CHILD_BUTTON",
+          "framework_macro": "CHILD_BUTTON_CTRL",
+          "operand_schema_match": true,
+          "named_arguments": {
+            "_IS_GET_ACTIVE_": "0x1",
+            "_BG_IMAGE_ID": "0x40180003",
+            "_CTRL_ID_": "0x1800c9",
+            "_PARENT_CTRL_ID_": "0x1800c4"
+          }
+        },
+        {
+          "opcode": "0xf10b",
+          "arguments": [
+            "0x1",
+            "0x40180003",
+            "0x1800ca",
+            "0x1800c4"
+          ],
+          "strings": {
+            "0x40180003": {
+              "0": "Alarm3",
+              "1": "Alarm3",
+              "2": "Alarm3"
+            }
+          },
+          "framework_opcode": "CREATE_CHILD_BUTTON",
+          "framework_macro": "CHILD_BUTTON_CTRL",
+          "operand_schema_match": true,
+          "named_arguments": {
+            "_IS_GET_ACTIVE_": "0x1",
+            "_BG_IMAGE_ID": "0x40180003",
+            "_CTRL_ID_": "0x1800ca",
+            "_PARENT_CTRL_ID_": "0x1800c4"
+          }
+        },
+        {
+          "opcode": "0xf10b",
+          "arguments": [
+            "0x1",
+            "0x40180003",
+            "0x1800cb",
+            "0x1800c4"
+          ],
+          "strings": {
+            "0x40180003": {
+              "0": "Alarm3",
+              "1": "Alarm3",
+              "2": "Alarm3"
+            }
+          },
+          "framework_opcode": "CREATE_CHILD_BUTTON",
+          "framework_macro": "CHILD_BUTTON_CTRL",
+          "operand_schema_match": true,
+          "named_arguments": {
+            "_IS_GET_ACTIVE_": "0x1",
+            "_BG_IMAGE_ID": "0x40180003",
+            "_CTRL_ID_": "0x1800cb",
+            "_PARENT_CTRL_ID_": "0x1800c4"
+          }
+        },
+        {
+          "opcode": "0xf110",
+          "arguments": [
+            "0x1",
+            "0x0",
+            "0x1800c0",
+            "0x1800a7"
+          ],
+          "strings": {},
+          "framework_opcode": "CREATE_CHILD_FORM",
+          "framework_macro": "CHILD_FORM_CTRL",
+          "operand_schema_match": true,
+          "named_arguments": {
+            "_IS_GET_ACTIVE_": "0x1",
+            "_LAYOUT_": "0x0",
+            "_CTRL_ID_": "0x1800c0",
+            "_PARENT_CTRL_ID_": "0x1800a7"
+          }
+        },
+        {
+          "opcode": "0xf10a",
+          "arguments": [
+            "0x1",
+            "0x0",
+            "0x1800c1",
+            "0x1800c0"
+          ],
+          "strings": {},
+          "framework_opcode": "CREATE_CHILD_LABEL",
+          "framework_macro": "CHILD_LABEL_CTRL",
+          "operand_schema_match": true,
+          "named_arguments": {
+            "_ALIGN_": "0x1",
+            "_IS_GET_ACTIVE_": "0x0",
+            "_CTRL_ID_": "0x1800c1",
+            "_PARENT_CTRL_ID_": "0x1800c0"
+          }
+        },
+        {
+          "opcode": "0xf106",
+          "arguments": [
+            "0x1",
+            "0x1800c2",
+            "0x1800c0"
+          ],
+          "strings": {},
+          "framework_opcode": "CREATE_CHILD_EDIT_DATE",
+          "framework_macro": "CHILD_EDIT_DATE_CTRL",
+          "operand_schema_match": true,
+          "named_arguments": {
+            "_IS_GET_ACTIVE_": "0x1",
+            "_CTRL_ID_": "0x1800c2",
+            "_PARENT_CTRL_ID_": "0x1800c0"
+          }
+        },
+        {
+          "opcode": "0xf110",
+          "arguments": [
+            "0x1",
+            "0x0",
+            "0x1800cc",
+            "0x1800a7"
+          ],
+          "strings": {},
+          "framework_opcode": "CREATE_CHILD_FORM",
+          "framework_macro": "CHILD_FORM_CTRL",
+          "operand_schema_match": true,
+          "named_arguments": {
+            "_IS_GET_ACTIVE_": "0x1",
+            "_LAYOUT_": "0x0",
+            "_CTRL_ID_": "0x1800cc",
+            "_PARENT_CTRL_ID_": "0x1800a7"
+          }
+        },
+        {
+          "opcode": "0xf101",
+          "arguments": [
+            "0x1",
+            "0x28",
+            "0x1800ce",
+            "0x1800cc"
+          ],
+          "strings": {},
+          "framework_opcode": "CREATE_CHILD_EDIT_TEXT",
+          "framework_macro": "CHILD_EDIT_TEXT_CTRL",
+          "operand_schema_match": true,
+          "named_arguments": {
+            "_IS_GET_ACTIVE_": "0x1",
+            "_STR_MAX_LEN_": "0x28",
+            "_CTRL_ID_": "0x1800ce",
+            "_PARENT_CTRL_ID_": "0x1800cc"
+          }
+        },
+        {
+          "opcode": "0xf020",
+          "arguments": [
+            "0x40000489",
+            "0x40180121",
+            "0x40000480"
+          ],
+          "strings": {
+            "0x40000489": {
+              "0": "SPM AMERIS",
+              "1": "SPM AMERIS",
+              "2": "SPM AMERIS"
+            },
+            "0x40180121": {
+              "0": "Save",
+              "1": "储存",
+              "2": "儲存"
+            },
+            "0x40000480": {
+              "0": "Freedom",
+              "1": "Freedom",
+              "2": "Freedom"
+            }
+          },
+          "framework_opcode": "MMK_CREATE_SOFTKEY",
+          "framework_macro": "WIN_SOFTKEY",
+          "operand_schema_match": true,
+          "named_arguments": {
+            "_LEFT_SOFT_ID_": "0x40000489",
+            "_MID_SOFT_ID_": "0x40180121",
+            "_RIGHT_SOFT_ID_": "0x40000480"
+          }
+        }
+      ]
+    },
+    {
+      "offset": "0x204d08",
+      "size": 56,
+      "sha256": "c71e09a5bc60ef5871dc81dc5be021fa71810f885da6958e4b6dcf97899216f2",
+      "window_id": "0x18004d",
+      "name": "MMISCH_EDIT_OPTION_WIN_ID",
+      "handler_thumb": "0x8805824b",
+      "attributes": [
+        {
+          "opcode": "0xf01a",
+          "arguments": [
+            "0x4"
+          ],
+          "strings": {},
+          "framework_opcode": "MMK_WINDOW_STYLE",
+          "framework_macro": "WIN_STYLE",
+          "operand_schema_match": true,
+          "named_arguments": {
+            "_WIN_STYLE_": "0x4"
+          }
+        },
+        {
+          "opcode": "0xf005",
+          "arguments": [
+            "0x180007",
+            "0x1800d2"
+          ],
+          "strings": {},
+          "framework_opcode": "MMK_CREATE_POPMENU",
+          "framework_macro": "CREATE_POPMENU_CTRL",
+          "operand_schema_match": true,
+          "named_arguments": {
+            "_GROUP_ID_": "0x180007",
+            "_CTRL_ID_": "0x1800d2"
+          }
+        },
+        {
+          "opcode": "0xf020",
+          "arguments": [
+            "0x40000839",
+            "0x40000001",
+            "0x40000012"
+          ],
+          "strings": {
+            "0x40000839": {
+              "0": "OK",
+              "1": "确认",
+              "2": "確認"
+            },
+            "0x40000001": {
+              "0": "",
+              "1": "",
+              "2": ""
+            },
+            "0x40000012": {
+              "0": "Return",
+              "1": "返回",
+              "2": "返回"
+            }
+          },
+          "framework_opcode": "MMK_CREATE_SOFTKEY",
+          "framework_macro": "WIN_SOFTKEY",
+          "operand_schema_match": true,
+          "named_arguments": {
+            "_LEFT_SOFT_ID_": "0x40000839",
+            "_MID_SOFT_ID_": "0x40000001",
+            "_RIGHT_SOFT_ID_": "0x40000012"
+          }
+        }
+      ]
+    },
+    {
+      "offset": "0x204d40",
+      "size": 48,
+      "sha256": "c7799965490854ce5c019777887c12bc8c98fd25d263f7e3bab92329846ff836",
+      "window_id": "0x18004e",
+      "name": "MMISCH_EDIT_REMINDER_WIN_ID",
+      "handler_thumb": "0x88058321",
+      "attributes": [
+        {
+          "opcode": "0xf009",
+          "arguments": [
+            "0x1",
+            "0x1800d3"
+          ],
+          "strings": {},
+          "framework_opcode": "MMK_CREATE_LISTBOX",
+          "framework_macro": "CREATE_LISTBOX_CTRL",
+          "operand_schema_match": true,
+          "named_arguments": {
+            "_LIST_TYPE_": "0x1",
+            "_CTRL_ID_": "0x1800d3"
+          }
+        },
+        {
+          "opcode": "0xf020",
+          "arguments": [
+            "0x40000000",
+            "0x40000a1f",
+            "0x40000480"
+          ],
+          "strings": {
+            "0x40000a1f": {
+              "0": "Select",
+              "1": "选择",
+              "2": "選擇"
+            },
+            "0x40000480": {
+              "0": "Freedom",
+              "1": "Freedom",
+              "2": "Freedom"
+            }
+          },
+          "framework_opcode": "MMK_CREATE_SOFTKEY",
+          "framework_macro": "WIN_SOFTKEY",
+          "operand_schema_match": true,
+          "named_arguments": {
+            "_LEFT_SOFT_ID_": "0x40000000",
+            "_MID_SOFT_ID_": "0x40000a1f",
+            "_RIGHT_SOFT_ID_": "0x40000480"
+          }
+        }
+      ]
+    },
+    {
+      "offset": "0x4ae590",
+      "size": 52,
+      "sha256": "593b110911047ce49898d02b9086a35246158dd81beebdb98569bb6b9bf0e200",
+      "window_id": "0x230019",
+      "name": "MMIFMM_DEL_SELECT_FILE_WIN_ID",
+      "handler_thumb": "0x88ab2e3b",
+      "attributes": [
+        {
+          "opcode": "0xf01a",
+          "arguments": [
+            "0x4"
+          ],
+          "strings": {},
+          "framework_opcode": "MMK_WINDOW_STYLE",
+          "framework_macro": "WIN_STYLE",
+          "operand_schema_match": true,
+          "named_arguments": {
+            "_WIN_STYLE_": "0x4"
+          }
+        },
+        {
+          "opcode": "0xf022",
+          "arguments": [
+            "0x5"
+          ],
+          "strings": {},
+          "framework_opcode": "MMK_WINDOW_ANIM_MOVE_SYTLE",
+          "framework_macro": "WIN_MOVE_STYLE",
+          "operand_schema_match": true,
+          "named_arguments": {
+            "_WIN_MOVE_STYLE_": "0x5"
+          }
+        },
+        {
+          "opcode": "0xf020",
+          "arguments": [
+            "0x40000000",
+            "0x40000001",
+            "0x40000000"
+          ],
+          "strings": {
+            "0x40000001": {
+              "0": "",
+              "1": "",
+              "2": ""
+            }
+          },
+          "framework_opcode": "MMK_CREATE_SOFTKEY",
+          "framework_macro": "WIN_SOFTKEY",
+          "operand_schema_match": true,
+          "named_arguments": {
+            "_LEFT_SOFT_ID_": "0x40000000",
+            "_MID_SOFT_ID_": "0x40000001",
+            "_RIGHT_SOFT_ID_": "0x40000000"
+          }
+        }
+      ]
+    },
+    {
+      "offset": "0x7a8360",
+      "size": 44,
+      "sha256": "c9a4349cc6c679339142503d5e7d050e976dada198b0f63393909f353c6c65b0",
+      "window_id": "0x23003f",
+      "name": "MMIFMM_MOVE_FILE_WIN_ID",
+      "handler_thumb": "0x88ab79e9",
+      "attributes": [
+        {
+          "opcode": "0xf01a",
+          "arguments": [
+            "0x4"
+          ],
+          "strings": {},
+          "framework_opcode": "MMK_WINDOW_STYLE",
+          "framework_macro": "WIN_STYLE",
+          "operand_schema_match": true,
+          "named_arguments": {
+            "_WIN_STYLE_": "0x4"
+          }
+        },
+        {
+          "opcode": "0xf020",
+          "arguments": [
+            "0x40000000",
+            "0x40000001",
+            "0x40000480"
+          ],
+          "strings": {
+            "0x40000001": {
+              "0": "",
+              "1": "",
+              "2": ""
+            },
+            "0x40000480": {
+              "0": "Freedom",
+              "1": "Freedom",
+              "2": "Freedom"
+            }
+          },
+          "framework_opcode": "MMK_CREATE_SOFTKEY",
+          "framework_macro": "WIN_SOFTKEY",
+          "operand_schema_match": true,
+          "named_arguments": {
+            "_LEFT_SOFT_ID_": "0x40000000",
+            "_MID_SOFT_ID_": "0x40000001",
+            "_RIGHT_SOFT_ID_": "0x40000480"
+          }
+        }
+      ]
+    }
+  ],
+  "verified": [
+    "Schedule form contains three 40-unit text children and separate date/time children.",
+    "Schedule form center softkey is Save. The separate edit-options window is registered."
+  ],
+  "ranges": [
+    {
+      "start": "0x880572d8",
+      "end": "0x88057b00",
+      "sha256": "2599a8c12960ed1b86460e46bfb34ed9884a2c0b069a66104c709505c3de8d1a"
+    },
+    {
+      "start": "0x88ab2e3a",
+      "end": "0x88ab3558",
+      "sha256": "898acd9dba74cf5afd5067b3f6d541692004bf61ee2655d98b23dcb1cfe252de"
+    }
+  ],
+  "limits": [
+    "Window registration alone does not identify the exact file checkbox page or its complete handler flow.",
+    "File selection geometry is from the existing handset screenshot; select-all, confirmation, preflight and nonrecursive deletion are explicit host policies.",
+    "Calendar digit validation, defaults and recurrence are local policies. The full shared native edit widgets are not recovered."
+  ]
+}

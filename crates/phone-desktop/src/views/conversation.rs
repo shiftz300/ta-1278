@@ -170,7 +170,10 @@ pub(super) fn render(c: &mut Canvas, p: &mut Phone) {
             }
         }
         let label = if m.unsent {
-            "未发送".into()
+            m.delivery
+                .map(|s| crate::phone::mail::delivery_text(s).0)
+                .unwrap_or("未发送")
+                .into()
         } else {
             stamp(m.time, false)
         };

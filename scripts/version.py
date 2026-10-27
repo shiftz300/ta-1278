@@ -48,7 +48,7 @@ def bump(value, root=ROOT):
     text = original.decode()
     section = re.search(r"(?ms)^\[workspace\.package\]\s*\n(.*?)(?=^\[|\Z)", text)
     updated = re.sub(r'^version\s*=\s*"[^"]+"', f'version = "{value}"', section[1], count=1, flags=re.M)
-    manifest.write_text(text[:section.start(1)] + updated + text[section.end(1):])
+    manifest.write_bytes((text[:section.start(1)] + updated + text[section.end(1):]).encode())
     try:
         subprocess.run(["cargo", "update", "--offline", "--workspace"], cwd=root, check=True)
         check(root)

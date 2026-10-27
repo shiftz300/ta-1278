@@ -53,6 +53,13 @@ class Versions(unittest.TestCase):
         with self.assertRaises(ValueError):
             version.check(self.root)
 
+    def test_bump_preserves_crlf_without_doubling_carriage_returns(self):
+        path = self.root / "Cargo.toml"
+        path.write_bytes(path.read_text().replace('\n', '\r\n').encode())
+        self.assertEqual(version.bump("patch", self.root), "0.2.3")
+        self.assertNotIn(b'\r\r\n', path.read_bytes())
+        self.assertIn(b'\r\n', path.read_bytes())
+
     def test_annotated_tag_is_idempotent_and_never_moves_for_unchanged_version(self):
         self.git()
         with patch.dict(os.environ, {"GITHUB_REF": "refs/heads/main"}):

@@ -512,8 +512,10 @@ mod shared_controls_tests {
         render(&mut c, &mut p);
         assert!(
             region(&c, 82, 284, 76, 36)
-                .chunks_exact(4)
-                .all(|pixel| pixel == [0, 0, 0, 255])
+                .as_chunks::<4>()
+                .0
+                .iter()
+                .all(|pixel| *pixel == [0, 0, 0, 255])
         );
     }
 }

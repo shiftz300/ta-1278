@@ -392,7 +392,7 @@ impl Canvas {
         self.shade(51);
     }
     pub fn shade(&mut self, brightness: u8) {
-        for px in self.pixels.chunks_exact_mut(4) {
+        for px in self.pixels.as_chunks_mut::<4>().0 {
             for v in &mut px[..3] {
                 *v = (u16::from(*v) * u16::from(brightness) / 255) as u8;
             }
@@ -448,10 +448,12 @@ mod tests {
         assert_ne!(c.pixels, full);
         assert!(
             c.pixels
-                .chunks_exact(4)
+                .as_chunks::<4>()
+                .0
+                .iter()
                 .enumerate()
                 .filter(|(i, _)| i % 240 >= width as usize)
-                .all(|(_, p)| p == [0, 0, 0, 255])
+                .all(|(_, p)| *p == [0, 0, 0, 255])
         );
     }
     #[test]

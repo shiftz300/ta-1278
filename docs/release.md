@@ -4,10 +4,10 @@ The winit/wgpu desktop host targets macOS arm64/Intel, Windows x64 and Linux x64
 
 macOS keeps its Swift folder/media helper. Windows uses a native folder dialog and stores its profile under `%LOCALAPPDATA%/TA1278 Replica` (falling back to `%APPDATA%`). Linux uses an XDG portal/Zenity dialog and `$XDG_DATA_HOME/ta1278-replica` or `~/.local/share/ta1278-replica`. `--storage-dir PATH` bypasses the dialog on every platform. Image/video decoding and storage-capacity reporting currently remain macOS-only; other hosts report these services unavailable.
 
-Linux needs ALSA, X11 or Wayland, and a Vulkan/OpenGL driver. Build prerequisites on Ubuntu 24.04:
+Linux needs ALSA, X11 (including libxkbcommon-x11) or Wayland, and a Vulkan/OpenGL driver. Build prerequisites on Ubuntu 24.04:
 
 ```sh
-sudo apt-get install libasound2-dev libudev-dev libxkbcommon-dev libwayland-dev libdbus-1-dev
+sudo apt-get install libasound2-dev libudev-dev libxkbcommon-dev libxkbcommon-x11-dev libwayland-dev libdbus-1-dev
 ```
 
 A desktop portal backend or Zenity is needed for the folder dialog. No portal is needed when using `--storage-dir`. Windows builds need the MSVC C++ tools for the native JS/audio dependencies. macOS builds need Apple Command Line Tools. Window portability alone does not supply multimedia codecs or a phone modem backend.

@@ -1,0 +1,138 @@
+name: Build desktop
+
+on:
+  workflow_call:
+    inputs:
+      release:
+        type: boolean
+        default: false
+    outputs:
+      version:
+        value: ${{ jobs.version.outputs.version }}
+
+permissions:
+  contents: read
+
+env:
+  CARGO_TERM_COLOR: always
+  CARGO_INCREMENTAL: '0'
+  CARGO_PROFILE_DEV_DEBUG: '0'
+  CARGO_PROFILE_TEST_DEBUG: '0'
+
+jobs:
+  version:
+    runs-on: ubuntu-24.04
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Validate version and release commit
+        id: version
+        env:
+          RELEASE_BUILD: ${{ inputs.release }}
+        run: |
+          if [ "$RELEASE_BUILD" = true ]; then
+            python3 scripts/version.py release
+          else
+            python3 scripts/version.py check
+          fi
+
+  desktop:
+    needs: version
+    name: ${{ matrix.platform }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-15
+            platform: macos-arm64
+            target: aarch64-apple-darwin
+          - os: macos-15-intel
+            platform: macos-x86_64
+            target: x86_64-apple-darwin
+          - os: windows-2025
+            platform: windows-x86_64
+            target: x86_64-pc-windows-msvc
+          - os: ubuntu-24.04
+            platform: linux-x86_64
+            target: x86_64-unknown-linux-gnu
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.13'
+      - name: Install Linux build and window dependencies
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libasound2-dev libudev-dev libxkbcommon-dev libwayland-dev libdbus-1-dev mesa-vulkan-drivers xvfb xauth
+      - name: Install Rust
+        run: |
+          rustup toolchain install stable --profile minimal --component rustfmt,clippy
+          rustup default stable
+          rustup target add "${{ matrix.target }}"
+          rustc --version
+      - uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: desktop-v1-${{ matrix.platform }}-${{ hashFiles('Cargo.lock') }}
+          restore-keys: desktop-v1-${{ matrix.platform }}-
+      - name: Format, release-tool checks and resource verification
+        run: |
+          cargo fmt --all -- --check
+          python scripts/tests.py
+          python -m pip install fonttools==4.60.2
+          python scripts/check-assets.py
+          git diff --exit-code
+      - name: Clippy
+        run: cargo clippy --workspace --all-targets --locked --target "${{ matrix.target }}" -- -D warnings
+      - name: Tests
+        run: cargo test --workspace --locked --target "${{ matrix.target }}"
+      - name: Headless library
+        run: cargo check --locked -p phone-desktop --no-default-features --lib --target "${{ matrix.target }}"
+      - name: Build optimized desktop
+        run: cargo build --release --locked -p phone-desktop --target "${{ matrix.target }}"
+      - name: Linux window presentation
+        if: runner.os == 'Linux'
+        env:
+          LIBGL_ALWAYS_SOFTWARE: '1'
+        run: |
+          export XDG_RUNTIME_DIR="$RUNNER_TEMP/ta1278-xdg"
+          mkdir -p "$XDG_RUNTIME_DIR"
+          chmod 700 "$XDG_RUNTIME_DIR"
+          xvfb-run -a -s '-screen 0 1280x1024x24' timeout 60s \
+            "target/${{ matrix.target }}/release/phone-desktop" \
+            --data-dir "$RUNNER_TEMP/ta1278-profile" --disable sounds,music,video,network \
+            --smoke-test "$RUNNER_TEMP/ta1278-frames"
+      - name: Package native archive
+        run: python scripts/package.py --target "${{ matrix.target }}" --no-build
+      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        with:
+          name: ta1278-${{ matrix.platform }}
+          path: |
+            target/dist/TA1278-v${{ needs.version.outputs.version }}-${{ matrix.platform }}.zip
+            target/dist/TA1278-v${{ needs.version.outputs.version }}-${{ matrix.platform }}.zip.sha256
+            target/dist/TA1278-v${{ needs.version.outputs.version }}-${{ matrix.platform }}.tar.gz
+            target/dist/TA1278-v${{ needs.version.outputs.version }}-${{ matrix.platform }}.tar.gz.sha256
+          if-no-files-found: error
+          retention-days: 14
+      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        if: failure() && runner.os == 'Linux'
+        with:
+          name: window-diagnostics
+          path: ${{ runner.temp }}/ta1278-frames
+          if-no-files-found: ignore
+          retention-days: 7

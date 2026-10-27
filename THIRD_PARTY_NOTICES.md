@@ -12,6 +12,8 @@
 
 - rquickjs, rquickjs-core and rquickjs-sys 0.14.0 (MIT), unmodified, [upstream](https://github.com/DelSkayn/rquickjs). The bundled QuickJS-NG engine has its own MIT copyright notice. Both texts are retained in `third-party-licenses/resources/rquickjs-MIT.txt` and `quickjs-ng-MIT.txt`, and included in the app package. The adapter evaluates source only; it does not load untrusted QuickJS bytecode.
 
+- RFD 0.17.2 (MIT), unmodified, [upstream](https://github.com/PolyMeilex/rfd). Used for Windows/Linux native folder selection; macOS retains its existing helper. License retained in `third-party-licenses/resources/rfd-MIT.txt` and packaged notices.
+
 ## Resource compression
 
 - miniz_oxide 0.8.9 (MIT), unmodified. Build-time packing and bounded runtime decompression use the already pinned dependency. Its copyright and license are retained in `third-party-licenses/resources/miniz_oxide-MIT.txt` and bundled with the app. Compression does not change the fonts, dictionaries or original sound bank and does not change their licenses.

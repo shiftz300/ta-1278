@@ -12,7 +12,18 @@ pub fn default_dir() -> PathBuf {
         PathBuf::from(std::env::var_os("HOME").unwrap_or_default())
             .join("Library/Application Support/TA1278 Replica")
     }
-    #[cfg(not(target_os = "macos"))]
+    #[cfg(target_os = "windows")]
+    {
+        std::env::var_os("LOCALAPPDATA")
+            .or_else(|| std::env::var_os("APPDATA"))
+            .map(PathBuf::from)
+            .unwrap_or_else(|| {
+                PathBuf::from(std::env::var_os("USERPROFILE").unwrap_or_default())
+                    .join("AppData/Local")
+            })
+            .join("TA1278 Replica")
+    }
+    #[cfg(not(any(target_os = "macos", target_os = "windows")))]
     {
         std::env::var_os("XDG_DATA_HOME")
             .map(PathBuf::from)

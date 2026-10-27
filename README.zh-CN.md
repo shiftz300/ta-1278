@@ -15,7 +15,7 @@
 
 ## 运行
 
-需要 Rust 和图形驱动。macOS 还需要 Apple Command Line Tools 来编译媒体助手。
+面向 macOS（arm64/Intel）、Windows x64 和 Linux x64。[下载](https://github.com/shiftz300/ta-1278/releases/latest) · [平台限制与自动发布](docs/release.md)。构建需要 Rust、图形驱动和对应的 C/C++ 工具链；macOS 还需要 Apple Command Line Tools。
 
 ```sh
 cargo run --release --locked -p phone-desktop

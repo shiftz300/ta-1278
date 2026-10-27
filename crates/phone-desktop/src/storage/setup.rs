@@ -81,7 +81,17 @@ fn choose(initial: &Path) -> Result<Option<PathBuf>, String> {
         .map(Some)
         .map_err(|e| e.to_string())
 }
-#[cfg(not(target_os = "macos"))]
+#[cfg(all(feature = "desktop", any(target_os = "windows", target_os = "linux")))]
+fn choose(initial: &Path) -> Result<Option<PathBuf>, String> {
+    Ok(rfd::FileDialog::new()
+        .set_title("Choose phone storage folder")
+        .set_directory(initial)
+        .pick_folder())
+}
+#[cfg(all(
+    not(target_os = "macos"),
+    not(all(feature = "desktop", any(target_os = "windows", target_os = "linux")))
+))]
 fn choose(_: &Path) -> Result<Option<PathBuf>, String> {
     Err("Choose a phone storage folder with --storage-dir DIRECTORY on first launch.".into())
 }

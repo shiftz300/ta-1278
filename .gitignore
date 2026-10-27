@@ -11,6 +11,8 @@ __pycache__/
 
 !/Cargo.toml
 !/Cargo.lock
+!/AGENTS.md
+!/.github/
 !/crates/
 !/build/
 /build/*

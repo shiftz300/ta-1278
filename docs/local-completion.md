@@ -6,8 +6,8 @@ These are local application flows, not a claim of complete handset equivalence.
 |---|---|
 | Contacts | Pictures, groups, local ringtones and editable fields; deleting a group keeps contacts. |
 | Music | MP3/WAV playback, playlists, repeat/shuffle, track selection and saved paused resume position. Missing files are omitted from visible lists without erasing stored paths. |
-| Images | Browse the selected folder, open images, zoom/pan and select wallpaper or contact pictures. macOS ImageIO supplies decoding; only the first image/frame is shown. |
-| Video | Local files through AVFoundation; play/pause, seek and volume. Available formats depend on system codecs. |
+| Images | Browse the selected folder, open images, zoom/pan and select wallpaper or contact pictures on macOS. ImageIO supplies decoding; only the first image/frame is shown. Windows/Linux decoding is not implemented. |
+| Video | Local files through macOS AVFoundation; play/pause, seek and volume. Available formats depend on system codecs. Windows/Linux decoding is not implemented. |
 | Files | Direct folder access, rename, copy/move, create folders, details and confirmed nonrecursive deletion. No overwrite or VFS. See [storage](storage.md). |
 | Settings | Greeting, wallpaper, colors, shortcuts, sound, clock display and browser access. No modem, SIM or Bluetooth configuration. |
 | Calendar and alarms | Recurring events and reminders while running; no OS wake scheduler. |

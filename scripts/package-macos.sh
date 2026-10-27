@@ -2,14 +2,22 @@
 # Build a local, ad-hoc signed app bundle. No installation or device access.
 set -eu
 cd "$(dirname "$0")/.."
-cargo build --release --locked -p phone-desktop
-version=$(target/release/phone-desktop --version)
+if test -n "${1:-}"; then
+  binary="target/$1/release/phone-desktop"
+  if test "${2:-}" != "--no-build"; then
+    cargo build --release --locked -p phone-desktop --target "$1"
+  fi
+else
+  cargo build --release --locked -p phone-desktop
+  binary="target/release/phone-desktop"
+fi
+version=$("$binary" --version)
 version=${version#TA1278 }
 bundle="target/TA1278.app"
 mkdir -p "$bundle/Contents/MacOS"
-cp target/release/phone-desktop "$bundle/Contents/MacOS/phone-desktop.new"
+cp "$binary" "$bundle/Contents/MacOS/phone-desktop.new"
 mv -f "$bundle/Contents/MacOS/phone-desktop.new" "$bundle/Contents/MacOS/phone-desktop"
-helper=$(target/release/phone-desktop --print-media-helper)
+helper=$("$binary" --print-media-helper)
 test -n "$helper"
 cp "$helper" "$bundle/Contents/MacOS/ta1278-media"
 codesign --force --sign - --timestamp=none "$bundle/Contents/MacOS/ta1278-media"

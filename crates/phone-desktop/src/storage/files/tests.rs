@@ -1,4 +1,15 @@
 use super::*;
+#[cfg(target_os = "windows")]
+#[test]
+fn windows_names_cannot_open_devices_or_alternate_streams() {
+    for name in [
+        "CON", "nul.txt", "COM1", "lpt9.log", "a:stream", "name.", "name ", "a?b", "a*b",
+    ] {
+        assert!(!valid_name(name), "{name}");
+    }
+    assert!(valid_name("Music 2026"));
+    assert!(valid_name("COM10.txt"));
+}
 fn setup(name: &str) -> (Folder, PathBuf) {
     let root = std::env::temp_dir().join(format!("ta1278-folder-{name}-{}", std::process::id()));
     fs::create_dir_all(&root).unwrap();

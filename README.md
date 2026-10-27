@@ -2,6 +2,8 @@
 
 [简体中文](README.zh-CN.md)
 
+[![CI](https://github.com/shiftz300/ta-1278/actions/workflows/ci.yml/badge.svg)](https://github.com/shiftz300/ta-1278/actions/workflows/ci.yml)
+
 A user-space phone interaction runtime and desktop app, based on the Nokia TA-1278 experience.
 
 [Phone](docs/calls.md) · [Service interface](docs/services.md) · [Input engine](docs/input-engine.md) · [Architecture](docs/architecture.md)
@@ -27,7 +29,7 @@ cargo run -p phone-desktop --no-default-features --locked --example embed -- /tm
 
 ## Run
 
-Requires Rust and a graphics driver. macOS builds also need Apple Command Line Tools for the small media helper. Tested on macOS arm64.
+Targets macOS (arm64/Intel), Windows x64 and Linux x64. [Downloads](https://github.com/shiftz300/ta-1278/releases/latest) · [Platform limits, CI and releases](docs/release.md). Building requires Rust, a graphics driver and the platform C/C++ tools; macOS also needs Apple Command Line Tools for the media helper.
 
 ```sh
 cargo run --release --locked -p phone-desktop

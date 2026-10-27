@@ -13,7 +13,7 @@ required-features = ["desktop"]
 
 [features]
 default = ["desktop"]
-desktop = ["dep:winit", "dep:wgpu", "dep:pollster", "dep:objc2", "dep:objc2-app-kit", "dep:objc2-foundation"]
+desktop = ["dep:winit", "dep:wgpu", "dep:pollster", "dep:objc2", "dep:objc2-app-kit", "dep:objc2-foundation", "dep:rfd"]
 
 [dependencies]
 phone-core = { path = "../phone-core" }
@@ -39,3 +39,6 @@ miniz_oxide.workspace = true
 objc2 = { version = "=0.5.3", optional = true }
 objc2-app-kit = { optional = true, version = "=0.2.2", default-features = false, features = ["NSApplication", "NSResponder"] }
 objc2-foundation = { optional = true, version = "=0.2.2", default-features = false, features = ["NSObject"] }
+
+[target.'cfg(any(target_os = "windows", target_os = "linux"))'.dependencies]
+rfd = { version = "=0.17.2", optional = true }

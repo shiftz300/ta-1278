@@ -16,6 +16,24 @@ fn invalid(message: &str) -> io::Error {
     io::Error::new(io::ErrorKind::InvalidInput, message)
 }
 pub fn valid_name(name: &str) -> bool {
+    #[cfg(target_os = "windows")]
+    {
+        let stem = name
+            .split('.')
+            .next()
+            .unwrap_or("")
+            .trim_end()
+            .to_ascii_uppercase();
+        if name.ends_with(['.', ' '])
+            || name.chars().any(|c| "<>:\"|?*".contains(c))
+            || matches!(stem.as_str(), "CON" | "PRN" | "AUX" | "NUL")
+            || (stem.len() == 4
+                && (stem.starts_with("COM") || stem.starts_with("LPT"))
+                && matches!(stem.as_bytes()[3], b'1'..=b'9'))
+        {
+            return false;
+        }
+    }
     !name.is_empty()
         && name != "."
         && name != ".."

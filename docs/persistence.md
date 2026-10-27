@@ -53,22 +53,6 @@ target/TA1278.app/Contents/MacOS/phone-desktop --smoke-test /tmp/ta1278-persiste
 
 `storage/tests.rs` covers old-schema loading, future-version refusal, restart across midnight, same-minute duplicate suppression, running/paused clocks, pending timer acknowledgment, editor retention, backup failure, corrupt-file protection, lock release and failed-save retry. Existing SMS transaction and music-save failure tests now use a blocked backup destination rather than assuming a fixed temporary filename.
 
-These are synthetic local fixtures. JSON reload tests exercise fresh state models; window smoke exercises real winit/Metal rendering. The initial [validation record](evidence/persistence-validation.json) predates the normal-process checks below. Neither establishes handset equivalence.
-
-## Normal-process restart checks
-
-The follow-up used a separately identified app bundle and profile with network and sound disabled. Actual keyboard input and window closing tested these paths:
-
-- A draft survives closing the window and reopening the process.
-- Cmd-Q saves a new draft, which is visible in Messages after relaunch.
-- Blocking `messages.json.bak` with a nonempty directory makes Quit refuse to exit. The old JSON stays unchanged and the editor retains its text. Removing the synthetic blocker allows saving and exit.
-- A running timer with 34.99 seconds remaining at exit expires while the process is closed. Relaunch shows its named alert. Acknowledging it and restarting again does not repeat the alert.
-- A paused stopwatch remains at 12.345 seconds with both laps. Resuming it through the keyboard, quitting and reopening includes elapsed time outside the process.
-- A second process using the same profile refuses to start.
-
-This found and fixed a real Cmd-Q data-loss bug: AppKit's default Quit menu bypassed winit keyboard handling and the fallible save path. `macos_lifecycle.rs` now routes the application's `terminate:` action through that same save path. Winit still manages the window and delegate. The Dock uses this action too, but a separate Dock click was not tested. Force Quit, power loss and OS logout are not covered.
-
-[Evidence and hashes](evidence/restart-validation.json), [save failure](images/restart-quit-refused.png), [timer restored](images/restart-timer-expired-on-restart.png), [paused stopwatch](images/restart-stopwatch-paused-restored.png). Utility records were synthetic seeds; all UI actions used the isolated profile. The final build passed 141 default tests and warnings-denied Clippy.
 
 ## Service events
 

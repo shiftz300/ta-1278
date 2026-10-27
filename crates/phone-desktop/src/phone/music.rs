@@ -64,7 +64,23 @@ impl Phone {
             MusicView::Player => vec![],
         }
     }
+    pub fn music_wait_time(&self) -> u64 {
+        self.last_tick.unwrap_or(0)
+    }
+    pub fn music_refresh_visible(&self) -> bool {
+        self.music_view == MusicView::Root
+            && !self.music_wait_dismissed
+            && (self.music_refresh || self.music_loading)
+    }
     pub(super) fn music_key(&mut self, key: Key) {
+        if self.music_refresh_visible() {
+            // Close the wait page to the library without discarding the pending scan. Home also
+            // remains available through the global End route.
+            if key == Key::SoftRight {
+                self.music_wait_dismissed = true;
+            }
+            return;
+        }
         if self.music_view == MusicView::Player {
             match key {
                 Key::SoftLeft => {
@@ -94,8 +110,9 @@ impl Phone {
             _ => self.music_items().len(),
         };
         match key {
-            Key::Up if n > 0 => self.index = (self.index + n - 1) % n,
-            Key::Down if n > 0 => self.index = (self.index + 1) % n,
+            Key::Up | Key::Down => {
+                vertical(&mut self.index, n, key, Boundary::Wrap);
+            }
             Key::SoftRight => match self.music_view {
                 MusicView::Root => self.leave_app(),
                 MusicView::Repeat => {
@@ -139,7 +156,9 @@ impl Phone {
             }
             Key::Center if n > 0 => match self.music_view {
                 MusicView::Root => match self.index {
-                    0 if self.music_loading => self.notice("正在刷新曲库，请稍候。"),
+                    0 if self.music_loading || self.music_refresh => {
+                        self.notice("正在刷新曲库，请稍候。")
+                    }
                     0 if !self.music.tracks.is_empty() => {
                         self.music.queue.clear();
                         self.play_track(0);
@@ -237,7 +256,7 @@ impl Phone {
             self.notice("此功能已停用。");
             return;
         }
-        if self.music_loading {
+        if self.music_loading || self.music_refresh {
             self.notice("正在刷新曲库，请稍候。");
             return;
         }

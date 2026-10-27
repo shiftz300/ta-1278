@@ -94,7 +94,7 @@ pub struct Organizer {
     pub page: OrganizerPage,
     pub contact: super::contacts::ContactUi,
     pub alarm: super::alarm::AlarmUi,
-    pub event: super::calendar_form::EventUi,
+    pub event: super::calendar::EventUi,
     pub date: Date,
     pub draft: Vec<String>,
     pub editing: Option<usize>,
@@ -182,7 +182,7 @@ impl Phone {
             EventRepeat => ["不重复", "每天", "每周", "每月", "每年"]
                 .map(str::to_owned)
                 .to_vec(),
-            EventRingtone => crate::native_audio::tone_labels("默认"),
+            EventRingtone => crate::audio::native::tone_labels("默认"),
             Events => self
                 .local_data
                 .events
@@ -327,8 +327,9 @@ impl Phone {
         }
         let n = self.organizer_items().len();
         match key {
-            Key::Up if n > 0 => self.index = (self.index + n - 1) % n,
-            Key::Down if n > 0 => self.index = (self.index + 1) % n,
+            Key::Up | Key::Down => {
+                vertical(&mut self.index, n, key, Boundary::Wrap);
+            }
             Key::SoftRight => {
                 self.organizer.page = match page {
                     CalendarMenu | Events | EventForm | DeletePast => Calendar,
@@ -403,10 +404,10 @@ impl Phone {
                     self.index = field;
                 }
                 EventRingtone => {
-                    if self.index == crate::native_audio::file_index() {
+                    if self.index == crate::audio::native::file_index() {
                         self.organizer.page = EventForm;
                         self.index = 4;
-                        self.open_media(media_browser::Purpose::EventRingtone);
+                        self.open_media(media::Purpose::EventRingtone);
                     } else {
                         self.organizer.draft[4] = self.organizer_items()[self.index].clone();
                         self.audio_preview = Some(self.organizer.draft[4].clone());
@@ -433,6 +434,9 @@ impl Phone {
             .collect()
     }
     pub fn check_events(&mut self, date: Date, minute: u64) {
+        if !self.apps.calendar {
+            return;
+        }
         if minute >= 1440 || self.organizer.last_event_minute == Some((date, minute)) {
             return;
         }
@@ -464,6 +468,7 @@ impl Phone {
                     .reminders
                     .alerts
                     .push_back(super::alarm::Alert {
+                        source: super::alarm::ReminderSource::Calendar,
                         tone: event.fields[4].clone(),
                         name: event.fields[0].clone(),
                         time: time.clone(),

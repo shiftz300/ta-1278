@@ -1,4 +1,5 @@
 //! Document and navigation state; the desktop adapter supplies parsed HTTP results.
+pub mod flow;
 #[derive(Clone, Debug, PartialEq, serde::Serialize, serde::Deserialize)]
 pub enum Element {
     Text(String),
@@ -94,7 +95,7 @@ pub struct Form {
 #[derive(Clone, Debug, serde::Serialize, serde::Deserialize)]
 pub struct Page {
     #[serde(default)]
-    pub flow: Vec<crate::web_flow::Flow>,
+    pub flow: Vec<crate::browser::flow::Flow>,
     pub url: String,
     pub title: String,
     pub elements: Vec<Element>,

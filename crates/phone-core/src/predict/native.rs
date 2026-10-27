@@ -1,5 +1,5 @@
 //! Bounded translations from firmware 17.00.17.02. Not a candidate engine.
-//! Byte/call-site checks: scripts/recover-t9-core.py; docs/t9-recovery.md.
+//! Byte/call-site checks: research archive: scripts/recover-t9-core.py; research archive: docs/t9-recovery.md.
 /// 0x880d929c..0x880d9314: record span from a tag byte. The caller supplies
 /// the circular-buffer helper's next uint16 only for tag 0xff. This helper
 /// is used on runtime records; it must not be assumed to decode an LDB trie.

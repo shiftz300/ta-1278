@@ -6,6 +6,8 @@ from pathlib import Path
 import hashlib,json
 from fontTools.ttLib import TTFont
 root=Path(__file__).resolve().parents[1]
+for row in json.loads((root/'assets/runtime.json').read_text())['files']:
+ p=root/row['file'];assert p.stat().st_size==row['bytes'];assert hashlib.sha256(p.read_bytes()).hexdigest()==row['sha256'],row['file']
 wallpaper=json.loads((root/'assets/ui/owner-wallpaper.json').read_text())
 p=root/wallpaper['file'];assert p.stat().st_size==wallpaper['bytes'];assert hashlib.sha256(p.read_bytes()).hexdigest()==wallpaper['sha256']
 for row in json.loads((root/'assets/sources.json').read_text()):
@@ -14,7 +16,7 @@ derived=json.loads((root/'assets/fonts/subsets/manifest.json').read_text())
 for row in derived['fonts']:
  p=root/row['file'];assert p.stat().st_size==row['bytes'];assert hashlib.sha256(p.read_bytes()).hexdigest()==row['sha256']
  assert hashlib.sha256((root/row['source']).read_bytes()).hexdigest()==row['source_sha256']
-paths=['nokia-ta1278-research/analysis/ui/fonts/font-0-latn.otf','nokia-ta1278-research/analysis/ui/fonts/font-1-hani.otf','nokia-ta1278-research/analysis/ui/fonts/font-2-hani.otf','assets/fonts/subsets/FallbackCJK.otf','assets/fonts/subsets/FallbackSymbols.ttf','assets/fonts/subsets/FallbackEmoji.ttf']
+paths=['assets/fonts/device/font-0-latn.otf','assets/fonts/device/font-1-hani.otf','assets/fonts/device/font-2-hani.otf','assets/fonts/subsets/FallbackCJK.otf','assets/fonts/subsets/FallbackSymbols.ttf','assets/fonts/subsets/FallbackEmoji.ttf']
 all_chars=set();rows=[];before=0
 for i,path in enumerate(paths):
  f=TTFont(root/path);chars=set(f.getBestCmap());rows.append({'file':path,'characters':len(chars),'added':len(chars-all_chars)});all_chars|=chars

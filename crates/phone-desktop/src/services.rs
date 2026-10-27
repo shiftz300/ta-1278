@@ -45,7 +45,7 @@ impl Services {
                 Err(e) => return Err(format!("Service ack: {e:?}")),
             }
         }
-        let now = phone_core::sms::timestamp();
+        let now = phone.timestamp();
         let before = phone.mailbox.services.alerts.len();
         phone
             .mailbox
@@ -134,7 +134,7 @@ impl Services {
 }
 impl Phone {
     pub fn present_service_alert(&mut self) {
-        let now = phone_core::sms::timestamp();
+        let now = self.timestamp();
         if let Some(Overlay::ServiceAlert {
             backend,
             id,
@@ -160,10 +160,7 @@ impl Phone {
         }
         // Preserve active editors/modals and native alarm priority. This is a
         // host policy, not an assertion about native ETWS interruption rules.
-        if self.overlay.is_some()
-            || self.editor().is_some()
-            || !self.local_data.reminders.alerts.is_empty()
-        {
+        if self.overlay.is_some() || self.editor().is_some() || self.active_reminder().is_some() {
             return;
         }
         if let Some(a) = self

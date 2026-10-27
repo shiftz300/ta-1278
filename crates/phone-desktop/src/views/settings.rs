@@ -2,7 +2,7 @@ use super::*;
 use crate::phone::settings::{SHORTCUTS, SettingsPage};
 pub(super) fn render(c: &mut Canvas, p: &Phone) {
     if p.settings_page == SettingsPage::Ringtone {
-        crate::ui::tone_picker::draw(c, "铃声", p.index, &p.preferences.ringtone, "预设");
+        crate::ui::tones::draw(c, "铃声", p.index, &p.preferences.ringtone, "预设");
         return;
     }
     chrome::title(c, p.settings_title());

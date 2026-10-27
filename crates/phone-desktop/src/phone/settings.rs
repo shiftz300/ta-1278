@@ -123,7 +123,7 @@ impl Phone {
     }
     pub fn settings_labels(&self) -> Vec<String> {
         if self.settings_page == SettingsPage::Ringtone {
-            return crate::native_audio::tone_labels("预设");
+            return crate::audio::native::tone_labels("预设");
         }
         match self.settings_page {
             SettingsPage::Root => vec![
@@ -250,9 +250,9 @@ impl Phone {
                     self.preferences_dirty = true;
                     self.settings_open(Personalization, 2);
                 }
-                (Wallpaper, 2) => self.open_media(media_browser::Purpose::Wallpaper),
-                (Ringtone, i) if i == crate::native_audio::file_index() => {
-                    self.open_media(media_browser::Purpose::Ringtone)
+                (Wallpaper, 2) => self.open_media(media::Purpose::Wallpaper),
+                (Ringtone, i) if i == crate::audio::native::file_index() => {
+                    self.open_media(media::Purpose::Ringtone)
                 }
                 (Ringtone, i) => {
                     self.preferences.ringtone = self.settings_labels()[i].clone();
@@ -315,6 +315,11 @@ impl Phone {
         }
     }
     pub fn setting_enabled(&self, index: usize) -> bool {
+        if matches!(self.settings_page, SettingsPage::Shortcut { .. })
+            && shortcut_screen(index).is_some_and(|s| !self.apps.allows(s))
+        {
+            return false;
+        }
         !matches!(
             (self.settings_page, index),
             (SettingsPage::Root, 5)
@@ -325,10 +330,7 @@ impl Phone {
         )
     }
     pub fn local_clock(&self) -> (phone_core::calendar::Date, u64) {
-        let wall = std::time::SystemTime::now()
-            .duration_since(std::time::UNIX_EPOCH)
-            .unwrap_or_default()
-            .as_secs() as i64;
+        let wall = (self.timestamp() / 1000) as i64;
         let seconds =
             (wall + self.preferences.clock_adjustment + self.preferences.timezone as i64 * 3600)
                 .max(0) as u64;
@@ -419,26 +421,42 @@ impl Phone {
         } else {
             self.preferences.right_shortcut
         };
-        let screen = match index {
-            0 => return,
-            1 => Screen::Contacts,
-            2 => Screen::Tools(tools::ToolPage::Calls),
-            3 => Screen::Messages,
-            4 => Screen::Music,
-            5 => Screen::Tools(tools::ToolPage::Video),
-            6 => Screen::Tools(tools::ToolPage::Radio),
-            7 => Screen::Organizer(organizer::OrganizerPage::Alarms),
-            10 => Screen::Organizer(organizer::OrganizerPage::Calendar),
-            8 => Screen::Tools(tools::ToolPage::Files),
-            9 => Screen::Tools(tools::ToolPage::Gallery),
-            11 => Screen::Tools(tools::ToolPage::Calculator),
-            12 => Screen::Browser,
-            13 => Screen::Tools(tools::ToolPage::Recorder),
-            15 => Screen::Tools(tools::ToolPage::Other),
-            16 => Screen::Tools(tools::ToolPage::Counter),
-            14 => Screen::Settings,
-            _ => return,
-        };
-        self.launch(screen);
+        if let Some(screen) = shortcut_screen(index) {
+            self.launch(screen);
+        }
     }
+    pub fn visible_shortcut(&self, left: bool) -> usize {
+        let index = if left {
+            self.preferences.left_shortcut
+        } else {
+            self.preferences.right_shortcut
+        };
+        if shortcut_screen(index).is_none_or(|s| self.apps.allows(s)) {
+            index
+        } else {
+            0
+        }
+    }
+}
+pub fn shortcut_screen(index: usize) -> Option<Screen> {
+    Some(match index {
+        0 => return None,
+        1 => Screen::Contacts,
+        2 => Screen::Tools(tools::ToolPage::Calls),
+        3 => Screen::Messages,
+        4 => Screen::Music,
+        5 => Screen::Tools(tools::ToolPage::Video),
+        6 => Screen::Tools(tools::ToolPage::Radio),
+        7 => Screen::Organizer(organizer::OrganizerPage::Alarms),
+        10 => Screen::Organizer(organizer::OrganizerPage::Calendar),
+        8 => Screen::Tools(tools::ToolPage::Files),
+        9 => Screen::Tools(tools::ToolPage::Gallery),
+        11 => Screen::Tools(tools::ToolPage::Calculator),
+        12 => Screen::Browser,
+        13 => Screen::Tools(tools::ToolPage::Recorder),
+        15 => Screen::Tools(tools::ToolPage::Other),
+        16 => Screen::Tools(tools::ToolPage::Counter),
+        14 => Screen::Settings,
+        _ => return None,
+    })
 }

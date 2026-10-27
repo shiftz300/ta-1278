@@ -18,30 +18,6 @@ Bounds: 12-second request timeout, 2 MiB decoded response, two waiting requests,
 
 Useful targets are static text pages, link directories and simple GET forms. Script-rendered pages and modern login sites are outside the supported scope. No live public-site compatibility survey was performed in this audit.
 
-## Firmware check
+## Checks
 
-`python3 scripts/check-browser-evidence.py` checks the published `user.bin` hash, 13 reviewed browser code regions and 3037 listed instructions against the original bytes. It does not execute firmware. [Machine-readable results](evidence/browser-code-audit.json).
-
-| Rule | Native evidence | Replica check |
-|---|---|---|
-| Initial field length | XHTML constructor `0x88b48e48`; clamp `0x88b48ef2`; initial copy `0x88b48fa0..0x88b48fb2` | Fixed initial values exceeding maxlength. Previously only later edits were limited. Cancel keeps the page's old value; confirm writes the bounded value |
-| Single/multiple select | `0x88b487c4`; WML `0x88b48350` | Single confirm commits and Back cancels; multiple confirm toggles and Back commits |
-| Page Back priority | `0x88b62486` | Stop loading first, otherwise Back history, otherwise ask to close |
-| Checkbox/radio/reset | `0x880bed86`, `0x880bea84` | Local value/group/reset operations exist. Callback order, vetoes, unusual select-reset fallback and DOM lifetime are not fully reproduced |
-| Subresource progress | `0x88b65986`, `0x88b62c68` | Original uses resource-count progress. Replica loads a single document and has no subresource pipeline; no equivalence claim |
-
-These code anchors are the Dorado branch. The firmware also contains an Opera Mini launcher; this audit does not establish the handset's runtime engine-selection setting. Physical capture evidence remains separately recorded in [browser layout](browser-layout.md).
-
-The initial-copy fix preserves valid Unicode characters if a UTF-16 limit would split a surrogate pair. Native code copies raw units; this small host difference is deliberate. Generic editor initialization is unchanged, so loading existing SMS drafts is unaffected.
-
-Remaining fidelity gaps include native URL conversion/validation, input-mask behavior, authentication, download lifecycles, exact focus/scroll geometry, exact native clearing/reset branches and native callback semantics. The earlier research reference model implements some rules that the desktop adapter does not; its passing tests alone do not prove that the desktop has those features.
-
-## Repeat checks
-
-```sh
-python3 scripts/check-browser-evidence.py
-cargo test --workspace --locked
-cargo clippy --workspace --all-targets --locked -- -D warnings
-```
-
-The added initial-value test covers ASCII, Chinese, supplementary Unicode, edit limits, cancel and confirm using the actual phone route. Existing tests cover select behavior, Back/Forward, stale requests, settings, form values and offline persistence. This is code and local-model validation, not a new physical-phone or live-network test.
+Run `cargo test --workspace --locked`. Browser regression tests use local synthetic HTML fixtures; no handset connection is required.

@@ -1,4 +1,5 @@
 //! Handset start/page separation and local browser UI. Transport lives in web.rs.
+pub mod data;
 use super::*;
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum BrowserView {
@@ -108,7 +109,7 @@ impl Phone {
                 self.compose = Compose::from_message(
                     &Message {
                         body: self.browser.page.url.clone(),
-                        time: phone_core::sms::timestamp(),
+                        time: self.timestamp(),
                         ..Default::default()
                     },
                     None,
@@ -189,8 +190,9 @@ impl Phone {
         if self.browser_view != BrowserView::Page {
             let n = self.browser_items().len();
             match key {
-                Key::Up if n > 0 => self.index = (self.index + n - 1) % n,
-                Key::Down if n > 0 => self.index = (self.index + 1) % n,
+                Key::Up | Key::Down => {
+                    vertical(&mut self.index, n, key, Boundary::Wrap);
+                }
                 Key::SoftLeft => {
                     self.overlay = Some(Overlay::Menu {
                         kind: MenuKind::BrowserRoot,

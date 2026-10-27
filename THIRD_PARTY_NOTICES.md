@@ -1,12 +1,8 @@
 # 第三方来源与权利说明
 
-本仓库包含原厂系统镜像及从中提取的字体、媒体、词库和代码片段。发布这些研究样本不代表拥有其中第三方内容的版权，也没有将原厂内容重新授予开源许可证。
+本仓库保留程序运行所需的原机字体、图标、媒体、词库和 T9 代码片段；完整固件、分析和采集工具已迁至独立研究归档。这些资源的权利仍属于原权利人，不会因迁移或运行库封装而获得新的开源许可。
 
-`tools/decode_abm.py` 的 ABM 解码部分基于 Crawlerop/chinamobiletools 的 sprd_abm.py 改编（固定提交 249b0156f146c85c4f6b7a03bf84820d17b7feb2）。上游 MIT 版权与许可全文见 [chinamobiletools-MIT.txt](third-party-licenses/chinamobiletools-MIT.txt)。
-
-W19 MMI/T9 框架参考仅发布 URL、固定版本和文本哈希；不将整个参考仓库认定为开放许可，不再分发这些参考源码。取回的文件应保留其原有版权声明。其他资料、加载器和开源项目的来源及适用边界见 [sources.md](nokia-ta1278-research/sources.md)。
-
-仓库尚未为其余原创代码或文档指定统一开源许可证。
+仓库尚未为其余原创代码指定统一开源许可证。资源来源和校验见 [assets/README.md](assets/README.md) 与相邻清单。
 
 桌面程序新增 Noto CJK / Symbols 2 / Emoji（SIL OFL）、Rime 简体拼音词库（Apache 2.0）和 FrequencyWords 英文词频数据（CC BY-SA 4.0，不是其代码的 MIT 许可）。来源固定版本、SHA-256、作者与完整许可见 [assets/README.md](assets/README.md) 和相邻许可文件。上述公共词库仅供可选替代预测器使用；桌面程序已切换到 `assets/input/t9/` 中的原机例程与字库，通过本项目的有界 ARM 解释器运行。原机 T9 代码、字符表及字库属于固件衍生资料，不适用 Rime、FrequencyWords 或本项目自编代码的许可；权利归其原权利人，见资源清单与固件发布边界。
 

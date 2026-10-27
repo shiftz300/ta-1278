@@ -1,6 +1,7 @@
 //! File-manager interaction. Host I/O is handled by the storage service.
+mod delete;
 use super::*;
-use crate::local_files::Entry;
+use crate::storage::files::Entry;
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub enum FileView {
     #[default]
@@ -172,8 +173,9 @@ impl Phone {
         if self.files.transfer.is_some() {
             let n = self.files.entries.len();
             match key {
-                Key::Up if n > 0 => self.index = (self.index + n - 1) % n,
-                Key::Down if n > 0 => self.index = (self.index + 1) % n,
+                Key::Up | Key::Down => {
+                    vertical(&mut self.index, n, key, Boundary::Wrap);
+                }
                 Key::Center => self.file_open(),
                 Key::SoftLeft => self.file_transfer_here(&self.files.path.clone()),
                 Key::SoftRight if !self.files.history.is_empty() => {
@@ -196,8 +198,9 @@ impl Phone {
         }
         let n = self.file_labels().len();
         match key {
-            Key::Up if n > 0 => self.index = (self.index + n - 1) % n,
-            Key::Down if n > 0 => self.index = (self.index + 1) % n,
+            Key::Up | Key::Down => {
+                vertical(&mut self.index, n, key, Boundary::Wrap);
+            }
             Key::SoftRight => {
                 if self.files.view == FileView::Options {
                     self.files.view = FileView::Browse;
@@ -285,7 +288,7 @@ impl Phone {
             let name = t.source.rsplit('/').next().unwrap_or("");
             self.files.pending = Some(FileRequest::Transfer(
                 t.source.clone(),
-                crate::local_files::child(parent, name),
+                crate::storage::files::child(parent, name),
                 t.moving,
             ));
         }
@@ -312,11 +315,11 @@ impl Phone {
         }
     }
     pub(super) fn file_name(&mut self, new: bool, name: String) {
-        if !crate::local_files::valid_name(&name) || name.starts_with('.') {
+        if !crate::storage::files::valid_name(&name) || name.starts_with('.') {
             self.notice("文件名无效。");
             return;
         }
-        let target = crate::local_files::child(&self.files.path, &name);
+        let target = crate::storage::files::child(&self.files.path, &name);
         self.files.pending = if new {
             Some(FileRequest::Mkdir(target))
         } else {

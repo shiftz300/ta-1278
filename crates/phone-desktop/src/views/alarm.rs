@@ -8,7 +8,7 @@ const BLACK: Color = [0, 0, 0, 255];
 pub(super) fn render(c: &mut Canvas, p: &mut Phone) {
     use OrganizerPage::*;
     if p.organizer.page == AlarmRingtone {
-        crate::ui::tone_picker::draw(c, "闹钟铃声", p.index, &p.organizer.draft[3], "预设");
+        crate::ui::tones::draw(c, "闹钟铃声", p.index, &p.organizer.draft[3], "预设");
         return;
     }
     c.text(
@@ -173,7 +173,7 @@ pub(super) fn render(c: &mut Canvas, p: &mut Phone) {
 }
 
 pub(super) fn alert(c: &mut Canvas, p: &Phone) {
-    if let Some(a) = p.local_data.reminders.alerts.front() {
+    if let Some(a) = p.active_reminder() {
         c.caret = None;
         c.background();
         status(c);

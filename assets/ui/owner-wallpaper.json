@@ -26,5 +26,5 @@
     "basis": "Visual approximation to measured ~0.58 in lossy capture; Home uses full decoded pixels"
   },
   "artist_license": "Not established; owner-provided artwork, not represented as Nokia or project-authored art",
-  "reproduce": "python3 scripts/extract-owner-wallpaper.py PRIVATE_FAT12_BACKUP NEW_OUTPUT_DIRECTORY"
+  "reproduce": "Extraction instructions are in the separate research archive, scripts/extract-owner-wallpaper.py; private input is not required to build this app."
 }

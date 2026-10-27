@@ -1,5 +1,6 @@
+pub(crate) mod art;
 use super::*;
-use crate::{phone::snake::SnakeView, snake_art::Sprite};
+use crate::{phone::snake::SnakeView, views::snake::art::Sprite};
 use phone_core::snake::{Direction, Snake};
 fn game(c: &mut Canvas, s: &Snake) {
     c.sprite(Sprite::Background, 0, 0, [0, 0, 240, 320]);

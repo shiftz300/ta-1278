@@ -88,9 +88,11 @@ pub fn write(dir: &Path, name: &str, bytes: &[u8], limit: usize) -> Result<(), S
 
 /// The OS releases this lock after a normal exit or crash. The lock file can stay.
 /// Hold it for the lifetime of an application data directory session.
+#[cfg(any(feature = "desktop", test))]
 pub struct DataLock {
     _file: File,
 }
+#[cfg(any(feature = "desktop", test))]
 impl DataLock {
     pub fn acquire(dir: &Path) -> Result<Self, String> {
         fs::create_dir_all(dir).map_err(|e| e.to_string())?;

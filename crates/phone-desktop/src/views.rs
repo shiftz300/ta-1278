@@ -1,21 +1,22 @@
 mod alarm;
 mod browser;
-mod browser_chrome;
-mod browser_layout;
 mod compose;
 mod contacts;
 mod conversation;
+mod converter;
 mod files;
 mod mail;
-mod media_browser;
+mod media;
 mod music;
 mod organizer;
 mod pickers;
+mod radio;
 mod settings;
-mod snake;
+pub(crate) mod snake;
 mod tools;
 mod wallpaper;
 use crate::ui::chrome::status;
+use crate::ui::popup::Popup as PopupMenu;
 use crate::ui::softkeys::{Button, Softkeys};
 use crate::ui::{chrome, editor::Edit, list, softkeys, text};
 use crate::{canvas::*, phone::*};
@@ -60,14 +61,15 @@ pub fn render(c: &mut Canvas, p: &mut Phone) {
                 c.fit(6, 190, &p.preferences.greeting, 18, WHITE, 228);
             }
             Softkeys::new(
-                Button::Shortcut(p.preferences.left_shortcut),
+                Button::Shortcut(p.visible_shortcut(true)),
                 Button::Text("功能表"),
-                Button::Shortcut(p.preferences.right_shortcut),
+                Button::Shortcut(p.visible_shortcut(false)),
             )
             .draw(c);
         }
         Screen::Menu => {
-            let entries = &crate::menu::ENTRIES;
+            let entries = crate::menu::visible(p.apps);
+            p.index = p.index.min(entries.len() - 1);
             c.text(
                 6,
                 1,
@@ -104,7 +106,7 @@ pub fn render(c: &mut Canvas, p: &mut Phone) {
         Screen::Compose => compose::render(c, p),
         Screen::Browser => browser::render(c, p),
         Screen::Music => music::render(c, p),
-        Screen::Media => media_browser::render(c, p),
+        Screen::Media => media::render(c, p),
         Screen::Snake => snake::render(c, p),
         Screen::Contacts | Screen::Organizer(_) => organizer::render(c, p),
         Screen::Settings => settings::render(c, p),
@@ -140,7 +142,18 @@ pub fn render(c: &mut Canvas, p: &mut Phone) {
                 ..
             }
         );
-        if browser_modal || file_editor || matches!(overlay, Overlay::TimerElapsed) {
+        let music_library_menu = matches!(
+            overlay,
+            Overlay::Menu {
+                kind: MenuKind::MusicLibrary,
+                ..
+            }
+        );
+        if browser_modal
+            || file_editor
+            || music_library_menu
+            || matches!(overlay, Overlay::TimerElapsed)
+        {
             c.dim();
         } else {
             c.background();
@@ -163,7 +176,12 @@ pub fn render(c: &mut Canvas, p: &mut Phone) {
             }
             Overlay::Menu { kind, index } => {
                 if p.screen == Screen::Browser {
-                    browser_chrome::menu(c, p, kind, index);
+                    browser::chrome::menu(c, p, kind, index);
+                } else if kind == MenuKind::MusicLibrary {
+                    let labels = p.menu_labels(kind);
+                    PopupMenu::default()
+                        .unshaded()
+                        .draw(c, labels.len(), index, |i| list::Row::text(&labels[i]));
                 } else if matches!(kind, MenuKind::Symbols | MenuKind::Smileys) {
                     pickers::render(c, p, kind, index);
                 } else {
@@ -181,7 +199,7 @@ pub fn render(c: &mut Canvas, p: &mut Phone) {
             }
             Overlay::Text { target, editor: e } => {
                 if p.screen == Screen::Browser {
-                    browser_chrome::editor(c, p, target, &e);
+                    browser::chrome::editor(c, p, target, &e);
                 } else if matches!(target, TextTarget::FileName(_)) {
                     c.rect(0, 184, 240, 136, [0, 0, 0, 255]);
                     let folder = target == TextTarget::FileName(true)
@@ -277,7 +295,7 @@ pub fn render(c: &mut Canvas, p: &mut Phone) {
         }
     }
     if let Some(e) = p.editor() {
-        crate::candidate_view::render(c, e);
+        crate::ui::candidates::render(c, e);
     }
     alarm::alert(c, p);
 }
@@ -286,7 +304,7 @@ fn mode(e: &Editor) -> &'static str {
 }
 
 #[cfg(test)]
-mod audit_tests;
+mod audit;
 #[cfg(test)]
 mod tests {
     use super::*;

@@ -1,4 +1,6 @@
 //! Conversation navigation over the existing mailbox and transactional composer.
+#[cfg(test)]
+mod tests;
 use super::*;
 use phone_core::sms::conversation::Item;
 
@@ -58,7 +60,7 @@ impl Phone {
                 },
                 None,
             );
-            c.time = phone_core::sms::timestamp();
+            c.time = self.timestamp();
             c
         };
         self.chat = ChatUi {
@@ -96,7 +98,7 @@ impl Phone {
                 self.chat.choice = 0;
             }
             Key::Center if self.index == 0 => {
-                self.compose = Compose::default();
+                self.compose = self.new_compose();
                 self.chat = ChatUi {
                     route: true,
                     ..Default::default()
@@ -244,7 +246,7 @@ impl Phone {
                         if !self.compose.body.units.is_empty() {
                             self.save_draft();
                         }
-                        self.compose = Compose::default();
+                        self.compose = self.new_compose();
                         self.compose.body.insert(&body);
                         self.chat.popup = Popup::None;
                         self.go(Screen::Compose);

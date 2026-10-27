@@ -10,12 +10,13 @@ pub(super) fn render(c: &mut Canvas, p: &mut Phone) {
     match p.organizer.page {
         Page::ContactGroupMenu => {
             chrome::title(c, "选项");
-            list::popup(c, 3, p.index, |i| list::Row {
-                label: ["新增组", "重命名", "删除组"][i],
-                enabled: i == 0 || p.organizer.contact.selected_group.is_some(),
-                marker: list::Marker::None,
-            });
-            Softkeys::back("选择").draw(c);
+            PopupMenu::default()
+                .unshaded()
+                .draw(c, 3, p.index, |i| list::Row {
+                    label: ["新增组", "重命名", "删除组"][i],
+                    enabled: i == 0 || p.organizer.contact.selected_group.is_some(),
+                    marker: list::Marker::None,
+                });
         }
         Page::ContactGroupDelete => {
             chrome::title(c, "通话组");
@@ -24,7 +25,7 @@ pub(super) fn render(c: &mut Canvas, p: &mut Phone) {
             Softkeys::new(Button::None, Button::Text("确认"), Button::Close).draw(c);
         }
         Page::ContactRingtone => {
-            crate::ui::tone_picker::draw(c, "铃声", p.index, &p.organizer.draft[7], "预设")
+            crate::ui::tones::draw(c, "铃声", p.index, &p.organizer.draft[7], "预设")
         }
         Page::ContactGroups | Page::ContactGroupChoice => {
             chrome::title(c, p.organizer_title());
@@ -44,31 +45,25 @@ pub(super) fn render(c: &mut Canvas, p: &mut Phone) {
         Page::Contacts => root(c, p),
         Page::ContactsMenu => {
             root(c, p);
-            c.dim();
-            list::popup(c, ROOT_MENU.len(), p.index, |i| list::Row {
+            PopupMenu::default().draw(c, ROOT_MENU.len(), p.index, |i| list::Row {
                 label: ROOT_MENU[i],
                 enabled: p.contact_menu_enabled(i),
                 marker: list::Marker::None,
             });
-            Softkeys::back("选择").draw(c);
         }
         Page::ContactForm => form(c, p, p.index, true),
         Page::ContactFormMenu => {
             form(c, p, p.organizer.contact.return_index, false);
-            c.dim();
-            list::popup(c, 1, 0, |_| list::Row::text("保存"));
-            Softkeys::back("选择").draw(c);
+            PopupMenu::default().draw(c, 1, 0, |_| list::Row::text("保存"));
         }
         Page::ContactDetail => detail(c, p, p.index),
         Page::ContactMenu => {
             detail(c, p, p.organizer.contact.return_index);
-            c.dim();
-            list::popup(c, DETAIL_MENU.len(), p.index, |i| list::Row {
+            PopupMenu::default().draw(c, DETAIL_MENU.len(), p.index, |i| list::Row {
                 label: DETAIL_MENU[i],
                 enabled: p.contact_menu_enabled(i),
                 marker: list::Marker::None,
             });
-            Softkeys::back("选择").draw(c);
         }
         Page::DeleteContact => {
             detail(c, p, 0);

@@ -6,6 +6,7 @@ pub enum Marker {
     None,
     Radio(bool),
     Check(bool),
+    Switch(bool),
 }
 pub struct Row<'a> {
     pub label: &'a str,
@@ -96,6 +97,30 @@ pub fn draw<'a>(
         };
         match item.marker {
             Marker::None => {}
+            Marker::Switch(on) => {
+                let y = y + style.row_height / 2;
+                let track = if item.enabled {
+                    c.accent(3)
+                } else {
+                    c.accent(6)
+                };
+                for dy in -9_i32..=9 {
+                    for dx in -15_i32..=15 {
+                        let edge = (dx.abs() - 6).max(0);
+                        if edge * edge + dy * dy <= 81 {
+                            c.rect(219 + dx, y + dy, 1, 1, track);
+                        }
+                    }
+                }
+                let knob = if item.enabled { WHITE } else { MUTED };
+                for dy in -6_i32..=6 {
+                    for dx in -6_i32..=6 {
+                        if dx * dx + dy * dy <= 36 {
+                            c.rect(if on { 225 } else { 213 } + dx, y + dy, 1, 1, knob);
+                        }
+                    }
+                }
+            }
             Marker::Radio(selected) => {
                 c.ring(225, y + style.row_height / 2, 7, color);
                 if selected {
@@ -133,15 +158,31 @@ pub fn plain(c: &mut Canvas, labels: &[String], index: usize) {
     });
 }
 pub fn popup<'a>(c: &mut Canvas, count: usize, index: usize, row: impl FnMut(usize) -> Row<'a>) {
-    let style = ListStyle::popup(count);
+    let mut style = ListStyle::popup(count);
+    if count > style.visible {
+        style.row_width = 234;
+        style.text_width = 222;
+    }
     c.rect(
         0,
         style.top,
         240,
-        style.visible as i32 * style.row_height,
+        super::SOFTKEY_TOP - style.top,
         [0, 0, 0, 255],
     );
     draw(c, count, index, style, row);
+    if count > style.visible {
+        let height = style.visible as i32 * style.row_height;
+        let start = index.saturating_sub(style.visible - 1);
+        c.rect(236, style.top, 4, height, c.accent(6));
+        c.rect(
+            236,
+            style.top + start as i32 * height / count as i32,
+            4,
+            style.visible as i32 * height / count as i32,
+            MUTED,
+        );
+    }
 }
 
 /// Native two-line rows used by storage and the Other menu.

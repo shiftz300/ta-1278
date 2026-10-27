@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "apps": {
+    "browser": true,
+    "music": true,
+    "calendar": true,
+    "alarms": true,
+    "snake": true,
+    "radio": true,
+    "flashlight": true,
+    "recorder": true,
+    "calculator": true,
+    "utilities": true,
+    "counter": true,
+    "pictures": true,
+    "video": true
+  },
+  "capabilities": {
+    "music": true,
+    "files": true,
+    "network": true,
+    "pictures": true,
+    "video": true,
+    "sounds": true
+  },
+  "storage": {
+    "directory": null,
+    "read_only": false
+  }
+}

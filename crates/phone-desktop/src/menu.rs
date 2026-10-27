@@ -92,12 +92,17 @@ pub const INITIAL_FOCUS: usize = 4;
 pub fn phone_disabled(screen: Screen) -> bool {
     matches!(screen, Screen::Tools(ToolPage::Calls))
 }
-pub fn navigate(index: usize, key: Key) -> usize {
+pub fn visible(apps: crate::config::Apps) -> Vec<&'static Entry> {
+    ENTRIES.iter().filter(|e| apps.allows(e.screen)).collect()
+}
+pub fn navigate(index: usize, key: Key, count: usize) -> usize {
+    let count = count.max(1);
+    let index = index.min(count - 1);
     match key {
-        Key::Left => (index + ENTRIES.len() - 1) % ENTRIES.len(),
-        Key::Right => (index + 1) % ENTRIES.len(),
+        Key::Left => (index + count - 1) % count,
+        Key::Right => (index + 1) % count,
         Key::Up => index.saturating_sub(3),
-        Key::Down => (index + 3).min(ENTRIES.len() - 1),
+        Key::Down => (index + 3).min(count - 1),
         _ => index,
     }
 }

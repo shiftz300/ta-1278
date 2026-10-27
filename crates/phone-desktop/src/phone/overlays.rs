@@ -251,6 +251,7 @@ impl Phone {
             MenuKind::Music => self.music_action(index),
             MenuKind::MusicLibrary => {
                 self.music_refresh = true;
+                self.music_wait_dismissed = false;
                 self.music_view = MusicView::Root;
                 self.index = 0;
             }

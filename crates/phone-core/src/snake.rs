@@ -1,4 +1,4 @@
-//! Rules traced from firmware 17.00.17.02; see docs/evidence/snake-recovery.json.
+//! Rules traced from firmware 17.00.17.02; see research archive: docs/evidence/snake-recovery.json.
 //! Random update follows the kernel; initial state and scheduling are local policies.
 use crate::input::Key;
 use std::collections::VecDeque;

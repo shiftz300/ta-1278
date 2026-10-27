@@ -1,4 +1,5 @@
 pub mod conversation;
+pub mod retry;
 
 /// Host event timestamp in milliseconds. Zero in older stores means unknown.
 pub fn timestamp() -> u64 {
@@ -28,7 +29,7 @@ pub struct ReceivedMessage {
     #[serde(default)]
     pub time: u64,
 }
-#[derive(Default, Serialize, Deserialize)]
+#[derive(Clone, Default, Serialize, Deserialize)]
 pub struct Mailbox {
     #[serde(default)]
     pub services: crate::services::ServiceState,

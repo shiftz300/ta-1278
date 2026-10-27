@@ -71,14 +71,12 @@ pub(super) fn render(c: &mut Canvas, p: &Phone) {
                 },
             );
             if p.files.view == FileView::Options {
-                c.dim();
                 let labels = p.file_labels();
-                list::popup(c, labels.len(), p.index, |i| list::Row {
+                PopupMenu::default().draw(c, labels.len(), p.index, |i| list::Row {
                     label: &labels[i],
                     enabled: p.file_action_enabled(i),
                     marker: list::Marker::None,
                 });
-                Softkeys::back("选择").draw(c);
             } else if p.files.transfer.is_some() {
                 Softkeys::new(
                     Button::Transfer,
@@ -150,10 +148,9 @@ fn deletion(c: &mut Canvas, p: &Phone) {
     }
     match p.files.view {
         FileView::DeleteOptions => {
-            c.dim();
             let all =
                 !entries.is_empty() && entries.iter().all(|e| p.files.marked.contains(&e.path));
-            list::popup(c, 2, p.index, |i| list::Row {
+            PopupMenu::default().draw(c, 2, p.index, |i| list::Row {
                 label: if i == 0 {
                     "删除"
                 } else if all {
@@ -164,7 +161,6 @@ fn deletion(c: &mut Canvas, p: &Phone) {
                 enabled: i != 0 || !p.files.marked.is_empty(),
                 marker: list::Marker::None,
             });
-            Softkeys::back("选择").draw(c);
         }
         FileView::DeleteConfirm => {
             c.dim();
@@ -255,13 +251,13 @@ fn storage(c: &mut Canvas, p: &Phone) {
         );
     }
     if p.files.view == FileView::StorageOptions {
-        c.dim();
-        list::popup(c, 2, p.index, |i| list::Row {
-            label: ["详情", "格式化"][i],
-            enabled: i == 0,
-            marker: list::Marker::None,
-        });
-        Softkeys::back(if p.index == 0 { "选择" } else { "" }).draw(c);
+        PopupMenu::default()
+            .footer(Softkeys::back(if p.index == 0 { "选择" } else { "" }))
+            .draw(c, 2, p.index, |i| list::Row {
+                label: ["详情", "格式化"][i],
+                enabled: i == 0,
+                marker: list::Marker::None,
+            });
     } else if p.files.transfer.is_some() {
         Softkeys::new(Button::Transfer, Button::Text("打开"), Button::Back).draw(c);
     } else {

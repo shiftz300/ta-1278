@@ -9,22 +9,23 @@ import zlib
 
 ROOT = Path(__file__).resolve().parents[1]
 ASSETS = {
-    'original_fonts': [('LATIN', 'nokia-ta1278-research/analysis/ui/fonts/font-0-latn.otf'),
-                       ('HANI1', 'nokia-ta1278-research/analysis/ui/fonts/font-1-hani.otf'),
-                       ('HANI2', 'nokia-ta1278-research/analysis/ui/fonts/font-2-hani.otf')],
+    'original_fonts': [('LATIN', 'assets/fonts/device/font-0-latn.otf'),
+                       ('HANI1', 'assets/fonts/device/font-1-hani.otf'),
+                       ('HANI2', 'assets/fonts/device/font-2-hani.otf')],
     'fallback_fonts': [('CJK', 'assets/fonts/subsets/FallbackCJK.otf'),
                        ('SYMBOLS', 'assets/fonts/subsets/FallbackSymbols.ttf'),
                        ('EMOJI', 'assets/fonts/subsets/FallbackEmoji.ttf')],
-    'input_dictionaries': [('PINYIN', 'assets/input/pinyin_simp.dict.yaml'),
-                           ('STROKE', 'assets/input/stroke.dict.yaml'),
-                           ('ENGLISH', 'assets/input/en_50k.txt')],
+    't9': [('T9_CODE', 'assets/input/t9/engine.arm'),
+           ('T9_TABLES', 'assets/input/t9/character-tables.bin'),
+           ('T9_ENGLISH', 'assets/input/t9/english.ldb'),
+           ('T9_CHINESE', 'assets/input/t9/chinese.ldb')],
     'native_soundfont': [('SOUNDFONT', 'assets/audio/gm1_A21.sf2')],
 }
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--out', type=Path, default=ROOT/'docs/evidence/packed-build-size.json')
+    parser.add_argument('--out', type=Path, default=ROOT/'target/packed-build-size.json')
     args = parser.parse_args()
     bundle = ROOT/'target/TA1278.app'
     binary = (bundle/'Contents/MacOS/phone-desktop').read_bytes()

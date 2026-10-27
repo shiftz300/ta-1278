@@ -8,7 +8,7 @@ API version 1. The shipped app uses `Offline`: no modem, real messages, calls or
 
 ## Connect a backend later
 
-Implement `phone_core::services::Backend` and replace `services::Services::default()` in `main.rs` with `Services::new(Box::new(your_adapter))`. Provide a stable backend ID and explicit capabilities. The app never discovers or connects a service automatically. No transport, credentials, server, protocol or CLI connection option is implemented now.
+Implement `phone_runtime::messaging::Backend` and construct `Runtime::with_backend(config, time, Box::new(your_adapter))`. The current desktop adapter still selects the offline backend. See [the runtime interface](runtime.md) for host-driven polling and persistence. Provide a stable backend ID and explicit capabilities. The app never discovers or connects a service automatically. No transport, credentials, server, protocol or CLI connection option is implemented now.
 
 `submit`, `poll` and `acknowledge` must return promptly. Run network IO in your adapter's worker. `Busy` and `Disconnected` retain pending work. An accepted command belongs to the adapter until it emits a final result; it must handle its own connection recovery. The app does not repeatedly submit an accepted command within one process.
 
@@ -36,7 +36,7 @@ All event types derive Serde. For example, a future adapter can return:
 
 Each backend/profile has one durable, ordered stream beginning at 1. Replays are allowed. Gaps, invalid data and unsupported events are rejected without acknowledgment; fix the adapter's stream rather than silently dropping an event. `poll` must retain unacknowledged events for replay after process failure. Do not reorder independently fetched topics; merge them in the adapter first.
 
-The received message/status/alert and its stream cursor share **one atomic `messages.json` write**. The bridge acknowledges consumption only after that save. On a crash between save and acknowledgment, the saved cursor prevents duplicate incoming messages. Acknowledgment means durable local consumption, not that the user read the message. No outbound read-receipt command is implemented.
+The received message/status/alert and its stream cursor share **one atomic `messages.json` write** in the desktop host, or one successful `Runtime::save` transaction in an embedded host. The bridge acknowledges consumption only after that save. On a crash between save and acknowledgment, the saved cursor prevents duplicate incoming messages. Acknowledgment means durable local consumption, not that the user read the message. No outbound read-receipt command is implemented.
 
 Incoming messages use the existing conversation list, unread marker and reader. An open composer keeps its text. Timestamp is UTC milliseconds from the backend; zero means unknown. UI labels are not modem/network cause codes.
 
@@ -51,19 +51,6 @@ Publish the same alert ID with a new sequence to replace its content and clear i
 Alerts use the common title/body/scroll/softkey renderer. They wait until the active editor/modal and organizer alarm allow display. Confirm/back dismisses and saves that choice. Withdrawal or expiry closes an open alert and preserves the underlying screen. No forced interruption, location filtering, wake-from-sleep guarantee, ETWS/CMAS decoding or regulatory alert behavior is claimed.
 
 Bounds: 8 backend streams, 32 retained alerts; ID 1–64 ASCII letters/digits or `._-:`; sender 64 UTF-16 units; body 4096; alert title 80; failure detail 1024 UTF-8 bytes. Expired alerts are removed locally. A full queue applies backpressure; the adapter must not discard blocked events. Existing `messages.json` has an 8 MiB file limit. The normal app retains its single-instance profile lock.
-
-## Native evidence
-
-`python3 scripts/verify-service-evidence.py` checks both system image hashes, original SMS branch hashes, broadcast text bytes, window name bytes, reader descriptor hashes and T9 file hashes. It emits [service-native-anchors.json](evidence/service-native-anchors.json) and a bounded Thumb listing. No firmware code is executed and no phone is contacted.
-
-Confirmed static anchors:
-
-- Existing SMS reason handling at `0x883c5e68`, `0x883c407e`, `0x883c421a`; [full bounded retry analysis](sms-lifecycle.md). Native UI operation 0 is sending progress, not success.
-- Separate `MMISMS_STATUE_REPORT_WIN_ID`, `MMISMS_CB_NEWMSG_WIN_ID` and `MMISMS_ETWS_NEWMSG_WIN_ID` name registrations at user.bin offsets `0x70fb9a`, `0x70fbcc`, `0x70fbfe`.
-- Broadcast reader descriptors point to Thumb callbacks `0x88aec6b5` and `0x88aedb83`. The inspected entry blocks dispatch event values; their entire handlers have not been translated.
-- mmi.bin contains “Cell broadcast message”, “Emergency message”, “ETWS alert message” and an undeletable emergency-channel description.
-
-Names/texts do **not** prove that ETWS is enabled or usable on this variant. The adapter API, IDs, cursor persistence, alert queue and interruption rules above are new host policies. Call handling and the native alert transport remain unimplemented.
 
 ## Tests
 

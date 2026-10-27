@@ -1,6 +1,6 @@
 # Input engine
 
-The desktop now uses `predict::firmware::Firmware` by default. It interprets the original T9 ARM routines and reads the extracted simplified Chinese and English databases. No firmware binary is loaded as host code. [Recovery, addresses and limits](t9-recovery.md).
+The desktop now uses `predict::firmware::Firmware` by default. It interprets the original T9 ARM routines and reads the extracted simplified Chinese and English databases. No firmware binary is loaded as host code. Recovery, addresses and limits (research archive).
 
 The shared boundary remains independent of message and service backends:
 

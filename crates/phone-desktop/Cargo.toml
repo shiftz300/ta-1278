@@ -3,14 +3,26 @@ name = "phone-desktop"
 version.workspace = true
 edition.workspace = true
 
+[lib]
+name = "phone_runtime"
+
+[[bin]]
+name = "phone-desktop"
+path = "src/main.rs"
+required-features = ["desktop"]
+
+[features]
+default = ["desktop"]
+desktop = ["dep:winit", "dep:wgpu", "dep:pollster", "dep:objc2", "dep:objc2-app-kit", "dep:objc2-foundation"]
+
 [dependencies]
 phone-core = { path = "../phone-core" }
 rodio = { version = "0.21.1", default-features = false, features = ["playback", "symphonia-mp3", "symphonia-wav", "symphonia-pcm"] }
 serde.workspace = true
 serde_json.workspace = true
-winit = "0.30.13"
-wgpu = "30.0.1"
-pollster = "0.4"
+winit = { version = "0.30.13", optional = true }
+wgpu = { version = "30.0.1", optional = true }
+pollster = { version = "0.4", optional = true }
 fontdue = "0.9"
 image = { version = "0.25", default-features = false, features = ["png"] }
 ureq = "3"
@@ -23,6 +35,6 @@ midly = { version = "=0.5.3", default-features = false, features = ["std"] }
 miniz_oxide.workspace = true
 
 [target.'cfg(target_os = "macos")'.dependencies]
-objc2 = "=0.5.3"
-objc2-app-kit = { version = "=0.2.2", default-features = false, features = ["NSApplication", "NSResponder"] }
-objc2-foundation = { version = "=0.2.2", default-features = false, features = ["NSObject"] }
+objc2 = { version = "=0.5.3", optional = true }
+objc2-app-kit = { optional = true, version = "=0.2.2", default-features = false, features = ["NSApplication", "NSResponder"] }
+objc2-foundation = { optional = true, version = "=0.2.2", default-features = false, features = ["NSObject"] }

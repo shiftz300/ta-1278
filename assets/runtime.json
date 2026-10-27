@@ -1,0 +1,479 @@
+{
+  "description": "Runtime assets copied without byte changes. archive_source paths refer to the separate research archive, not build dependencies.",
+  "files": [
+    {
+      "file": "assets/icons/00292-icon-00049e5c.png",
+      "bytes": 886,
+      "sha256": "0b529ab23c9352d7da9a096e896395913c4d6ae45d4f0eaec0b53e83f4e0294d",
+      "archive_source": "nokia-ta1278-research/analysis/extracted/png/00292-icon-00049e5c.png"
+    },
+    {
+      "file": "assets/icons/00397-icon-00052900.png",
+      "bytes": 393,
+      "sha256": "b09744b49cdc8e0edb357e49151f871d738ce944408cbf2fc3e31ba2faea6786",
+      "archive_source": "nokia-ta1278-research/analysis/extracted/png/00397-icon-00052900.png"
+    },
+    {
+      "file": "assets/icons/00398-icon-00052abc.png",
+      "bytes": 303,
+      "sha256": "08615b8900e83a37551255567b37adacd940606525c01dbab4f94f58fe91bf05",
+      "archive_source": "nokia-ta1278-research/analysis/extracted/png/00398-icon-00052abc.png"
+    },
+    {
+      "file": "assets/icons/00418-icon-00055de8.png",
+      "bytes": 1256,
+      "sha256": "069002c349635f09939983c0fce8466ffbed273cfc2d175db2761167d0e6293d",
+      "archive_source": "nokia-ta1278-research/analysis/extracted/png/00418-icon-00055de8.png"
+    },
+    {
+      "file": "assets/icons/00419-icon-000562e4.png",
+      "bytes": 605,
+      "sha256": "59f77a775deb4e7c0df4c745dd8c933aded0bfc7ce10533222736de9b77b635c",
+      "archive_source": "nokia-ta1278-research/analysis/extracted/png/00419-icon-000562e4.png"
+    },
+    {
+      "file": "assets/icons/00420-icon-00056684.png",
+      "bytes": 1094,
+      "sha256": "0cbe118e76c18293c125562f5b837abb6e4725539e4d51f413f213cb1b1eef48",
+      "archive_source": "nokia-ta1278-research/analysis/extracted/png/00420-icon-00056684.png"
+    },
+    {
+      "file": "assets/icons/00421-icon-00056b70.png",
+      "bytes": 1483,
+      "sha256": "79038365e9cbcd79969eea295d4e090d9c98c7da27019c953689c9950e91f3b6",
+      "archive_source": "nokia-ta1278-research/analysis/extracted/png/00421-icon-00056b70.png"
+    },
+    {
+      "file": "assets/icons/00429-icon-0006d64c.png",
+      "bytes": 838,
+      "sha256": "0d21c09ac3035663f32576e7871bf2372196ada81291bab01a749b1edf7f2c3b",
+      "archive_source": "nokia-ta1278-research/analysis/extracted/png/00429-icon-0006d64c.png"
+    },
+    {
+      "file": "assets/icons/00430-icon-0006d9f0.png",
+      "bytes": 1549,
+      "sha256": "b0fcb157f21b3a72b727145ddde133479ca4e2d88339393bc64d9a15a2625aa0",
+      "archive_source": "nokia-ta1278-research/analysis/extracted/png/00430-icon-0006d9f0.png"
+    },
+    {
+      "file": "assets/icons/00432-icon-0006e214.png",
+      "bytes": 1502,
+      "sha256": "fd9fc4fd4dfbb194c091589b89cd2a4863882b98735544222fac26f96ecce986",
+      "archive_source": "nokia-ta1278-research/analysis/extracted/png/00432-icon-0006e214.png"
+    },
+    {
+      "file": "assets/icons/00434-icon-0006ede0.png",
+      "bytes": 516,
+      "sha256": "79c8da314647c250257291046215c98a431b59c2ee71d85ba303ffa17e793b3c",
+      "archive_source": "nokia-ta1278-research/analysis/extracted/png/00434-icon-0006ede0.png"
+    },
+    {
+      "file": "assets/icons/00435-icon-0006f020.png",
+      "bytes": 797,
+      "sha256": "dd00529d9468ded436f5cd06599cbba7f735fbc100eb32ff209deb81d9961840",
+      "archive_source": "nokia-ta1278-research/analysis/extracted/png/00435-icon-0006f020.png"
+    },
+    {
+      "file": "assets/icons/00436-icon-0006f368.png",
+      "bytes": 1102,
+      "sha256": "211bb8f5f145afc7f9155e608836ea9264e4e2fbb9619e75f1e2ec4c8b5f7ec1",
+      "archive_source": "nokia-ta1278-research/analysis/extracted/png/00436-icon-0006f368.png"
+    },
+    {
+      "file": "assets/icons/00437-icon-0006f7fc.png",
+      "bytes": 1356,
+      "sha256": "7205880f29fe5795b8252fa533d7c02a75b0cc44b0567f140e7129474ead1f23",
+      "archive_source": "nokia-ta1278-research/analysis/extracted/png/00437-icon-0006f7fc.png"
+    },
+    {
+      "file": "assets/icons/00439-icon-0006fe40.png",
+      "bytes": 2271,
+      "sha256": "701a9ee33161ddfeabb0856c4d29993f6d58cad372e98a9f694c80628565c3a7",
+      "archive_source": "nokia-ta1278-research/analysis/extracted/png/00439-icon-0006fe40.png"
+    },
+    {
+      "file": "assets/icons/00441-icon-00070b98.png",
+      "bytes": 1429,
+      "sha256": "b43732c53dec523b0fd701ef1d5ec881a47a8ce4163e4bfa41606fb9d6d118f5",
+      "archive_source": "nokia-ta1278-research/analysis/extracted/png/00441-icon-00070b98.png"
+    },
+    {
+      "file": "assets/icons/00442-icon-0007117c.png",
+      "bytes": 897,
+      "sha256": "2a6eef6afaa62ddd49697bcad0f9d45dfce640e216ef619bfe60cfe0144a2317",
+      "archive_source": "nokia-ta1278-research/analysis/extracted/png/00442-icon-0007117c.png"
+    },
+    {
+      "file": "assets/icons/00443-icon-00071564.png",
+      "bytes": 1667,
+      "sha256": "fd0841504fab141e77ddc26bd9bad3ed44be7f6c0475d3c7baf28b96405e0608",
+      "archive_source": "nokia-ta1278-research/analysis/extracted/png/00443-icon-00071564.png"
+    },
+    {
+      "file": "assets/icons/00444-icon-00071be0.png",
+      "bytes": 1510,
+      "sha256": "f4652a55a56c8c837524d46ba7b30ba3b4f15c14a4df46e8586e9519d3b69294",
+      "archive_source": "nokia-ta1278-research/analysis/extracted/png/00444-icon-00071be0.png"
+    },
+    {
+      "file": "assets/icons/00447-icon-00072ddc.png",
+      "bytes": 1464,
+      "sha256": "6d05635214a13c61b1cd5b5ada4376d1e99cb6a32b116a49c90f99a2666e880b",
+      "archive_source": "nokia-ta1278-research/analysis/extracted/png/00447-icon-00072ddc.png"
+    },
+    {
+      "file": "assets/icons/00448-icon-000733fc.png",
+      "bytes": 917,
+      "sha256": "d0c01957bcbab3eaa894609f6c676e44c56231174701c8cd3b688fa75aa8a0d9",
+      "archive_source": "nokia-ta1278-research/analysis/extracted/png/00448-icon-000733fc.png"
+    },
+    {
+      "file": "assets/icons/00449-icon-000737dc.png",
+      "bytes": 1403,
+      "sha256": "1b1a7dbfced7a4ff9f3e54b611e3f1dd465df0ee6fa17a429e8058a06d3ba69d",
+      "archive_source": "nokia-ta1278-research/analysis/extracted/png/00449-icon-000737dc.png"
+    },
+    {
+      "file": "assets/icons/01151-icon-000cfe9c.png",
+      "bytes": 186,
+      "sha256": "c2a99a04478b41fec71dc39959dcf6951fa2c177a5f5b290e56cab441840af3d",
+      "archive_source": "nokia-ta1278-research/analysis/extracted/png/01151-icon-000cfe9c.png"
+    },
+    {
+      "file": "assets/icons/01160-icon-000d0620.png",
+      "bytes": 108,
+      "sha256": "07597e5dd7cb2ec66260c6d59a4a8b889bac6036b26f50c20f1f188f05b80062",
+      "archive_source": "nokia-ta1278-research/analysis/extracted/png/01160-icon-000d0620.png"
+    },
+    {
+      "file": "assets/icons/02461-icon-00ab4cf8.png",
+      "bytes": 105,
+      "sha256": "de931e60c2044b8803da9b0adea809063a2668c0e12a3adfded2fe174d4f9907",
+      "archive_source": "nokia-ta1278-research/analysis/extracted/png/02461-icon-00ab4cf8.png"
+    },
+    {
+      "file": "assets/icons/02474-icon-00ab7dbc.png",
+      "bytes": 250,
+      "sha256": "f4a5799ce1bdcf793d4f2dca5245908a9ee58f5b10155c0e15ae194bf893328d",
+      "archive_source": "nokia-ta1278-research/analysis/extracted/png/02474-icon-00ab7dbc.png"
+    },
+    {
+      "file": "assets/icons/02484-icon-00ab93e4.png",
+      "bytes": 104,
+      "sha256": "f4cb5895e48d2d9dae3dc76cf4dba080854aaec393f3db6ce27ad12f4fe5d9b0",
+      "archive_source": "nokia-ta1278-research/analysis/extracted/png/02484-icon-00ab93e4.png"
+    },
+    {
+      "file": "assets/icons/02486-icon-00ab9454.png",
+      "bytes": 90,
+      "sha256": "b8f5d8a5053351a7ccdbf51a3e0cfe2fcf9d5abb851c9449940f8c29a14a6f71",
+      "archive_source": "nokia-ta1278-research/analysis/extracted/png/02486-icon-00ab9454.png"
+    },
+    {
+      "file": "assets/icons/02488-icon-00ab9500.png",
+      "bytes": 200,
+      "sha256": "9bfc1fe5a3c68604566f0da3fe12d9c7cf45dd72eca6158f4bb1e0d28ffae1cf",
+      "archive_source": "nokia-ta1278-research/analysis/extracted/png/02488-icon-00ab9500.png"
+    },
+    {
+      "file": "assets/icons/02490-icon-00ab9658.png",
+      "bytes": 121,
+      "sha256": "ed46b7ee0b48a0f09a5e07b17dd255fe721e6e3e81153d896998f6ccf6b39ee1",
+      "archive_source": "nokia-ta1278-research/analysis/extracted/png/02490-icon-00ab9658.png"
+    },
+    {
+      "file": "assets/icons/02492-icon-00ab9714.png",
+      "bytes": 99,
+      "sha256": "20e59eb3477a8f744bb938ca7e1da18ab2d1533355592f1771ce9d1cb80c99ac",
+      "archive_source": "nokia-ta1278-research/analysis/extracted/png/02492-icon-00ab9714.png"
+    },
+    {
+      "file": "assets/icons/02493-icon-00ab9748.png",
+      "bytes": 277,
+      "sha256": "7ac98d2879f16dd7f0bb7c13c9a14036aeb1e17e67a87c051aad783bac12ef48",
+      "archive_source": "nokia-ta1278-research/analysis/extracted/png/02493-icon-00ab9748.png"
+    },
+    {
+      "file": "assets/icons/02509-icon-00aba4bc.png",
+      "bytes": 174,
+      "sha256": "c4e18c5318eedf8ee703ffa01db23c43626b158bc9a09be69a234b2e925f67d7",
+      "archive_source": "nokia-ta1278-research/analysis/extracted/png/02509-icon-00aba4bc.png"
+    },
+    {
+      "file": "assets/icons/02516-icon-00ababf4.png",
+      "bytes": 803,
+      "sha256": "c3e77b748d7d8b717fead82384ef4e69ab72a59d9e53e5d9dada92e2ce0a6891",
+      "archive_source": "nokia-ta1278-research/analysis/extracted/png/02516-icon-00ababf4.png"
+    },
+    {
+      "file": "assets/icons/02517-icon-00abb01c.png",
+      "bytes": 850,
+      "sha256": "5a2d06ebf0768f5c821d0db680926d42bc4fbb3e365f793bb93a451c1ed3dcf2",
+      "archive_source": "nokia-ta1278-research/analysis/extracted/png/02517-icon-00abb01c.png"
+    },
+    {
+      "file": "assets/icons/02518-icon-00abb444.png",
+      "bytes": 847,
+      "sha256": "586be6a6f5fa20adfbb7a2e93b501277d895322d532fccdee09894ec7296a395",
+      "archive_source": "nokia-ta1278-research/analysis/extracted/png/02518-icon-00abb444.png"
+    },
+    {
+      "file": "assets/icons/02519-icon-00abb86c.png",
+      "bytes": 816,
+      "sha256": "e9eeeb77acd5598b0e3f73b53e150490d8ba30c3a9d5240a99448894c73ecf15",
+      "archive_source": "nokia-ta1278-research/analysis/extracted/png/02519-icon-00abb86c.png"
+    },
+    {
+      "file": "assets/icons/02520-icon-00abbc94.png",
+      "bytes": 822,
+      "sha256": "8f744cee73fd54e6fba0f9c93ef5979b03d08f0077cb8c8b883628642d995551",
+      "archive_source": "nokia-ta1278-research/analysis/extracted/png/02520-icon-00abbc94.png"
+    },
+    {
+      "file": "assets/icons/02521-icon-00abc0bc.png",
+      "bytes": 808,
+      "sha256": "445b9a0c02be1607200f7cd536b095df6a1ff36495468c04affe2d52d4f53359",
+      "archive_source": "nokia-ta1278-research/analysis/extracted/png/02521-icon-00abc0bc.png"
+    },
+    {
+      "file": "assets/icons/02522-icon-00abc4e4.png",
+      "bytes": 827,
+      "sha256": "924e8560fbce99d155112475dcfc2eae0a23f83309f37100f7c84af3de8956e4",
+      "archive_source": "nokia-ta1278-research/analysis/extracted/png/02522-icon-00abc4e4.png"
+    },
+    {
+      "file": "assets/icons/02523-icon-00abc90c.png",
+      "bytes": 454,
+      "sha256": "80ec61319ecfa85c516bd0ff9acc5c63b177441ba02d0956d1d8ef3028ec1ee9",
+      "archive_source": "nokia-ta1278-research/analysis/extracted/png/02523-icon-00abc90c.png"
+    },
+    {
+      "file": "assets/icons/02524-icon-00abcbc8.png",
+      "bytes": 305,
+      "sha256": "ea669ee40e96e388c30c4ae2a329161eeef872e6d714512c7f4b4861a2c72604",
+      "archive_source": "nokia-ta1278-research/analysis/extracted/png/02524-icon-00abcbc8.png"
+    },
+    {
+      "file": "assets/icons/02525-icon-00abcd24.png",
+      "bytes": 356,
+      "sha256": "ecfa6be1bed121f05389c22c464e7e3061f41f64d4633a536e39c9a58e243b19",
+      "archive_source": "nokia-ta1278-research/analysis/extracted/png/02525-icon-00abcd24.png"
+    },
+    {
+      "file": "assets/icons/02624-icon-00ad3704.png",
+      "bytes": 203,
+      "sha256": "4065eefcc3635ad1c00ca47df46a2f197a0ac043334fe15d18d1a659294454ec",
+      "archive_source": "nokia-ta1278-research/analysis/extracted/png/02624-icon-00ad3704.png"
+    },
+    {
+      "file": "assets/icons/02625-icon-00ad379c.png",
+      "bytes": 7399,
+      "sha256": "d3c743662a6c36b1f6944d0859e7f1729086e0852f4900bd4198742a839ba7a2",
+      "archive_source": "nokia-ta1278-research/analysis/extracted/png/02625-icon-00ad379c.png"
+    },
+    {
+      "file": "assets/icons/02626-icon-00ada83c.png",
+      "bytes": 481,
+      "sha256": "8bdf3e7e044f5d5f07125bb06894d78d2775d599c6e07184f49b47f308f68689",
+      "archive_source": "nokia-ta1278-research/analysis/extracted/png/02626-icon-00ada83c.png"
+    },
+    {
+      "file": "assets/icons/02629-icon-00adad24.png",
+      "bytes": 1282,
+      "sha256": "c460c60e929a09b6f5240bdb6135c77520b12b507f9478fe77e556dd6f47d7ad",
+      "archive_source": "nokia-ta1278-research/analysis/extracted/png/02629-icon-00adad24.png"
+    },
+    {
+      "file": "assets/icons/02631-icon-00adb3d8.png",
+      "bytes": 470,
+      "sha256": "ef0879b4aa1c281dc105b45ea3a4ac8a943874ee620a6dde8667bdac9ec4840a",
+      "archive_source": "nokia-ta1278-research/analysis/extracted/png/02631-icon-00adb3d8.png"
+    },
+    {
+      "file": "assets/icons/02632-icon-00adb7dc.png",
+      "bytes": 281,
+      "sha256": "74290b64a70e2b400c8f4cc5cd01c4f391c9f29320e3c79c0ae0b73b29e7b56c",
+      "archive_source": "nokia-ta1278-research/analysis/extracted/png/02632-icon-00adb7dc.png"
+    },
+    {
+      "file": "assets/icons/02633-icon-00adb914.png",
+      "bytes": 316,
+      "sha256": "b6ffe00ecffbdb1852be3d7366dac9f9417281db8d8e0975a9993a7e794c2aca",
+      "archive_source": "nokia-ta1278-research/analysis/extracted/png/02633-icon-00adb914.png"
+    },
+    {
+      "file": "assets/icons/02634-icon-00adba58.png",
+      "bytes": 126,
+      "sha256": "67155bf40932302c8942ed3ec68423144cf72fdb8c89ea546c4098b0abd16312",
+      "archive_source": "nokia-ta1278-research/analysis/extracted/png/02634-icon-00adba58.png"
+    },
+    {
+      "file": "assets/icons/02656-icon-00ae01b4.png",
+      "bytes": 139,
+      "sha256": "26f2e9e2aa0989d7f443955dc3574bf0f4e6606ccec686e347723a7d5d9074bc",
+      "archive_source": "nokia-ta1278-research/analysis/extracted/png/02656-icon-00ae01b4.png"
+    },
+    {
+      "file": "assets/icons/02657-icon-00ae028c.png",
+      "bytes": 255,
+      "sha256": "7cdca2429b82917c7adf176209543ce93f7546cebcc1af0c92241144ef83c4a9",
+      "archive_source": "nokia-ta1278-research/analysis/extracted/png/02657-icon-00ae028c.png"
+    },
+    {
+      "file": "assets/icons/02658-icon-00ae03e0.png",
+      "bytes": 243,
+      "sha256": "675cf4d7b9cd7c660057f2dcb69a955a7b50fcee345f26cac28e705fc2e42534",
+      "archive_source": "nokia-ta1278-research/analysis/extracted/png/02658-icon-00ae03e0.png"
+    },
+    {
+      "file": "assets/fonts/device/font-0-latn.otf",
+      "bytes": 196204,
+      "sha256": "f463aa88beb81df923f5fa9ba4ce1c0c40bc942d1ed0f636ca811b53a00e5105",
+      "archive_source": "nokia-ta1278-research/analysis/ui/fonts/font-0-latn.otf"
+    },
+    {
+      "file": "assets/fonts/device/font-1-hani.otf",
+      "bytes": 1667468,
+      "sha256": "a62cb8fc10257ae2041e3bcba7d0c1677c1c8de6cabf35042189853c506a2642",
+      "archive_source": "nokia-ta1278-research/analysis/ui/fonts/font-1-hani.otf"
+    },
+    {
+      "file": "assets/fonts/device/font-2-hani.otf",
+      "bytes": 3612424,
+      "sha256": "ab92df9ef87d5b0db00411f119a554ddcee5ea5d28e51fb9588dee4b048c327b",
+      "archive_source": "nokia-ta1278-research/analysis/ui/fonts/font-2-hani.otf"
+    },
+    {
+      "file": "assets/audio/tones/01529-sound-0015143c.mid",
+      "bytes": 1870,
+      "sha256": "be869d023c4a13f15a9560cc269d063828319fad6c93fbe4fcddd7eead357cb8",
+      "archive_source": "nokia-ta1278-research/analysis/ui/audio/01529-sound-0015143c.mid"
+    },
+    {
+      "file": "assets/audio/tones/01530-sound-00151b8c.mid",
+      "bytes": 2388,
+      "sha256": "42cd6e23120daa90cd0dcb4df796cad710ee9aff2aec6f05e647c6e000fa8de0",
+      "archive_source": "nokia-ta1278-research/analysis/ui/audio/01530-sound-00151b8c.mid"
+    },
+    {
+      "file": "assets/audio/tones/01510-sound-00145f4c.mid",
+      "bytes": 1214,
+      "sha256": "660a7879f5d5511bc2c38235a8eda66ec549ee96613603a4dbc05fbb54720234",
+      "archive_source": "nokia-ta1278-research/analysis/ui/audio/01510-sound-00145f4c.mid"
+    },
+    {
+      "file": "assets/audio/tones/01511-sound-0014640c.mid",
+      "bytes": 1769,
+      "sha256": "b48924591da81098af8d88a8f0aecf1616f52ed26e4f1c2ced772e557badc127",
+      "archive_source": "nokia-ta1278-research/analysis/ui/audio/01511-sound-0014640c.mid"
+    },
+    {
+      "file": "assets/audio/tones/01512-sound-00146af8.mid",
+      "bytes": 3084,
+      "sha256": "888062c60f006156039f419e4b8d0f357330f52c3a265c38c867d6395c73ad92",
+      "archive_source": "nokia-ta1278-research/analysis/ui/audio/01512-sound-00146af8.mid"
+    },
+    {
+      "file": "assets/audio/tones/01513-sound-00147704.mid",
+      "bytes": 4748,
+      "sha256": "e54f5d0111b48d9ef34a6365c73777f1178f7d2b7cddf891cd3686abd6a987cb",
+      "archive_source": "nokia-ta1278-research/analysis/ui/audio/01513-sound-00147704.mid"
+    },
+    {
+      "file": "assets/audio/tones/01514-sound-00148990.mid",
+      "bytes": 7912,
+      "sha256": "94ce294634617931c27db4c86332c0b3725c7fa411621435f65849c62ea45c24",
+      "archive_source": "nokia-ta1278-research/analysis/ui/audio/01514-sound-00148990.mid"
+    },
+    {
+      "file": "assets/audio/tones/01515-sound-0014a878.mid",
+      "bytes": 2426,
+      "sha256": "52a8e4541338fcfca95bb954b0570b3dfb2af0fb1540ed005646331443717ce6",
+      "archive_source": "nokia-ta1278-research/analysis/ui/audio/01515-sound-0014a878.mid"
+    },
+    {
+      "file": "assets/audio/tones/01516-sound-0014b1f4.mid",
+      "bytes": 9872,
+      "sha256": "560cbe5b4933f9dc068e8fef7c499bedf8336c0ee00d4b0b5bfbe113934dabc0",
+      "archive_source": "nokia-ta1278-research/analysis/ui/audio/01516-sound-0014b1f4.mid"
+    },
+    {
+      "file": "assets/audio/tones/01517-sound-0014d884.mid",
+      "bytes": 742,
+      "sha256": "d7bdfbc994972d66a210691e9e2d761e962d66c153fbb402f6a76a7ce15c8256",
+      "archive_source": "nokia-ta1278-research/analysis/ui/audio/01517-sound-0014d884.mid"
+    },
+    {
+      "file": "assets/audio/tones/01518-sound-0014db6c.mid",
+      "bytes": 2624,
+      "sha256": "0549cc78dcf3647b1977f6f54d3faa2bfe8dbee98ca1c1f35a119bfee32a7c7e",
+      "archive_source": "nokia-ta1278-research/analysis/ui/audio/01518-sound-0014db6c.mid"
+    },
+    {
+      "file": "assets/audio/tones/01519-sound-0014e5ac.mid",
+      "bytes": 959,
+      "sha256": "61b0944cf218361f38440d86ca05a097c7ede7c9a4f46f7adb5b76399bf9fe50",
+      "archive_source": "nokia-ta1278-research/analysis/ui/audio/01519-sound-0014e5ac.mid"
+    },
+    {
+      "file": "assets/audio/tones/01520-sound-0014e96c.mid",
+      "bytes": 1657,
+      "sha256": "f84d4c643083fa22bb8a01f52e043823fa973f3c3ac55075c1b2b013abfa4c92",
+      "archive_source": "nokia-ta1278-research/analysis/ui/audio/01520-sound-0014e96c.mid"
+    },
+    {
+      "file": "assets/audio/tones/01521-sound-0014efe8.mid",
+      "bytes": 467,
+      "sha256": "b107ffb54ee66f13ed349d91c38cdecfd57361fe8ff4cece3adc103817bdc778",
+      "archive_source": "nokia-ta1278-research/analysis/ui/audio/01521-sound-0014efe8.mid"
+    },
+    {
+      "file": "assets/audio/tones/01522-sound-0014f1bc.mid",
+      "bytes": 637,
+      "sha256": "5288118fea8f794ca9efe8f62cd096afff66f261f35e27f483c0e8ab80e14587",
+      "archive_source": "nokia-ta1278-research/analysis/ui/audio/01522-sound-0014f1bc.mid"
+    },
+    {
+      "file": "assets/audio/tones/01523-sound-0014f43c.mid",
+      "bytes": 6113,
+      "sha256": "4899380ea9dc58f687b14e05c86d9ac95c5b22890b338029f363c5152e808360",
+      "archive_source": "nokia-ta1278-research/analysis/ui/audio/01523-sound-0014f43c.mid"
+    },
+    {
+      "file": "assets/audio/tones/01524-sound-00150c20.mid",
+      "bytes": 419,
+      "sha256": "b9b9920c397ac4ab034f663d001b8a07a5a3d0ec7c8fa66b21f76d2846f88bab",
+      "archive_source": "nokia-ta1278-research/analysis/ui/audio/01524-sound-00150c20.mid"
+    },
+    {
+      "file": "assets/audio/tones/01525-sound-00150dc4.mid",
+      "bytes": 228,
+      "sha256": "27ddce6313d544b59b1034e3eef61d3232cf17dac48ce6dee9aafd79f1caadb1",
+      "archive_source": "nokia-ta1278-research/analysis/ui/audio/01525-sound-00150dc4.mid"
+    },
+    {
+      "file": "assets/audio/tones/01526-sound-00150ea8.mid",
+      "bytes": 382,
+      "sha256": "10b1baaae453141ee441d7125dd74ac144d3140fea07b2b9a46ff8c72fad9940",
+      "archive_source": "nokia-ta1278-research/analysis/ui/audio/01526-sound-00150ea8.mid"
+    },
+    {
+      "file": "assets/audio/tones/01527-sound-00151028.mid",
+      "bytes": 481,
+      "sha256": "de45fcdac49c8cb84425e7f685948e04c03d6b9a7533748a2f7be12d7b2a01c6",
+      "archive_source": "nokia-ta1278-research/analysis/ui/audio/01527-sound-00151028.mid"
+    },
+    {
+      "file": "assets/audio/tones/01528-sound-0015120c.mid",
+      "bytes": 560,
+      "sha256": "d8de666a160606489b73e9db407f73397a8b7ee44242d4b4265f2e78ba29b71a",
+      "archive_source": "nokia-ta1278-research/analysis/ui/audio/01528-sound-0015120c.mid"
+    },
+    {
+      "file": "assets/audio/tones/01532-sound-00154348.mp3",
+      "bytes": 2256,
+      "sha256": "929e84a59e606520047e1c432d0dea757f0b668a3e0d136becc55ffb814a506e",
+      "archive_source": "nokia-ta1278-research/analysis/ui/audio/01532-sound-00154348.mp3"
+    }
+  ]
+}

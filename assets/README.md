@@ -1,40 +1,39 @@
-# Additional fonts and prediction dictionaries
+# Runtime resources
 
-This folder contains supplemental replica resources and explicitly identified firmware derivatives. `input/t9/` contains the original T9 engine slice, character tables and public databases; see its manifest. Downloads are fixed to commits and checked by SHA-256 in `sources.json`. No upstream executable code is run.
+These files are part of the application. Building, testing and packaging do not need the separate research archive or a connected phone.
 
-| Resource | Source and license | Use |
-|---|---|---|
-| Noto Sans CJK SC Regular | [Noto CJK](https://github.com/notofonts/noto-cjk), SIL OFL 1.1; `fonts/NotoSansCJK-LICENSE.txt` | Missing Chinese, kana, Hangul and other glyphs |
-| Noto Sans Symbols 2 | [Google Fonts](https://github.com/google/fonts/tree/main/ofl/notosanssymbols2), SIL OFL 1.1; adjacent OFL text | Extra symbols |
-| Noto Emoji | [Google Fonts](https://github.com/google/fonts/tree/main/ofl/notoemoji), SIL OFL 1.1; adjacent OFL text | Single-codepoint monochrome emoji outlines |
-| pinyin_simp.dict.yaml | [Rime pinyin-simp](https://github.com/rime/rime-pinyin-simp), derived from Android Pinyin IME, Apache 2.0; `input/rime-LICENSE.txt` and `rime-AUTHORS.txt` | 65,125 Chinese word/pronunciation rows, including 48,078 phrase rows |
-| en_50k.txt | [FrequencyWords](https://github.com/hermitdave/FrequencyWords), **content CC BY-SA 4.0**, code MIT | Dave's 2018 OpenSubtitles English word frequencies; raw list unmodified, runtime filters non-ASCII/nonalphabetic words |
+| Directory | Content |
+|---|---|
+| `fonts/device/` | Three fonts derived from the original handset firmware |
+| `fonts/subsets/` | Noto fallback fonts used by the renderer |
+| `icons/` | Only the handset PNG resources referenced by the application |
+| `audio/` | Sound bank, sound bindings, Snake cues and selected tones |
+| `input/t9/` | Original T9 ARM code slice, character tables and Chinese/English databases |
+| `input/` | Public dictionaries and their licenses for the optional independent predictor |
+| `ui/` | Runtime palettes, alarm/message tables and the owner-selected wallpaper |
+| `snake/` | Runtime maps and timing tables |
 
-Attribution for the English data: hermitdave / Dave, FrequencyWords, 2018 English list generated from OpenSubtitles2018. See `input/FrequencyWords-README.md`, the pinned source URL in `sources.json`, and `input/CC-BY-SA-4.0.txt`. The data remains under CC BY-SA 4.0; the upstream repository's MIT code license does not replace its content license. Redistribution of these resources must retain their license and attribution requirements. The macOS packaging script includes the notices.
+`runtime.json` records the SHA-256 of each resource copied out of the research tree. Its `archive_source` fields are historical provenance paths, not build inputs. The copied bytes were checked against the originals. `sources.json` records the public font/dictionary downloads. Adjacent manifests retain source hashes and technical provenance; old firmware paths refer to the external archive.
 
-Original downloaded fonts remain unmodified here. Shipping builds use derived fallback subsets under `fonts/subsets/`, removing glyphs already covered by earlier fonts and unused shaping features. Derived font families are renamed `TA1278 Fallback…`; copyright and OFL notices are retained. Reproduce with `python3 scripts/subset-fallback-fonts.py` (developer-only fontTools; normal Rust builds use the checked-in outputs). The original three fonts retain first priority. This adds a fallback system to the app without altering the original firmware evidence. Current union: 49,332 Unicode codepoints, versus 8,744 in the earlier two-font renderer; this is cmap coverage, not a claim to support all Unicode scripts, shaping, emoji sequences or color emoji. See `font-coverage.json`. Unsupported codepoints can still show a missing-glyph box.
+## Rights
 
-The optional `Builtin` predictor uses the public lists below and independent learning. The desktop now uses `input/t9/` instead, with the original routines interpreted locally and new native-format user dictionaries saved outside the repository. No handset user dictionary is imported or uploaded.
+Original handset fonts, icons, tones, the sound bank, maps and T9 resources retain their original rights. They are not relicensed under this project's code or the libraries used to render them. No full firmware image is needed or included in the current application tree. This separation does not remove images from earlier Git history.
 
-## Recovered UI values
+The green owner-selected wallpaper is not claimed to be Nokia factory art. Its artist and license are unknown; its provenance is in `ui/owner-wallpaper.json`.
 
-`ui/native-theme.json` is generated from the acquired original system firmware by `scripts/recover-ui-style.py`. The script checks the source SHA-256 before reading the six accent palettes and candidate colors. See [native UI evidence](../docs/native-ui.md) for addresses and limits. This file is not a downloaded theme or proof of the handset's saved preferences.
+| Public resource | Source and license |
+|---|---|
+| Noto Sans CJK SC | Noto CJK, SIL OFL; `fonts/NotoSansCJK-LICENSE.txt` |
+| Noto Sans Symbols 2 | Google Fonts, SIL OFL; `fonts/NotoSansSymbols2-OFL.txt` |
+| Noto Emoji | Google Fonts, SIL OFL; `fonts/NotoEmoji-OFL.txt` |
+| Simplified pinyin | Rime pinyin-simp, derived from Android Pinyin IME; Apache 2.0, adjacent license and authors |
+| English frequencies | hermitdave / Dave, FrequencyWords, 2018 OpenSubtitles data; content CC BY-SA 4.0, not the source code's MIT license |
+| Stroke dictionary | Rime stroke; LGPL-3.0, adjacent license and authors |
 
-The stroke mode uses the unmodified Rime `stroke.dict.yaml` at the revision and SHA-256 in `sources.json`. The replica maps h/s/p/n/z to keys 1/2/3/4/5 (horizontal/vertical/left-falling/dot-or-right-falling/turn) and ranks candidates with the existing pinyin frequencies. This mapping/ranking is a replacement policy. The original Nokia stroke engine is not restored. The six short-Hash modes are pinyin, stroke, Abc, abc, ABC, 123; English prediction remains available for host tests but is not inserted in that native cycle.
+Public dictionary files retain their upstream text. `Builtin` is an optional independent predictor; the desktop uses the original T9 resources through a bounded ARM interpreter. Private user learning is saved in the app profile, not imported from handset dumps.
 
-## Snake
+## Maintenance
 
-`snake/maps.bin` and `snake/tick-ms.bin` are generated by `scripts/recover-snake.py` from hash-checked firmware data. The app exposes six of seven compiled maps and timer indices 1–8. Sprite PNGs remain in their original extracted resource paths. See [code evidence](../docs/snake-recovery.md).
+`python3 scripts/check-assets.py` verifies downloaded resources and font coverage (requires fontTools). `python3 scripts/subset-fallback-fonts.py` regenerates fallback subsets using the fonts in this directory. Modified Noto subsets have distinct family names and retain OFL notices. Normal Rust builds use checked-in resources and do not need Python or fontTools.
 
-`ui/native-alarm.json` contains the seven weekday masks and five snooze choices extracted by `scripts/recover-alarm.py`. Source and output hashes are in `docs/evidence/alarm-recovery.json`; these are system tables, not user alarm records.
-
-`sms-retry-causes.bin` and `sms-operation-labels.json` under `ui/` are generated by `scripts/recover-sms-lifecycle.py`. The first is a 19-entry little-endian u16 table from bounded firmware comparison analysis; the second contains seven verified system operation labels. They contain no user messages.
-
-## Audio
-
-`audio/gm1_A21.sf2` is the unmodified bank recovered from the hash-verified system image. Two Snake SMFs and the generated preset catalog are in the same directory. `scripts/recover-audio.py` reproduces extraction and the per-file hash/provenance manifest. Other original audio inputs remain in the existing extracted resource tree. See [native audio](../docs/native-audio.md); the original data retains its original rights.
-
-Fonts, prediction dictionaries and SF2 samples are losslessly compressed at build time using miniz_oxide. All packed files are roundtrip-checked. Native fonts remain unchanged; the subset acceptance test compares all 31,768 visible fallback characters at 18/20/24 px against the full source fonts.
-## Owner-selected wallpaper
-
-`ui/owner-wallpaper.png` is the green character wallpaper selected by the owner for the replica default. It is decoded from the verified handset wallpaper cache, not generated or taken from a UI screenshot. Only RGB pixels are bundled; the raw cache and trailer remain private. [Dimensions, hashes and reproduction](ui/owner-wallpaper.json). This is personal artwork, not a claimed Nokia factory default; its artist/license is not established.
+Build-time compression is lossless and checked by roundtrip decoding. T9 guest code is interpreted; it is not loaded as host machine code. Full resource extraction and disassembly tools live in the separate research archive.

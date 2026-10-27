@@ -92,13 +92,8 @@ pub(super) fn render(c: &mut Canvas, p: &mut Phone, page: MailPage) {
         }
         Options => {
             read(c, p);
-            c.dim();
-            let actions = p.mail_actions();
-            list::popup(c, actions.len(), p.index, |i| {
-                list::Row::text(actions[i].label())
-            });
-            c.rect(0, 282, 240, 38, BLACK);
-            Softkeys::back("选择").draw(c);
+            let actions = p.mail_menu();
+            PopupMenu::default().draw(c, actions.len(), p.index, |i| actions[i].row());
         }
         Delete => {
             chrome::title(c, "信息");

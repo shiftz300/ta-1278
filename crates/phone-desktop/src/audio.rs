@@ -1,5 +1,7 @@
 //! Audio device transport. The phone owns controls; the sink owns elapsed time.
-use crate::local_files::Folder;
+pub(crate) mod midi;
+pub(crate) mod native;
+use crate::storage::files::Folder;
 use phone_core::music::Music;
 use rodio::{Decoder, OutputStream, OutputStreamBuilder, Sink, Source};
 use std::{io::BufReader, time::Duration};
@@ -49,7 +51,7 @@ mod native_tests {
 #[derive(Default)]
 pub struct Audio {
     effect: Option<Sink>,
-    native: crate::native_audio::NativeAudio,
+    native: crate::audio::native::NativeAudio,
     pending_effect: Option<(String, u8)>,
     alarm_failed: bool,
     alarm: Option<Sink>,

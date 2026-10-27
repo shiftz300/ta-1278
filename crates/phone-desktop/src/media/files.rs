@@ -123,7 +123,7 @@ impl Media {
                 Ok(())
             }
             FileRequest::Play(path) => {
-                use crate::phone::media_browser::{Purpose, Request};
+                use crate::phone::media::{Purpose, Request};
                 if Purpose::Pictures.accepts(&path) || Purpose::Videos.accepts(&path) {
                     let purpose = if Purpose::Videos.accepts(&path) {
                         Purpose::Videos

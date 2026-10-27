@@ -1,5 +1,5 @@
 //! Preserve inline order, block boundaries and fieldsets separately from focusable values.
-use phone_core::web_flow::Flow;
+use phone_core::browser::flow::Flow;
 use scraper::ElementRef;
 pub fn build(body: ElementRef, controls: &[(ElementRef, usize)]) -> Vec<Flow> {
     let mut out = vec![];

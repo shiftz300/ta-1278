@@ -1,6 +1,6 @@
 //! Utility routes sampled on the device. No microphone, radio, storage-device or LED access.
 use super::*;
-use phone_core::utilities::{Calculator, Stopwatch, Timer, format_number};
+use phone_core::utilities::{Calculator, Stopwatch, Timer};
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum ToolPage {
     Other,
@@ -9,6 +9,7 @@ pub enum ToolPage {
     Timer,
     TimerMenu,
     Converter,
+    ConversionPairs(usize),
     Conversion(usize),
     Flashlight,
     Radio,
@@ -40,8 +41,7 @@ pub struct Tools {
     pub recording: bool,
     pub record_ms: u64,
     pub recordings: Vec<u64>,
-    pub conversion_input: String,
-    pub conversion_reverse: bool,
+    pub conversion: super::converter::ConversionUi,
 }
 impl Default for Tools {
     fn default() -> Self {
@@ -63,12 +63,28 @@ impl Default for Tools {
             recording: false,
             record_ms: 0,
             recordings: vec![],
-            conversion_input: "0".into(),
-            conversion_reverse: false,
+            conversion: Default::default(),
         }
     }
 }
 impl Phone {
+    pub fn other_pages(&self) -> Vec<ToolPage> {
+        [
+            ToolPage::Timer,
+            ToolPage::Stopwatch,
+            ToolPage::Flashlight,
+            ToolPage::Converter,
+        ]
+        .into_iter()
+        .filter(|p| self.apps.tool(*p))
+        .collect()
+    }
+    pub fn other_index(&self, page: ToolPage) -> usize {
+        self.other_pages()
+            .iter()
+            .position(|p| *p == page)
+            .unwrap_or(0)
+    }
     pub fn tools_title(&self) -> &'static str {
         use ToolPage::*;
         match self.tools.page {
@@ -76,7 +92,8 @@ impl Phone {
             Calculator => "计算器",
             Stopwatch => "秒表",
             Timer | TimerMenu => "定时器",
-            Converter | Conversion(_) => "单位换算器",
+            Converter => "单位转换",
+            ConversionPairs(n) | Conversion(n) => phone_core::converter::CATEGORIES[n.min(5)],
             Flashlight => "手电筒",
             Radio => "收音机",
             RadioOptions => "选项",
@@ -93,12 +110,19 @@ impl Phone {
     pub fn tools_items(&self) -> Vec<String> {
         use ToolPage::*;
         match self.tools.page {
-            Other => vec![
-                "定时器".into(),
-                "秒表".into(),
-                format!("手电筒  {}", if self.tools.torch { "开" } else { "关" }),
-                "单位换算器".into(),
-            ],
+            Other => self
+                .other_pages()
+                .iter()
+                .map(|page| {
+                    match page {
+                        Timer => "定时器",
+                        Stopwatch => "秒表",
+                        Flashlight => "手电筒",
+                        _ => "单位换算",
+                    }
+                    .to_owned()
+                })
+                .collect(),
             Timer => vec![
                 format!(
                     "时间  {}",
@@ -106,20 +130,19 @@ impl Phone {
                 ),
                 format!("名称  {}", self.tools.timer_name),
             ],
-            Converter => ["温度", "重量", "长度", "面积", "体积", "货币"]
-                .map(str::to_owned)
-                .to_vec(),
-            RadioOptions => [
-                "收藏夹",
-                "添加收藏",
-                "扬声器",
-                "自动搜索",
-                "微调",
-                "设置频率",
-                "关闭收音机",
-            ]
-            .map(str::to_owned)
-            .to_vec(),
+            Converter => phone_core::converter::CATEGORIES
+                .iter()
+                .map(|s| (*s).into())
+                .collect(),
+            ConversionPairs(n) => phone_core::converter::PAIRS
+                .get(n)
+                .map(|pairs| pairs.iter().map(|p| p.title.into()).collect())
+                .unwrap_or_default(),
+            RadioOptions => self
+                .radio_menu()
+                .iter()
+                .map(|item| item.label.to_owned())
+                .collect(),
             RadioFavorites => self
                 .tools
                 .stations
@@ -135,44 +158,6 @@ impl Phone {
                 .collect(),
             _ => vec![],
         }
-    }
-    pub fn conversion(&self) -> (String, String, String, String) {
-        let category = if let ToolPage::Conversion(n) = self.tools.page {
-            n
-        } else {
-            0
-        };
-        let pairs = [
-            ("华氏度", "摄氏度", 5. / 9.),
-            ("千克", "磅", 2.2046226218),
-            ("米", "英尺", 3.280839895),
-            ("平方米", "平方英尺", 10.763910417),
-            ("升", "美制加仑", 0.2641720524),
-        ];
-        let (a, b, factor) = pairs[category.min(4)];
-        let v = self.tools.conversion_input.parse::<f64>().unwrap_or(0.);
-        let result = if category == 0 {
-            if self.tools.conversion_reverse {
-                v * 9. / 5. + 32.
-            } else {
-                (v - 32.) * 5. / 9.
-            }
-        } else if self.tools.conversion_reverse {
-            v / factor
-        } else {
-            v * factor
-        };
-        let (a, b) = if self.tools.conversion_reverse {
-            (b, a)
-        } else {
-            (a, b)
-        };
-        (
-            a.into(),
-            b.into(),
-            self.tools.conversion_input.clone(),
-            format_number(result),
-        )
     }
     pub(super) fn tools_key(&mut self, key: Key) {
         self.tools.dirty = true;
@@ -218,42 +203,8 @@ impl Phone {
                 self.timer_key(key);
                 return;
             }
-            Conversion(_) => {
-                match key {
-                    Key::Digit(d) => {
-                        let s = &mut self.tools.conversion_input;
-                        if s == "0" {
-                            s.clear();
-                        }
-                        if s.len() < 16 {
-                            s.push(char::from(b'0' + d));
-                        }
-                    }
-                    Key::Hash => {
-                        if !self.tools.conversion_input.contains('.') {
-                            self.tools.conversion_input.push('.');
-                        }
-                    }
-                    Key::Star => {
-                        let s = &mut self.tools.conversion_input;
-                        if s.starts_with('-') {
-                            s.remove(0);
-                        } else {
-                            s.insert(0, '-');
-                        }
-                    }
-                    Key::Delete => {
-                        self.tools.conversion_input.pop();
-                    }
-                    Key::Up | Key::Down => {
-                        self.tools.conversion_reverse = !self.tools.conversion_reverse
-                    }
-                    Key::SoftLeft | Key::SoftRight => {
-                        self.tools.page = Converter;
-                        self.index = 0;
-                    }
-                    _ => {}
-                }
+            Conversion(_) | ConversionPairs(_) => {
+                self.conversion_key(key);
                 return;
             }
             Flashlight => {
@@ -287,6 +238,10 @@ impl Phone {
                 }
                 return;
             }
+            RadioOptions => {
+                self.radio_options_key(key);
+                return;
+            }
             Recorder => {
                 match key {
                     Key::Center => {
@@ -317,12 +272,18 @@ impl Phone {
         }
         let n = self.tools_items().len();
         match key {
-            Key::Up if n > 0 => self.index = (self.index + n - 1) % n,
-            Key::Down if n > 0 => self.index = (self.index + 1) % n,
+            Key::Up | Key::Down => {
+                vertical(&mut self.index, n, key, Boundary::Wrap);
+            }
             Key::SoftRight => match self.tools.page {
                 Timer | Converter => {
+                    let converter = self.tools.page == Converter;
                     self.tools.page = Other;
-                    self.index = 0;
+                    self.index = if converter {
+                        self.other_index(Converter)
+                    } else {
+                        0
+                    };
                 }
                 RadioOptions | RadioFavorites => {
                     self.tools.page = Radio;
@@ -344,43 +305,15 @@ impl Phone {
                             self.open_timer();
                         }
                     } else {
-                        self.tools.page = [Timer, Stopwatch, Flashlight, Converter][self.index];
+                        self.tools.page = self.other_pages()[self.index];
                         self.index = 0;
                     }
                 }
                 Converter if self.index < 5 => {
-                    self.tools.page = Conversion(self.index);
-                    self.tools.conversion_input = "0".into();
-                    self.tools.conversion_reverse = false;
+                    self.tools.page = ConversionPairs(self.index);
+                    self.index = 0;
                 }
                 Converter => self.notice("没有汇率数据。"),
-                RadioOptions => match self.index {
-                    0 => {
-                        self.tools.page = RadioFavorites;
-                        self.index = 0;
-                    }
-                    1 => {
-                        if !self.tools.stations.contains(&self.tools.frequency) {
-                            self.tools.stations.push(self.tools.frequency);
-                        }
-                        self.tools.page = Radio;
-                    }
-                    2 => {
-                        self.tools.radio_speaker = !self.tools.radio_speaker;
-                        self.tools.page = Radio;
-                    }
-                    3 => self.notice("未连接收音机硬件。"),
-                    4 => self.tools.page = Radio,
-                    5 => self.open_local_text(
-                        TextTarget::Tool(2),
-                        format!("{:.1}", self.tools.frequency as f32 / 10.),
-                        false,
-                    ),
-                    _ => {
-                        self.tools.radio_on = false;
-                        self.leave_app();
-                    }
-                },
                 RadioFavorites => {
                     self.tools.frequency = self.tools.stations[self.index];
                     self.tools.radio_on = true;

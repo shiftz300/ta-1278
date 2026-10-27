@@ -14,7 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 def main():
     covered = set()
     for name in ('font-0-latn.otf', 'font-1-hani.otf', 'font-2-hani.otf'):
-        with TTFont(ROOT/'nokia-ta1278-research/analysis/ui/fonts'/name) as font:
+        with TTFont(ROOT/'assets/fonts/device'/name) as font:
             covered.update(font.getBestCmap())
     out = ROOT/'assets/fonts/subsets'
     out.mkdir(exist_ok=True)

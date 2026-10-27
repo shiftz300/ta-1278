@@ -1,4 +1,7 @@
 use super::*;
+use crate::phone::settings::Preferences;
+use phone_core::sms::Mailbox;
+use std::path::PathBuf;
 #[test]
 fn save_reload_and_corrupt_file_is_retained() {
     let dir = std::env::temp_dir().join(format!("ta1278-store-test-{}", std::process::id()));
@@ -167,6 +170,7 @@ fn older_organizer_schema_migrates_and_future_or_invalid_data_is_preserved() {
         },
         1440,
         alarm::Alert {
+            source: alarm::ReminderSource::Legacy,
             tone: "无".into(),
             name: "invalid".into(),
             time: "12:00".into(),
@@ -327,7 +331,7 @@ fn timer_expiry_does_not_destroy_an_open_editor_and_can_be_acknowledged_later() 
 fn utility_future_schema_is_rejected_and_failed_checkpoint_remains_retryable() {
     let dir = Temp::new();
     let mut tools = Tools::default();
-    let mut session = utilities::Session::load(&dir.0, &mut tools).unwrap();
+    let mut session = session::Session::load(&dir.0, &mut tools).unwrap();
     tools.timer_name = "before".into();
     tools.dirty = true;
     session.save(&dir.0, &mut tools, false).unwrap();

@@ -2,9 +2,19 @@
 
 [简体中文](README.zh-CN.md)
 
-Firmware research and a working desktop phone prototype for the **Nokia 215 4G (2020), TA-1278**, firmware **17.00.17.02**.
+A user-space phone interaction runtime and desktop app, based on the Nokia TA-1278 experience.
 
-[Service interface (offline by default)](docs/services.md) · [T9 cost and limits](docs/t9-cost.md) · [Input engine and learning](docs/input-engine.md) · [T9 algorithm evidence](docs/t9-recovery.md)
+[Service interface](docs/services.md) · [Input engine](docs/input-engine.md) · [Architecture](docs/architecture.md)
+
+## Embed
+
+The user-space `phone_runtime` library can run without a window. The host supplies
+keys, time, message services and a place to save state. It returns a 240×320 RGBA
+frame. [Embedding API and current limits](docs/runtime.md).
+
+```sh
+cargo run -p phone-desktop --no-default-features --locked --example embed -- /tmp/ta1278-embed
+```
 
 ## Run
 
@@ -34,29 +44,16 @@ cargo run --release --locked -p phone-desktop -- --storage-dir /path/to/phone-fi
 # Optional: --read-only-storage
 ```
 
+[Unified config](docs/config.md) controls optional apps, capabilities and storage. All apps stay enabled by default; core apps remain. Use `--config config/default.json` or put `config.json` in the profile.
+
 `--storage-dir` changes the saved folder. Private settings and messages stay in the app profile. [Storage, flags and limits](docs/storage.md).
 
-[Snake code evidence](docs/snake-recovery.md) · [Alarm code evidence](docs/alarm-recovery.md) · [SMS lifecycle](docs/sms-lifecycle.md) · [SMS conversations](docs/sms-conversations.md) · [Build size and checks](docs/build-size.md)
+[SMS conversations](docs/sms-conversations.md) · [Build size](docs/build-size.md)
 
 [Delivery scope](docs/remaining-work.md) · [Local app additions and exact limits](docs/local-completion.md)
 
 The target is a faithful standalone phone interaction replica. Exhaustive firmware reconstruction is not a release requirement.
 
-## Research
+## Repository scope
 
-**Research is incomplete; the app has not passed full handset comparison.** Live capture and remote keys now work; 172 reviewed handset screens and a tested SMS replay are available. The app uses a black background, six recovered accent palettes, a three-column menu, floating candidates, and corrected SMS menus and save/exit flow. Prediction now interprets the original T9 routines and uses their Chinese/English databases; original fonts take priority with Noto fallback. See [browser/SMS layout comparisons](docs/browser-layout.md), [new evidence and changes](docs/native-ui.md) and [remaining gaps](docs/fidelity.md).
-
-- [Evidence and limits](nokia-ta1278-research/analysis/ui/replica-readiness.md)
-- [SMS, browser and music rules](nokia-ta1278-research/analysis/ui/apps/interaction-core.md)
-- [Remaining unknowns](nokia-ta1278-research/analysis/ui/reverse-engineering-status.md)
-- [Firmware structure](nokia-ta1278-research/analysis/firmware-structure.md), [sources](nokia-ta1278-research/sources.md) and [rebuild steps](PUBLICATION.md)
-- [Actual handset screenshots and findings](docs/handset-observations.md) — live capture and keys work; full comparison is still in progress.
-- [Handset automation and sampling](docs/handset-automation.md)
-- [Handset screenshot investigation](docs/handset-capture.md)
-- [Validation](docs/validation.md)
-
-Original system firmware and derived assets remain in `nokia-ta1278-research/`. Private NAND/NV and temporary acquisition files are excluded. See the [firmware manifest](nokia-ta1278-research/firmware/public-system-manifest.json) and [third-party notices](THIRD_PARTY_NOTICES.md).
-
-Original MIDI notes and the recovered sound bank now drive local ringtone and Snake synthesis. [Audio evidence and limits](docs/native-audio.md).
-
-[Full evidence audit and implementation mapping](docs/reverse-audit.md) · [Current package composition](docs/build-size.md)
+This repository contains the application, runtime resources and regression tests. Firmware images, research tools, disassembly, handset captures and analysis reports are maintained separately. Building and testing require neither the research archive nor a connected phone. Original fonts, artwork, tones and T9 data remain bundled; their rights and provenance are retained in [third-party notices](THIRD_PARTY_NOTICES.md) and [assets](assets/README.md).

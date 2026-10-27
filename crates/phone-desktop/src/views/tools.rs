@@ -36,7 +36,7 @@ pub(super) fn render(c: &mut Canvas, p: &mut Phone) {
             .draw(c);
             // The original pad continues into the footer. Draw its backdrop and
             // glyphs after the shared bar, rather than clipping its lower end.
-            rounded(c, [69, 212, 102, 102], 12, c.accent(4));
+            c.rounded([69, 212, 102, 102], 12, c.accent(4));
             for (icon, x, y) in [
                 (UtilityIcon::Plus, 106, 212),
                 (UtilityIcon::Minus, 106, 287),
@@ -147,12 +147,16 @@ pub(super) fn render(c: &mut Canvas, p: &mut Phone) {
             } else {
                 "关".into()
             };
-            let rows = [
-                ("定时器", remaining.as_str()),
-                ("秒表", if t.stopwatch.running { "开" } else { "关" }),
-                ("手电筒", if t.torch { "开" } else { "关" }),
-                ("单位换算", ""),
-            ];
+            let rows: Vec<_> = p
+                .other_pages()
+                .iter()
+                .map(|page| match page {
+                    Timer => ("定时器", remaining.as_str()),
+                    Stopwatch => ("秒表", if t.stopwatch.running { "开" } else { "关" }),
+                    Flashlight => ("手电筒", if t.torch { "开" } else { "关" }),
+                    _ => ("单位换算", ""),
+                })
+                .collect();
             chrome::title(c, "其他");
             list::detail_rows(
                 c,
@@ -176,17 +180,8 @@ pub(super) fn render(c: &mut Canvas, p: &mut Phone) {
             center = "打开";
         }
         Conversion(_) => {
-            let (a, b, value, result) = p.conversion();
-            for (i, (unit, number)) in [(a, value), (b, result)].iter().enumerate() {
-                let y = 40 + i as i32 * 108;
-                if usize::from(t.conversion_reverse) == i {
-                    c.rect(0, y, 240, 84, c.accent(3));
-                }
-                c.text(8, y + 8, unit, 18, WHITE);
-                c.fit(8, y + 38, number, 24, WHITE, 224);
-            }
-            left = Button::Back;
-            center = "";
+            super::converter::render(c, p);
+            return;
         }
         Flashlight => {
             crate::ui::art::power(c, t.torch);
@@ -199,38 +194,8 @@ pub(super) fn render(c: &mut Canvas, p: &mut Phone) {
             .draw(c);
             return;
         }
-        Radio => {
-            c.rect(0, 24, 240, 90, c.accent(3));
-            let frequency = format!("{:.1}", t.frequency as f32 / 10.);
-            let frequency_x = (240 - c.width(&frequency, 18)) / 2;
-            c.text(frequency_x, 38, &frequency, 18, WHITE);
-            c.text(107, 65, "MHz", 12, WHITE);
-            c.text(3, 80, "87.5", 12, MUTED);
-            right(c, 237, 80, "108.0", 12, MUTED);
-            for i in 0..59 {
-                c.rect(
-                    3 + i * 4,
-                    109 - if i % 5 == 0 { 8 } else { 5 },
-                    1,
-                    if i % 5 == 0 { 8 } else { 5 },
-                    MUTED,
-                );
-            }
-            c.rect(0, 114, 240, 206, [31, 29, 32, 255]);
-            rounded(c, [46, 132, 148, 148], 29, [0, 0, 0, 255]);
-            use crate::ui::art::{UtilityIcon, utility};
-            utility(c, UtilityIcon::Plus, 105, 132);
-            utility(c, UtilityIcon::Minus, 105, 256);
-            let label = if t.radio_on { "静音" } else { "取消静音" };
-            let label_x = (240 - c.width(label, 18)) / 2;
-            c.text(label_x, 200, label, 18, WHITE);
-            for d in 0..12 {
-                c.rect(50 + d, 207 - d, 1, 1, WHITE);
-                c.rect(50 + d, 207 + d, 1, 1, WHITE);
-                c.rect(188 - d, 207 - d, 1, 1, WHITE);
-                c.rect(188 - d, 207 + d, 1, 1, WHITE);
-            }
-            Softkeys::menu("").draw(c);
+        Radio | RadioOptions => {
+            super::radio::render(c, p);
             return;
         }
         Recorder => {
@@ -288,17 +253,6 @@ fn stopwatch_time(ms: u64) -> String {
         ms / 1000 % 60,
         ms / 10 % 100
     )
-}
-fn rounded(c: &mut Canvas, [x, y, w, h]: [i32; 4], radius: i32, color: Color) {
-    for dy in 0..h {
-        for dx in 0..w {
-            let cx = dx.clamp(radius, w - radius - 1);
-            let cy = dy.clamp(radius, h - radius - 1);
-            if (dx - cx).pow(2) + (dy - cy).pow(2) <= radius.pow(2) {
-                c.rect(x + dx, y + dy, 1, 1, color);
-            }
-        }
-    }
 }
 
 pub(super) fn timer_elapsed(c: &mut Canvas, p: &Phone) {

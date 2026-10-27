@@ -1,5 +1,5 @@
 //! Deterministic local utilities. Key assignments come from the observed handset;
-//! arithmetic precision and timer internals are replica policy, not recovered code.
+//! Percent uses recovered binary arithmetic; precision and timer internals remain local policy.
 #[derive(Default)]
 pub struct Calculator {
     pub entry: String,
@@ -48,11 +48,10 @@ impl Calculator {
             self.entry.insert(0, '-');
         }
     }
-    /// Unary percent is a local arithmetic policy; native chaining is unverified.
+    /// Native '%' is a binary percentage ratio: lhs * 100 / rhs.
+    /// See 88b909f4 -> 88b90a72..88b90a9c, with 100.0 at 88b90bf4.
     pub fn percent(&mut self) {
-        if let Ok(value) = self.entry.parse::<f64>() {
-            self.entry = format_number(value / 100.);
-        }
+        self.operation('%');
     }
     pub fn clear(&mut self) {
         *self = Self::default();
@@ -85,6 +84,7 @@ impl Calculator {
                 '-' => lhs - rhs,
                 '×' => lhs * rhs,
                 '÷' => lhs / rhs,
+                '%' => lhs * 100. / rhs,
                 _ => rhs,
             };
             self.expression = format!("{lhs} {op} {rhs} =");
@@ -157,6 +157,20 @@ pub fn clock(ms: u64) -> String {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn recovered_percent_is_a_binary_ratio_with_zero_divisor_error() {
+        let mut c = Calculator::default();
+        c.digit(2);
+        c.percent();
+        assert_eq!(c.expression, "2 %");
+        c.digit(8);
+        c.evaluate();
+        assert_eq!(c.display(), "25");
+        c.percent();
+        c.digit(0);
+        c.evaluate();
+        assert_eq!(c.display(), "错误");
+    }
     #[test]
     fn observed_calculator_chain_and_division_error() {
         let mut c = Calculator::default();

@@ -1,12 +1,10 @@
-# Root contains only repository entry points and the research project.
+# Application source, runtime resources and development tools.
 /*
 !/.gitignore
 !/README.md
 !/README.zh-CN.md
-!/PUBLICATION.md
 !/THIRD_PARTY_NOTICES.md
 !/third-party-licenses/
-!/nokia-ta1278-research/
 .DS_Store
 __pycache__/
 *.pyc
@@ -21,3 +19,6 @@ __pycache__/
 /target/
 !/scripts/
 !/assets/
+!/config/
+/config/*
+!/config/default.json

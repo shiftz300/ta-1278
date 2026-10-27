@@ -135,8 +135,9 @@ impl Phone {
         let folder = self.screen;
         let count = self.mail_count(folder);
         match key {
-            Key::Up => self.index = self.index.saturating_sub(1),
-            Key::Down => self.index = (self.index + 1).min(count.saturating_sub(1)),
+            Key::Up | Key::Down => {
+                vertical(&mut self.index, count, key, Boundary::Clamp);
+            }
             Key::SoftRight => {
                 let peer = self
                     .mail_content(folder, self.index)

@@ -1,6 +1,7 @@
 //! Shared local folder service for file browsing and the music library.
 mod files;
-use crate::local_files::Folder;
+pub(crate) mod visual;
+use crate::storage::files::Folder;
 use crate::{
     audio::{self, Audio},
     phone::{
@@ -135,7 +136,7 @@ pub struct Media {
     unread: usize,
     transfers: mpsc::Receiver<FileResult>,
     transfer_results: mpsc::Sender<FileResult>,
-    visual: crate::visual_media::VisualMedia,
+    visual: crate::media::visual::VisualMedia,
     pub files: Arc<Folder>,
     pub tracks: Vec<Track>,
     audio: Audio,
@@ -179,7 +180,7 @@ impl Media {
             unread: phone.mailbox.unread(),
             transfers,
             transfer_results,
-            visual: crate::visual_media::VisualMedia::new(files.clone()),
+            visual: crate::media::visual::VisualMedia::new(files.clone()),
             files,
             tracks: vec![],
             audio: Audio::default(),
@@ -285,24 +286,17 @@ impl Media {
         if let Err(e) = self.audio.poll_effects() {
             phone.status = format!("原机音效无法播放：{e}");
         }
-        let tone = phone
-            .local_data
-            .reminders
-            .alerts
-            .front()
-            .map(|a| a.tone.as_str());
-        if tone.is_some() {
+        if phone.active_reminder().is_some() {
             phone.music.playing = false;
             if phone.media_ui.playing {
                 phone
                     .media_ui
                     .pending
-                    .push(crate::phone::media_browser::Request::Command(
-                        "pause".into(),
-                    ));
+                    .push(crate::phone::media::Request::Command("pause".into()));
                 phone.media_ui.playing = false;
             }
         }
+        let tone = phone.active_reminder().map(|a| a.tone.as_str());
         if let Err(e) = self.audio.alert(&self.files, tone, volume) {
             phone.status = format!("闹钟声音不可用：{e}");
         }

@@ -5,17 +5,17 @@
   "added": 40588,
   "fonts": [
     {
-      "file": "nokia-ta1278-research/analysis/ui/fonts/font-0-latn.otf",
+      "file": "assets/fonts/device/font-0-latn.otf",
       "characters": 1313,
       "added": 1313
     },
     {
-      "file": "nokia-ta1278-research/analysis/ui/fonts/font-1-hani.otf",
+      "file": "assets/fonts/device/font-1-hani.otf",
       "characters": 7479,
       "added": 7431
     },
     {
-      "file": "nokia-ta1278-research/analysis/ui/fonts/font-2-hani.otf",
+      "file": "assets/fonts/device/font-2-hani.otf",
       "characters": 13497,
       "added": 8820
     },

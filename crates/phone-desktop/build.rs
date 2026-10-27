@@ -8,24 +8,18 @@ fn main() {
         root.parent().unwrap().parent().unwrap(),
         &out,
         &[
-            (
-                "LATIN",
-                "nokia-ta1278-research/analysis/ui/fonts/font-0-latn.otf",
-            ),
-            (
-                "HANI1",
-                "nokia-ta1278-research/analysis/ui/fonts/font-1-hani.otf",
-            ),
-            (
-                "HANI2",
-                "nokia-ta1278-research/analysis/ui/fonts/font-2-hani.otf",
-            ),
+            ("LATIN", "assets/fonts/device/font-0-latn.otf"),
+            ("HANI1", "assets/fonts/device/font-1-hani.otf"),
+            ("HANI2", "assets/fonts/device/font-2-hani.otf"),
             ("CJK", "assets/fonts/subsets/FallbackCJK.otf"),
             ("SYMBOLS", "assets/fonts/subsets/FallbackSymbols.ttf"),
             ("EMOJI", "assets/fonts/subsets/FallbackEmoji.ttf"),
             ("SOUNDFONT", "assets/audio/gm1_A21.sf2"),
         ],
     );
+    if std::env::var_os("CARGO_FEATURE_DESKTOP").is_none() {
+        return;
+    }
     println!("cargo:rerun-if-changed=native/MediaHelper.swift");
     if std::env::var("CARGO_CFG_TARGET_OS").as_deref() != Ok("macos") {
         return;

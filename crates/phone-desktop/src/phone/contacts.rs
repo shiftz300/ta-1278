@@ -1,4 +1,5 @@
 //! Local phonebook routes; the nine-field persisted contact schema is unchanged.
+mod groups;
 use super::*;
 use organizer::{OrganizerPage as Page, contact_name};
 pub struct ContactUi {
@@ -176,7 +177,7 @@ impl Phone {
     }
     fn contact_compose(&mut self, number: String) {
         if !self.organizer.pick_recipient {
-            self.compose = Compose::default();
+            self.compose = self.new_compose();
             self.chat = Default::default();
         }
         self.compose.to = Editor::new(&number, 40);
@@ -238,7 +239,7 @@ impl Phone {
                         return true;
                     }
                     match self.index {
-                        0 => self.open_media(media_browser::Purpose::ContactPicture),
+                        0 => self.open_media(media::Purpose::ContactPicture),
                         7 => {
                             self.organizer.page = Page::ContactRingtone;
                             self.index = 0;

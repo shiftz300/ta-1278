@@ -59,7 +59,7 @@ pub struct StoredAlert {
     pub alert: Alert,
     pub dismissed: bool,
 }
-#[derive(Default, Serialize, Deserialize)]
+#[derive(Clone, Default, Serialize, Deserialize)]
 #[serde(default)]
 pub struct ServiceState {
     pub next_request: u64,

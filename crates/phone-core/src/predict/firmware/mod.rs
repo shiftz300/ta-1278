@@ -77,6 +77,11 @@ impl Firmware {
             }),
         })
     }
+    /// Copy learning data and its revision for an atomic host-owned state save.
+    pub fn snapshot(&self) -> (Data, u64) {
+        let state = self.state.lock().unwrap();
+        (state.data.clone(), state.revision)
+    }
     pub fn pending_save(&self) -> Option<(Data, u64)> {
         let s = self.state.lock().unwrap();
         (s.revision != s.saved).then(|| (s.data.clone(), s.revision))
@@ -171,10 +176,8 @@ mod tests {
     use super::*;
     #[test]
     fn matches_independent_interpreter_fixtures() {
-        let fixtures: serde_json::Value = serde_json::from_str(include_str!(
-            "../../../../../docs/evidence/t9-runtime-probe.json"
-        ))
-        .unwrap();
+        let fixtures: serde_json::Value =
+            serde_json::from_str(include_str!("../../../tests/fixtures/prediction.json")).unwrap();
         let e = Firmware::default();
         for case in fixtures["cases"].as_array().unwrap() {
             let lang = match case["language"].as_str().unwrap() {

@@ -20,8 +20,27 @@ pub fn tables() -> &'static Tables {
             .expect("verified alarm tables")
     })
 }
+#[derive(Clone, Copy, Debug, Default, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum ReminderSource {
+    #[default]
+    Legacy,
+    Alarm,
+    Calendar,
+}
+impl ReminderSource {
+    pub fn enabled(self, apps: crate::config::Apps) -> bool {
+        match self {
+            Self::Legacy => apps.alarms && apps.calendar,
+            Self::Alarm => apps.alarms,
+            Self::Calendar => apps.calendar,
+        }
+    }
+}
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Alert {
+    #[serde(default)]
+    pub source: ReminderSource,
     pub tone: String,
     pub name: String,
     pub time: String,
@@ -120,6 +139,13 @@ impl Phone {
             && self.organizer.page == OrganizerPage::AlarmForm
             && self.index == 2
     }
+    pub fn active_reminder(&self) -> Option<&Alert> {
+        self.local_data
+            .reminders
+            .alerts
+            .iter()
+            .find(|a| a.source.enabled(self.apps))
+    }
     pub fn check_alarms(&mut self, date: Date, minute: u64) {
         if minute >= 1440 || self.organizer.last_alarm_minute == Some((date, minute)) {
             return;
@@ -129,7 +155,7 @@ impl Phone {
         let ui = &mut self.local_data.reminders;
         let mut pending = Vec::new();
         for (d, m, mut alert) in ui.snoozed.drain(..) {
-            if (d, m) <= (date, minute) {
+            if (d, m) <= (date, minute) && alert.source.enabled(self.apps) {
                 alert.time = time.clone();
                 ui.alerts.push_back(alert);
                 self.local_dirty = true;
@@ -138,7 +164,7 @@ impl Phone {
             }
         }
         ui.snoozed = pending;
-        if ui.last_alarm_fired == Some((date, minute)) {
+        if !self.apps.alarms || ui.last_alarm_fired == Some((date, minute)) {
             return;
         }
         for a in &mut self.local_data.alarms {
@@ -154,6 +180,7 @@ impl Phone {
                 ui.last_alarm_fired = Some((date, minute));
                 self.local_dirty = true;
                 ui.alerts.push_back(Alert {
+                    source: ReminderSource::Alarm,
                     tone: a.fields.get(3).cloned().unwrap_or_else(|| "默认".into()),
                     name: a
                         .fields
@@ -173,16 +200,22 @@ impl Phone {
         }
     }
     pub(super) fn alarm_alert_key(&mut self, key: Key) -> bool {
-        if self.local_data.reminders.alerts.is_empty() {
+        let Some(index) = self
+            .local_data
+            .reminders
+            .alerts
+            .iter()
+            .position(|a| a.source.enabled(self.apps))
+        else {
             return false;
-        }
+        };
         match key {
             Key::SoftLeft => {
                 let (date, minute) = self
                     .organizer
                     .last_alarm_minute
                     .unwrap_or_else(|| self.local_clock());
-                let alert = self.local_data.reminders.alerts.pop_front().unwrap();
+                let alert = self.local_data.reminders.alerts.remove(index).unwrap();
                 self.local_dirty = true;
                 let total = minute + alert.snooze;
                 self.local_data.reminders.snoozed.push((
@@ -192,7 +225,7 @@ impl Phone {
                 ));
             }
             Key::Center | Key::SoftRight | Key::End => {
-                self.local_data.reminders.alerts.pop_front();
+                self.local_data.reminders.alerts.remove(index);
                 self.local_dirty = true;
             }
             _ => {}
@@ -355,7 +388,7 @@ impl Phone {
                     }
                     _ => {
                         self.organizer.page = AlarmRingtone;
-                        self.index = crate::native_audio::tone_labels("预设")
+                        self.index = crate::audio::native::tone_labels("预设")
                             .iter()
                             .position(|s| s == &self.organizer.draft[3])
                             .unwrap_or(0);
@@ -389,14 +422,14 @@ impl Phone {
                 _ => {}
             },
             AlarmRingtone => {
-                let labels = crate::native_audio::tone_labels("预设");
+                let labels = crate::audio::native::tone_labels("预设");
                 match key {
                     Key::Up => self.index = (self.index + labels.len() - 1) % labels.len(),
                     Key::Down => self.index = (self.index + 1) % labels.len(),
                     Key::SoftRight => self.alarm_return(3),
-                    Key::Center if self.index == crate::native_audio::file_index() => {
+                    Key::Center if self.index == crate::audio::native::file_index() => {
                         self.alarm_return(3);
-                        self.open_media(media_browser::Purpose::AlarmRingtone);
+                        self.open_media(media::Purpose::AlarmRingtone);
                     }
                     Key::Center => {
                         self.organizer.draft[3] = labels[self.index].clone();

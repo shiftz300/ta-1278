@@ -1,6 +1,6 @@
 # SMS conversations
 
-The main Messages screen now follows the observed [handset structure](sms-handset-loopback.md): New message, peer conversations, bubbles and a bottom composer. It replaces the earlier folder-first interface. Phone/call-history entries are grey and disabled. The dial screen is removed; Call/F3 and Home-screen digits do not open it. Calling from detected SMS numbers and assigning the call-history shortcut are also disabled.
+The main Messages screen now follows the observed handset structure (research archive): New message, peer conversations, bubbles and a bottom composer. It replaces the earlier folder-first interface. Phone/call-history entries are grey and disabled. The dial screen is removed; Call/F3 and Home-screen digits do not open it. Calling from detected SMS numbers and assigning the call-history shortcut are also disabled.
 
 ## Supported local flow
 
@@ -36,4 +36,4 @@ Only the first contiguous number of 3–40 characters is detected. Exact multi-l
 
 The main application grid has only its left menu and right back icons; the extra center “选择” label was removed after comparison with the native grid. The clock Home retains its center “功能表” action.
 
-The shared composer now uses the [measured SMS geometry](sms-composer-layout.md), including mixed-script metrics and whole-pixel wrap. Conversation viewport measurement uses that same function.
+The shared composer now uses the measured SMS geometry (research archive), including mixed-script metrics and whole-pixel wrap. Conversation viewport measurement uses that same function.

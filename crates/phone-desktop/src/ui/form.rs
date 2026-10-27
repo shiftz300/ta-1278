@@ -107,15 +107,11 @@ pub fn scroll_to(top: i32, height: i32, bottom: i32) -> i32 {
     (top + height - bottom).max(0)
 }
 
-pub fn date(c: &mut Canvas, value: &str, y: i32, digit: usize) {
+pub fn date(c: &mut Canvas, value: &str, y: i32, selected: usize) {
     c.text(6, y, value, 16, WHITE);
     if value.len() == 10 && value.is_ascii() {
-        let position = phone_core::calendar::Date::DIGIT_OFFSETS[digit.min(7)];
-        let x = 6 + c.width(&value[..position], 16);
-        let glyph = &value[position..position + 1];
-        let width = c.width(glyph, 16);
-        c.rect(x, y + 3, width, 19, WHITE);
-        c.text(x, y, glyph, 16, [0, 0, 0, 255]);
+        let position = phone_core::calendar::Date::DIGIT_OFFSETS[selected.min(7)];
+        selected_digit(c, value, position, 6, y);
     }
 }
 pub fn datetime(c: &mut Canvas, date: &str, time: &str, y: i32, digit: Option<usize>) {
@@ -127,12 +123,47 @@ pub fn datetime(c: &mut Canvas, date: &str, time: &str, y: i32, digit: Option<us
         } else {
             (time, [0, 1, 3, 4][digit - 8], 124)
         };
-        if value.is_ascii() && offset < value.len() {
-            let x = left + c.width(&value[..offset], 16);
-            let glyph = &value[offset..offset + 1];
-            let w = c.width(glyph, 16);
-            c.rect(x, y + 3, w, 19, WHITE);
-            c.text(x, y, glyph, 16, [0, 0, 0, 255]);
-        }
+        selected_digit(c, value, offset, left, y);
     }
+}
+
+fn selected_digit(c: &mut Canvas, value: &str, offset: usize, left: i32, y: i32) {
+    if value.is_ascii() && offset < value.len() {
+        let x = left + c.width(&value[..offset], 16);
+        let glyph = &value[offset..offset + 1];
+        let width = c.width(glyph, 16);
+        c.rect(x, y + 3, width, 19, WHITE);
+        c.text(x, y, glyph, 16, [0, 0, 0, 255]);
+    }
+}
+
+/// Compact inline decimal child, measured from the native converter form.
+/// Uses the same editor/caret and softkey system as the other forms.
+pub fn numeric(
+    c: &mut Canvas,
+    label: &str,
+    editor: &phone_core::editor::Editor,
+    focused: bool,
+    y: i32,
+) -> Vec<phone_core::editor::VisualRow> {
+    c.text(
+        6,
+        y + 8,
+        label,
+        16,
+        if focused { c.accent(3) } else { MUTED },
+    );
+    if focused {
+        c.text(185, y + 8, "✎123", 16, c.accent(3));
+    }
+    let lines = if focused {
+        super::editor::Edit::new([6, y + 33, 228, 26])
+            .sized(16, 26)
+            .draw(c, editor)
+    } else {
+        c.fit(6, y + 33, &editor.text(), 16, WHITE, 228);
+        vec![]
+    };
+    c.rect(6, y + 58, 228, 3, if focused { c.accent(3) } else { MUTED });
+    lines
 }

@@ -13,7 +13,7 @@ pub enum SnakeView {
     Sound,
 }
 /// Host storage mirrors the native six exposed map score lists; no phone NV is read.
-#[derive(Serialize, Deserialize)]
+#[derive(Clone, Serialize, Deserialize)]
 pub struct SnakeData {
     pub level: u8,
     pub kind: usize,

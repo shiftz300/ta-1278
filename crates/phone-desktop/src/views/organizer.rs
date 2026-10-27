@@ -8,7 +8,7 @@ pub(super) fn render(c: &mut Canvas, p: &mut Phone) {
     }
     let page = p.organizer.page;
     if page == OrganizerPage::EventRingtone {
-        crate::ui::tone_picker::draw(c, "铃声", p.index, &p.organizer.draft[4], "默认");
+        crate::ui::tones::draw(c, "铃声", p.index, &p.organizer.draft[4], "默认");
         return;
     }
     if crate::phone::contacts::is_contact(page) {
@@ -25,17 +25,13 @@ pub(super) fn render(c: &mut Canvas, p: &mut Phone) {
     } else if matches!(page, EventForm | EventFormMenu) {
         event_form(c, p);
         if page == EventFormMenu {
-            c.dim();
-            list::popup(c, 1, 0, |_| list::Row::text("储存"));
-            Softkeys::back("选择").draw(c);
+            PopupMenu::default().draw(c, 1, 0, |_| list::Row::text("储存"));
         }
         return;
     } else if page == CalendarMenu {
         calendar(c, p);
-        c.dim();
         let items = p.organizer_items();
-        list::popup(c, items.len(), p.index, |i| list::Row::text(&items[i]));
-        Softkeys::back("选择").draw(c);
+        PopupMenu::default().draw(c, items.len(), p.index, |i| list::Row::text(&items[i]));
         return;
     } else if matches!(page, DeleteContact | DeleteEvent | DeleteAlarm | DeletePast) {
         c.text(

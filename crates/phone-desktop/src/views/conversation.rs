@@ -221,12 +221,9 @@ fn popup(c: &mut Canvas, p: &Phone) {
             return;
         }
     };
-    c.dim();
-    list::popup(c, labels.len(), p.chat.choice, |i| list::Row {
+    PopupMenu::default().draw(c, labels.len(), p.chat.choice, |i| list::Row {
         label: labels[i],
         enabled: !(p.chat.popup == Popup::Number && i == 0),
         marker: list::Marker::None,
     });
-    c.rect(0, 282, 240, 38, BLACK);
-    Softkeys::back("选择").draw(c);
 }

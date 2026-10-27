@@ -1,5 +1,6 @@
 //! Local mailbox reader/actions. Layout and folder policy are not recovered conversations.
 use super::*;
+use crate::ui::menu::{self, Event as MenuEvent, Item as MenuItem};
 use std::{collections::BTreeMap, sync::OnceLock};
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub enum MailPage {
@@ -59,7 +60,10 @@ pub enum MailAction {
     Delete,
 }
 impl MailAction {
-    pub fn label(self) -> &'static str {
+    const fn item(self) -> MenuItem<'static, Self> {
+        MenuItem::new(self, self.label())
+    }
+    pub const fn label(self) -> &'static str {
         match self {
             Self::Retry => "重新发送",
             Self::Edit => "编辑为新信息",
@@ -91,6 +95,7 @@ impl Phone {
             None => ("未发送", "短信服务未连接"),
         }
     }
+    #[cfg(any(feature = "desktop", test))]
     pub fn receive_message(&mut self, from: String, body: String) -> Result<usize, &'static str> {
         if self.mail_ui.pending.is_some() {
             return Err("Mailbox save in progress; retry after completion");
@@ -157,16 +162,22 @@ impl Phone {
     pub fn mail_message(&self) -> Option<MailContent<'_>> {
         self.mail_content(self.mail_ui.folder, self.mail_ui.item)
     }
-    pub fn mail_actions(&self) -> &'static [MailAction] {
+    pub fn mail_menu(&self) -> &'static [MenuItem<'static, MailAction>] {
+        const INBOX: &[MenuItem<'static, MailAction>] = &[
+            MailAction::Reply.item(),
+            MailAction::Forward.item(),
+            MailAction::Delete.item(),
+        ];
+        const OUTBOX: &[MenuItem<'static, MailAction>] = &[
+            MailAction::Retry.item(),
+            MailAction::Edit.item(),
+            MailAction::Forward.item(),
+            MailAction::Delete.item(),
+        ];
         if self.mail_ui.folder == Screen::Inbox {
-            &[MailAction::Reply, MailAction::Forward, MailAction::Delete]
+            INBOX
         } else {
-            &[
-                MailAction::Retry,
-                MailAction::Edit,
-                MailAction::Forward,
-                MailAction::Delete,
-            ]
+            OUTBOX
         }
     }
     pub(super) fn mail_return_folder(&mut self) {
@@ -211,14 +222,9 @@ impl Phone {
                 Key::Delete => self.mail_delete_prompt(),
                 _ => {}
             },
-            Options => match key {
-                Key::Up => {
-                    self.index =
-                        (self.index + self.mail_actions().len() - 1) % self.mail_actions().len()
-                }
-                Key::Down => self.index = (self.index + 1) % self.mail_actions().len(),
-                Key::SoftRight => self.go(Screen::Mail(Read)),
-                Key::Center => match self.mail_actions()[self.index] {
+            Options => match menu::event(self.mail_menu(), &mut self.index, key) {
+                MenuEvent::Back => self.go(Screen::Mail(Read)),
+                MenuEvent::Activate(action) => match action {
                     MailAction::Retry => self.go(Screen::Mail(Result)),
                     action @ (MailAction::Edit | MailAction::Reply | MailAction::Forward) => {
                         let content = self.mail_message().unwrap();
@@ -241,7 +247,7 @@ impl Phone {
                     }
                     MailAction::Delete => self.mail_delete_prompt(),
                 },
-                _ => {}
+                MenuEvent::Focus | MenuEvent::Ignored => {}
             },
             Delete => match key {
                 Key::SoftRight => {
@@ -251,7 +257,7 @@ impl Phone {
                     } else {
                         self.go(back);
                         if back == Screen::Mail(Options) {
-                            self.index = self.mail_actions().len() - 1;
+                            self.index = self.mail_menu().len() - 1;
                         }
                     }
                 }

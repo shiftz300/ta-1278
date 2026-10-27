@@ -1,5 +1,11 @@
 use super::*;
 pub(super) fn render(c: &mut Canvas, p: &Phone) {
+    if p.music_refresh_visible() {
+        chrome::title(c, "音乐");
+        chrome::waiting(c, "正在刷新您的音乐收藏...", p.music_wait_time());
+        Softkeys::new(Button::None, Button::None, Button::Close).draw(c);
+        return;
+    }
     if p.music_view != MusicView::Player {
         c.text(
             6,

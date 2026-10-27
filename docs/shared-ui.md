@@ -6,6 +6,9 @@ Pages now declare controls and actions through `phone-desktop/src/ui/`. There is
 |---|---|
 | `ui/softkeys.rs` | Left/center/right actions, enabled/disabled labels, menu/back/close/delete/contact icons, shortcuts and playback bar |
 | `ui/list.rs` | Standard rows, popup rows, focus, disabled labels, radio buttons and checkboxes |
+| `ui/navigation.rs` | Shared vertical focus movement, explicit wrapping/clamping, empty/shrinking-list bounds |
+| `ui/menu.rs` | Typed menu items; one source for labels, enabled state, markers and activation intent |
+| `ui/popup.rs` | Parent dimming, popup panel/scrolling and footer composition |
 | `ui/editor.rs` | Edit rectangle, selection, caret, wrapping and UTF-16 cursor stops; shared message-body measurement |
 | `ui/text.rs` | Standard and SMS metric profiles used by both measuring and drawing |
 | `ui/chrome.rs` | Title and status controls |
@@ -17,27 +20,75 @@ List and popup styles specify their actual row height, panel position and marker
 
 App-specific content remains in `views/`: calendar cells, conversation bubbles, browser document flow, the music Home's larger first row and Snake's playfield. Their native layout differences are explicit content or style choices. App models own activation, navigation and persistence; drawing a button does not bypass those checks.
 
-## Native evidence
-
-[Shared UI evidence](evidence/shared-ui-framework.json) verifies all **751 indexed native window byte slices** against the original firmware hash. It records relevant Snake/chat descriptors and the correlated control macros:
-
-- `WIN_SOFTKEY`: three resource-ID slots for left, middle and right.
-- `CREATE_LISTBOX_CTRL` / `CREATE_POPMENU_CTRL`: shared list and popup control families.
-- Edit/form/title/status descriptors: separate framework controls rather than per-app drawing implementations.
-
-The public MMK reference is from another product/version and is used to interpret the captured descriptors. The Rust UI is a local implementation; reference C code is not compiled or executed. Verified descriptor bytes do not establish that every dynamic attribute or original control implementation has been recovered.
-
-```sh
-python3 scripts/check-ui-framework.py
-python3 scripts/check-ui-framework.py --baseline BASELINE_FRAMES --frames CURRENT_FRAMES
-```
-
-The second command also checks that content above y=284 is unchanged outside the live Home clock and four explicitly recorded popup-inset corrections. Baseline frames for this pass are archived at `../ta-1278-source/replica-validation/20261026-sms-composer/ta1278-composer-layout-release/`.
-
 ## Maintenance
 
 Add a shared action or control variant in `ui/` when it is used across pages. Configure genuine native differences through a style or a distinct content control. Keep colors and measured geometry out of app routing code. Do not reintroduce app-specific footer coordinates, Unicode substitutes for delete/back icons, or separate edit-measurement formulas.
 
 Cross-app regression tests compare the center slot across settings, Snake, tools and browser, compare the delete control across message/browser editors, and ensure an empty menu slot cannot retain an editor label. The existing editor and app-flow tests remain in place.
 
-`ui/form.rs` adds reusable Input/Date/Choice fields and avatars; `ui/art.rs` contains the verified native control artwork. The [phonebook/flashlight pass](contact-torch-layout.md) uses these controls and adds an accent-panel style to the same softkey renderer.
+`ui/form.rs` adds reusable Input/Date/Choice fields and avatars; `ui/art.rs` contains the verified native control artwork. The phonebook/flashlight pass (research archive) uses these controls and adds an accent-panel style to the same softkey renderer.
+
+## Adding a menu
+
+Declare application actions with an enum. Do not make row numbers the meaning of an action. The same items drive rendering and keyboard activation:
+
+```rust
+use crate::ui::{menu::{self, Event, Item}, popup::Popup};
+
+#[derive(Clone, Copy)]
+enum Action { Open, Delete }
+
+let items = [
+    Item::new(Action::Open, "打开"),
+    Item { enabled: can_delete, ..Item::new(Action::Delete, "删除") },
+];
+
+// View: render the parent content first, then the popup exactly once.
+Popup::default().draw(canvas, items.len(), selected, |i| items[i].row());
+
+// Controller: execute effects here, never while rendering.
+match menu::event(&items, &mut selected, key) {
+    Event::Activate(Action::Open) => open_selected(),
+    Event::Activate(Action::Delete) => request_delete_confirmation(),
+    Event::Back => restore_parent(),
+    Event::Focus | Event::Ignored => {}
+}
+```
+
+The snippet illustrates the view and controller phases; they run separately. Actual examples are `phone/radio.rs` with `views/radio.rs`, and `phone/mail.rs` with `views/mail.rs`. Radio uses a fixed array; mail uses static slices. Neither requires an allocation to build its menu rows. `Item::marker` supplies a check/radio/switch marker when needed. Disabled entries remain focusable, but the shared event handler never activates them. Center activates and Right cancels; Left is not silently treated as confirmation.
+
+## Choosing a page control
+
+- **Ordinary list:** `list::draw` or `list::plain`, with `navigation::vertical(&mut index, count, key, Boundary::Wrap)` for cyclic focus. Use `Boundary::Clamp` where the existing UX stops at the ends, such as message folders. Navigation only handles Up/Down; the app owns selection effects and Back. Empty lists normalize to index zero without division, and a shrunken list cannot overflow focus.
+- **Popup over a page:** render the parent, then `Popup::default().draw(...)`. It owns dimming, list panel, overflow scrollbar, bottom gap and default Select/Back softkeys. Do not also dim the parent or redraw its footer afterward.
+- **Standalone/already shaded popup:** use `.unshaded()`. Use `.footer(...)` for a verified footer difference, for example an unavailable Format action with an empty center label.
+- **Form/editor:** retain `form::Field`, `form::numeric`, `form::scroll_to`, Canvas clipping and `editor::Edit`. The app owns field values and commit/cancel; the control owns text/caret geometry.
+- **Custom content:** retain the browser's measured child menus, timer's positioned popup, conversation bubbles and Snake board where their layout differs. Do not force them into a standard list merely to reduce code.
+
+App models continue to own return destinations, selected identities, save failures and asynchronous work. There is no new global navigation stack, dynamic widget tree, callback registry or serialized UI schema. This pass introduces no dependency and does not change persisted application/config formats.
+
+## 2026-10-27 framework follow-up
+
+Thirteen standard popup call sites now use the common composition, across contacts, calendar, files, messages, radio and music. Eleven list routes use the common focus function. Radio and mail menus use typed items for both view and activation, replacing parallel row-index switches. Other apps can migrate when touched; this is not a claim that every existing route now uses typed items.
+
+
+```sh
+TA1278_AUDIT_FRAMES=/tmp/ta1278-before cargo test -p phone-desktop --locked views::audit
+# Make the UI change, then render to a separate directory.
+TA1278_AUDIT_FRAMES=/tmp/ta1278-after cargo test -p phone-desktop --locked views::audit
+python3 scripts/compare-ui-frames.py /tmp/ta1278-before /tmp/ta1278-after --report /tmp/ui-comparison.json
+```
+
+The comparator requires identical frame names and 240×320 dimensions. Only the clock rectangle of `configured-home.png` is exempt; it records the actual difference bounds and hashes. These are CPU render regressions against the preceding working tree, not new handset measurements or winit/GPU acceptance. No phone access or sound output was used.
+
+### Source ownership
+
+Use one-word filenames under the owning feature. `ui/candidates.rs` and
+`ui/tones.rs` are shared controls; `views/browser/chrome.rs` is browser-specific.
+`phone/editor.rs` selects the active editor for both drawing and input, including
+modal/reminder blocking. `ui/form.rs` shares the selected date/time digit renderer.
+`assets.rs` centralizes embedded PNG paths and decoding; resource IDs and order
+stay explicit at each call site. This avoids a separate resource registry or runtime
+path lookup.
+
+Embedded hosts call `Runtime::render`; the desktop host uses the same entry point. Controls remain private implementation details rather than a second public widget API. See [runtime](runtime.md).

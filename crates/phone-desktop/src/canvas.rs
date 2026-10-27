@@ -42,97 +42,30 @@ impl Canvas {
         })
         .collect::<Result<Vec<_>, _>>()?;
         let icons = [
-            include_bytes!(
-                "../../../nokia-ta1278-research/analysis/extracted/png/00436-icon-0006f368.png"
-            )
-            .as_slice(),
-            include_bytes!(
-                "../../../nokia-ta1278-research/analysis/extracted/png/00439-icon-0006fe40.png"
-            )
-            .as_slice(),
-            include_bytes!(
-                "../../../nokia-ta1278-research/analysis/extracted/png/00437-icon-0006f7fc.png"
-            )
-            .as_slice(),
-            include_bytes!(
-                "../../../nokia-ta1278-research/analysis/extracted/png/00441-icon-00070b98.png"
-            )
-            .as_slice(),
-            include_bytes!(
-                "../../../nokia-ta1278-research/analysis/extracted/png/00429-icon-0006d64c.png"
-            )
-            .as_slice(),
-            include_bytes!(
-                "../../../nokia-ta1278-research/analysis/extracted/png/00444-icon-00071be0.png"
-            )
-            .as_slice(),
-            include_bytes!(
-                "../../../nokia-ta1278-research/analysis/extracted/png/00420-icon-00056684.png"
-            )
-            .as_slice(),
-            include_bytes!(
-                "../../../nokia-ta1278-research/analysis/extracted/png/00442-icon-0007117c.png"
-            )
-            .as_slice(),
-            include_bytes!(
-                "../../../nokia-ta1278-research/analysis/extracted/png/00441-icon-00070b98.png"
-            )
-            .as_slice(),
-            include_bytes!(
-                "../../../nokia-ta1278-research/analysis/extracted/png/00418-icon-00055de8.png"
-            )
-            .as_slice(),
-            include_bytes!(
-                "../../../nokia-ta1278-research/analysis/extracted/png/00448-icon-000733fc.png"
-            )
-            .as_slice(),
-            include_bytes!(
-                "../../../nokia-ta1278-research/analysis/extracted/png/00435-icon-0006f020.png"
-            )
-            .as_slice(),
-            include_bytes!(
-                "../../../nokia-ta1278-research/analysis/extracted/png/00434-icon-0006ede0.png"
-            )
-            .as_slice(),
-            include_bytes!(
-                "../../../nokia-ta1278-research/analysis/extracted/png/00449-icon-000737dc.png"
-            )
-            .as_slice(),
-            include_bytes!(
-                "../../../nokia-ta1278-research/analysis/extracted/png/00443-icon-00071564.png"
-            )
-            .as_slice(),
-            include_bytes!(
-                "../../../nokia-ta1278-research/analysis/extracted/png/00419-icon-000562e4.png"
-            )
-            .as_slice(),
-            include_bytes!(
-                "../../../nokia-ta1278-research/analysis/extracted/png/00432-icon-0006e214.png"
-            )
-            .as_slice(),
-            include_bytes!(
-                "../../../nokia-ta1278-research/analysis/extracted/png/00430-icon-0006d9f0.png"
-            )
-            .as_slice(),
-            include_bytes!(
-                "../../../nokia-ta1278-research/analysis/extracted/png/00421-icon-00056b70.png"
-            )
-            .as_slice(),
-            include_bytes!(
-                "../../../nokia-ta1278-research/analysis/extracted/png/00447-icon-00072ddc.png"
-            )
-            .as_slice(),
-            include_bytes!(
-                "../../../nokia-ta1278-research/analysis/extracted/png/00292-icon-00049e5c.png"
-            )
-            .as_slice(),
+            crate::assets::png!("00436-icon-0006f368.png"),
+            crate::assets::png!("00439-icon-0006fe40.png"),
+            crate::assets::png!("00437-icon-0006f7fc.png"),
+            crate::assets::png!("00441-icon-00070b98.png"),
+            crate::assets::png!("00429-icon-0006d64c.png"),
+            crate::assets::png!("00444-icon-00071be0.png"),
+            crate::assets::png!("00420-icon-00056684.png"),
+            crate::assets::png!("00442-icon-0007117c.png"),
+            crate::assets::png!("00441-icon-00070b98.png"),
+            crate::assets::png!("00418-icon-00055de8.png"),
+            crate::assets::png!("00448-icon-000733fc.png"),
+            crate::assets::png!("00435-icon-0006f020.png"),
+            crate::assets::png!("00434-icon-0006ede0.png"),
+            crate::assets::png!("00449-icon-000737dc.png"),
+            crate::assets::png!("00443-icon-00071564.png"),
+            crate::assets::png!("00419-icon-000562e4.png"),
+            crate::assets::png!("00432-icon-0006e214.png"),
+            crate::assets::png!("00430-icon-0006d9f0.png"),
+            crate::assets::png!("00421-icon-00056b70.png"),
+            crate::assets::png!("00447-icon-00072ddc.png"),
+            crate::assets::png!("00292-icon-00049e5c.png"),
         ]
-        .iter()
-        .map(|b| {
-            image::load_from_memory(b)
-                .map(|i| i.to_rgba8())
-                .map_err(|e| e.to_string())
-        })
+        .into_iter()
+        .map(crate::assets::decode)
         .collect::<Result<Vec<_>, _>>()?;
         let theme = crate::theme::Theme::load();
         Ok(Self {
@@ -151,28 +84,12 @@ impl Canvas {
             .to_rgba8()
             .into(),
             softkey_icons: [
-                image::load_from_memory(include_bytes!(
-                    "../../../nokia-ta1278-research/analysis/extracted/png/00397-icon-00052900.png"
-                ))
-                .map_err(|e| e.to_string())?
-                .to_rgba8(),
-                image::load_from_memory(include_bytes!(
-                    "../../../nokia-ta1278-research/analysis/extracted/png/00398-icon-00052abc.png"
-                ))
-                .map_err(|e| e.to_string())?
-                .to_rgba8(),
-                image::load_from_memory(include_bytes!(
-                    "../../../nokia-ta1278-research/analysis/extracted/png/01160-icon-000d0620.png"
-                ))
-                .map_err(|e| e.to_string())?
-                .to_rgba8(),
-                image::load_from_memory(include_bytes!(
-                    "../../../nokia-ta1278-research/analysis/extracted/png/01151-icon-000cfe9c.png"
-                ))
-                .map_err(|e| e.to_string())?
-                .to_rgba8(),
+                crate::assets::decode(crate::assets::png!("00397-icon-00052900.png"))?,
+                crate::assets::decode(crate::assets::png!("00398-icon-00052abc.png"))?,
+                crate::assets::decode(crate::assets::png!("01160-icon-000d0620.png"))?,
+                crate::assets::decode(crate::assets::png!("01151-icon-000cfe9c.png"))?,
             ],
-            sprites: crate::snake_art::load()?,
+            sprites: crate::views::snake::art::load()?,
         })
     }
     fn glyph(&mut self, ch: char, size: u16) -> &(Metrics, Vec<u8>) {
@@ -396,7 +313,13 @@ impl Canvas {
             );
         }
     }
-    pub fn sprite(&mut self, kind: crate::snake_art::Sprite, x: i32, y: i32, src: [u32; 4]) {
+    pub fn sprite(
+        &mut self,
+        kind: crate::views::snake::art::Sprite,
+        x: i32,
+        y: i32,
+        src: [u32; 4],
+    ) {
         let img = &self.sprites[kind as usize];
         let [sx, sy, width, height] = src;
         for oy in 0..height.min(img.height().saturating_sub(sy)) {
@@ -430,6 +353,18 @@ impl Canvas {
         // Application pages stay black; Home/Menu add their shared wallpaper.
         self.rect(0, 0, W as i32, H as i32, [0, 0, 0, 255]);
     }
+    pub fn rounded(&mut self, [x, y, w, h]: [i32; 4], radius: i32, color: Color) {
+        for dy in 0..h {
+            for dx in 0..w {
+                let cx = dx.clamp(radius, w - radius - 1);
+                let cy = dy.clamp(radius, h - radius - 1);
+                if (dx - cx).pow(2) + (dy - cy).pow(2) <= radius.pow(2) {
+                    self.rect(x + dx, y + dy, 1, 1, color);
+                }
+            }
+        }
+    }
+
     pub fn ring(&mut self, x: i32, y: i32, radius: i32, color: Color) {
         for dy in -radius..=radius {
             for dx in -radius..=radius {
@@ -440,6 +375,7 @@ impl Canvas {
             }
         }
     }
+    #[cfg(any(feature = "desktop", test))]
     pub fn save(&self, path: &std::path::Path) -> Result<(), image::ImageError> {
         image::save_buffer(path, &self.pixels, W, H, image::ColorType::Rgba8)
     }
@@ -466,4 +402,4 @@ mod tests {
 }
 
 #[cfg(test)]
-mod font_parity;
+mod parity;

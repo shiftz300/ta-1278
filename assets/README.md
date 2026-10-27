@@ -40,6 +40,15 @@ Public dictionary files retain their upstream text. `Builtin` is an optional ind
 
 ## Maintenance
 
-`python3 scripts/check-assets.py` verifies downloaded resources and font coverage (requires fontTools). `python3 scripts/subset-fallback-fonts.py` regenerates fallback subsets using the fonts in this directory. Modified Noto subsets have distinct family names and retain OFL notices. Normal Rust builds use checked-in resources and do not need Python or fontTools.
+Fonts are already converted and checked in. `python3 scripts/check-assets.py` verifies resource hashes and binds the saved coverage report to the exact font files. It uses only the Python standard library and does not modify resources. CI never converts fonts or installs fontTools. Normal Rust builds use checked-in resources and do not need Python or fontTools.
+
+Only when replacing fonts, use local `fonttools==4.60.2` to regenerate subsets and coverage, then commit the resulting fonts and manifests:
+
+```sh
+python3 scripts/subset-fallback-fonts.py
+python3 scripts/check-assets.py --fonts
+```
+
+Modified Noto subsets have distinct family names and retain OFL notices.
 
 Build-time compression is lossless and checked by roundtrip decoding. T9 guest code is interpreted; it is not loaded as host machine code. Full resource extraction and disassembly tools live in the separate research archive.

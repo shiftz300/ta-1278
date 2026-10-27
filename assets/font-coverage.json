@@ -6,31 +6,37 @@
   "fonts": [
     {
       "file": "assets/fonts/device/font-0-latn.otf",
+      "sha256": "f463aa88beb81df923f5fa9ba4ce1c0c40bc942d1ed0f636ca811b53a00e5105",
       "characters": 1313,
       "added": 1313
     },
     {
       "file": "assets/fonts/device/font-1-hani.otf",
+      "sha256": "a62cb8fc10257ae2041e3bcba7d0c1677c1c8de6cabf35042189853c506a2642",
       "characters": 7479,
       "added": 7431
     },
     {
       "file": "assets/fonts/device/font-2-hani.otf",
+      "sha256": "ab92df9ef87d5b0db00411f119a554ddcee5ea5d28e51fb9588dee4b048c327b",
       "characters": 13497,
       "added": 8820
     },
     {
       "file": "assets/fonts/subsets/FallbackCJK.otf",
+      "sha256": "1492c6eaa55c9e3d097ddb4a0894db19e1a2d0672607329f62da56f68a47e26e",
       "characters": 28155,
       "added": 28153
     },
     {
       "file": "assets/fonts/subsets/FallbackSymbols.ttf",
+      "sha256": "7014f282150c4609b72ff77db46b35be95764ad166e7efdfb69094b49ba5976f",
       "characters": 2545,
       "added": 2545
     },
     {
       "file": "assets/fonts/subsets/FallbackEmoji.ttf",
+      "sha256": "ad88d1de1028f28202e4d55896d12a31d970003385f37d5fc71a753215dc6e29",
       "characters": 1070,
       "added": 1070
     }

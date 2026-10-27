@@ -36,15 +36,11 @@ jobs:
           else
             python3 scripts/version.py check
           fi
-      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
-        with:
-          python-version: '3.13'
       - name: Format and verify resources
         run: |
           rustup toolchain install stable --profile minimal --component rustfmt
           cargo +stable fmt --all -- --check
-          python -m pip install --disable-pip-version-check fonttools==4.60.2
-          python scripts/check-assets.py
+          python3 scripts/check-assets.py
           git diff --exit-code
 
   desktop:

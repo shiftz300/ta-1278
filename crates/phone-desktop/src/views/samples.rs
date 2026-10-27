@@ -1,9 +1,9 @@
 //! State variants for visual review. All values are synthetic; no host services.
 use super::audit::frame;
 use super::*;
-use crate::phone::{organizer::OrganizerPage, settings::SettingsPage, tools::ToolPage};
+use crate::shell::{organizer::OrganizerPage, settings::SettingsPage, tools::ToolPage};
 use phone_core::input::{Event, Key, Phase};
-fn key(p: &mut Phone, key: Key) {
+fn key(p: &mut Shell, key: Key) {
     p.handle(
         Event {
             key,
@@ -15,7 +15,7 @@ fn key(p: &mut Phone, key: Key) {
 
 #[test]
 fn system_state_variants() {
-    let mut p = Phone::new(Default::default());
+    let mut p = Shell::new(Default::default());
     p.settings.accent = 4;
     let mut c = Canvas::new().unwrap();
     p.launch(Screen::Settings);
@@ -124,12 +124,12 @@ fn system_state_variants() {
     p.index = 2;
     frame(&mut c, &mut p, "other-restored");
     p.launch(Screen::Snake);
-    p.gaming.view = crate::phone::snake::SnakeView::Level;
+    p.gaming.view = crate::shell::snake::SnakeView::Level;
     for level in [7, 8] {
         p.gaming.level_preview = level;
         frame(&mut c, &mut p, &format!("snake-level-{level}"));
     }
-    p.gaming.view = crate::phone::snake::SnakeView::Menu;
+    p.gaming.view = crate::shell::snake::SnakeView::Menu;
     p.gaming.model.over = false;
     p.gaming.model.start();
     p.gaming.model.running = false;
@@ -139,7 +139,7 @@ fn system_state_variants() {
 
 #[test]
 fn message_state_variants() {
-    let mut p = Phone::new(Default::default());
+    let mut p = Shell::new(Default::default());
     p.settings.accent = 4;
     let mut c = Canvas::new().unwrap();
     p.go(Screen::Compose);
@@ -232,7 +232,7 @@ fn message_state_variants() {
 
 #[test]
 fn browser_chrome_variants() {
-    let mut p = Phone::new(Default::default());
+    let mut p = Shell::new(Default::default());
     p.settings.accent = 4;
     let mut c = Canvas::new().unwrap();
     p.launch(Screen::Browser);
@@ -353,8 +353,8 @@ fn browser_chrome_variants() {
 
 #[test]
 fn transfer_and_timer_feedback_variants() {
-    use crate::phone::files::FileView;
-    let mut p = Phone::new(Default::default());
+    use crate::shell::files::FileView;
+    let mut p = Shell::new(Default::default());
     p.settings.accent = 4;
     let mut c = Canvas::new().unwrap();
     p.launch(Screen::Tools(ToolPage::Files));
@@ -408,7 +408,7 @@ fn transfer_and_timer_feedback_variants() {
 fn browser_document_variants() {
     // Equal visible text/values for review; these are local HTML fixtures, not
     // captured handset HTTP payloads. No request is sent by this test.
-    let mut p = Phone::new(Default::default());
+    let mut p = Shell::new(Default::default());
     p.settings.accent = 4;
     p.launch(Screen::Browser);
     p.browsing.data.settings.font_size = 0;

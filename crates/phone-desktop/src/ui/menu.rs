@@ -21,6 +21,10 @@ impl<'a, A> Item<'a, A> {
             marker: Marker::None,
         }
     }
+    pub const fn child(mut self) -> Self {
+        self.marker = Marker::Child;
+        self
+    }
     pub fn row(&self) -> Row<'a> {
         Row {
             label: self.label,

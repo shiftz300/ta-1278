@@ -5,7 +5,7 @@ These are local application flows, not a claim of complete handset equivalence.
 | Area | Behavior and limits |
 |---|---|
 | Contacts | Pictures, groups, local ringtones and editable fields; deleting a group keeps contacts. |
-| Music | MP3/WAV playback, playlists, repeat/shuffle, track selection and saved paused resume position. Missing files are omitted from visible lists without erasing stored paths. |
+| Music | MP3/WAV/MIDI playback, playlists, repeat/shuffle, track selection and saved paused resume position. Missing files are omitted from visible lists without erasing stored paths. |
 | Images | Browse the selected folder, open images, zoom/pan and select wallpaper or contact pictures on macOS. ImageIO supplies decoding; only the first image/frame is shown. Windows/Linux decoding is not implemented. |
 | Video | Local files through macOS AVFoundation; play/pause, seek and volume. Available formats depend on system codecs. Windows/Linux decoding is not implemented. |
 | Files | Direct folder access, rename, copy/move, create folders, details and confirmed nonrecursive deletion. No overwrite or VFS. See [storage](storage.md). |
@@ -17,7 +17,7 @@ Pages share title, lists, popups, editors and softkeys. File, image, wallpaper a
 
 ## Media implementation
 
-`phone/media.rs` owns selection and transport state; `views/media.rs` draws it. `media/visual.rs` owns decoding jobs, preview cache and helper lifecycle. `native/MediaHelper.swift` uses installed macOS frameworks and receives bounded temporary copies of local files, never an external URL. Image inputs are limited to 16 MiB, videos to 512 MiB. Video output is capped at ten 240×240 RGBA frames per second. Only one video process runs at a time. Preview images are limited to 240×320, with 32 cache entries.
+`shell/media.rs` owns selection and transport state; `views/media.rs` draws it. `media/visual.rs` owns decoding jobs, preview cache and helper lifecycle. `native/MediaHelper.swift` uses installed macOS frameworks and receives bounded temporary copies of local files, never an external URL. Image inputs are limited to 16 MiB, videos to 512 MiB. Video output is capped at ten 240×240 RGBA frames per second. Only one video process runs at a time. Preview images are limited to 240×320, with 32 cache entries.
 
 `audio/native.rs` binds retained sound resources. `audio/midi.rs` uses independent SF2 synthesis; exact original DSP output is not claimed. Silent mode and volume apply. Temporary decoder files are removed on normal completion; a forced termination can leave temporary files.
 

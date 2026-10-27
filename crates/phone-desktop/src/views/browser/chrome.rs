@@ -1,12 +1,12 @@
 //! System/browser modal geometry measured from the target handset, separate from web layout.
 use crate::views::*;
-pub(in crate::views) fn menu(c: &mut Canvas, p: &Phone, kind: MenuKind, index: usize) {
-    let labels = p.menu_labels(kind);
+pub(in crate::views) fn menu(c: &mut Canvas, p: &Shell, kind: MenuKind, index: usize) {
+    let items = kind.items();
     let child = matches!(
         kind,
         MenuKind::BrowserOpen | MenuKind::BrowserNavigation | MenuKind::BrowserSave
     );
-    let count = labels.len().min(6);
+    let count = items.len().min(6);
     let start = index.saturating_sub(count - 1);
     let row = 38;
     let top = if child {
@@ -34,42 +34,38 @@ pub(in crate::views) fn menu(c: &mut Canvas, p: &Phone, kind: MenuKind, index: u
     c.rect(0, top, 240, panel_height, [0, 0, 0, 255]);
     list::draw(
         c,
-        labels.len(),
+        items.len(),
         index,
         list::ListStyle {
             top,
             row_height: row,
             visible: count,
             text_y: 7,
-            row_width: if labels.len() > 6 { 234 } else { 240 },
+            row_width: if items.len() > 6 { 234 } else { 240 },
             text_width: 214,
             ..list::ListStyle::STANDARD
         },
-        |i| list::Row {
-            label: &labels[i],
-            enabled: p.menu_enabled(kind, i),
-            marker: list::Marker::None,
-        },
+        |i| p.menu_item(kind, i).row(),
     );
     if kind == MenuKind::Browser {
         for i in start..(start + count).min(3) {
             c.text(216, top + (i - start) as i32 * row + 5, "›", 26, WHITE);
         }
     }
-    if labels.len() > 6 {
+    if items.len() > 6 {
         c.rect(236, top, 4, count as i32 * row, [46, 51, 46, 255]);
         c.rect(
             236,
-            top + (start as i32 * count as i32 * row / labels.len() as i32),
+            top + (start as i32 * count as i32 * row / items.len() as i32),
             4,
-            (count * count * row as usize / labels.len()) as i32,
+            (count * count * row as usize / items.len()) as i32,
             MUTED,
         );
     }
     c.rect(0, 282, 240, 38, [0, 0, 0, 255]);
     Softkeys::back("选择").draw(c);
 }
-pub(in crate::views) fn editor(c: &mut Canvas, p: &Phone, target: TextTarget, e: &Editor) {
+pub(in crate::views) fn editor(c: &mut Canvas, p: &Shell, target: TextTarget, e: &Editor) {
     status(c);
     c.text(
         6,
@@ -123,7 +119,7 @@ pub(in crate::views) fn editor(c: &mut Canvas, p: &Phone, target: TextTarget, e:
     )
     .draw(c);
 }
-pub(in crate::views) fn settings(c: &mut Canvas, p: &Phone) {
+pub(in crate::views) fn settings(c: &mut Canvas, p: &Shell) {
     let modal = matches!(
         p.browsing.view,
         BrowserView::HomeType | BrowserView::FontSize | BrowserView::Clear

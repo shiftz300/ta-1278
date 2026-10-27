@@ -11,7 +11,7 @@ pub enum Button<'a> {
     Close,
     Delete,
     Contacts,
-    Phone,
+    Shell,
     Lap,
     Reset,
     Record,
@@ -87,7 +87,7 @@ fn draw_button(c: &mut Canvas, slot: usize, button: Button<'_>) {
             c.rect(x + 20, 293, 6, 1, WHITE);
             c.rect(x + 25, 293, 1, 7, WHITE);
         }
-        Button::Phone => super::art::phone(c, x),
+        Button::Shell => super::art::shell(c, x),
         Button::Text(label) | Button::Disabled(label) => {
             let width = c.width(label, 20);
             let x = match slot {

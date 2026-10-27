@@ -6,7 +6,7 @@ pub(super) const PAPER: Color = [246, 252, 246, 255];
 pub(super) const INK: Color = [0, 8, 0, 255];
 pub(super) const FOCUS: Color = [239, 154, 0, 255];
 pub(super) const LINK: Color = [0, 0, 238, 255];
-pub(super) fn render(c: &mut Canvas, p: &Phone) {
+pub(super) fn render(c: &mut Canvas, p: &Shell) {
     if p.browsing.view == BrowserView::Details {
         crate::ui::chrome::title(c, "页面详情");
         c.text(10, 32, "书签名称", 20, WHITE);

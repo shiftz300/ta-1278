@@ -1,4 +1,4 @@
-//! First-launch folder choice, kept outside the replica's phone UI.
+//! First-launch folder choice, kept outside the replica's shell UI.
 use crate::{
     persistence::{self, Directory, Record},
     storage::files::Folder,

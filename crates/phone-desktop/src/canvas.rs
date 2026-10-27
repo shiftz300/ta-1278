@@ -35,7 +35,6 @@ impl Canvas {
             crate::packed::HANI2,
             crate::packed::CJK,
             crate::packed::SYMBOLS,
-            crate::packed::EMOJI,
         ]
         .into_iter()
         .map(|packed| {
@@ -105,12 +104,12 @@ impl Canvas {
     }
     fn glyph(&mut self, ch: char, size: u16) -> &(Metrics, Vec<u8>) {
         self.glyphs.entry((ch, size)).or_insert_with(|| {
-            let font = self
-                .fonts
-                .iter()
-                .find(|f| f.lookup_glyph_index(ch) != 0)
+            let found = self.fonts.iter().find(|f| f.lookup_glyph_index(ch) != 0);
+            let shown = if found.is_some() { ch } else { '□' };
+            let font = found
+                .or_else(|| self.fonts.iter().find(|f| f.lookup_glyph_index('□') != 0))
                 .unwrap_or(&self.fonts[0]);
-            font.rasterize(ch, size as f32)
+            font.rasterize(shown, size as f32)
         })
     }
     pub fn width(&mut self, text: &str, size: u16) -> i32 {
@@ -485,9 +484,9 @@ mod tests {
         );
     }
     #[test]
-    fn fallback_has_outlines_for_expanded_scripts_and_emoji() {
+    fn fallback_has_outlines_for_expanded_scripts_and_symbols() {
         let mut c = Canvas::new().unwrap();
-        for ch in "龘喆髙𠮷繁體かなカナ한글✓♫★→😀🙂🤔👍ΩЖ".chars() {
+        for ch in "龘喆髙𠮷繁體かなカナ한글✓♫★→ΩЖ".chars() {
             assert!(
                 c.fonts.iter().any(|f| f.lookup_glyph_index(ch) != 0),
                 "Missing {ch}"
@@ -497,6 +496,18 @@ mod tests {
                 metrics.width > 0 && pixels.iter().any(|p| *p > 0),
                 "Blank {ch}"
             );
+        }
+    }
+    #[test]
+    fn unsupported_emoji_and_missing_characters_use_the_square() {
+        let mut c = Canvas::new().unwrap();
+        for size in [12, 17, 20, 40] {
+            let square = c.glyph('□', size).clone();
+            assert!(square.1.iter().any(|v| *v > 0));
+            for ch in ['😀', '🙂', '🤔', '\u{10ffff}'] {
+                assert!(c.fonts.iter().all(|f| f.lookup_glyph_index(ch) == 0));
+                assert_eq!(c.glyph(ch, size), &square);
+            }
         }
     }
 }

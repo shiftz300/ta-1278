@@ -308,7 +308,7 @@ pub fn layout(c: &mut Canvas, page: &Page, font: u16) -> Layout {
         height: b.y.max(0) as usize,
     }
 }
-pub fn paint(c: &mut Canvas, p: &Phone, layout: &Layout, scroll: usize) {
+pub fn paint(c: &mut Canvas, p: &Shell, layout: &Layout, scroll: usize) {
     let shift = 64 - scroll as i32;
     let font = [12, 14][p.browsing.data.settings.font_size.min(1)];
     for item in &layout.draws {

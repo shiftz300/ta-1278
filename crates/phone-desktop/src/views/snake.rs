@@ -1,6 +1,6 @@
 pub(crate) mod art;
 use super::*;
-use crate::{phone::snake::SnakeView, views::snake::art::Sprite};
+use crate::{shell::snake::SnakeView, views::snake::art::Sprite};
 use phone_core::snake::{Direction, Snake};
 fn game(c: &mut Canvas, s: &Snake) {
     c.sprite(Sprite::Background, 0, 0, [0, 0, 240, 320]);
@@ -55,7 +55,7 @@ fn game(c: &mut Canvas, s: &Snake) {
         );
     }
 }
-pub(super) fn render(c: &mut Canvas, p: &Phone) {
+pub(super) fn render(c: &mut Canvas, p: &Shell) {
     if matches!(p.gaming.view, SnakeView::Game | SnakeView::GameOver) {
         game(c, &p.gaming.model);
         if p.gaming.view == SnakeView::GameOver {

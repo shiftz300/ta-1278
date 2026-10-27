@@ -20,16 +20,16 @@ use crate::ui::chrome::status;
 use crate::ui::popup::Popup as PopupMenu;
 use crate::ui::softkeys::{Button, Softkeys};
 use crate::ui::{chrome, editor::Edit, list, softkeys, text};
-use crate::{canvas::*, phone::*};
+use crate::{canvas::*, shell::*};
 use phone_core::{browser::Element, editor::Editor, sms};
 /// Compatibility for frame fixtures: explicitly measure, apply geometry, paint.
 #[cfg(test)]
-pub fn render(c: &mut Canvas, p: &mut Phone) {
+pub fn render(c: &mut Canvas, p: &mut Shell) {
     prepare(c, p);
     paint(c, p);
 }
 
-pub fn prepare(c: &mut Canvas, p: &mut Phone) {
+pub fn prepare(c: &mut Canvas, p: &mut Shell) {
     let previous = c.measuring;
     c.measuring = true;
     paint(c, p);
@@ -38,10 +38,10 @@ pub fn prepare(c: &mut Canvas, p: &mut Phone) {
 }
 
 /// Painting cannot mutate application state. Geometry is an explicit output.
-pub fn paint(c: &mut Canvas, p: &Phone) {
+pub fn paint(c: &mut Canvas, p: &Shell) {
     c.layout = Default::default();
     c.accent = if p.screen == Screen::Settings
-        && p.settings.page == crate::phone::settings::SettingsPage::Theme
+        && p.settings.page == crate::shell::settings::SettingsPage::Theme
     {
         p.settings.preview
     } else {
@@ -111,7 +111,8 @@ pub fn paint(c: &mut Canvas, p: &Phone) {
         Screen::Music => music::render(c, p),
         Screen::Media => media::render(c, p),
         Screen::Snake => snake::render(c, p),
-        Screen::Contacts | Screen::Organizer(_) => organizer::render(c, p),
+        Screen::Contacts => contacts::render(c, p),
+        Screen::Organizer(_) => organizer::render(c, p),
         Screen::Settings => settings::render(c, p),
         Screen::Tools(_) => tools::render(c, p),
     }
@@ -119,9 +120,9 @@ pub fn paint(c: &mut Canvas, p: &Phone) {
         && !(p.screen == Screen::Snake
             && matches!(
                 p.gaming.view,
-                crate::phone::snake::SnakeView::Game
-                    | crate::phone::snake::SnakeView::GameOver
-                    | crate::phone::snake::SnakeView::Saved
+                crate::shell::snake::SnakeView::Game
+                    | crate::shell::snake::SnakeView::GameOver
+                    | crate::shell::snake::SnakeView::Saved
             ))
     {
         c.rect(136, 5, 11, 8, WHITE);
@@ -132,7 +133,7 @@ pub fn paint(c: &mut Canvas, p: &Phone) {
         c.rect(0, 274, 240, 22, [83, 30, 32, 255]);
         c.fit(5, 276, &p.status, 12, WHITE, 230);
     }
-    if let Some(overlay) = p.overlay.clone() {
+    if let Some(overlay) = &p.overlay {
         let browser_modal = p.screen == Screen::Browser
             && matches!(
                 overlay,
@@ -171,7 +172,7 @@ pub fn paint(c: &mut Canvas, p: &Phone) {
         match overlay {
             Overlay::TimerElapsed => tools::timer_elapsed(c, p),
             Overlay::Notice(_) | Overlay::ServiceAlert { .. } => {
-                let (title, s) = match &overlay {
+                let (title, s) = match overlay {
                     Overlay::Notice(s) => ("提示", s),
                     Overlay::ServiceAlert { title, body, .. } => (title.as_str(), body),
                     _ => unreachable!(),
@@ -185,47 +186,37 @@ pub fn paint(c: &mut Canvas, p: &Phone) {
                 Softkeys::new(Button::Text("确定"), Button::None, Button::Text("关闭")).draw(c);
             }
             Overlay::Menu { kind, index } => {
+                let (kind, index) = (*kind, *index);
                 if p.screen == Screen::Browser {
                     browser::chrome::menu(c, p, kind, index);
                 } else if kind == MenuKind::MusicLibrary {
-                    let labels = p.menu_labels(kind);
+                    let items = kind.items();
                     PopupMenu::default()
                         .unshaded()
-                        .draw(c, labels.len(), index, |i| list::Row::text(&labels[i]));
+                        .draw(c, items.len(), index, |i| p.menu_item(kind, i).row());
                 } else if matches!(kind, MenuKind::Sms | MenuKind::SmsInsert | MenuKind::Dial) {
-                    let labels = p.menu_labels(kind);
+                    let items = kind.items();
                     let mut popup = PopupMenu::default().unshaded();
                     if kind == MenuKind::SmsInsert {
                         chrome::title(c, "插入选项");
                         popup = popup.at(84);
                     }
-                    popup.draw(c, labels.len(), index, |i| list::Row {
-                        label: &labels[i],
-                        enabled: p.menu_enabled(kind, i),
-                        marker: if kind == MenuKind::Sms && i < 2 {
-                            list::Marker::Child
-                        } else {
-                            list::Marker::None
-                        },
-                    });
+                    popup.draw(c, items.len(), index, |i| p.menu_item(kind, i).row());
                 } else if matches!(kind, MenuKind::Symbols | MenuKind::Smileys) {
                     pickers::render(c, p, kind, index);
                 } else {
                     chrome::title(c, "选项");
-                    let labels = p.menu_labels(kind);
-                    list::draw(c, labels.len(), index, list::ListStyle::STANDARD, |i| {
-                        list::Row {
-                            label: &labels[i],
-                            enabled: p.menu_enabled(kind, i),
-                            marker: list::Marker::None,
-                        }
+                    let items = kind.items();
+                    list::draw(c, items.len(), index, list::ListStyle::STANDARD, |i| {
+                        p.menu_item(kind, i).row()
                     });
                     Softkeys::back("选择").draw(c);
                 }
             }
             Overlay::Text { target, editor: e } => {
+                let target = *target;
                 if p.screen == Screen::Browser {
-                    browser::chrome::editor(c, p, target, &e);
+                    browser::chrome::editor(c, p, target, e);
                 } else if matches!(target, TextTarget::FileName(_)) {
                     c.rect(0, 184, 240, 136, [0, 0, 0, 255]);
                     let folder = target == TextTarget::FileName(true)
@@ -244,9 +235,9 @@ pub fn paint(c: &mut Canvas, p: &Phone) {
                         20,
                         WHITE,
                     );
-                    c.layout.editor = Some(Edit::new([7, 221, 227, 28]).sized(20, 26).draw(c, &e));
+                    c.layout.editor = Some(Edit::new([7, 221, 227, 28]).sized(20, 26).draw(c, e));
                     c.rect(6, 251, 229, 3, c.accent(3));
-                    c.text(205, 260, mode(&e), 16, MUTED);
+                    c.text(205, 260, mode(e), 16, MUTED);
                     Softkeys::new(Button::Close, Button::Text("确认"), Button::Delete).draw(c);
                 } else {
                     c.text(
@@ -266,9 +257,9 @@ pub fn paint(c: &mut Canvas, p: &Phone) {
                         masked.cursor = e.cursor;
                         c.layout.editor = Some(Edit::new([6, 28, 228, 234]).draw(c, &masked));
                     } else {
-                        c.layout.editor = Some(Edit::new([6, 28, 228, 234]).draw(c, &e));
+                        c.layout.editor = Some(Edit::new([6, 28, 228, 234]).draw(c, e));
                     }
-                    c.text(12, 270, mode(&e), 12, MUTED);
+                    c.text(12, 270, mode(e), 12, MUTED);
                     Softkeys::new(
                         Button::Text("确认"),
                         Button::None,
@@ -287,6 +278,7 @@ pub fn paint(c: &mut Canvas, p: &Phone) {
                 selected,
                 ..
             } => {
+                let (element, index) = (*element, *index);
                 status(c);
                 chrome::title(c, "选择");
                 if let Some(Element::Select { options, .. }) =
@@ -329,7 +321,7 @@ pub fn paint(c: &mut Canvas, p: &Phone) {
     if matches!(p.screen, Screen::Tools(_))
         && matches!(
             p.tools.page,
-            crate::phone::tools::ToolPage::Other | crate::phone::tools::ToolPage::TimerMenu
+            crate::shell::tools::ToolPage::Other | crate::shell::tools::ToolPage::TimerMenu
         )
         && p.overlay.is_none()
         && let Some((label, _)) = p.tools.timer_feedback
@@ -353,7 +345,7 @@ mod tests {
     #[test]
     fn render_all_screens_and_compose_overlays() {
         let mut c = Canvas::new().unwrap();
-        let mut p = Phone::new(Default::default());
+        let mut p = Shell::new(Default::default());
         for screen in [
             Screen::Home,
             Screen::Menu,
@@ -408,7 +400,7 @@ mod sms_geometry_tests {
     #[test]
     fn native_sms_rows_share_baseline_and_keep_counter_and_footer_clear() {
         let mut c = Canvas::new().unwrap();
-        let mut p = Phone::new(Default::default());
+        let mut p = Shell::new(Default::default());
         p.go(Screen::Compose);
         p.messaging.compose.recipient = false;
         p.messaging.compose.body.prediction.set_language(None);
@@ -465,7 +457,7 @@ mod sms_geometry_tests {
         assert_eq!(rows[1].text, "1234567890123456");
         assert_eq!(rows.len(), 6);
         assert_eq!(text::MESSAGE.width(&mut c, &rows[1].text, 20), 192);
-        let mut p = Phone::new(Default::default());
+        let mut p = Shell::new(Default::default());
         p.go(Screen::Compose);
         p.messaging.compose.recipient = false;
         p.messaging.compose.body.insert("中😀\n12");
@@ -489,12 +481,12 @@ mod shared_controls_tests {
     #[test]
     fn select_softkey_is_identical_across_apps() {
         let mut c = Canvas::new().unwrap();
-        let mut p = Phone::new(Default::default());
+        let mut p = Shell::new(Default::default());
         let mut expected = None;
         for screen in [
             Screen::Settings,
             Screen::Snake,
-            Screen::Tools(crate::phone::tools::ToolPage::Converter),
+            Screen::Tools(crate::shell::tools::ToolPage::Converter),
             Screen::Browser,
         ] {
             p.launch(screen);
@@ -510,7 +502,7 @@ mod shared_controls_tests {
     #[test]
     fn editor_softkeys_use_shared_geometry_with_app_specific_labels() {
         let mut c = Canvas::new().unwrap();
-        let mut p = Phone::new(Default::default());
+        let mut p = Shell::new(Default::default());
         p.go(Screen::Compose);
         p.messaging.compose.recipient = false;
         p.messaging.compose.body.insert("你");

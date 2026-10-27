@@ -36,7 +36,7 @@ fn images() -> &'static Vec<image::RgbaImage> {
 pub fn power(c: &mut Canvas, on: bool) {
     c.image(&images()[if on { 1 + c.accent % 6 } else { 0 }], 94, 100);
 }
-pub fn phone(c: &mut Canvas, x: i32) {
+pub fn shell(c: &mut Canvas, x: i32) {
     c.image(&images()[7], x, 287);
 }
 

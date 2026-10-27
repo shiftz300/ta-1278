@@ -27,18 +27,18 @@ impl Store for Memory {
 #[test]
 fn profile_and_checkpoint_share_state_and_preserve_clock_policies_and_resume() {
     let mut runtime = Runtime::new(Default::default(), time(0)).unwrap();
-    let p = &mut runtime.phone;
+    let p = &mut runtime.shell;
     p.contacts.records.push(
         ["", "A", "B", "123", "", "", "", "", "Friends"]
             .map(str::to_owned)
             .to_vec(),
     );
     p.contacts.groups.push("Friends".into());
-    p.calls.records.push(crate::phone::calls::Record {
+    p.calls.records.push(crate::shell::calls::Record {
         number: "123".into(),
         time: WALL,
     });
-    p.playback.playlists.push(crate::phone::music::Playlist {
+    p.playback.playlists.push(crate::shell::music::Playlist {
         name: "List".into(),
         paths: vec!["/song.wav".into()],
     });
@@ -49,7 +49,7 @@ fn profile_and_checkpoint_share_state_and_preserve_clock_policies_and_resume() {
     p.tools.timer.running = true;
     p.tools.dirty = true;
     p.playback
-        .restore(crate::phone::music::SavedMusic {
+        .restore(crate::shell::music::SavedMusic {
             path: Some("/song.wav".into()),
             position: 1.5,
             volume: Some(3),
@@ -74,19 +74,19 @@ fn profile_and_checkpoint_share_state_and_preserve_clock_policies_and_resume() {
         Resume::WallClock,
     )
     .unwrap();
-    assert_eq!(checkpoint.phone.tools.timer.remaining_ms, 20_000);
-    assert_eq!(profile.phone.tools.timer.remaining_ms, 15_000);
+    assert_eq!(checkpoint.shell.tools.timer.remaining_ms, 20_000);
+    assert_eq!(profile.shell.tools.timer.remaining_ms, 15_000);
     for restored in [checkpoint, profile] {
-        assert_eq!(restored.phone.contacts.records[0][3], "123");
-        assert_eq!(restored.phone.contacts.groups, ["Friends"]);
-        assert_eq!(restored.phone.calls.records[0].number, "123");
-        assert_eq!(restored.phone.playback.playlists[0].paths, ["/song.wav"]);
-        assert_eq!(restored.phone.settings.preferences.volume, 2);
+        assert_eq!(restored.shell.contacts.records[0][3], "123");
+        assert_eq!(restored.shell.contacts.groups, ["Friends"]);
+        assert_eq!(restored.shell.calls.records[0].number, "123");
+        assert_eq!(restored.shell.playback.playlists[0].paths, ["/song.wav"]);
+        assert_eq!(restored.shell.settings.preferences.volume, 2);
         assert_eq!(
-            restored.phone.playback.resume.as_ref().unwrap().position,
+            restored.shell.playback.resume.as_ref().unwrap().position,
             1.5
         );
-        assert!(!restored.phone.playback.model.playing);
+        assert!(!restored.shell.playback.model.playing);
     }
     // Existing snapshot version 1 files had no music field.
     let mut old: serde_json::Value =
@@ -112,12 +112,12 @@ fn failed_message_record_rolls_back_send_without_losing_other_successful_section
         Box::new(Adapter(traffic.clone())),
     )
     .unwrap();
-    runtime.phone.go(Screen::Compose);
+    runtime.shell.go(Screen::Compose);
     runtime.text("123");
     runtime.tab();
     runtime.text("hello");
-    runtime.phone.settings.preferences.volume = 1;
-    runtime.phone.settings.dirty = true;
+    runtime.shell.settings.preferences.volume = 1;
+    runtime.shell.settings.dirty = true;
     tap(&mut runtime, Key::Center);
     let mut store = Memory {
         fail: Some(Record::Messages),
@@ -125,13 +125,13 @@ fn failed_message_record_rolls_back_send_without_losing_other_successful_section
     };
     assert!(runtime.flush(&mut store, false).is_err());
     assert!(store.records.contains_key(&Record::Preferences));
-    assert!(!runtime.phone.settings.dirty);
-    assert_eq!(runtime.phone.messaging.compose.body.text(), "hello");
+    assert!(!runtime.shell.settings.dirty);
+    assert_eq!(runtime.shell.messaging.compose.body.text(), "hello");
     assert!(runtime.mailbox().outbox.is_empty());
     runtime.poll_services().unwrap();
     assert!(traffic.borrow().commands.is_empty());
     store.fail = None;
-    runtime.phone.overlay = None;
+    runtime.shell.overlay = None;
     tap(&mut runtime, Key::Center);
     runtime.flush(&mut store, false).unwrap();
     runtime.poll_services().unwrap();
@@ -227,7 +227,7 @@ fn interchangeable_platform_rejects_old_results_and_restored_instance_bindings()
         )),
     ));
     runtime.poll_platform(&mut host).unwrap();
-    assert_eq!(runtime.phone.browsing.model.page.title, "new");
+    assert_eq!(runtime.shell.browsing.model.page.title, "new");
     let mut saved = Vec::new();
     runtime
         .save(|bytes| {
@@ -238,31 +238,31 @@ fn interchangeable_platform_rejects_old_results_and_restored_instance_bindings()
     let mut restored =
         Runtime::restore(Default::default(), time(0), &saved, Box::new(Offline)).unwrap();
     assert!(restored.poll_platform(&mut host).is_err());
-    assert!(restored.phone.browsing.model.page.url.is_empty());
+    assert!(restored.shell.browsing.model.page.url.is_empty());
 }
 
 #[test]
 fn painting_is_read_only_and_input_consumes_measured_geometry() {
     let mut runtime = Runtime::new(Default::default(), time(0)).unwrap();
-    runtime.phone.go(Screen::Browser);
-    runtime.phone.browsing.view = crate::phone::BrowserView::Page;
-    runtime.phone.browsing.model.page = crate::platform::parse(
+    runtime.shell.go(Screen::Browser);
+    runtime.shell.browsing.view = crate::shell::BrowserView::Page;
+    runtime.shell.browsing.model.page = crate::platform::parse(
         "https://example.com",
         "<p>One</p><p>Two</p><a href='/next'>Next</a>",
     );
-    runtime.phone.browsing.model.content_height = 0;
-    runtime.phone.browsing.model.bounds.clear();
+    runtime.shell.browsing.model.content_height = 0;
+    runtime.shell.browsing.model.bounds.clear();
     let first = runtime.render().pixels.to_vec();
-    assert_eq!(runtime.phone.browsing.model.content_height, 0);
-    assert!(runtime.phone.browsing.model.bounds.is_empty());
+    assert_eq!(runtime.shell.browsing.model.content_height, 0);
+    assert!(runtime.shell.browsing.model.bounds.is_empty());
     assert_eq!(first, runtime.render().pixels);
     tap(&mut runtime, Key::Down);
     assert_eq!(
         first, runtime.canvas.pixels,
         "Measurement does not repaint the frame"
     );
-    assert!(runtime.phone.browsing.model.content_height > 0);
-    assert!(!runtime.phone.browsing.model.bounds.is_empty());
+    assert!(runtime.shell.browsing.model.content_height > 0);
+    assert!(!runtime.shell.browsing.model.bounds.is_empty());
 }
 
 #[test]
@@ -274,18 +274,18 @@ fn earlier_record_failure_blocks_send_until_retry_without_rolling_back_unattempt
         Box::new(Adapter(traffic.clone())),
     )
     .unwrap();
-    runtime.phone.go(Screen::Compose);
+    runtime.shell.go(Screen::Compose);
     runtime.text("123");
     runtime.tab();
     runtime.text("hello");
-    runtime.phone.settings.dirty = true;
+    runtime.shell.settings.dirty = true;
     tap(&mut runtime, Key::Center);
     let mut store = Memory {
         fail: Some(Record::Preferences),
         ..Default::default()
     };
     assert!(runtime.flush(&mut store, false).is_err());
-    assert!(runtime.phone.messaging.ui.pending.is_some());
+    assert!(runtime.shell.messaging.ui.pending.is_some());
     assert!(!store.records.contains_key(&Record::Messages));
     runtime.poll_services().unwrap();
     assert!(traffic.borrow().commands.is_empty());
@@ -302,13 +302,13 @@ fn shared_close_keeps_draft_after_failure_and_blocks_mutating_files() {
         fail: Some(Record::Messages),
         ..Default::default()
     };
-    runtime.phone.go(Screen::Compose);
+    runtime.shell.go(Screen::Compose);
     runtime.text("123");
     runtime.tab();
     runtime.text("retain draft");
     assert!(!runtime.close(&mut store));
-    assert_eq!(runtime.phone.messaging.compose.body.text(), "retain draft");
-    assert_eq!(runtime.phone.screen, Screen::Compose);
+    assert_eq!(runtime.shell.messaging.compose.body.text(), "retain draft");
+    assert_eq!(runtime.shell.screen, Screen::Compose);
     store.fail = None;
     assert!(runtime.close(&mut store));
     let restored = Runtime::load_profile(
@@ -321,9 +321,9 @@ fn shared_close_keeps_draft_after_failure_and_blocks_mutating_files() {
     .unwrap();
     assert_eq!(restored.mailbox().drafts.len(), 1);
     assert_eq!(restored.mailbox().drafts[0].body, "retain draft");
-    runtime.phone.files.busy = true;
+    runtime.shell.files.busy = true;
     assert!(!runtime.close(&mut store));
     assert!(
-        matches!(&runtime.phone.overlay, Some(Overlay::Notice(message)) if message.contains("文件操作尚未结束"))
+        matches!(&runtime.shell.overlay, Some(Overlay::Notice(message)) if message.contains("文件操作尚未结束"))
     );
 }

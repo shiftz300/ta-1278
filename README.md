@@ -39,7 +39,7 @@ For an optimized local macOS app: `sh scripts/package-macos.sh`, then open `targ
 
 - **Messages:** Chinese pinyin/stroke, Abc/abc/ABC multi-tap and direct typing, cursor movement, line breaks, character counts, drafts, conversations with incoming/outgoing bubbles, inline replies, forwarding, confirmed deletion and an unsent queue.
 - **Browser:** HTTP(S) text pages, bounded basic JavaScript/DOM, links, fields, radios/checkboxes, selects and GET forms; saved bookmarks/history/offline pages. The demo works offline. [Browser capabilities](docs/browser-capabilities.md) · [Script security and limits](docs/javascript.md).
-- **Music:** real MP3/WAV playback from the chosen phone-storage folder; pause, track changes, long-press seek, volume, repeat, shuffle and saved playlists. Local images and video open from Files; the same file picker supplies contact pictures, wallpaper and ringtones.
+- **Music:** real MP3/WAV/MIDI playback from the chosen phone-storage folder; pause, track changes, long-press seek, volume, repeat, shuffle and saved playlists. Local images and video open from Files; the same file picker supplies contact pictures, wallpaper and ringtones.
 - Calendar, alarms, local contacts, calculator, timer, stopwatch and Snake with recovered maps/artwork are available. Dialing and local attempted-call history are enabled; no call transport is connected. **The desktop app makes no calls and sends no real SMS.**
 
 Arrow keys navigate. Enter confirms. F1/F2 are the softkeys; Escape is also F2. Mouse **left/right/middle** map to **left softkey/right softkey/confirm**, anywhere in the window. Home returns home or asks to save a message.
@@ -48,7 +48,7 @@ In an editor: 0–9 use the selected input mode; hold for a digit. # (Shift+3 on
 
 Local messages, preferences, browser data and organizer records are saved in `~/Library/Application Support/TA1278 Replica/` on macOS. Use `--data-dir PATH` for separate test data. Timers, stopwatch laps and pending reminders also survive restart. [Saving and recovery](docs/persistence.md). Firmware and acquisition archives are not opened by the app. Media access is limited to the selected local folder.
 
-On first launch, choose a folder for **Phone storage**. The app remembers it. Files, music, pictures and video use this folder directly; changes affect its contents. There is no VFS or import button. Put music in it, then use Music → menu → Refresh.
+On first launch, choose a folder for **Phone storage**. The app remembers it. Files, music, pictures and video use this folder directly; changes affect its contents. There is no VFS or import button. Put music in it, then use Music → menu → Refresh. MIDI extensions (`.mid` / `.midi`) are case-insensitive and use the bundled SF2 sounds. [MIDI support and limits](docs/storage.md#midi-music).
 
 ```sh
 cargo run --release --locked -p phone-desktop -- --storage-dir /path/to/phone-files

@@ -1,18 +1,22 @@
-//! Audio device transport. The phone owns controls; the sink owns elapsed time.
+//! Audio device transport. The shell owns controls; the sink owns elapsed time.
 pub(crate) mod midi;
 pub(crate) mod native;
+use crate::platform::{Playback, PlaybackStatus};
 use crate::storage::files::Folder;
-use phone_core::music::Music;
 use rodio::{Decoder, OutputStream, OutputStreamBuilder, Sink, Source};
 use std::{io::BufReader, time::Duration};
-pub type AudioDecoder = Decoder<BufReader<std::fs::File>>;
-pub fn decode(files: &Folder, path: &str) -> Result<AudioDecoder, String> {
+pub type AudioSource = Box<dyn Source<Item = f32> + Send>;
+pub fn decode(files: &Folder, path: &str) -> Result<AudioSource, String> {
+    if midi::player::is_file(path) {
+        return midi::player::Player::open(files, path).map(|s| Box::new(s) as AudioSource);
+    }
     let file = files.open(path).map_err(|e| e.to_string())?;
     Decoder::builder()
         .with_data(BufReader::new(file.reader))
         .with_byte_len(file.len)
         .with_seekable(true)
         .build()
+        .map(|source| Box::new(source) as AudioSource)
         .map_err(|e| e.to_string())
 }
 #[cfg(test)]
@@ -193,71 +197,77 @@ impl Audio {
         &mut self,
         files: &Folder,
         path: Option<&str>,
-        music: &mut Music,
-    ) -> Result<(), String> {
-        let result = self.update(files, path, music);
-        if result.is_err() {
+        playback: Playback,
+    ) -> PlaybackStatus {
+        let mut status = PlaybackStatus::default();
+        status.error = self.update(files, path, playback, &mut status).err();
+        if status.error.is_some() {
             self.stop();
-            music.playing = false;
+            status.stopped = true;
         }
-        result
+        status
     }
     fn update(
         &mut self,
         files: &Folder,
         path: Option<&str>,
-        music: &mut Music,
+        playback: Playback,
+        status: &mut PlaybackStatus,
     ) -> Result<(), String> {
         let Some(path) = path else {
             self.stop();
-            music.playing = false;
+            status.stopped = true;
             return Ok(());
         };
         let changed = self
             .loaded
             .as_ref()
-            .is_none_or(|(p, g)| p != path || *g != music.generation);
+            .is_none_or(|(p, g)| p != path || *g != playback.generation);
         if changed {
             self.stop();
-            if !music.playing {
+            if !playback.playing {
                 return Ok(());
             }
             let source = decode(files, path)?;
             if let Some(duration) = source.total_duration() {
-                music.tracks[music.index].1 = duration.as_secs_f32();
+                status.duration = Some(duration.as_secs_f32());
             }
             let sink = Sink::connect_new(self.output()?.mixer());
             sink.pause();
-            sink.set_volume(music.volume as f32 / 10.);
+            sink.set_volume(playback.volume as f32 / 10.);
             sink.append(source);
             // Restore through the sink so its clock starts at the saved position.
-            if music.position > 0. {
-                sink.try_seek(Duration::from_secs_f32(music.position))
+            if playback.position > 0. {
+                sink.try_seek(Duration::from_secs_f32(playback.position))
                     .map_err(|e| e.to_string())?;
             }
             self.sink = Some(sink);
-            self.loaded = Some((path.into(), music.generation));
-            self.seek_revision = music.seek_revision;
+            self.loaded = Some((path.into(), playback.generation));
+            self.seek_revision = playback.seek_revision;
         }
         let Some(sink) = &self.sink else {
             return Ok(());
         };
-        sink.set_volume(music.volume as f32 / 10.);
-        if self.seek_revision != music.seek_revision {
-            sink.try_seek(Duration::from_secs_f32(music.position))
+        sink.set_volume(playback.volume as f32 / 10.);
+        if self.seek_revision != playback.seek_revision {
+            sink.try_seek(Duration::from_secs_f32(playback.position))
                 .map_err(|e| e.to_string())?;
-            self.seek_revision = music.seek_revision;
+            self.seek_revision = playback.seek_revision;
         }
-        if music.playing {
+        if playback.playing {
             sink.play();
         } else {
             sink.pause();
         }
-        if music.playing && sink.empty() {
-            music.ended();
+        if playback.playing && sink.empty() {
+            status.ended = true;
             self.stop();
         } else {
-            music.position = sink.get_pos().as_secs_f32().min(music.duration());
+            status.position = Some(
+                sink.get_pos()
+                    .as_secs_f32()
+                    .min(status.duration.unwrap_or(playback.duration)),
+            );
         }
         Ok(())
     }
@@ -282,12 +292,7 @@ impl crate::platform::Sound for Audio {
     fn stop(&mut self) {
         Self::stop(self);
     }
-    fn sync(
-        &mut self,
-        files: &Folder,
-        path: Option<&str>,
-        music: &mut Music,
-    ) -> Result<(), String> {
-        Self::sync(self, files, path, music)
+    fn sync(&mut self, files: &Folder, path: Option<&str>, playback: Playback) -> PlaybackStatus {
+        Self::sync(self, files, path, playback)
     }
 }

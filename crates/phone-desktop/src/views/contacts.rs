@@ -1,13 +1,10 @@
 //! Handset-shaped phonebook views using shared edit, form, list and softkey controls.
 use super::*;
-use crate::phone::{
-    contacts::{DETAIL_MENU, ROOT_MENU},
-    organizer::{OrganizerPage as Page, contact_name},
-};
+use crate::shell::contacts::{DETAIL_MENU, Page, ROOT_MENU, contact_name};
 use crate::ui::form::{self, Field, FieldKind};
 const BLACK: Color = [0, 0, 0, 255];
-pub(super) fn render(c: &mut Canvas, p: &Phone) {
-    match p.organizer.page {
+pub(super) fn render(c: &mut Canvas, p: &Shell) {
+    match p.contacts.page {
         Page::ContactGroupMenu => {
             chrome::title(c, "选项");
             PopupMenu::default()
@@ -25,14 +22,14 @@ pub(super) fn render(c: &mut Canvas, p: &Phone) {
             Softkeys::new(Button::None, Button::Text("确认"), Button::Close).draw(c);
         }
         Page::ContactRingtone => {
-            crate::ui::tones::draw(c, "铃声", p.index, &p.organizer.draft[7], "预设")
+            crate::ui::tones::draw(c, "铃声", p.index, &p.contacts.draft[7], "预设")
         }
         Page::ContactGroups | Page::ContactGroupChoice => {
-            chrome::title(c, p.organizer_title());
+            chrome::title(c, p.contact_title());
             let labels = p.contact_choices();
             list::plain(c, &labels, p.index);
             Softkeys::new(
-                if p.organizer.page == Page::ContactGroups {
+                if p.contacts.page == Page::ContactGroups {
                     Button::Menu
                 } else {
                     Button::None
@@ -45,10 +42,8 @@ pub(super) fn render(c: &mut Canvas, p: &Phone) {
         Page::Contacts => root(c, p),
         Page::ContactsMenu => {
             root(c, p);
-            PopupMenu::default().draw(c, ROOT_MENU.len(), p.index, |i| list::Row {
-                label: ROOT_MENU[i],
-                enabled: p.contact_menu_enabled(i),
-                marker: list::Marker::None,
+            PopupMenu::default().draw(c, ROOT_MENU.len(), p.index, |i| {
+                p.contact_menu_item(i).row()
             });
         }
         Page::ContactForm => form(c, p, p.index, true),
@@ -59,10 +54,8 @@ pub(super) fn render(c: &mut Canvas, p: &Phone) {
         Page::ContactDetail => detail(c, p, p.index),
         Page::ContactMenu => {
             detail(c, p, p.contacts.ui.return_index);
-            PopupMenu::default().draw(c, DETAIL_MENU.len(), p.index, |i| list::Row {
-                label: DETAIL_MENU[i],
-                enabled: p.contact_menu_enabled(i),
-                marker: list::Marker::None,
+            PopupMenu::default().draw(c, DETAIL_MENU.len(), p.index, |i| {
+                p.contact_menu_item(i).row()
             });
         }
         Page::DeleteContact => {
@@ -71,17 +64,16 @@ pub(super) fn render(c: &mut Canvas, p: &Phone) {
             c.text(30, 241, "是否删除此联系人？", 20, WHITE);
             Softkeys::new(Button::None, Button::Text("确认"), Button::Close).draw(c);
         }
-        _ => {}
     }
 }
-fn root(c: &mut Canvas, p: &Phone) {
+fn root(c: &mut Canvas, p: &Shell) {
     chrome::title(c, "通讯录");
     if !p.contacts.ui.query.units.is_empty() {
         c.layout.editor = Some(Edit::new([6, 27, 228, 26]).draw(c, &p.contacts.ui.query));
     }
     c.rect(0, 57, 240, 3, MUTED);
     let ids = p.contact_ids();
-    let selected = if p.organizer.page == Page::ContactsMenu {
+    let selected = if p.contacts.page == Page::ContactsMenu {
         p.contacts.ui.return_index
     } else {
         p.index
@@ -127,7 +119,7 @@ fn root(c: &mut Canvas, p: &Phone) {
     // The handset empty-store caption has not been sampled: keep the list empty.
     Softkeys::menu(if ids.is_empty() { "" } else { "打开" }).draw(c);
 }
-fn form(c: &mut Canvas, p: &Phone, index: usize, active: bool) {
+fn form(c: &mut Canvas, p: &Shell, index: usize, active: bool) {
     chrome::title(c, "新联系人");
     // Mixed edit/date/list children have distinct native row metrics.
     const TOPS: [i32; 9] = [24, 86, 154, 222, 290, 358, 426, 486, 550];
@@ -144,7 +136,7 @@ fn form(c: &mut Canvas, p: &Phone, index: usize, active: bool) {
         },
     );
     form::avatar(c, 7, 34 - scroll, None, [90, 95, 90, 255]);
-    if let Some(path) = p.organizer.draft.first() {
+    if let Some(path) = p.contacts.draft.first() {
         contact_picture(c, p, path, 7, 34 - scroll);
     }
     c.text(
@@ -159,8 +151,8 @@ fn form(c: &mut Canvas, p: &Phone, index: usize, active: bool) {
         if y + 68 < 24 || y >= 282 {
             continue;
         }
-        let label = crate::phone::organizer::CONTACT_FIELDS[i];
-        let value = p.organizer.draft.get(i).map(String::as_str).unwrap_or("");
+        let label = crate::shell::contacts::CONTACT_FIELDS[i];
+        let value = p.contacts.draft.get(i).map(String::as_str).unwrap_or("");
         let placeholder = if i <= 2 {
             "添加名称"
         } else if i <= 5 {
@@ -201,7 +193,7 @@ fn form(c: &mut Canvas, p: &Phone, index: usize, active: bool) {
     }
     if index == 6 && active {
         let y = TOPS[6] - scroll;
-        form::date(c, &p.organizer.draft[6], y + 25, p.contacts.ui.date_digit);
+        form::date(c, &p.contacts.draft[6], y + 25, p.contacts.ui.date_digit);
     }
     c.rect(236, 28, 4, 248, [40, 45, 40, 255]);
     let thumb = 248 * 248 / 606;
@@ -227,11 +219,11 @@ fn form(c: &mut Canvas, p: &Phone, index: usize, active: bool) {
     )
     .draw(c);
 }
-fn detail(c: &mut Canvas, p: &Phone, index: usize) {
+fn detail(c: &mut Canvas, p: &Shell, index: usize) {
     let name = p.selected_contact_name();
     chrome::title(c, &name);
     form::avatar(c, 7, 31, name.chars().next(), [90, 95, 90, 255]);
-    if let Some(row) = p.contacts.records.get(p.organizer.selected) {
+    if let Some(row) = p.contacts.records.get(p.contacts.selected) {
         contact_picture(c, p, &row[0], 7, 31);
     }
     c.fit(52, 41, &name, 16, WHITE, 178);
@@ -269,7 +261,7 @@ fn detail(c: &mut Canvas, p: &Phone, index: usize) {
     )
     .draw(c);
 }
-fn contact_picture(c: &mut Canvas, p: &Phone, path: &str, x: i32, y: i32) {
+fn contact_picture(c: &mut Canvas, p: &Shell, path: &str, x: i32, y: i32) {
     if let Some(img) = p.media.pictures.get(path) {
         let img = image::imageops::thumbnail(img, 40, 40);
         c.image(

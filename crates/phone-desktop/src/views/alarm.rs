@@ -1,11 +1,11 @@
 use super::*;
-use crate::phone::{
+use crate::shell::{
     alarm::{self, tables},
     organizer::OrganizerPage,
 };
 const BLACK: Color = [0, 0, 0, 255];
 
-pub(super) fn render(c: &mut Canvas, p: &Phone) {
+pub(super) fn render(c: &mut Canvas, p: &Shell) {
     use OrganizerPage::*;
     if p.organizer.page == AlarmRingtone {
         crate::ui::tones::draw(c, "闹钟铃声", p.index, &p.organizer.draft[3], "预设");
@@ -174,7 +174,7 @@ pub(super) fn render(c: &mut Canvas, p: &Phone) {
     Softkeys::new(left, Button::Text(center), right).draw(c);
 }
 
-pub(super) fn alert(c: &mut Canvas, p: &Phone) {
+pub(super) fn alert(c: &mut Canvas, p: &Shell) {
     if let Some(a) = p.active_reminder() {
         c.caret = None;
         c.background();
@@ -192,7 +192,7 @@ pub(super) fn alert(c: &mut Canvas, p: &Phone) {
     }
 }
 
-fn root(c: &mut Canvas, p: &Phone, index: usize) -> (Button<'static>, &'static str) {
+fn root(c: &mut Canvas, p: &Shell, index: usize) -> (Button<'static>, &'static str) {
     let first = index.saturating_sub(3);
     if first == 0 {
         c.rect(1, 25, 238, 34, c.accent(if index == 0 { 3 } else { 6 }));

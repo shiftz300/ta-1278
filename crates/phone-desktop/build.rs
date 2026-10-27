@@ -13,7 +13,6 @@ fn main() {
             ("HANI2", "assets/fonts/device/font-2-hani.otf"),
             ("CJK", "assets/fonts/subsets/FallbackCJK.otf"),
             ("SYMBOLS", "assets/fonts/subsets/FallbackSymbols.ttf"),
-            ("EMOJI", "assets/fonts/subsets/FallbackEmoji.ttf"),
             ("SOUNDFONT", "assets/audio/gm1_A21.sf2"),
         ],
     );

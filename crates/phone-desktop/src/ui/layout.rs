@@ -1,5 +1,5 @@
 //! Derived geometry returned by read-only painting and applied before input.
-use crate::phone::Phone;
+use crate::shell::Shell;
 use phone_core::editor::VisualRow;
 
 #[derive(Default)]
@@ -17,29 +17,29 @@ pub struct Browser {
     pub scroll: usize,
 }
 impl Layout {
-    pub fn apply(self, phone: &mut Phone) {
+    pub fn apply(self, shell: &mut Shell) {
         if let Some(rows) = self.editor {
-            phone.editor_lines = rows;
+            shell.editor_lines = rows;
         }
         if let Some(lines) = self.notice_lines {
-            phone.notice_lines = lines;
+            shell.notice_lines = lines;
         }
         if let Some(index) = self.index {
-            phone.index = index;
+            shell.index = index;
         }
         if let Some(browser) = self.browser {
-            phone.browsing.model.content_height = browser.height;
-            phone.browsing.model.bounds = browser.bounds;
-            phone.browsing.model.scroll = browser.scroll;
+            shell.browsing.model.content_height = browser.height;
+            shell.browsing.model.bounds = browser.bounds;
+            shell.browsing.model.scroll = browser.scroll;
         }
         if let Some((lines, scroll)) = self.reader {
-            phone.messaging.ui.lines = lines;
-            phone.messaging.ui.scroll = scroll;
+            shell.messaging.ui.lines = lines;
+            shell.messaging.ui.scroll = scroll;
         }
         if let Some((max_scroll, scroll, reveal)) = self.conversation {
-            phone.messaging.chat.max_scroll = max_scroll;
-            phone.messaging.chat.scroll = scroll;
-            phone.messaging.chat.reveal = reveal;
+            shell.messaging.chat.max_scroll = max_scroll;
+            shell.messaging.chat.scroll = scroll;
+            shell.messaging.chat.reveal = reveal;
         }
     }
 }

@@ -1,7 +1,7 @@
 //! Synthetic frame fixtures shared by CPU tests and the desktop presentation check.
 use crate::{
-    phone::{self, Compose, Screen},
     runtime::Runtime,
+    shell::{self, Compose, Screen},
     web,
 };
 use phone_core::input::{Event, Key, Phase};
@@ -145,35 +145,35 @@ pub(crate) fn advance(runtime: &mut Runtime, stage: usize, now: u64) {
             phase: Phase::Down,
         }),
         1 => {
-            runtime.phone.messaging.compose = Compose::default();
-            runtime.phone.messaging.compose.to.insert("12345");
+            runtime.shell.messaging.compose = Compose::default();
+            runtime.shell.messaging.compose.to.insert("12345");
             runtime
-                .phone
+                .shell
                 .messaging
                 .compose
                 .body
                 .insert("Hello Nokia!\n短信编辑测试。\n240 × 320");
-            runtime.phone.messaging.compose.recipient = false;
-            runtime.phone.go(Screen::Compose);
+            runtime.shell.messaging.compose.recipient = false;
+            runtime.shell.go(Screen::Compose);
         }
         2 => {
-            runtime.phone.go(Screen::Browser);
-            runtime.phone.browsing.view = phone::BrowserView::Page;
-            runtime.phone.browsing.model = phone_core::browser::Browser::new(web::demo());
+            runtime.shell.go(Screen::Browser);
+            runtime.shell.browsing.view = shell::BrowserView::Page;
+            runtime.shell.browsing.model = phone_core::browser::Browser::new(web::demo());
         }
         3 => {
-            runtime.phone.go(Screen::Music);
+            runtime.shell.go(Screen::Music);
             runtime.dispatch(Event {
                 key: Key::Center,
                 phase: Phase::Down,
             });
         }
         4 => {
-            runtime.phone.messaging.compose = Compose::default();
-            runtime.phone.messaging.compose.recipient = false;
-            runtime.phone.messaging.compose.to.insert("12345");
-            runtime.phone.messaging.compose.body.insert("明天见！\n");
-            runtime.phone.go(Screen::Compose);
+            runtime.shell.messaging.compose = Compose::default();
+            runtime.shell.messaging.compose.recipient = false;
+            runtime.shell.messaging.compose.to.insert("12345");
+            runtime.shell.messaging.compose.body.insert("明天见！\n");
+            runtime.shell.go(Screen::Compose);
             for digit in [6, 4] {
                 runtime.dispatch(Event {
                     key: Key::Digit(digit),
@@ -182,15 +182,15 @@ pub(crate) fn advance(runtime: &mut Runtime, stage: usize, now: u64) {
             }
         }
         5 => {
-            runtime.phone.messaging.compose.body.clear();
+            runtime.shell.messaging.compose.body.clear();
             runtime
-                .phone
+                .shell
                 .messaging
                 .compose
                 .body
                 .prediction
                 .set_language(Some(phone_core::predict::Language::English));
-            runtime.phone.messaging.compose.body.insert("Let's go ");
+            runtime.shell.messaging.compose.body.insert("Let's go ");
             for digit in [4, 6, 6, 3] {
                 runtime.dispatch(Event {
                     key: Key::Digit(digit),
@@ -199,43 +199,43 @@ pub(crate) fn advance(runtime: &mut Runtime, stage: usize, now: u64) {
             }
         }
         6 => {
-            runtime.phone.messaging.compose.body.clear();
+            runtime.shell.messaging.compose.body.clear();
             runtime
-                .phone
+                .shell
                 .messaging
                 .compose
                 .body
                 .prediction
                 .set_language(None);
-            runtime.phone.messaging.compose.body.insert("简体／繁體：你好閱讀\n生僻：龘 喆 髙 𠮷\nかな カタカナ 한글\nSymbols: ✓ ♫ ★ →\nEmoji: 😀 🙂 🤔 👍\nGreek Ω · Cyrillic Ж");
+            runtime.shell.messaging.compose.body.insert("简体／繁體：你好閱讀\n生僻：龘 喆 髙 𠮷\nかな カタカナ 한글\nSymbols: ✓ ♫ ★ →\nEmoji: 😀 🙂 🤔 👍\nGreek Ω · Cyrillic Ж");
         }
         7 => {
-            runtime.phone.messaging.compose = Compose::default();
-            runtime.phone.messaging.compose.recipient = false;
-            runtime.phone.go(Screen::Compose);
+            runtime.shell.messaging.compose = Compose::default();
+            runtime.shell.messaging.compose.recipient = false;
+            runtime.shell.go(Screen::Compose);
         }
         8 => runtime.dispatch(Event {
             key: Key::SoftLeft,
             phase: Phase::Down,
         }),
         9 => {
-            runtime.phone.go(Screen::Settings);
-            runtime.phone.settings.page = phone::settings::SettingsPage::Theme;
-            runtime.phone.settings.preview = runtime.phone.settings.accent;
+            runtime.shell.go(Screen::Settings);
+            runtime.shell.settings.page = shell::settings::SettingsPage::Theme;
+            runtime.shell.settings.preview = runtime.shell.settings.accent;
         }
         10 => {
-            runtime.phone.messaging.compose = Compose::default();
-            runtime.phone.messaging.compose.recipient = false;
+            runtime.shell.messaging.compose = Compose::default();
+            runtime.shell.messaging.compose.recipient = false;
             runtime
-                .phone
+                .shell
                 .messaging
                 .compose
                 .body
                 .insert(&"软换行与光标测试 Hello!\n".repeat(14));
-            runtime.phone.go(Screen::Compose);
+            runtime.shell.go(Screen::Compose);
         }
         11 => {
-            runtime.phone.messaging.compose.body.clear();
+            runtime.shell.messaging.compose.body.clear();
             for d in [6, 4] {
                 runtime.dispatch(Event {
                     key: Key::Digit(d),
@@ -254,14 +254,14 @@ pub(crate) fn advance(runtime: &mut Runtime, stage: usize, now: u64) {
             }
         }
         12 => {
-            runtime.phone.go(Screen::Browser);
-            runtime.phone.browsing.view = phone::BrowserView::Start;
+            runtime.shell.go(Screen::Browser);
+            runtime.shell.browsing.view = shell::BrowserView::Start;
         }
         13 => {
-            runtime.phone.browsing.model = phone_core::browser::Browser::new(web::demo());
-            runtime.phone.browsing.view = phone::BrowserView::Page;
+            runtime.shell.browsing.model = phone_core::browser::Browser::new(web::demo());
+            runtime.shell.browsing.view = shell::BrowserView::Page;
             let i = runtime
-                .phone
+                .shell
                 .browsing
                 .model
                 .page
@@ -278,13 +278,13 @@ pub(crate) fn advance(runtime: &mut Runtime, stage: usize, now: u64) {
                 })
                 .unwrap();
             if let phone_core::browser::Element::Select { selected, .. } =
-                &mut runtime.phone.browsing.model.page.elements[i]
+                &mut runtime.shell.browsing.model.page.elements[i]
             {
                 selected.fill(false);
                 selected[1] = true;
             }
-            runtime.phone.browsing.model.focus = i;
-            runtime.phone.handle(
+            runtime.shell.browsing.model.focus = i;
+            runtime.shell.handle(
                 Event {
                     key: Key::Center,
                     phase: Phase::Down,
@@ -293,43 +293,43 @@ pub(crate) fn advance(runtime: &mut Runtime, stage: usize, now: u64) {
             );
         }
         14 => {
-            runtime.phone.go(Screen::Compose);
-            runtime.phone.messaging.compose = Compose::default();
-            runtime.phone.messaging.compose.recipient = false;
-            runtime.phone.overlay = Some(phone::Overlay::Menu {
-                kind: phone::MenuKind::Symbols,
+            runtime.shell.go(Screen::Compose);
+            runtime.shell.messaging.compose = Compose::default();
+            runtime.shell.messaging.compose.recipient = false;
+            runtime.shell.overlay = Some(shell::Overlay::Menu {
+                kind: shell::MenuKind::Symbols,
                 index: 41,
             });
         }
         15 => {
-            runtime.phone.overlay = Some(phone::Overlay::Menu {
-                kind: phone::MenuKind::Smileys,
+            runtime.shell.overlay = Some(shell::Overlay::Menu {
+                kind: shell::MenuKind::Smileys,
                 index: 0,
             })
         }
         16 => {
-            runtime.phone.go(Screen::Settings);
-            runtime.phone.settings.page = phone::settings::SettingsPage::Shortcuts;
+            runtime.shell.go(Screen::Settings);
+            runtime.shell.settings.page = shell::settings::SettingsPage::Shortcuts;
         }
         17 => {
-            runtime.phone.go(Screen::Music);
-            runtime.phone.playback.view = phone::MusicView::Root;
+            runtime.shell.go(Screen::Music);
+            runtime.shell.playback.view = shell::MusicView::Root;
         }
-        18 => runtime.phone.playback.view = phone::MusicView::Songs,
-        19 => runtime.phone.playback.view = phone::MusicView::Repeat,
+        18 => runtime.shell.playback.view = shell::MusicView::Songs,
+        19 => runtime.shell.playback.view = shell::MusicView::Repeat,
         20 => {
-            runtime.phone.go(Screen::Browser);
-            runtime.phone.browsing.view = phone::BrowserView::Page;
-            runtime.phone.browsing.model = phone_core::browser::Browser::new(web::parse(
+            runtime.shell.go(Screen::Browser);
+            runtime.shell.browsing.view = shell::BrowserView::Page;
+            runtime.shell.browsing.model = phone_core::browser::Browser::new(web::parse(
                 "about:fixture",
                 r#"<title>Form test</title><form><label>Customer name<input name=name value=test></label><p>Pizza Size</p><input type=radio name=size aria-label=Small><input type=radio name=size aria-label=Medium checked><input type=checkbox name=topping aria-label=Bacon checked><input type=checkbox name=topping aria-label=Cheese checked></form>"#,
             ));
-            runtime.phone.browsing.model.focus = 3;
+            runtime.shell.browsing.model.focus = 3;
         }
         21 => {
             runtime
-                .phone
-                .launch(Screen::Tools(phone::tools::ToolPage::Calculator));
+                .shell
+                .launch(Screen::Tools(shell::tools::ToolPage::Calculator));
             for key in [
                 Key::Digit(1),
                 Key::Up,
@@ -339,7 +339,7 @@ pub(crate) fn advance(runtime: &mut Runtime, stage: usize, now: u64) {
                 Key::Digit(4),
                 Key::Center,
             ] {
-                runtime.phone.handle(
+                runtime.shell.handle(
                     Event {
                         key,
                         phase: Phase::Down,
@@ -349,65 +349,63 @@ pub(crate) fn advance(runtime: &mut Runtime, stage: usize, now: u64) {
             }
         }
         22 => runtime
-            .phone
-            .launch(Screen::Organizer(phone::organizer::OrganizerPage::Calendar)),
+            .shell
+            .launch(Screen::Organizer(shell::organizer::OrganizerPage::Calendar)),
         23 => {
-            runtime.phone.launch(Screen::Contacts);
-            runtime
-                .phone
-                .organizer_form(phone::organizer::OrganizerPage::ContactForm, None);
+            runtime.shell.launch(Screen::Contacts);
+            runtime.shell.contact_form(None);
         }
         24 => {
             runtime
-                .phone
-                .launch(Screen::Organizer(phone::organizer::OrganizerPage::Alarms));
+                .shell
+                .launch(Screen::Organizer(shell::organizer::OrganizerPage::Alarms));
             runtime
-                .phone
-                .organizer_form(phone::organizer::OrganizerPage::AlarmForm, None);
+                .shell
+                .organizer_form(shell::organizer::OrganizerPage::AlarmForm, None);
         }
         25 => {
             runtime
-                .phone
-                .launch(Screen::Tools(phone::tools::ToolPage::Stopwatch));
-            runtime.phone.tools.stopwatch.elapsed_ms = 12345;
+                .shell
+                .launch(Screen::Tools(shell::tools::ToolPage::Stopwatch));
+            runtime.shell.tools.stopwatch.elapsed_ms = 12345;
         }
         26 => runtime
-            .phone
-            .launch(Screen::Tools(phone::tools::ToolPage::Timer)),
+            .shell
+            .launch(Screen::Tools(shell::tools::ToolPage::Timer)),
         27 => runtime
-            .phone
-            .launch(Screen::Tools(phone::tools::ToolPage::Radio)),
+            .shell
+            .launch(Screen::Tools(shell::tools::ToolPage::Radio)),
         28 => {
-            runtime.phone.launch(Screen::Snake);
-            runtime.phone.gaming.model.start();
-            runtime.phone.gaming.view = phone::snake::SnakeView::Game;
+            runtime.shell.launch(Screen::Snake);
+            runtime.shell.gaming.model.start();
+            runtime.shell.gaming.view = shell::snake::SnakeView::Game;
         }
         29 => {
             runtime
-                .phone
-                .launch(Screen::Tools(phone::tools::ToolPage::Conversion(0)));
-            runtime.phone.tools.conversion = Default::default();
-            runtime.phone.text("32");
+                .shell
+                .launch(Screen::Tools(shell::tools::ToolPage::Conversion(0)));
+            runtime.shell.tools.conversion = Default::default();
+            runtime.shell.text("32");
         }
         30 => {
-            runtime.phone.launch(Screen::Browser);
-            runtime.phone.browsing.view = phone::BrowserView::Settings;
+            runtime.shell.launch(Screen::Browser);
+            runtime.shell.browsing.view = shell::BrowserView::Settings;
         }
         31 => {
-            runtime.phone.go(Screen::Compose);
-            runtime.phone.messaging.compose = Compose::default();
-            runtime.phone.messaging.compose.to.insert("12345");
+            runtime.shell.go(Screen::Compose);
+            runtime.shell.messaging.compose = Compose::default();
+            runtime.shell.messaging.compose.to.insert("12345");
         }
         32 => {
-            runtime.phone.launch(Screen::Browser);
-            runtime.phone.browsing.view = phone::BrowserView::Page;
-            runtime.phone.browsing.data.settings.font_size = 0;
-            runtime.phone.browsing.model = phone_core::browser::Browser::new(web::parse(
+            runtime.shell.launch(Screen::Browser);
+            runtime.shell.browsing.view = shell::BrowserView::Page;
+            runtime.shell.browsing.data.settings.font_size = 0;
+            runtime.shell.browsing.model = phone_core::browser::Browser::new(web::parse(
                 "http://httpbin.org/forms/post",
                 include_str!("../../../scripts/fixtures/browser-form.html"),
             ));
-            runtime.phone.browsing.model.focus = runtime
-                .phone
+            runtime.shell.browsing.model.focus = runtime
+                .shell
                 .browsing
                 .model
                 .page
@@ -417,12 +415,12 @@ pub(crate) fn advance(runtime: &mut Runtime, stage: usize, now: u64) {
                 .unwrap();
         }
         33 => {
-            runtime.phone.browsing.model = phone_core::browser::Browser::new(web::parse(
+            runtime.shell.browsing.model = phone_core::browser::Browser::new(web::parse(
                 "http://info.cern.ch/",
                 include_str!("../../../scripts/fixtures/browser-links.html"),
             ));
-            runtime.phone.browsing.model.focus = runtime
-                .phone
+            runtime.shell.browsing.model.focus = runtime
+                .shell
                 .browsing
                 .model
                 .page
@@ -432,104 +430,104 @@ pub(crate) fn advance(runtime: &mut Runtime, stage: usize, now: u64) {
                 .unwrap();
         }
         34 => {
-            runtime.phone.browsing.view = phone::BrowserView::Start;
-            runtime.phone.index = 0;
-            runtime.phone.overlay = Some(phone::Overlay::Menu {
-                kind: phone::MenuKind::BrowserRoot,
+            runtime.shell.browsing.view = shell::BrowserView::Start;
+            runtime.shell.index = 0;
+            runtime.shell.overlay = Some(shell::Overlay::Menu {
+                kind: shell::MenuKind::BrowserRoot,
                 index: 0,
             });
         }
         35 => {
-            runtime.phone.browsing.view = phone::BrowserView::Page;
-            runtime.phone.overlay = Some(phone::Overlay::Menu {
-                kind: phone::MenuKind::Browser,
+            runtime.shell.browsing.view = shell::BrowserView::Page;
+            runtime.shell.overlay = Some(shell::Overlay::Menu {
+                kind: shell::MenuKind::Browser,
                 index: 0,
             });
         }
         36 => {
-            runtime.phone.overlay = None;
-            runtime.phone.browsing.view = phone::BrowserView::FontSize;
-            runtime.phone.index = 0;
+            runtime.shell.overlay = None;
+            runtime.shell.browsing.view = shell::BrowserView::FontSize;
+            runtime.shell.index = 0;
         }
         37 => {
-            runtime.phone.browsing.view = phone::BrowserView::Start;
-            runtime.phone.overlay = Some(phone::Overlay::Text {
-                target: phone::TextTarget::Address,
+            runtime.shell.browsing.view = shell::BrowserView::Start;
+            runtime.shell.overlay = Some(shell::Overlay::Text {
+                target: shell::TextTarget::Address,
                 editor: Box::new(phone_core::editor::Editor::new("http://", 512)),
             });
         }
         38 => {
-            runtime.phone.go(Screen::Compose);
-            runtime.phone.messaging.compose = Compose::default();
+            runtime.shell.go(Screen::Compose);
+            runtime.shell.messaging.compose = Compose::default();
         }
         39 => {
-            runtime.phone.launch(Screen::Browser);
-            runtime.phone.browsing.view = phone::BrowserView::Start;
-            runtime.phone.overlay = Some(phone::Overlay::CloseBrowser);
+            runtime.shell.launch(Screen::Browser);
+            runtime.shell.browsing.view = shell::BrowserView::Start;
+            runtime.shell.overlay = Some(shell::Overlay::CloseBrowser);
         }
         40 => {
-            runtime.phone.overlay = None;
-            runtime.phone.browsing.view = phone::BrowserView::Clear;
-            runtime.phone.index = 0;
+            runtime.shell.overlay = None;
+            runtime.shell.browsing.view = shell::BrowserView::Clear;
+            runtime.shell.index = 0;
         }
         41 => {
-            runtime.phone.browsing.view = phone::BrowserView::Settings;
-            runtime.phone.index = 7;
+            runtime.shell.browsing.view = shell::BrowserView::Settings;
+            runtime.shell.index = 7;
         }
         42 => {
-            runtime.phone.launch(Screen::Snake);
-            runtime.phone.gaming.model.discard();
-            runtime.phone.gaming.view = phone::snake::SnakeView::Menu;
-            runtime.phone.index = 0;
+            runtime.shell.launch(Screen::Snake);
+            runtime.shell.gaming.model.discard();
+            runtime.shell.gaming.view = shell::snake::SnakeView::Menu;
+            runtime.shell.index = 0;
         }
         43 => {
-            runtime.phone.gaming.view = phone::snake::SnakeView::Level;
-            runtime.phone.gaming.level_preview = 7;
+            runtime.shell.gaming.view = shell::snake::SnakeView::Level;
+            runtime.shell.gaming.level_preview = 7;
         }
         44 => {
-            runtime.phone.gaming.view = phone::snake::SnakeView::Types;
-            runtime.phone.index = 4;
+            runtime.shell.gaming.view = shell::snake::SnakeView::Types;
+            runtime.shell.index = 4;
         }
         45 => {
-            runtime.phone.gaming.view = phone::snake::SnakeView::Scores;
-            runtime.phone.gaming.data.scores[0] = [42, 30, 20, 10, 1];
-            runtime.phone.gaming.model.kind = 0;
+            runtime.shell.gaming.view = shell::snake::SnakeView::Scores;
+            runtime.shell.gaming.data.scores[0] = [42, 30, 20, 10, 1];
+            runtime.shell.gaming.model.kind = 0;
         }
         46 => {
-            runtime.phone.gaming.view = phone::snake::SnakeView::Sound;
-            runtime.phone.gaming.data.sound = false;
-            runtime.phone.index = 0;
+            runtime.shell.gaming.view = shell::snake::SnakeView::Sound;
+            runtime.shell.gaming.data.sound = false;
+            runtime.shell.index = 0;
         }
         47 => {
-            runtime.phone.gaming.model.start();
-            runtime.phone.gaming.model.running = false;
-            runtime.phone.gaming.model.food = (3, 8);
-            runtime.phone.gaming.view = phone::snake::SnakeView::Game;
+            runtime.shell.gaming.model.start();
+            runtime.shell.gaming.model.running = false;
+            runtime.shell.gaming.model.food = (3, 8);
+            runtime.shell.gaming.view = shell::snake::SnakeView::Game;
         }
         48 => {
-            runtime.phone.gaming.model.kind = 1;
-            runtime.phone.gaming.model.score = 123;
+            runtime.shell.gaming.model.kind = 1;
+            runtime.shell.gaming.model.score = 123;
         }
         49 => {
             // Match native session149 positions for visual comparison only;
             // food RNG is deliberately not claimed to be the original.
-            runtime.phone.gaming.model.kind = 0;
-            runtime.phone.gaming.model.start();
-            runtime.phone.gaming.model.food = (1, 3);
+            runtime.shell.gaming.model.kind = 0;
+            runtime.shell.gaming.model.start();
+            runtime.shell.gaming.model.food = (1, 3);
             runtime
-                .phone
+                .shell
                 .gaming
                 .model
-                .tick(runtime.phone.gaming.model.tick_ms());
-            runtime.phone.gaming.model.running = false;
+                .tick(runtime.shell.gaming.model.tick_ms());
+            runtime.shell.gaming.model.running = false;
         }
         50 => {
             runtime
-                .phone
-                .launch(Screen::Organizer(phone::organizer::OrganizerPage::Alarms));
+                .shell
+                .launch(Screen::Organizer(shell::organizer::OrganizerPage::Alarms));
             runtime
-                .phone
-                .organizer_form(phone::organizer::OrganizerPage::AlarmForm, None);
+                .shell
+                .organizer_form(shell::organizer::OrganizerPage::AlarmForm, None);
             for key in [Key::Down, Key::Center] {
                 runtime.dispatch(Event {
                     key,
@@ -579,9 +577,9 @@ pub(crate) fn advance(runtime: &mut Runtime, stage: usize, now: u64) {
         }),
         58 => {
             // Local alert illustration, not a captured native interruption.
-            runtime.phone.organizer.alarms[0].fields[1] = "不必重复".into();
+            runtime.shell.organizer.alarms[0].fields[1] = "不必重复".into();
             runtime
-                .phone
+                .shell
                 .check_alarms(phone_core::calendar::Date::default(), 540);
         }
         59 => {
@@ -589,11 +587,11 @@ pub(crate) fn advance(runtime: &mut Runtime, stage: usize, now: u64) {
                 key: Key::Center,
                 phase: Phase::Down,
             });
-            runtime.phone.messaging.compose = Compose::default();
-            runtime.phone.messaging.compose.to.insert("12345");
-            runtime.phone.messaging.compose.body.insert("本地测试信息。\n这条信息不会发送。\n\n第一段正文\n第二段正文\n第三段正文\n第四段正文\n第五段正文\n第六段正文\n最后一行。");
-            runtime.phone.messaging.compose.recipient = false;
-            runtime.phone.go(Screen::Compose);
+            runtime.shell.messaging.compose = Compose::default();
+            runtime.shell.messaging.compose.to.insert("12345");
+            runtime.shell.messaging.compose.body.insert("本地测试信息。\n这条信息不会发送。\n\n第一段正文\n第二段正文\n第三段正文\n第四段正文\n第五段正文\n第六段正文\n最后一行。");
+            runtime.shell.messaging.compose.recipient = false;
+            runtime.shell.go(Screen::Compose);
             runtime.dispatch(Event {
                 key: Key::Center,
                 phase: Phase::Down,
@@ -623,21 +621,21 @@ pub(crate) fn advance(runtime: &mut Runtime, stage: usize, now: u64) {
                 });
             }
         }
-        64 => runtime.phone.go(Screen::Outbox),
+        64 => runtime.shell.go(Screen::Outbox),
         65 => runtime.dispatch(Event {
             key: Key::Delete,
             phase: Phase::Down,
         }),
         66 => {
             runtime
-                .phone
+                .shell
                 .receive_message(
                     "12345".into(),
                     "这是一条本地测试信息。\n没有连接短信服务。\n回复、转发和删除均在本机完成。"
                         .into(),
                 )
                 .unwrap();
-            runtime.phone.go(Screen::Inbox);
+            runtime.shell.go(Screen::Inbox);
         }
         67 => runtime.dispatch(Event {
             key: Key::Center,
@@ -652,9 +650,9 @@ pub(crate) fn advance(runtime: &mut Runtime, stage: usize, now: u64) {
             phase: Phase::Down,
         }),
         70 => {
-            runtime.phone.messaging.mailbox = Default::default();
+            runtime.shell.messaging.mailbox = Default::default();
             runtime
-                .phone
+                .shell
                 .messaging
                 .mailbox
                 .outbox
@@ -666,53 +664,53 @@ pub(crate) fn advance(runtime: &mut Runtime, stage: usize, now: u64) {
                     submission: None,
                 });
             runtime
-                .phone
+                .shell
                 .receive_message("12345".into(), "好的，联系 67890。".into())
                 .unwrap();
-            runtime.phone.messaging.mailbox.inbox[0].time = 1_792_944_060_000;
-            runtime.phone.messaging.chat = Default::default();
-            runtime.phone.go(Screen::Messages);
+            runtime.shell.messaging.mailbox.inbox[0].time = 1_792_944_060_000;
+            runtime.shell.messaging.chat = Default::default();
+            runtime.shell.go(Screen::Messages);
         }
-        71 => runtime.phone.open_thread("12345".into()),
+        71 => runtime.shell.open_thread("12345".into()),
         72 => {
-            runtime.phone.messaging.chat.focus = Some(1);
-            runtime.phone.messaging.chat.popup = phone::conversation::Popup::Bubble;
+            runtime.shell.messaging.chat.focus = Some(1);
+            runtime.shell.messaging.chat.popup = shell::conversation::Popup::Bubble;
         }
         73 => {
-            runtime.phone.messaging.chat.number_focus = true;
-            runtime.phone.messaging.chat.popup = phone::conversation::Popup::Number;
+            runtime.shell.messaging.chat.number_focus = true;
+            runtime.shell.messaging.chat.popup = shell::conversation::Popup::Number;
         }
         74 => {
-            runtime.phone.messaging.chat.popup = phone::conversation::Popup::None;
-            runtime.phone.go(Screen::Menu);
-            runtime.phone.index = 7;
+            runtime.shell.messaging.chat.popup = shell::conversation::Popup::None;
+            runtime.shell.go(Screen::Menu);
+            runtime.shell.index = 7;
         }
         75 => {
             runtime
-                .phone
+                .shell
                 .receive_message("12345".into(), "长信息滚动测试。\n".repeat(30))
                 .unwrap();
-            runtime.phone.open_thread("12345".into());
-            runtime.phone.messaging.chat.focus = Some(2);
-            runtime.phone.messaging.chat.reveal = true;
+            runtime.shell.open_thread("12345".into());
+            runtime.shell.messaging.chat.focus = Some(2);
+            runtime.shell.messaging.chat.reveal = true;
         }
         76 => {
-            runtime.phone.launch(Screen::Snake);
-            runtime.phone.gaming.model.kind = 3;
-            runtime.phone.gaming.model.start();
-            runtime.phone.gaming.model.food = (4, 14);
-            runtime.phone.gaming.model.key(Key::Down);
-            runtime.phone.gaming.model.tick(1000);
-            runtime.phone.gaming.model.running = false;
-            runtime.phone.gaming.view = phone::snake::SnakeView::GameOver;
+            runtime.shell.launch(Screen::Snake);
+            runtime.shell.gaming.model.kind = 3;
+            runtime.shell.gaming.model.start();
+            runtime.shell.gaming.model.food = (4, 14);
+            runtime.shell.gaming.model.key(Key::Down);
+            runtime.shell.gaming.model.tick(1000);
+            runtime.shell.gaming.model.running = false;
+            runtime.shell.gaming.view = shell::snake::SnakeView::GameOver;
         }
         77 => {
-            runtime.phone.apply_snake_data(phone::snake::SnakeData {
+            runtime.shell.apply_snake_data(shell::snake::SnakeData {
                 level: 8,
                 ..Default::default()
             });
-            runtime.phone.gaming.view = phone::snake::SnakeView::Menu;
-            runtime.phone.index = 1;
+            runtime.shell.gaming.view = shell::snake::SnakeView::Menu;
+            runtime.shell.index = 1;
             runtime.dispatch(Event {
                 key: Key::Center,
                 phase: Phase::Down,
@@ -735,49 +733,49 @@ pub(crate) fn advance(runtime: &mut Runtime, stage: usize, now: u64) {
                 key: Key::SoftRight,
                 phase: Phase::Down,
             });
-            runtime.phone.index = 3;
+            runtime.shell.index = 3;
             runtime.dispatch(Event {
                 key: Key::Center,
                 phase: Phase::Down,
             });
-            runtime.phone.index = 3;
+            runtime.shell.index = 3;
             runtime.dispatch(Event {
                 key: Key::Center,
                 phase: Phase::Down,
             });
         }
         80 => {
-            runtime.phone.messaging.compose = Compose::default();
-            runtime.phone.messaging.compose.recipient = false;
+            runtime.shell.messaging.compose = Compose::default();
+            runtime.shell.messaging.compose.recipient = false;
             runtime
-                .phone
+                .shell
                 .messaging
                 .compose
                 .body
                 .prediction
                 .set_language(None);
-            runtime.phone.messaging.compose.body.titlecase = true;
-            runtime.phone.messaging.compose.body.insert("你");
-            runtime.phone.go(Screen::Compose);
+            runtime.shell.messaging.compose.body.titlecase = true;
+            runtime.shell.messaging.compose.body.insert("你");
+            runtime.shell.go(Screen::Compose);
         }
         81 => {
-            runtime.phone.messaging.compose.body.insert("\n");
+            runtime.shell.messaging.compose.body.insert("\n");
         }
         82 => {
-            runtime.phone.messaging.compose.body.clear();
-            runtime.phone.messaging.compose.body.titlecase = false;
-            runtime.phone.messaging.compose.body.numeric = true;
+            runtime.shell.messaging.compose.body.clear();
+            runtime.shell.messaging.compose.body.titlecase = false;
+            runtime.shell.messaging.compose.body.numeric = true;
             runtime
-                .phone
+                .shell
                 .messaging
                 .compose
                 .body
                 .insert(&format!("呢{}123456789", "1234567890".repeat(6)));
         }
         83 => {
-            runtime.phone.messaging.compose.body.clear();
+            runtime.shell.messaging.compose.body.clear();
             runtime
-                .phone
+                .shell
                 .messaging
                 .compose
                 .body
@@ -785,38 +783,38 @@ pub(crate) fn advance(runtime: &mut Runtime, stage: usize, now: u64) {
         }
         84 => {
             runtime
-                .phone
-                .launch(Screen::Tools(phone::tools::ToolPage::Flashlight));
-            runtime.phone.tools.torch = false;
+                .shell
+                .launch(Screen::Tools(shell::tools::ToolPage::Flashlight));
+            runtime.shell.tools.torch = false;
         }
         85 => runtime.dispatch(Event {
             key: Key::Center,
             phase: Phase::Down,
         }),
         86 => {
-            runtime.phone.tools.torch = false;
-            runtime.phone.contacts.records.clear();
-            runtime.phone.contacts.ui = Default::default();
-            runtime.phone.launch(Screen::Contacts);
+            runtime.shell.tools.torch = false;
+            runtime.shell.contacts.records.clear();
+            runtime.shell.contacts.ui = Default::default();
+            runtime.shell.launch(Screen::Contacts);
         }
         87 => runtime.dispatch(Event {
             key: Key::SoftLeft,
             phase: Phase::Down,
         }),
         88 => {
-            runtime.phone.index = 1;
+            runtime.shell.index = 1;
             runtime.dispatch(Event {
                 key: Key::Center,
                 phase: Phase::Down,
             });
         }
-        89 => runtime.phone.contact_load_field(5),
-        90 => runtime.phone.contact_load_field(6),
-        91 => runtime.phone.contact_load_field(7),
-        92 => runtime.phone.contact_load_field(8),
+        89 => runtime.shell.contact_load_field(5),
+        90 => runtime.shell.contact_load_field(6),
+        91 => runtime.shell.contact_load_field(7),
+        92 => runtime.shell.contact_load_field(8),
         93 => {
             // Verified test-mode fixture from the reviewed handset capture.
-            runtime.phone.contacts.records.push(
+            runtime.shell.contacts.records.push(
                 [
                     "",
                     "a0000",
@@ -831,62 +829,58 @@ pub(crate) fn advance(runtime: &mut Runtime, stage: usize, now: u64) {
                 .map(str::to_owned)
                 .to_vec(),
             );
-            runtime.phone.organizer.selected = 0;
-            runtime.phone.organizer.page = phone::organizer::OrganizerPage::ContactDetail;
-            runtime.phone.index = 0;
+            runtime.shell.contacts.selected = 0;
+            runtime.shell.contacts.page = shell::contacts::Page::ContactDetail;
+            runtime.shell.index = 0;
         }
         94 => runtime.dispatch(Event {
             key: Key::SoftLeft,
             phase: Phase::Down,
         }),
         95 => {
-            runtime.phone.index = 1;
+            runtime.shell.index = 1;
             runtime.dispatch(Event {
                 key: Key::Center,
                 phase: Phase::Down,
             });
         }
-        96 => runtime.phone.launch(Screen::Contacts),
+        96 => runtime.shell.launch(Screen::Contacts),
         97 => {
-            runtime.phone.contacts.ui.query.insert("no-match");
+            runtime.shell.contacts.ui.query.insert("no-match");
         }
         98 => {
-            runtime
-                .phone
-                .organizer_form(phone::organizer::OrganizerPage::ContactForm, None);
-            runtime.phone.text("测试联系人");
+            runtime.shell.contact_form(None);
+            runtime.shell.text("测试联系人");
         }
         99 => {
-            runtime.phone.launch(Screen::Settings);
-            runtime.phone.settings.page = phone::settings::SettingsPage::Sounds;
-            runtime.phone.index = 0;
+            runtime.shell.launch(Screen::Settings);
+            runtime.shell.settings.page = shell::settings::SettingsPage::Sounds;
+            runtime.shell.index = 0;
         }
         100 => {
-            runtime.phone.settings.page = phone::settings::SettingsPage::Wallpaper;
-            runtime.phone.index = 0;
+            runtime.shell.settings.page = shell::settings::SettingsPage::Wallpaper;
+            runtime.shell.index = 0;
         }
         101 => {
-            runtime.phone.launch(Screen::Contacts);
-            runtime.phone.organizer.page = phone::organizer::OrganizerPage::ContactGroups;
-            runtime.phone.contacts.groups = vec!["家人".into(), "朋友".into()];
-            runtime.phone.index = 1;
+            runtime.shell.launch(Screen::Contacts);
+            runtime.shell.contacts.page = shell::contacts::Page::ContactGroups;
+            runtime.shell.contacts.groups = vec!["家人".into(), "朋友".into()];
+            runtime.shell.index = 1;
         }
         102 => {
             let img = sample_picture();
             runtime
-                .phone
+                .shell
                 .media
                 .pictures
                 .insert("/card/sample.png".into(), img);
-            runtime
-                .phone
-                .organizer_form(phone::organizer::OrganizerPage::ContactForm, None);
-            runtime.phone.organizer.draft[0] = "/card/sample.png".into();
-            runtime.phone.contact_load_field(0);
+            runtime.shell.contact_form(None);
+            runtime.shell.contacts.draft[0] = "/card/sample.png".into();
+            runtime.shell.contact_load_field(0);
         }
         103 => {
-            runtime.phone.open_media(phone::media::Purpose::Pictures);
-            runtime.phone.media.ui.entries = vec![crate::storage::files::Entry {
+            runtime.shell.open_media(shell::media::Purpose::Pictures);
+            runtime.shell.media.ui.entries = vec![crate::storage::files::Entry {
                 name: "手机存储".into(),
                 path: "/phone".into(),
                 directory: true,
@@ -894,87 +888,92 @@ pub(crate) fn advance(runtime: &mut Runtime, stage: usize, now: u64) {
             }];
         }
         104 => {
-            runtime.phone.media.ui.path = "/card".into();
-            runtime.phone.media.ui.entries = vec![crate::storage::files::Entry {
+            runtime.shell.media.ui.path = "/card".into();
+            runtime.shell.media.ui.entries = vec![crate::storage::files::Entry {
                 name: "sample.png".into(),
                 path: "/card/sample.png".into(),
                 directory: false,
                 len: 100,
             }];
-            runtime.phone.index = 0;
+            runtime.shell.index = 0;
         }
         105 => {
-            runtime.phone.media.ui.viewing = true;
-            runtime.phone.media.ui.selected = "/card/sample.png".into();
-            runtime.phone.media.ui.frame = Some(sample_picture());
+            runtime.shell.media.ui.viewing = true;
+            runtime.shell.media.ui.selected = "/card/sample.png".into();
+            runtime.shell.media.ui.frame = Some(sample_picture());
         }
         106 => {
-            runtime.phone.media.ui.zoom = 2;
+            runtime.shell.media.ui.zoom = 2;
         }
         107 => {
-            runtime.phone.media.ui.purpose = phone::media::Purpose::Videos;
-            runtime.phone.media.ui.zoom = 1;
-            runtime.phone.media.ui.position = 3.;
-            runtime.phone.media.ui.duration = 6.;
-            runtime.phone.media.ui.playing = true;
+            runtime.shell.media.ui.purpose = shell::media::Purpose::Videos;
+            runtime.shell.media.ui.zoom = 1;
+            runtime.shell.media.ui.position = 3.;
+            runtime.shell.media.ui.duration = 6.;
+            runtime.shell.media.ui.playing = true;
         }
         108 => {
-            runtime.phone.launch(Screen::Settings);
-            runtime.phone.settings.page = phone::settings::SettingsPage::Time;
+            runtime.shell.launch(Screen::Settings);
+            runtime.shell.settings.page = shell::settings::SettingsPage::Time;
         }
         109 => {
-            runtime.phone.settings.page = phone::settings::SettingsPage::Connections;
+            runtime.shell.settings.page = shell::settings::SettingsPage::Connections;
         }
         110 => {
-            runtime.phone.settings.page = phone::settings::SettingsPage::Reset;
+            runtime.shell.settings.page = shell::settings::SettingsPage::Reset;
         }
         111 => {
-            runtime.phone.launch(Screen::Music);
-            runtime.phone.playback.view = phone::MusicView::Playlists;
-            runtime.phone.playback.playlists = vec![phone::Playlist {
+            runtime.shell.launch(Screen::Music);
+            runtime.shell.playback.view = shell::MusicView::Playlists;
+            runtime.shell.playback.playlists = vec![shell::Playlist {
                 name: "收藏".into(),
                 paths: vec!["/card/test.wav".into()],
             }];
-            runtime.phone.set_music_paths(vec!["/card/test.wav".into()]);
-            runtime.phone.playback.model.tracks = vec![("test.wav".into(), 60.)];
+            runtime.shell.set_music_paths(vec!["/card/test.wav".into()]);
+            runtime.shell.playback.model.tracks = vec![("test.wav".into(), 60.)];
         }
         112 => {
-            runtime.phone.playback.view = phone::MusicView::Playlist;
-            runtime.phone.playback.playlist = 0;
-            runtime.phone.index = 0;
+            runtime.shell.playback.view = shell::MusicView::Playlist;
+            runtime.shell.playback.playlist = 0;
+            runtime.shell.index = 0;
         }
         113 => {
-            runtime.phone.launch(Screen::Settings);
-            runtime.phone.settings.page = phone::settings::SettingsPage::Ringtone;
-            runtime.phone.index = 2;
+            runtime.shell.launch(Screen::Settings);
+            runtime.shell.settings.page = shell::settings::SettingsPage::Ringtone;
+            runtime.shell.index = 2;
         }
         114 => {
-            runtime.phone.launch(Screen::Organizer(
-                phone::organizer::OrganizerPage::AlarmRingtone,
+            // This scene shows no built-in tone selected. Seed it explicitly;
+            // it must not inherit an earlier contact form's shared draft.
+            runtime
+                .shell
+                .organizer_form(shell::organizer::OrganizerPage::AlarmForm, None);
+            runtime.shell.organizer.draft[3].clear();
+            runtime.shell.launch(Screen::Organizer(
+                shell::organizer::OrganizerPage::AlarmRingtone,
             ));
-            runtime.phone.organizer.page = phone::organizer::OrganizerPage::AlarmRingtone;
-            runtime.phone.index = 2;
+            runtime.shell.organizer.page = shell::organizer::OrganizerPage::AlarmRingtone;
+            runtime.shell.index = 2;
         }
         115 => {
-            runtime.phone.launch(Screen::Organizer(
-                phone::organizer::OrganizerPage::EventRingtone,
+            runtime.shell.launch(Screen::Organizer(
+                shell::organizer::OrganizerPage::EventRingtone,
             ));
-            runtime.phone.organizer.page = phone::organizer::OrganizerPage::EventRingtone;
-            runtime.phone.index = 20;
+            runtime.shell.organizer.page = shell::organizer::OrganizerPage::EventRingtone;
+            runtime.shell.index = 20;
         }
         116 => {
-            runtime.phone.launch(Screen::Organizer(
-                phone::organizer::OrganizerPage::ContactRingtone,
-            ));
-            runtime.phone.organizer.draft = vec![String::new(); 10];
-            runtime.phone.organizer.draft[7] = "Clock1".into();
-            runtime.phone.index = 2;
+            runtime.shell.launch(Screen::Contacts);
+            runtime.shell.contacts.page = shell::contacts::Page::ContactRingtone;
+            runtime.shell.contacts.draft = vec![String::new(); 10];
+            runtime.shell.contacts.draft[7] = "Clock1".into();
+            runtime.shell.index = 2;
         }
         117 => {
-            runtime.phone.overlay = None;
-            runtime.phone.messaging.compose = Compose::default();
-            runtime.phone.messaging.compose.recipient = false;
-            runtime.phone.go(Screen::Compose);
+            runtime.shell.overlay = None;
+            runtime.shell.messaging.compose = Compose::default();
+            runtime.shell.messaging.compose.recipient = false;
+            runtime.shell.go(Screen::Compose);
             for digit in [6, 4] {
                 runtime.dispatch(Event {
                     key: Key::Digit(digit),
@@ -1003,7 +1002,7 @@ pub(crate) fn advance(runtime: &mut Runtime, stage: usize, now: u64) {
             }
         }
         120 => {
-            runtime.phone.messaging.compose.body.prediction.selected = 0;
+            runtime.shell.messaging.compose.body.prediction.selected = 0;
             runtime.dispatch(Event {
                 key: Key::Center,
                 phase: Phase::Down,
@@ -1026,18 +1025,18 @@ pub(crate) fn advance(runtime: &mut Runtime, stage: usize, now: u64) {
                 key: Key::Center,
                 phase: Phase::Down,
             });
-            assert_eq!(runtime.phone.messaging.compose.body.text(), "你好");
-            runtime.phone.messaging.compose.body.prediction.clear();
+            assert_eq!(runtime.shell.messaging.compose.body.text(), "你好");
+            runtime.shell.messaging.compose.body.prediction.clear();
         }
         123 => {
-            runtime.phone.messaging.compose.body.clear();
+            runtime.shell.messaging.compose.body.clear();
             for digit in [6, 4] {
                 runtime.dispatch(Event {
                     key: Key::Digit(digit),
                     phase: Phase::Down,
                 });
             }
-            let p = &mut runtime.phone.messaging.compose.body.prediction;
+            let p = &mut runtime.shell.messaging.compose.body.prediction;
             p.spelling_focus = false;
             p.selected = p
                 .candidates
@@ -1050,7 +1049,7 @@ pub(crate) fn advance(runtime: &mut Runtime, stage: usize, now: u64) {
                 key: Key::Center,
                 phase: Phase::Down,
             });
-            assert_eq!(runtime.phone.messaging.compose.body.text(), "酿");
+            assert_eq!(runtime.shell.messaging.compose.body.text(), "酿");
         }
         _ => {}
     }

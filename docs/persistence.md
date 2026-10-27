@@ -60,8 +60,8 @@ target/TA1278.app/Contents/MacOS/phone-desktop --smoke-test /tmp/ta1278-persiste
 
 The [service interface](services.md) stores optional outgoing request metadata, backend stream cursors and alert state in `messages.json` with the messages they affect. This keeps consumption acknowledgment after one atomic write. Old JSON loads with default empty service state; old outbox entries are never auto-submitted. Real services remain disabled.
 
-## Unified runtime driver
+## Application-side persistence policy
 
-The standalone host now opens `persistence::Directory::open` and delegates loading, background saves and exit to `Runtime::load_profile`, `flush` and `close`. Native media never writes profile files. JSON names and schemas above remain unchanged. App data is collected/validated by the same State implementation used by embedded `save_to`/`restore_from` checkpoints. Record writes remain individually atomic; this does not claim a multi-file atomic transaction.
+The standalone host opens `platform::Directory::open` (the existing `persistence` path remains valid) and delegates loading, background saves and exit to `Runtime::load_profile`, `flush` and `close`. These entry points are implemented in the same application-side `runtime/app` module as web/media/message integration; the platform Store supplies only I/O mechanisms. Native media never writes profile files. JSON names and schemas above remain unchanged. App data is collected/validated by the same State implementation used by embedded `save_to`/`restore_from` checkpoints. Record writes remain individually atomic; this does not claim a multi-file atomic transaction.
 
 Writes stop at the first failure, retaining dirty markers for unattempted records and allowing retry. Mailbox rollback happens only if its write was attempted and failed; Services still submit/ack only after durable mailbox commit. Timer recovery selects `Resume::WallClock` for the desktop or `Resume::Paused` for embedded checkpoints. These policies preserve the existing behavior.

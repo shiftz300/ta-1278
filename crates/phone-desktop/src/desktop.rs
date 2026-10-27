@@ -149,7 +149,7 @@ impl ApplicationHandler for App {
                         return;
                     }
                     match host::input::key(code, self.modifiers.shift_key()) {
-                        Some(host::input::Keyboard::Phone(key)) if !event.repeat => {
+                        Some(host::input::Keyboard::Shell(key)) if !event.repeat => {
                             self.press(source, key);
                         }
                         Some(host::input::Keyboard::Text(ch)) => self.runtime.text(&ch.to_string()),

@@ -35,7 +35,7 @@ pub fn save_json<T: serde::Serialize>(
     atomic::write(dir, name, &bytes, limit)
 }
 
-pub(crate) fn validate_organizer(data: &crate::phone::organizer::LocalData) -> Result<(), String> {
+pub(crate) fn validate_organizer(data: &crate::shell::organizer::LocalData) -> Result<(), String> {
     if data.schema_version != 1
         || !data.reminders.valid()
         || data.groups.len() > 64
@@ -52,11 +52,11 @@ pub(crate) fn validate_organizer(data: &crate::phone::organizer::LocalData) -> R
                     .iter()
                     .any(|s| !s.starts_with('/') || s.len() > 4096)
         })
-        || data.calls.len() > crate::phone::calls::LIMIT
+        || data.calls.len() > crate::shell::calls::LIMIT
         || data
             .calls
             .iter()
-            .any(|r| !crate::phone::calls::valid(&r.number))
+            .any(|r| !crate::shell::calls::valid(&r.number))
         || data.contacts.iter().any(|c| c.len() != 9)
         || data.alarms.iter().any(|a| a.fields.len() != 5)
         || data.events.iter().any(|e| {

@@ -3,7 +3,7 @@
 #[cfg(test)]
 use super::{load_json, save_json, validate_organizer};
 #[cfg(test)]
-use crate::phone::settings::Preferences;
+use crate::shell::settings::Preferences;
 #[cfg(test)]
 use phone_core::sms::Mailbox;
 #[cfg(test)]
@@ -65,26 +65,26 @@ pub fn save_preferences(dir: &Path, prefs: &Preferences) -> Result<(), String> {
 }
 
 #[cfg(test)]
-pub fn load_browser(dir: &Path) -> Result<crate::phone::browser::data::BrowserData, String> {
+pub fn load_browser(dir: &Path) -> Result<crate::shell::browser::data::BrowserData, String> {
     load_json(dir, "browser.json", 16 * 1024 * 1024)
 }
 #[cfg(test)]
 pub fn save_browser(
     dir: &Path,
-    data: &crate::phone::browser::data::BrowserData,
+    data: &crate::shell::browser::data::BrowserData,
 ) -> Result<(), String> {
     save_json(dir, "browser.json", data, 16 * 1024 * 1024)
 }
 #[cfg(test)]
-pub fn load_organizer(dir: &Path) -> Result<crate::phone::organizer::LocalData, String> {
-    let data: crate::phone::organizer::LocalData =
+pub fn load_organizer(dir: &Path) -> Result<crate::shell::organizer::LocalData, String> {
+    let data: crate::shell::organizer::LocalData =
         load_json(dir, "organizer.json", 8 * 1024 * 1024)?;
     validate_organizer(&data)?;
     Ok(data)
 }
 #[cfg(test)]
-pub fn load_snake(dir: &Path) -> Result<crate::phone::snake::SnakeData, String> {
-    let data: crate::phone::snake::SnakeData = load_json(dir, "snake.json", 4096)?;
+pub fn load_snake(dir: &Path) -> Result<crate::shell::snake::SnakeData, String> {
+    let data: crate::shell::snake::SnakeData = load_json(dir, "snake.json", 4096)?;
     if !data.valid() {
         return Err("Invalid Snake records; original retained".into());
     }

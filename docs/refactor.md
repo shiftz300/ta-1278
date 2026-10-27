@@ -37,3 +37,56 @@ cargo run --locked -p phone-desktop -- --smoke-test /tmp/ta1278-window --disable
 ```
 
 Use new temporary output directories. Real audio, optional external-network checks and the video fixture test stay opt-in. The live-clock fixture should be compared with its clock region excluded, or both baselines must use the same supplied time.
+
+## Application-side coordination follow-up
+
+The local follow-up merges effect integration and persistence policy under
+`runtime/app`. Runtime retains one App coordinator instead of separate Host,
+Session and Services fields. `app/bridge.rs` handles web/media/message integration;
+`app/persist.rs` handles record saves and close policy; `app/state.rs` contains
+the unchanged checkpoint implementation. Store/Record/Directory are also exported
+from `platform`; existing persistence paths remain the same types. No public
+Runtime method, JSON format, dependency or interaction changes.
+
+Verification: 231 workspace tests passed, seven opt-in tests ignored; workspace
+Clippy with warnings denied, formatting and headless library checks passed. The
+external example uses the common platform Store import, renders four frames and
+restores a synthetic message. All 282 CPU frames match the preceding verified
+implementation except the live clock (281 byte-identical; the remaining frame's
+changes are confined to x=94..170, y=53..82). This follow-up did not perform a new
+native GPU or physical-device acceptance run. No network/audio output was needed.
+
+## Shell and explicit application boundaries follow-up
+
+The internal Phone type/module and Runtime field are now Shell/shell. Public
+Runtime methods, Cargo package names, config keys and persisted schemas remain.
+The prior application-side coordinator merge remains in place.
+
+- Painting borrows Overlay (including text editors); common popup menus and
+  contact root/detail menus use static typed Item declarations for labels,
+  availability, markers and actions. Production menu labels allocate no strings.
+- Contacts owns its Page, draft, selected identity and recipient-picker state.
+  Its field initialization, synchronization, validation and record commit operate
+  on contacts::State. Calendar/alarms no longer share its draft/return focus.
+- Services only receives message state and returns Apply results; Shell owns
+  conversation selection and alert presentation. Durable send/ack order remains.
+- Sound receives immutable Playback intent and returns PlaybackStatus. The app
+  handles duration/position, EOF repeat/queue policy and errors. Custom Sound
+  implementations must adopt this port signature; Runtime entry points stay stable.
+- VisualMedia receives only media state/context and returns explicit effects.
+  The small Media aggregator still coordinates alarms, playback, files and UI.
+  Library scans and file audio probes use the supplied Decoder::audio_duration,
+  with the built-in MP3/WAV behavior retained.
+
+Local validation: 236 workspace tests passed, seven opt-in tests ignored;
+Clippy with warnings denied, formatting, headless library and external embedding
+example passed. The example renders four frames and restores a synthetic message
+without audio/network. Of 282 CPU PNGs, 281 are byte-identical to the preceding
+verified implementation; the remaining difference is only the live Home clock.
+The alarm-tone fixture now explicitly seeds its unselected built-in tone rather
+than depending on an earlier contact draft; its final pixels match the baseline.
+No new dependencies were added. Native audio/video device tests remain opt-in.
+
+Final native window check: 127 frames presented through Metal using temporary
+data with sounds/music/video/network disabled. This verifies presentation, not
+new physical-device or Windows/Linux native acceptance. Changes remain local.

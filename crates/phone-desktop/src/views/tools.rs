@@ -1,7 +1,7 @@
 use super::*;
-use crate::phone::tools::ToolPage;
+use crate::shell::tools::ToolPage;
 use phone_core::utilities::clock;
-pub(super) fn render(c: &mut Canvas, p: &Phone) {
+pub(super) fn render(c: &mut Canvas, p: &Shell) {
     use ToolPage::*;
     if p.tools.page == Files {
         super::files::render(c, p);
@@ -192,7 +192,7 @@ pub(super) fn render(c: &mut Canvas, p: &Phone) {
         Flashlight => {
             crate::ui::art::power(c, t.torch);
             Softkeys::new(
-                Button::Phone,
+                Button::Shell,
                 Button::Text(if t.torch { "关闭" } else { "打开" }),
                 Button::Back,
             )
@@ -267,7 +267,7 @@ fn stopwatch_time(ms: u64) -> String {
     )
 }
 
-pub(super) fn timer_elapsed(c: &mut Canvas, p: &Phone) {
+pub(super) fn timer_elapsed(c: &mut Canvas, p: &Shell) {
     c.rect(0, 96, 240, 190, [0, 0, 0, 255]);
     crate::ui::art::hourglass(c, 94, 132);
     let name = &p.tools.timer_name;

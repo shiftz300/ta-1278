@@ -1,6 +1,6 @@
 use super::*;
-use crate::phone::settings::{SHORTCUTS, SettingsPage};
-pub(super) fn render(c: &mut Canvas, p: &Phone) {
+use crate::shell::settings::{SHORTCUTS, SettingsPage};
+pub(super) fn render(c: &mut Canvas, p: &Shell) {
     if p.settings.page == SettingsPage::Ringtone {
         crate::ui::tones::draw(c, "铃声", p.index, &p.settings.preferences.ringtone, "预设");
         return;

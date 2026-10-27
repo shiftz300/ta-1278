@@ -1,7 +1,7 @@
 //! Radio content and its observed overlay, sharing system popup/softkey controls.
 use super::*;
-use crate::phone::tools::ToolPage;
-pub(super) fn render(c: &mut Canvas, p: &Phone) {
+use crate::shell::tools::ToolPage;
+pub(super) fn render(c: &mut Canvas, p: &Shell) {
     chrome::title(c, "收音机");
     let t = &p.tools;
     c.rect(0, 24, 240, 90, c.accent(3));

@@ -36,6 +36,8 @@ cat > "$bundle/Contents/Info.plist" <<PLIST
 </dict></plist>
 PLIST
 notices="$bundle/Contents/Resources/Notices"
+# Replace generated notices so removed resources leave no stale bundle files.
+rm -rf "$notices"
 mkdir -p "$notices/fonts" "$notices/input" "$notices/audio" "$notices/resources"
 cp third-party-licenses/resources/*.txt "$notices/resources/"
 cp THIRD_PARTY_NOTICES.md "$notices/"

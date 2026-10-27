@@ -1,5 +1,6 @@
-//! App-independent host ports. No adapter receives Phone or owns persistence.
+//! App-independent host ports. No adapter receives Shell or owns persistence.
 pub(crate) mod visual;
+pub use crate::persistence::{Directory, Record, Store};
 pub use crate::storage::files::Folder;
 pub use crate::web::parse;
 use crate::{Request, Runtime, config::Features, web::Web};
@@ -17,6 +18,25 @@ pub trait Documents {
     fn poll(&mut self) -> Option<(Request, Result<Page, String>)>;
     fn cancel(&mut self);
 }
+/// Immutable playback intent. Adapters cannot edit application queues or navigation.
+#[derive(Clone, Copy)]
+pub struct Playback {
+    pub playing: bool,
+    pub position: f32,
+    pub duration: f32,
+    pub volume: u8,
+    pub generation: u64,
+    pub seek_revision: u64,
+}
+/// Device observations; the application decides how EOF affects repeat/queue state.
+#[derive(Default)]
+pub struct PlaybackStatus {
+    pub duration: Option<f32>,
+    pub position: Option<f32>,
+    pub ended: bool,
+    pub stopped: bool,
+    pub error: Option<String>,
+}
 pub trait Sound {
     fn effect_volume(&mut self, volume: u8);
     fn feedback(&mut self, cue: crate::Cue, volume: u8) -> Result<(), String>;
@@ -24,12 +44,7 @@ pub trait Sound {
     fn preview(&mut self, files: &Folder, path: &str, volume: u8) -> Result<(), String>;
     fn alert(&mut self, files: &Folder, tone: Option<&str>, volume: u8) -> Result<(), String>;
     fn stop(&mut self);
-    fn sync(
-        &mut self,
-        files: &Folder,
-        path: Option<&str>,
-        music: &mut phone_core::music::Music,
-    ) -> Result<(), String>;
+    fn sync(&mut self, files: &Folder, path: Option<&str>, playback: Playback) -> PlaybackStatus;
 }
 /// A selected real folder, output device and decoder, supplied explicitly once.
 /// This is direct filesystem access, not a virtual disk or a kernel driver API.

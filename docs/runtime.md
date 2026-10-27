@@ -7,7 +7,7 @@ implementations stay outside the UI.
 The existing `phone-desktop` Cargo package now exports the `phone_runtime`
 library. Keeping the package name preserves current build/package commands.
 The public entry points are `Runtime`, `Time`, `Frame`, `Request`, `config`,
-`messaging`, `platform` and `persistence`. `take_cues` exposes bounded short sound effects when a custom host handles them. Internal `Phone` fields are not a public integration API.
+`messaging`, `platform` and `persistence`. `take_cues` exposes bounded short sound effects when a custom host handles them. Internal `Shell` fields are not a public integration API.
 
 ## Use without a window
 
@@ -125,11 +125,20 @@ The desktop window now uses the same Runtime and Native objects. It retains nati
 media pause/restore coordination, and coordinating external backend rewind remain separate follow-up work. Media ports are now replaceable; the file capability intentionally remains a direct host folder. There is no new actual messaging
 backend, device access or claim of complete firmware recovery.
 
+## Application-side coordination
+
+The public Runtime entry points share one internal `runtime/app` coordinator for
+web/media/message integration and save/restore/close policy. Serialization,
+dirty acknowledgments and retry/rollback decisions are application concerns;
+platform implementations only provide I/O mechanisms. No second system-level
+persistence manager is introduced. Store remains separately injectable so hosts
+can commit a phone checkpoint and their own state in one transaction.
+
 ## Platform and storage ports
 
-`Platform::instance` returns `Runtime::instance()`. `Documents` exchanges opaque Requests and Pages, `Sound` handles audio/control clock synchronization, and `Decoder` returns pixels or a `Video` session. `Devices` transfers a selected real folder, Sound and Decoder once, on the first platform poll. Runtime owns the transferred media lifetime; create a fresh runtime/adapter when changing hosts. No port receives Phone or application UI fields.
+`Platform::instance` returns `Runtime::instance()`. `Documents` exchanges opaque Requests and Pages, `Sound` handles audio/control clock synchronization, and `Decoder` returns pixels or a `Video` session. `Devices` transfers a selected real folder, Sound and Decoder once, on the first platform poll. Runtime owns the transferred media lifetime; create a fresh runtime/adapter when changing hosts. No port receives Shell or application UI fields.
 
-`persistence::Store` reads/writes bounded `Record` keys. `Directory::open` owns the profile lock, atomic writes and backups; `Directory::new` is for callers already owning the transaction/lock.
+`platform::{Store, Record, Directory}` provides the common port import path; the existing `persistence::{Store, Record, Directory}` paths remain aliases of the same types. Store reads/writes bounded Record keys. `Directory::open` owns the profile lock, atomic writes and backups; `Directory::new` is for callers already owning the transaction/lock.
 
 - `Runtime::load_profile(config, time, store, backend, resume)` and `flush(store, force)` use the existing JSON filenames. Background flush does not confirm or save uncommitted draft text.
 - `save_to(store)` and `restore_from(config, time, store, backend)` use Record::Snapshot. Old version-1 snapshots without music remain readable; new snapshots also retain paused music resume state.
@@ -139,3 +148,19 @@ backend, device access or claim of complete firmware recovery.
 See [the current architecture diagram](overview.md).
 
 The native constructor no longer takes a profile path; use `Native::new(&runtime, directory, read_only)` or `Native::from_folder(&runtime, folder)`. `Native::save` has been replaced by Runtime/Store persistence. The callback Runtime::save API and Native::poll convenience remain available.
+
+## Playback observations
+
+Sound adapters now implement `sync(files, path, Playback) -> PlaybackStatus`.
+Playback is a small immutable intent with play/pause, volume, position, duration,
+generation and seek revision. Status reports optional measured duration/position,
+EOF, stop and error. The application applies it to its player model; adapters
+never edit queues, repeat mode or navigation. EOF transitions remain application
+policy. Errors pause playback while retaining the position; invalid non-finite
+or negative clocks are rejected. This replaces the former mutable Music argument
+for custom Sound implementations; Runtime entry points remain unchanged.
+
+Decoder implementations may override `audio_duration` for library scans/file
+playback. Its default reports unsupported audio decoding; the built-in decoder
+supports MP3/WAV/MIDI playback. Visual requests return pixels or video sessions; the
+application bridge returns explicit UI effects rather than editing Shell.

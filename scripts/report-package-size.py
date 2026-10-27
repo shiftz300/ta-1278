@@ -13,14 +13,43 @@ ASSETS = {
                        ('HANI1', 'assets/fonts/device/font-1-hani.otf'),
                        ('HANI2', 'assets/fonts/device/font-2-hani.otf')],
     'fallback_fonts': [('CJK', 'assets/fonts/subsets/FallbackCJK.otf'),
-                       ('SYMBOLS', 'assets/fonts/subsets/FallbackSymbols.ttf'),
-                       ('EMOJI', 'assets/fonts/subsets/FallbackEmoji.ttf')],
+                       ('SYMBOLS', 'assets/fonts/subsets/FallbackSymbols.ttf')],
     't9': [('T9_CODE', 'assets/input/t9/engine.arm'),
            ('T9_TABLES', 'assets/input/t9/character-tables.bin'),
            ('T9_ENGLISH', 'assets/input/t9/english.ldb'),
            ('T9_CHINESE', 'assets/input/t9/chinese.ldb')],
     'native_soundfont': [('SOUNDFONT', 'assets/audio/gm1_A21.sf2')],
 }
+
+
+def restore_soundfont(data):
+    """Independent inverse of the build-time predictor, before source SHA checking."""
+    assert data[:4] == b'RIFF' and data[8:12] == b'sfbk'
+    at, span = 12, None
+    while at + 8 <= len(data):
+        size = struct.unpack_from('<I', data, at + 4)[0]
+        end = at + 8 + size
+        assert end <= len(data)
+        if data[at:at+4] == b'LIST' and data[at+8:at+12] == b'sdta':
+            sub = at + 12
+            while sub + 8 <= end:
+                count = struct.unpack_from('<I', data, sub + 4)[0]
+                assert sub + 8 + count <= end
+                if data[sub:sub+4] == b'smpl':
+                    assert span is None and count % 2 == 0
+                    span = sub + 8, count
+                sub += 8 + count + (count & 1)
+        at = end + (size & 1)
+    assert span is not None
+    start, length = span
+    count = length // 2
+    out = bytearray(data)
+    sample = difference = 0
+    for i in range(count):
+        difference = (difference + data[start+i] + (data[start+count+i] << 8)) & 65535
+        sample = (sample + difference) & 65535
+        struct.pack_into('<H', out, start + i * 2, sample)
+    return bytes(out)
 
 
 def main():
@@ -42,8 +71,13 @@ def main():
             assert len(matches) == 1, (name, 'Expected exactly one embedded packed representation')
             data = next(iter(matches))
             assert binary.count(data) == 1 and raw not in binary, name
-            assert zlib.decompress(data) == raw, name
-            resources.append({'source': path, 'raw_bytes': len(raw), 'packed_bytes': len(data),
+            decoded = zlib.decompress(data)
+            transform = 'none'
+            if name == 'SOUNDFONT' and decoded != raw:
+                decoded = restore_soundfont(decoded)
+                transform = 'sf2-second-difference-byteplanes'
+            assert decoded == raw, name
+            resources.append({'source': path, 'raw_bytes': len(raw), 'packed_bytes': len(data), 'transform': transform,
                               'raw_sha256': hashlib.sha256(raw).hexdigest(),
                               'packed_sha256': hashlib.sha256(data).hexdigest(),
                               'executable_offset': binary.index(data)})
@@ -73,7 +107,7 @@ def main():
     report = {'bundle_bytes': total, 'executable_bytes': len(binary),
               'executable_sha256': hashlib.sha256(binary).hexdigest(),
               'groups_bytes': groups, 'packed_resources': resources,
-              'method': 'Logical file sizes, embedded byte search, independent Python zlib roundtrip, Mach-O __text/__stubs sizes. Other executable data includes small images/audio, strings, tables, alignment and signing metadata; it is not all code.',
+              'method': 'Logical file sizes, embedded byte search, independent Python zlib and SF2 predictor roundtrip, Mach-O __text/__stubs sizes. Other executable data includes small images/audio, strings, tables, alignment and signing metadata; it is not all code.',
               'profile': {'opt-level': 'z', 'lto': 'fat', 'codegen-units': 1, 'strip': 'symbols', 'panic': 'abort'}}
     args.out.write_text(json.dumps(report, indent=2)+'\n')
     print(json.dumps({'bundle_bytes':total, 'groups_bytes':groups}, indent=2))

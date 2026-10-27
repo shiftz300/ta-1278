@@ -1,5 +1,5 @@
 //! Runtime menu order captured from this TA-1278; compiled registry alone was insufficient.
-use crate::phone::{Screen, organizer::OrganizerPage, tools::ToolPage};
+use crate::shell::{Screen, organizer::OrganizerPage, tools::ToolPage};
 use phone_core::input::Key;
 pub struct Entry {
     pub label: &'static str,

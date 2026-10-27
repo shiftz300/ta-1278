@@ -1,18 +1,14 @@
 use super::*;
-use crate::phone::organizer::OrganizerPage;
-pub(super) fn render(c: &mut Canvas, p: &Phone) {
+use crate::shell::organizer::OrganizerPage;
+pub(super) fn render(c: &mut Canvas, p: &Shell) {
     use OrganizerPage::*;
-    if crate::phone::alarm::is_alarm(p.organizer.page) {
+    if crate::shell::alarm::is_alarm(p.organizer.page) {
         super::alarm::render(c, p);
         return;
     }
     let page = p.organizer.page;
     if page == OrganizerPage::EventRingtone {
         crate::ui::tones::draw(c, "铃声", p.index, &p.organizer.draft[4], "默认");
-        return;
-    }
-    if crate::phone::contacts::is_contact(page) {
-        super::contacts::render(c, p);
         return;
     }
     chrome::title(c, p.organizer_title());
@@ -33,7 +29,7 @@ pub(super) fn render(c: &mut Canvas, p: &Phone) {
         let items = p.organizer_items();
         PopupMenu::default().draw(c, items.len(), p.index, |i| list::Row::text(&items[i]));
         return;
-    } else if matches!(page, DeleteContact | DeleteEvent | DeleteAlarm | DeletePast) {
+    } else if matches!(page, DeleteEvent | DeleteAlarm | DeletePast) {
         c.text(
             16,
             180,
@@ -50,16 +46,15 @@ pub(super) fn render(c: &mut Canvas, p: &Phone) {
         let items = p.organizer_items();
         list::plain(c, &items, p.index);
         left = match page {
-            Contacts | Alarms | Events => Button::Text("新增"),
-            EventForm | AlarmForm | ContactForm => Button::Text("保存"),
-            ContactDetail => Button::Menu,
+            Alarms | Events => Button::Text("新增"),
+            EventForm | AlarmForm => Button::Text("保存"),
             _ => Button::None,
         };
     }
     Softkeys::new(left, Button::Text(center), Button::Back).draw(c);
 }
 
-fn calendar(c: &mut Canvas, p: &Phone) {
+fn calendar(c: &mut Canvas, p: &Shell) {
     let date = p.organizer.date;
     c.rect(0, 0, 100, 24, [0, 0, 0, 255]);
     chrome::title(c, "月份");
@@ -111,7 +106,7 @@ fn calendar(c: &mut Canvas, p: &Phone) {
         }
     }
 }
-fn event_form(c: &mut Canvas, p: &Phone) {
+fn event_form(c: &mut Canvas, p: &Shell) {
     use crate::ui::form::{Field, FieldKind};
     chrome::title(c, "新建事件");
     let focus = if p.organizer.page == OrganizerPage::EventFormMenu {

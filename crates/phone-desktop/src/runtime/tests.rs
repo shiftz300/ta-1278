@@ -49,27 +49,27 @@ impl Backend for Adapter {
 #[test]
 fn host_clock_controls_timers_messages_and_rendering_without_advancing_on_render() {
     let mut runtime = Runtime::new(RuntimeConfig::default(), time(0)).unwrap();
-    runtime.phone.tools.timer.remaining_ms = 2000;
-    runtime.phone.tools.timer.running = true;
+    runtime.shell.tools.timer.remaining_ms = 2000;
+    runtime.shell.tools.timer.running = true;
     let pixels = runtime.render().pixels.to_vec();
     assert_eq!(pixels, runtime.render().pixels);
-    assert_eq!(runtime.phone.tools.timer.remaining_ms, 2000);
+    assert_eq!(runtime.shell.tools.timer.remaining_ms, 2000);
     runtime.advance(time(500)).unwrap();
-    assert_eq!(runtime.phone.tools.timer.remaining_ms, 1500);
+    assert_eq!(runtime.shell.tools.timer.remaining_ms, 1500);
     assert!(runtime.advance(time(100)).is_err());
     assert_eq!(runtime.time(), time(500));
-    runtime.phone.go(Screen::Messages);
+    runtime.shell.go(Screen::Messages);
     tap(&mut runtime, Key::Center);
-    assert_eq!(runtime.phone.messaging.compose.time, WALL + 500);
+    assert_eq!(runtime.shell.messaging.compose.time, WALL + 500);
     runtime.text("123");
     runtime.tab();
     runtime.text("hello");
     runtime.text("不允许宿主输入法");
-    assert_eq!(runtime.phone.messaging.compose.body.text(), "hello");
+    assert_eq!(runtime.shell.messaging.compose.body.text(), "hello");
     runtime.press(2, Key::End);
     runtime.cancel_input();
     runtime.advance(time(700)).unwrap();
-    assert_eq!(runtime.phone.tools.timer.remaining_ms, 1300);
+    assert_eq!(runtime.shell.tools.timer.remaining_ms, 1300);
     let mut saved = Vec::new();
     runtime
         .save(|bytes| {
@@ -84,8 +84,8 @@ fn host_clock_controls_timers_messages_and_rendering_without_advancing_on_render
         Box::new(Offline),
     )
     .unwrap();
-    assert_eq!(restored.phone.tools.timer.remaining_ms, 1300);
-    assert_eq!(restored.phone.screen, Screen::Home);
+    assert_eq!(restored.shell.tools.timer.remaining_ms, 1300);
+    assert_eq!(restored.shell.screen, Screen::Home);
     assert!(restored.mailbox().drafts.iter().any(|m| m.body == "hello"));
 }
 #[test]
@@ -97,13 +97,13 @@ fn host_save_failure_rolls_back_send_and_success_precedes_submit() {
         Box::new(Adapter(traffic.clone())),
     )
     .unwrap();
-    runtime.phone.go(Screen::Messages);
+    runtime.shell.go(Screen::Messages);
     tap(&mut runtime, Key::Center);
     runtime.text("123");
     runtime.tab();
     runtime.text("hello");
     tap(&mut runtime, Key::Center);
-    assert!(runtime.phone.messaging.ui.pending.is_some());
+    assert!(runtime.shell.messaging.ui.pending.is_some());
     runtime.poll_services().unwrap();
     assert!(traffic.borrow().commands.is_empty());
     assert!(
@@ -112,7 +112,7 @@ fn host_save_failure_rolls_back_send_and_success_precedes_submit() {
             .is_err()
     );
     assert!(runtime.mailbox().outbox.is_empty());
-    assert_eq!(runtime.phone.messaging.compose.body.text(), "hello");
+    assert_eq!(runtime.shell.messaging.compose.body.text(), "hello");
     tap(&mut runtime, Key::Center);
     let mut saved = Vec::new();
     runtime
@@ -218,8 +218,8 @@ fn browser_rejects_stale_generation_and_different_instance_results() {
         &second,
         Ok(crate::platform::parse(&second.url, "<title>New</title>new"))
     ));
-    assert_eq!(runtime.phone.browsing.model.page.title, "New");
-    assert_eq!(runtime.phone.browsing.view, crate::phone::BrowserView::Page);
+    assert_eq!(runtime.shell.browsing.model.page.title, "New");
+    assert_eq!(runtime.shell.browsing.view, crate::shell::BrowserView::Page);
     let mut saved = Vec::new();
     runtime
         .save(|bytes| {

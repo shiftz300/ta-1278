@@ -14,7 +14,6 @@ FONTS = [
     'assets/fonts/device/font-2-hani.otf',
     'assets/fonts/subsets/FallbackCJK.otf',
     'assets/fonts/subsets/FallbackSymbols.ttf',
-    'assets/fonts/subsets/FallbackEmoji.ttf',
 ]
 
 
@@ -46,10 +45,10 @@ def coverage():
         chars.update(current)
         if i == 1:
             before = len(chars)
-    sample = '你好繁體漢字髙龘喆𠮷こんにちはカタカナ안녕하세요→←✓★♫😀🙂🤔👍✨'
+    sample = '你好繁體漢字髙龘喆𠮷こんにちはカタカナ안녕하세요→←✓★♫'
     if not all(ord(c) in chars for c in sample):
         raise ValueError('Required sample characters are missing')
-    report = {'method': 'Unicode cmap union in renderer fallback order; not full shaping or emoji sequence support',
+    report = {'method': 'Unicode cmap union in renderer fallback order; Emoji fallback is omitted and missing characters use a square',
               'before': before, 'after': len(chars), 'added': len(chars) - before, 'fonts': rows}
     (ROOT / 'assets/font-coverage.json').write_bytes(
         (json.dumps(report, ensure_ascii=False, indent=2) + '\n').encode('utf-8'))

@@ -1,8 +1,8 @@
 //! Local mailbox views; native conversation geometry remains unverified.
 use super::*;
-use crate::phone::mail::MailPage;
+use crate::shell::mail::MailPage;
 const BLACK: Color = [0, 0, 0, 255];
-pub(super) fn folder(c: &mut Canvas, p: &Phone) {
+pub(super) fn folder(c: &mut Canvas, p: &Shell) {
     let title = match p.screen {
         Screen::Drafts => "草稿",
         Screen::Inbox => "收件箱",
@@ -47,7 +47,7 @@ pub(super) fn folder(c: &mut Canvas, p: &Phone) {
     c.rect(0, 282, 240, 38, BLACK);
     Softkeys::back(if count == 0 { "" } else { "打开" }).draw(c);
 }
-fn read(c: &mut Canvas, p: &Phone) {
+fn read(c: &mut Canvas, p: &Shell) {
     let Some(m) = p.mail_message() else {
         return;
     };
@@ -83,7 +83,7 @@ fn read(c: &mut Canvas, p: &Phone) {
         c.rect(235, y, 3, height, MUTED);
     }
 }
-pub(super) fn render(c: &mut Canvas, p: &Phone, page: MailPage) {
+pub(super) fn render(c: &mut Canvas, p: &Shell, page: MailPage) {
     use MailPage::*;
     match page {
         Read => {

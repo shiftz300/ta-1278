@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Remove fallback glyphs already covered by earlier fonts; preserve cmap union.
+"""Remove fallback glyphs already covered by earlier fonts; preserve the CJK/symbol cmap union; Emoji fallback is excluded.
 Developer-only fontTools transform. Generated fonts are checked in for Rust-only builds.
 """
 from pathlib import Path
@@ -20,8 +20,7 @@ def main():
     out.mkdir(exist_ok=True)
     rows = []
     for source, name in [('NotoSansCJKsc-Regular.otf', 'FallbackCJK.otf'),
-                         ('NotoSansSymbols2-Regular.ttf', 'FallbackSymbols.ttf'),
-                         ('NotoEmoji.ttf', 'FallbackEmoji.ttf')]:
+                         ('NotoSansSymbols2-Regular.ttf', 'FallbackSymbols.ttf')]:
         path = ROOT/'assets/fonts'/source
         font = TTFont(path, recalcTimestamp=False)
         original = set(font.getBestCmap())
@@ -57,7 +56,7 @@ def main():
                      'source_bytes': path.stat().st_size, 'bytes': target.stat().st_size,
                      'source_codepoints': len(original), 'retained_codepoints': len(actual)})
         covered.update(original)
-    report = {'method': 'Subset supplemental fonts in renderer fallback order; preserve Unicode cmap union. Remove unused layout shaping features. Rename derived font families; preserve copyright/license records. Original source fonts remain unchanged.',
+    report = {'method': 'Subset supplemental fonts in renderer fallback order; preserve Unicode cmap union. Remove unused layout shaping features. Rename derived font families; preserve copyright/license records. Original source fonts remain unchanged. Emoji fallback is omitted; unsupported characters render as a square.',
               'coverage_codepoints': len(covered), 'fonts': rows}
     (out/'manifest.json').write_text(json.dumps(report, indent=2)+'\n')
     print(json.dumps(report, indent=2))

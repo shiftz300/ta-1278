@@ -1,9 +1,9 @@
 //! File I/O, bounded transfers and path-reference updates.
 use super::*;
 impl Media {
-    pub(super) fn finish_file_jobs(&mut self, phone: &mut Phone) {
+    pub(super) fn finish_file_jobs(&mut self, shell: &mut Shell) {
         while let Ok(result) = self.transfers.try_recv() {
-            phone.files.busy = false;
+            shell.files.busy = false;
             match result {
                 FileResult::Transfer(TransferResult {
                     result,
@@ -12,22 +12,22 @@ impl Media {
                     moving,
                 }) => {
                     if let Err(e) = result {
-                        phone.notice(format!("复制/移动失败：{e}"));
+                        shell.notice(format!("复制/移动失败：{e}"));
                     } else {
-                        phone.finish_file_transfer();
-                        self.prepare_refresh(phone);
+                        shell.finish_file_transfer();
+                        self.prepare_refresh(shell);
                         if moving {
-                            self.remap_links(phone, &from, &to);
+                            self.remap_links(shell, &from, &to);
                         }
                     }
-                    if let Err(e) = self.list(phone, phone.files.path.clone()) {
-                        phone.notice(e);
+                    if let Err(e) = self.list(shell, shell.files.path.clone()) {
+                        shell.notice(e);
                     }
                 }
                 FileResult::Remove { removed, failed } => {
                     if !removed.is_empty() {
-                        self.prepare_refresh(phone);
-                        if let Some(saved) = &mut phone.playback.resume
+                        self.prepare_refresh(shell);
+                        if let Some(saved) = &mut shell.playback.resume
                             && saved
                                 .path
                                 .as_ref()
@@ -37,50 +37,50 @@ impl Media {
                             saved.position = 0.;
                         }
                     }
-                    phone.files.marked.retain(|p| !removed.contains(p));
-                    if let Err(e) = self.list(phone, phone.files.path.clone()) {
-                        phone.notice(e);
+                    shell.files.marked.retain(|p| !removed.contains(p));
+                    if let Err(e) = self.list(shell, shell.files.path.clone()) {
+                        shell.notice(e);
                     }
                     if let Some((_, error)) = failed.first() {
-                        phone.files.view = FileView::DeleteSelect;
-                        phone.notice(format!("已删除 {} 项；未完成：{}", removed.len(), error));
+                        shell.files.view = FileView::DeleteSelect;
+                        shell.notice(format!("已删除 {} 项；未完成：{}", removed.len(), error));
                     } else {
-                        phone.files.marked.clear();
+                        shell.files.marked.clear();
                     }
                 }
             }
         }
     }
-    pub(super) fn list(&self, phone: &mut Phone, path: String) -> Result<(), String> {
+    pub(super) fn list(&self, shell: &mut Shell, path: String) -> Result<(), String> {
         let mut entries = self.files.list(&path).map_err(|e| e.to_string())?;
-        if phone.files.transfer.is_some() {
+        if shell.files.transfer.is_some() {
             entries.retain(|e| e.directory);
         }
-        phone.files.writable = self.files.writable(&path);
-        phone.files.path = path;
-        phone.files.entries = entries;
-        phone.files.view = FileView::Browse;
-        if phone.screen == Screen::Tools(crate::phone::tools::ToolPage::Files) {
-            phone.index = phone.index.min(phone.files.entries.len().saturating_sub(1));
+        shell.files.writable = self.files.writable(&path);
+        shell.files.path = path;
+        shell.files.entries = entries;
+        shell.files.view = FileView::Browse;
+        if shell.screen == Screen::Tools(crate::shell::tools::ToolPage::Files) {
+            shell.index = shell.index.min(shell.files.entries.len().saturating_sub(1));
         }
         Ok(())
     }
     pub(super) fn file_request(
         &mut self,
-        phone: &mut Phone,
+        shell: &mut Shell,
         request: FileRequest,
     ) -> Result<(), String> {
-        if !phone.features.files {
+        if !shell.features.files {
             return Err("文件功能已停用。".into());
         }
         match request {
             FileRequest::Storage => {
-                phone.files.capacity = self.files.capacity();
-                phone.files.view = FileView::Storage;
+                shell.files.capacity = self.files.capacity();
+                shell.files.view = FileView::Storage;
                 Ok(())
             }
             FileRequest::Transfer(from, to, moving) => {
-                phone.files.busy = true;
+                shell.files.busy = true;
                 let files = self.files.clone();
                 let tx = self.transfer_results.clone();
                 thread::spawn(move || {
@@ -97,7 +97,7 @@ impl Media {
                 Ok(())
             }
             FileRequest::RemoveMany(paths) => {
-                phone.files.busy = true;
+                shell.files.busy = true;
                 let files = self.files.clone();
                 let tx = self.transfer_results.clone();
                 thread::spawn(move || {
@@ -106,87 +106,87 @@ impl Media {
                 });
                 Ok(())
             }
-            FileRequest::List(path) => self.list(phone, path),
+            FileRequest::List(path) => self.list(shell, path),
             FileRequest::Enter(path) => {
-                let previous = (phone.files.path.clone(), phone.index);
-                self.list(phone, path)?;
-                phone.files.history.push(previous);
-                phone.index = 0;
+                let previous = (shell.files.path.clone(), shell.index);
+                self.list(shell, path)?;
+                shell.files.history.push(previous);
+                shell.index = 0;
                 Ok(())
             }
             FileRequest::Parent => {
-                if let Some((path, index)) = phone.files.history.last().cloned() {
-                    self.list(phone, path)?;
-                    phone.files.history.pop();
-                    phone.index = index.min(phone.files.entries.len().saturating_sub(1));
+                if let Some((path, index)) = shell.files.history.last().cloned() {
+                    self.list(shell, path)?;
+                    shell.files.history.pop();
+                    shell.index = index.min(shell.files.entries.len().saturating_sub(1));
                 }
                 Ok(())
             }
             FileRequest::Play(path) => {
-                use crate::phone::media::{Purpose, Request};
+                use crate::shell::media::{Purpose, Request};
                 if Purpose::Pictures.accepts(&path) || Purpose::Videos.accepts(&path) {
                     let purpose = if Purpose::Videos.accepts(&path) {
                         Purpose::Videos
                     } else {
                         Purpose::Pictures
                     };
-                    phone.open_media(purpose);
-                    if phone.screen != Screen::Media {
+                    shell.open_media(purpose);
+                    if shell.screen != Screen::Media {
                         return Err("此功能已停用。".into());
                     }
-                    phone.media.ui.selected = path.clone();
-                    phone.media.ui.viewing = true;
-                    phone.media.ui.direct = true;
-                    phone.media.ui.entries = phone
+                    shell.media.ui.selected = path.clone();
+                    shell.media.ui.viewing = true;
+                    shell.media.ui.direct = true;
+                    shell.media.ui.entries = shell
                         .files
                         .entries
                         .iter()
                         .filter(|e| !e.directory && purpose.accepts(&e.path))
                         .cloned()
                         .collect();
-                    phone.media.ui.pending = vec![Request::Open(path)];
+                    shell.media.ui.pending = vec![Request::Open(path)];
                     return Ok(());
                 }
-                if self.scanning || phone.playback.loading {
+                if self.scanning || shell.playback.loading {
                     return Err("正在刷新曲库，请稍候。".into());
                 }
-                if !phone.features.music {
+                if !shell.features.music {
                     return Err("音乐功能已停用。".into());
                 }
-                let track = probe(&self.files, &path)?;
+                let track = probe(&self.files, self.decoder.as_ref(), &path)?;
                 let index = if let Some(i) = self.tracks.iter().position(|t| t.path == path) {
                     i
                 } else {
-                    phone
+                    shell
                         .playback
                         .model
                         .tracks
                         .push((track.title.clone(), track.seconds));
                     self.tracks.push(track);
-                    phone.append_music_path(path.clone());
+                    shell.append_music_path(path.clone());
                     self.tracks.len() - 1
                 };
-                phone.playback.resume = None;
-                phone.files.selected = phone.index;
-                phone.go(Screen::Music);
-                phone.playback.model.queue.clear();
-                phone.play_track(index);
-                phone.playback.return_file = true;
+                shell.playback.resume = None;
+                shell.files.selected = shell.index;
+                shell.go(Screen::Music);
+                shell.playback.model.queue.clear();
+                shell.play_track(index);
+                shell.playback.return_file = true;
                 Ok(())
             }
             FileRequest::Mkdir(path) => {
                 self.files.mkdir(&path).map_err(|e| e.to_string())?;
-                self.list(phone, phone.files.path.clone())
+                self.list(shell, shell.files.path.clone())
             }
             FileRequest::Rename(from, to) => {
                 self.files.rename(&from, &to).map_err(|e| e.to_string())?;
-                self.prepare_refresh(phone);
-                self.remap_links(phone, &from, &to);
-                self.list(phone, phone.files.path.clone())
+                self.prepare_refresh(shell);
+                self.remap_links(shell, &from, &to);
+                self.list(shell, shell.files.path.clone())
             }
         }
     }
-    pub(super) fn remap_links(&mut self, phone: &mut Phone, from: &str, to: &str) {
+    pub(super) fn remap_links(&mut self, shell: &mut Shell, from: &str, to: &str) {
         let remap = |path: &mut String| {
             if path_contains(from, path) {
                 *path = format!("{to}{}", &path[from.len()..]);
@@ -195,7 +195,7 @@ impl Media {
                 false
             }
         };
-        if let Some(saved) = &mut phone.playback.resume {
+        if let Some(saved) = &mut shell.playback.resume {
             if let Some(path) = &mut saved.path {
                 remap(path);
             }
@@ -204,35 +204,35 @@ impl Media {
             }
         }
         let mut changed = false;
-        for row in &mut phone.contacts.records {
+        for row in &mut shell.contacts.records {
             changed |= remap(&mut row[0]);
             changed |= remap(&mut row[7]);
         }
-        for event in &mut phone.organizer.events {
+        for event in &mut shell.organizer.events {
             changed |= remap(&mut event.fields[4]);
         }
-        for alarm in &mut phone.organizer.alarms {
+        for alarm in &mut shell.organizer.alarms {
             changed |= remap(&mut alarm.fields[3]);
         }
-        for list in &mut phone.playback.playlists {
+        for list in &mut shell.playback.playlists {
             for path in &mut list.paths {
                 changed |= remap(path);
             }
         }
-        phone.records_dirty |= changed;
-        if let Some(path) = &mut phone.settings.preferences.wallpaper {
-            phone.settings.dirty |= remap(path);
+        shell.records_dirty |= changed;
+        if let Some(path) = &mut shell.settings.preferences.wallpaper {
+            shell.settings.dirty |= remap(path);
         }
-        phone.settings.dirty |= remap(&mut phone.settings.preferences.ringtone);
-        phone.media.pictures.clear();
+        shell.settings.dirty |= remap(&mut shell.settings.preferences.ringtone);
+        shell.media.pictures.clear();
     }
-    pub(super) fn prepare_refresh(&mut self, phone: &mut Phone) {
-        if phone.playback.resume.is_none() {
-            phone.playback.resume = Some(phone.playback.snapshot());
+    pub(super) fn prepare_refresh(&mut self, shell: &mut Shell) {
+        if shell.playback.resume.is_none() {
+            shell.playback.resume = Some(shell.playback.snapshot());
         }
         self.audio.stop();
-        phone.playback.model.playing = false;
-        phone.playback.loading = phone.features.music;
-        phone.playback.refresh = phone.features.music;
+        shell.playback.model.playing = false;
+        shell.playback.loading = shell.features.music;
+        shell.playback.refresh = shell.features.music;
     }
 }

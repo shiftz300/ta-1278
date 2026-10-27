@@ -1,7 +1,7 @@
 //! Nonblocking bridge. The default adapter is offline; no sockets/modem are opened.
-use crate::phone::{Overlay, Phone};
+use crate::shell::mail::State;
 use phone_core::services::{
-    Apply, Backend, Command, Envelope, Event, Offline, PortError, SendMessage,
+    Apply, Backend, Capabilities, Command, Envelope, Event, Offline, PortError, SendMessage,
 };
 use std::collections::HashSet;
 
@@ -27,11 +27,11 @@ impl Services {
     }
     /// Called after the app's normal flush. A dirty mailbox is never submitted
     /// or acknowledged; failed saves leave the event available for retry.
-    pub fn tick(&mut self, phone: &mut Phone) -> Result<(), String> {
+    pub fn prepare(&mut self, mail: &mut State, now: u64) -> Result<Option<Capabilities>, String> {
         let capabilities = self.backend.capabilities();
-        phone.messaging.backend = capabilities.send_messages.then(|| self.backend.id().into());
-        if phone.messaging.dirty || phone.messaging.ui.pending.is_some() {
-            return Ok(());
+        mail.backend = capabilities.send_messages.then(|| self.backend.id().into());
+        if mail.dirty || mail.ui.pending.is_some() {
+            return Ok(None);
         }
         if let Some(envelope) = &self.pending
             && self.applied
@@ -41,31 +41,28 @@ impl Services {
                     self.pending = None;
                     self.applied = false;
                 }
-                Err(PortError::Busy | PortError::Disconnected) => return Ok(()),
+                Err(PortError::Busy | PortError::Disconnected) => return Ok(None),
                 Err(e) => return Err(format!("Service ack: {e:?}")),
             }
         }
-        let now = phone.timestamp();
-        let before = phone.messaging.mailbox.services.alerts.len();
-        phone
-            .messaging
-            .mailbox
+        let before = mail.mailbox.services.alerts.len();
+        mail.mailbox
             .services
             .alerts
             .retain(|a| a.alert.expires_ms.is_none_or(|end| end > now));
-        if before != phone.messaging.mailbox.services.alerts.len() {
-            phone.messaging.dirty = true;
-            return Ok(());
+        if before != mail.mailbox.services.alerts.len() {
+            mail.dirty = true;
+            return Ok(None);
         }
         self.submitted.retain(|id| {
-            phone.messaging.mailbox.outbox.iter().any(|m| {
+            mail.mailbox.outbox.iter().any(|m| {
                 m.submission
                     .as_ref()
                     .is_some_and(|s| s.request_id == *id && s.state.pending())
             })
         });
         if capabilities.send_messages {
-            for message in &phone.messaging.mailbox.outbox {
+            for message in &mail.mailbox.outbox {
                 let Some(s) = &message.submission else {
                     continue;
                 };
@@ -90,8 +87,17 @@ impl Services {
                 break; // At most one dispatch per frame; never block input.
             }
         }
+        Ok(Some(capabilities))
+    }
+    pub fn needs_poll(&self) -> bool {
+        self.pending.is_none()
+    }
+    pub fn receive(
+        &mut self,
+        mail: &mut State,
+        capabilities: Capabilities,
+    ) -> Result<Option<Apply>, String> {
         if self.pending.is_none() {
-            phone.present_service_alert();
             self.pending = match self.backend.poll() {
                 Ok(event) => event,
                 Err(PortError::Busy | PortError::Disconnected) => None,
@@ -108,81 +114,16 @@ impl Services {
             if !enabled {
                 return Err("Service event exceeds enabled capabilities".into());
             }
-            let selected = if phone.screen == crate::phone::Screen::Messages && phone.index > 0 {
-                phone
-                    .messaging
-                    .mailbox
-                    .conversations()
-                    .get(phone.index - 1)
-                    .map(|c| c.peer.clone())
-            } else {
-                None
-            };
-            let result = phone
-                .messaging
+            let result = mail
                 .mailbox
                 .apply_service_event(self.backend.id(), envelope)?;
             if result != Apply::Replay {
-                phone.messaging.dirty = true;
-                if let Apply::Received(index) = result {
-                    phone.received_message(index, selected);
-                }
+                mail.dirty = true;
             }
             self.applied = true;
-            return Ok(()); // Ack on a subsequent tick, after successful flush.
+            return Ok(Some(result)); // Ack only after a subsequent successful save.
         }
-        phone.present_service_alert();
-        Ok(())
-    }
-}
-impl Phone {
-    pub fn present_service_alert(&mut self) {
-        let now = self.timestamp();
-        if let Some(Overlay::ServiceAlert {
-            backend,
-            id,
-            title,
-            body,
-        }) = &mut self.overlay
-        {
-            let live = self.messaging.mailbox.services.alerts.iter().find(|a| {
-                &a.backend == backend
-                    && &a.alert.id == id
-                    && !a.dismissed
-                    && a.alert.expires_ms.is_none_or(|end| end > now)
-            });
-            if let Some(a) = live {
-                if *title != a.alert.title || *body != a.alert.body {
-                    *title = a.alert.title.clone();
-                    *body = a.alert.body.clone();
-                    self.notice_scroll = 0;
-                }
-            } else {
-                self.overlay = None;
-            }
-        }
-        // Preserve active editors/modals and native alarm priority. This is a
-        // host policy, not an assertion about native ETWS interruption rules.
-        if self.overlay.is_some() || self.editor().is_some() || self.active_reminder().is_some() {
-            return;
-        }
-        if let Some(a) = self
-            .messaging
-            .mailbox
-            .services
-            .alerts
-            .iter()
-            .find(|a| !a.dismissed && a.alert.expires_ms.is_none_or(|end| end > now))
-        {
-            self.notice_scroll = 0;
-            self.notice_lines = 0;
-            self.overlay = Some(Overlay::ServiceAlert {
-                backend: a.backend.clone(),
-                id: a.alert.id.clone(),
-                title: a.alert.title.clone(),
-                body: a.alert.body.clone(),
-            });
-        }
+        Ok(None)
     }
 }
 

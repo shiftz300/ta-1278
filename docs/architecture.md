@@ -4,13 +4,13 @@ The public `phone_runtime` library owns phone interaction and CPU drawing. The o
 
 ## Ownership
 
-[Current functional diagram and review boundaries](overview.md). Runtime now owns host polling, profile/checkpoint persistence and close policy. App-owned state lives in its owning module; `organizer::LocalData` is only a compatibility storage DTO. Views borrow Phone immutably and return derived layout, which is measured without raster writes before input. Platform ports never receive Phone.
+[Current functional diagram and review boundaries](overview.md). Runtime exposes host polling, profile/checkpoint saving and closing through one entry point; its application-side runtime/app module owns effect integration and persistence/close policy. App-owned state lives in its owning module; `organizer::LocalData` is only a compatibility storage DTO. Views borrow Shell immutably and return derived layout, which is measured without raster writes before input. Platform ports never receive Shell.
 
 ## Modules
 
 Rust source files use one word. Parent directories name the owner: `audio/midi.rs`,
-`storage/files.rs`, `phone/browser/data.rs`, `views/browser/layout.rs`. Controllers
-stay under `phone/`, presentation under `views/`, and reusable controls under `ui/`.
+`storage/files.rs`, `shell/browser/data.rs`, `views/browser/layout.rs`. Controllers
+stay under `shell/`, presentation under `views/`, and reusable controls under `ui/`.
 Generated data belongs to its feature (`converter/data.rs`). Original firmware,
 resource and capture filenames keep their evidence identifiers.
 
@@ -22,14 +22,14 @@ resource and capture filenames keep their evidence identifiers.
 | `browser.rs` | Pages, request generations, history/forward, focus/scroll and forms |
 | `music.rs` | Playback controls, seek and repeat; external audio clock in normal runs |
 | `utilities.rs`, `converter.rs`, `calendar.rs`, `snake.rs` | Local utility models, date arithmetic and replacement game rules |
-| `lib.rs`, `runtime.rs`, `runtime/state.rs` | Public input/time/frame entry point, service/document ports and host-owned user-data checkpoints |
+| `lib.rs`, `runtime.rs`, `runtime/app/*` | Public input/time/frame entry point, service/document ports and host-owned user-data checkpoints |
 | `platform.rs` | Explicit native folder/audio/HTTP adapter, bound to one runtime |
 | `main.rs`, `desktop.rs`, `host/input.rs`, `desktop/smoke.rs` | Desktop entry point, window lifecycle, native events and window smoke run |
 | `storage/profile.rs`, `storage/session.rs` | Existing desktop JSON profile and wall-clock utility persistence |
-| `phone.rs`, `phone/editor.rs`, `phone/overlays.rs` | Top-level routes and shared editor/menu overlays |
-| `phone/sms.rs`, `conversation.rs`, `mail.rs`, `browser.rs`, `phone/browser/data.rs`, `music.rs` | App routes, local mailbox reading and browser persistence |
-| `phone/settings.rs`, `organizer.rs`, `contacts.rs`, `tools.rs`, `snake.rs` | Separate settings, organizer, utility and game routes |
-| `phone/calendar.rs`, `phone/files/delete.rs` | Inline calendar editing and file checkbox/confirmation state machines |
+| `shell.rs`, `shell/editor.rs`, `shell/overlays.rs` | Top-level routes and shared editor/menu overlays |
+| `shell/sms.rs`, `conversation.rs`, `mail.rs`, `browser.rs`, `shell/browser/data.rs`, `music.rs` | App routes, local mailbox reading and browser persistence |
+| `shell/settings.rs`, `organizer.rs`, `contacts.rs`, `tools.rs`, `snake.rs` | Separate settings, organizer, utility and game routes |
+| `shell/calendar.rs`, `shell/files/delete.rs` | Inline calendar editing and file checkbox/confirmation state machines |
 | `storage/setup.rs` | First-launch host folder choice and persisted path validation |
 | `ui/` | Shared controls, typed menu items, focus policy and popup composition; no app I/O or persistence |
 | `views/` | App content and control declarations; no network or storage operations |
@@ -38,11 +38,11 @@ resource and capture filenames keep their evidence identifiers.
 | `web.rs`, `web/flow.rs`, `phone-core/browser/flow.rs` | Bounded HTTP worker, DOM control mapping and ordered HTML layout tokens |
 | `views/browser/layout.rs`, `views/browser/chrome.rs` | Browser document paint/focus geometry and measured native panel styles |
 | `storage/files.rs` | One concrete local folder, direct file streams and bounded file operations |
-| `media.rs`, `media/files.rs`, `audio.rs`, `phone/files.rs`, `views/files.rs` | Shared file/library service, audio output and separate file-manager UI |
+| `media.rs`, `media/files.rs`, `audio.rs`, `shell/files.rs`, `views/files.rs` | Shared file/library service, audio output and separate file-manager UI |
 | `config.rs`, `config/apps.rs` | Bounded runtime JSON, optional app policy, host capabilities and storage settings |
 | `storage.rs`, `storage/` | Bounded JSON, schema checks, backup/atomic replacement, profile lock and utility checkpoints |
 
-Canvas clipping keeps scrolling form content inside its viewport, including text and images. Calendar uses the shared fields, editor, popup, softkeys and date/time control; file deletion uses the shared checkbox list. Converter coefficients and bounded formatting live in `phone-core/converter.rs`; `phone/converter.rs` owns pair selection and two-field editing, while `views/converter.rs` uses the shared numeric form/editor and softkeys.
+Canvas clipping keeps scrolling form content inside its viewport, including text and images. Calendar uses the shared fields, editor, popup, softkeys and date/time control; file deletion uses the shared checkbox list. Converter coefficients and bounded formatting live in `phone-core/converter.rs`; `shell/converter.rs` owns pair selection and two-field editing, while `views/converter.rs` uses the shared numeric form/editor and softkeys.
 
 Core code has no USB, modem, network or filesystem access. The browser worker receives document requests and optional current-page context, and cannot access the mailbox. Only the recovered T9 routines are interpreted in the bounded guest runtime; other firmware code is not executed.
 
@@ -98,10 +98,21 @@ The prototype's 750 ms multi-tap, 500 ms long press, 120 ms repeat, 4096-unit SM
 
 ## Media and local completion
 
-Image, video, contact-picture, wallpaper and ringtone selection share `phone/media.rs` and `views/media.rs`. `media/visual.rs` owns bounded copies and decoding jobs. The small `native/MediaHelper.swift` uses installed macOS frameworks and is bundled beside the executable. `phone/contacts/groups.rs` handles group/choice routes. `effects.rs` routes cues through recovered audio resources and independent SF2 synthesis; native waveform parity is not claimed. Playlist queue rules remain in `phone-core/music.rs`; UI/data stays in `phone/music.rs`. [Behavior and exact limits](local-completion.md).
+Image, video, contact-picture, wallpaper and ringtone selection share `shell/media.rs` and `views/media.rs`. `media/visual.rs` owns bounded copies and decoding jobs. The small `native/MediaHelper.swift` uses installed macOS frameworks and is bundled beside the executable. `shell/contacts/groups.rs` handles group/choice routes. `effects.rs` routes cues through recovered audio resources and independent SF2 synthesis; native waveform parity is not claimed. Playlist queue rules remain in `phone-core/music.rs`; UI/data stays in `shell/music.rs`. [Behavior and exact limits](local-completion.md).
 
 [Unified runtime config](config.md) filters the main menu and checks both `go`/`launch` routes. Shortcut IDs remain stable; disabled targets are hidden on Home and inactive in selection. Reminder source tags allow disabled app alerts to stay saved without blocking input or audio. These host policies are separate from native evidence. Radio/music page corrections (research archive) reuse shared popup, waiting, softkey and rounded drawing controls.
 
 The [UI authoring guide](shared-ui.md#adding-a-menu) shows how one typed menu declaration drives both rows and keyboard activation. `ui/navigation.rs` keeps list movement separate from app effects; `ui/popup.rs` composes existing list and softkey controls. Native layout differences and asynchronous return/save policies remain in app modules.
 
 [Embedding contract and limits](runtime.md). The desktop and embedded hosts share the runtime; the runtime does not create or terminate a host event loop.
+
+## Shell and application boundaries
+
+The internal Phone type/module is now Shell/shell. Shell owns routing, shared
+focus and cross-application actions; it is not a public platform or backend API.
+Contacts owns its page, draft and selected identity independently of organizer.
+Menus use existing typed Item declarations and painting borrows overlays.
+Services receives only message state; VisualMedia receives media state/context;
+Sound receives immutable playback intent and returns observations. Application
+code applies results and owns queue/repeat, navigation, alert and save policy.
+The media aggregator deliberately retains cross-application coordination.

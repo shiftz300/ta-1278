@@ -4,7 +4,7 @@
 
 仓库尚未为其余原创代码指定统一开源许可证。资源来源和校验见 [assets/README.md](assets/README.md) 与相邻清单。
 
-桌面程序新增 Noto CJK / Symbols 2 / Emoji（SIL OFL）、Rime 简体拼音词库（Apache 2.0）和 FrequencyWords 英文词频数据（CC BY-SA 4.0，不是其代码的 MIT 许可）。来源固定版本、SHA-256、作者与完整许可见 [assets/README.md](assets/README.md) 和相邻许可文件。上述公共词库仅供可选替代预测器使用；桌面程序已切换到 `assets/input/t9/` 中的原机例程与字库，通过本项目的有界 ARM 解释器运行。原机 T9 代码、字符表及字库属于固件衍生资料，不适用 Rime、FrequencyWords 或本项目自编代码的许可；权利归其原权利人，见资源清单与固件发布边界。
+桌面程序新增 Noto CJK / Symbols 2（SIL OFL）、Rime 简体拼音词库（Apache 2.0）和 FrequencyWords 英文词频数据（CC BY-SA 4.0，不是其代码的 MIT 许可）。来源固定版本、SHA-256、作者与完整许可见 [assets/README.md](assets/README.md) 和相邻许可文件。上述公共词库仅供可选替代预测器使用；桌面程序已切换到 `assets/input/t9/` 中的原机例程与字库，通过本项目的有界 ARM 解释器运行。原机 T9 代码、字符表及字库属于固件衍生资料，不适用 Rime、FrequencyWords 或本项目自编代码的许可；权利归其原权利人，见资源清单与固件发布边界。
 
 - Rime stroke dictionary: rime/rime-stroke, revision `1e8fff9b9494ddec23b0cbc526bcfd8171a6fd48`. Original text, authors and LGPL-3.0 license retained under `assets/input/`. Used as replacement five-stroke data, not original Nokia input code. Runtime ranking also uses the existing pinyin frequencies.
 

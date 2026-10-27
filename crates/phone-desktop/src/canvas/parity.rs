@@ -21,12 +21,10 @@ fn fallback_subsets_preserve_every_visible_glyph() {
     let before = [
         font("assets/fonts/NotoSansCJKsc-Regular.otf"),
         font("assets/fonts/NotoSansSymbols2-Regular.ttf"),
-        font("assets/fonts/NotoEmoji.ttf"),
     ];
     let after = [
         font("assets/fonts/subsets/FallbackCJK.otf"),
         font("assets/fonts/subsets/FallbackSymbols.ttf"),
-        font("assets/fonts/subsets/FallbackEmoji.ttf"),
     ];
     for (before, after) in before.iter().zip(&after) {
         for size in [18., 20., 24.] {

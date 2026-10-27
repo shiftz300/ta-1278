@@ -27,8 +27,8 @@ An unavailable saved folder stops startup with an error instead of silently crea
 - `storage/setup.rs`: first-launch choice, validation and atomic configuration save.
 - `storage/files.rs`: one concrete folder; direct file streams, listing, permissions and bounded copy/move. No replaceable filesystem backends.
 - `media.rs` and `media/files.rs`: background music scan and file operations.
-- `phone/files.rs` and `views/files.rs`: navigation, confirmations and native-shaped storage overview.
-- `audio.rs`: MP3/WAV decoding from `std::fs::File`.
+- `shell/files.rs` and `views/files.rs`: navigation, confirmations and native-shaped storage overview.
+- `audio.rs`: MP3/WAV decoding from file streams; `audio/midi/player.rs` streams MIDI through the existing SF2 synthesizer.
 - `media/visual.rs`: bounded temporary copies for the existing macOS image/video helper; these are decoder inputs, not an imported media library.
 
 Internal saved media names are slash-prefixed paths relative to the chosen folder (`/Music/song.wav`), not host absolute paths. Root writes/removal, traversal, symlinks and special files are rejected. Names must be UTF-8. This is a trusted local-folder interface, not an adversarial OS sandbox; concurrent host path replacement remains outside its guarantee.
@@ -42,3 +42,11 @@ The overview shows one storage row. Capacity is taken from the filesystem contai
 ## Verification
 
 The workspace tests cover chooser cancellation/reuse, missing storage, profile isolation, read-only operations, traversal and link rejection, no-overwrite copies, subtree-copy refusal, nonrecursive deletion, file-to-player return, failed-navigation retention and media persistence. `--smoke-test` uses synthetic pages without opening a folder picker or reading user media.
+
+## MIDI music
+
+Put `.mid` or `.midi` files in the selected storage folder (extension case does not matter), then choose Music → menu → Refresh. Files → Open also starts the same player. Pause, volume, seeking, repeat, shuffle, playlists and saved paused resume use the existing music controls.
+
+Playback uses the bundled SF2 and OxiSynth, with no added dependencies or external MIDI device. Audio is synthesized in 256-frame stereo blocks at 32 kHz, without keeping full-song PCM in memory. Library scanning reads timing/events only and does not start the synthesizer or audio output. Seeking re-synthesizes preceding samples to retain notes, pedals and effects; far jumps can take longer.
+
+Supported files are Standard MIDI File type 0/1 with metrical timing, tempo changes and General MIDI channel events, including percussion on channel 10. Bounds are 2 MiB, 64 tracks, 262,144 events and 30 minutes including a two-second release tail. SMF type 2 and SMPTE timelines report an error. GM reset is handled; other SysEx/vendor extensions are ignored, so GS/XG-specific sounds are not guaranteed. These are local player choices, not a claim of original-device MIDI engine parity.

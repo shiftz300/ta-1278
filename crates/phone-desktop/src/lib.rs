@@ -1,4 +1,4 @@
-//! User-space phone interaction runtime. No window, event loop or device is opened on construction.
+//! User-space shell interaction runtime. No window, event loop or device is opened on construction.
 mod assets;
 mod audio;
 mod canvas;
@@ -13,8 +13,8 @@ mod host;
 mod media;
 mod menu;
 mod packed;
-mod phone;
 mod services;
+mod shell;
 mod storage;
 mod theme;
 mod ui;

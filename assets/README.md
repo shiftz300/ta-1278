@@ -31,7 +31,6 @@ The green owner-selected wallpaper is not claimed to be Nokia factory art. Its a
 |---|---|
 | Noto Sans CJK SC | Noto CJK, SIL OFL; `fonts/NotoSansCJK-LICENSE.txt` |
 | Noto Sans Symbols 2 | Google Fonts, SIL OFL; `fonts/NotoSansSymbols2-OFL.txt` |
-| Noto Emoji | Google Fonts, SIL OFL; `fonts/NotoEmoji-OFL.txt` |
 | Simplified pinyin | Rime pinyin-simp, derived from Android Pinyin IME; Apache 2.0, adjacent license and authors |
 | English frequencies | hermitdave / Dave, FrequencyWords, 2018 OpenSubtitles data; content CC BY-SA 4.0, not the source code's MIT license |
 | Stroke dictionary | Rime stroke; LGPL-3.0, adjacent license and authors |
@@ -52,3 +51,5 @@ python3 scripts/check-assets.py --fonts
 Modified Noto subsets have distinct family names and retain OFL notices.
 
 Build-time compression is lossless and checked by roundtrip decoding. T9 guest code is interpreted; it is not loaded as host machine code. Full resource extraction and disassembly tools live in the separate research archive.
+
+Emoji fallback is intentionally excluded. Unsupported characters render as a square; CJK and ordinary symbol coverage is retained.

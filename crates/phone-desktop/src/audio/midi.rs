@@ -3,6 +3,7 @@
 use midly::{Format, MetaMessage, MidiMessage, Smf, Timing, TrackEventKind};
 use oxisynth::{MidiEvent, SoundFont, Synth, SynthDescriptor};
 use std::io::Cursor;
+pub(crate) mod player;
 
 pub const RATE: u32 = 32000;
 const MAX_FRAMES: usize = RATE as usize * 60;
@@ -17,7 +18,15 @@ struct Sequence {
 
 // Stable track order at equal ticks preserves program changes on shared channels.
 fn sequence(bytes: &[u8]) -> Result<Sequence, String> {
-    if bytes.len() > 128 * 1024 {
+    parse(bytes, false)
+}
+fn parse(bytes: &[u8], music: bool) -> Result<Sequence, String> {
+    let (max_bytes, max_events, max_frames) = if music {
+        (2 * 1024 * 1024, 262144, RATE as usize * 30 * 60)
+    } else {
+        (128 * 1024, 32768, MAX_FRAMES)
+    };
+    if bytes.len() > max_bytes {
         return Err("MIDI 文件超过限制。".into());
     }
     let smf = Smf::parse(bytes).map_err(|e| e.to_string())?;
@@ -37,7 +46,7 @@ fn sequence(bytes: &[u8]) -> Result<Sequence, String> {
         for event in track {
             tick += u64::from(event.delta.as_int());
             raw.push((tick, event.kind));
-            if raw.len() > 32768 {
+            if raw.len() > max_events {
                 return Err("MIDI 事件过多。".into());
             }
             if matches!(event.kind, TrackEventKind::Meta(MetaMessage::EndOfTrack)) {
@@ -53,7 +62,7 @@ fn sequence(bytes: &[u8]) -> Result<Sequence, String> {
         time += u128::from(tick - previous) * tempo;
         previous = tick;
         let frame = time * u128::from(RATE) / (ppq * 1_000_000);
-        if frame > (MAX_FRAMES - RATE as usize * 2) as u128 {
+        if frame > (max_frames - RATE as usize * 2) as u128 {
             return Err("MIDI 时长超过限制。".into());
         }
         let frame = frame as usize;
@@ -107,6 +116,7 @@ fn sequence(bytes: &[u8]) -> Result<Sequence, String> {
             {
                 Some(MidiEvent::SystemReset)
             }
+            TrackEventKind::SysEx(_) | TrackEventKind::Escape(_) if music => None,
             TrackEventKind::SysEx(_) | TrackEventKind::Escape(_) => {
                 return Err("此 MIDI 含尚未实现的系统专用事件。".into());
             }
@@ -124,7 +134,11 @@ pub struct MidiSynth {
 }
 impl MidiSynth {
     pub fn new() -> Result<Self, String> {
-        let bytes = phone_core::embedded::decode(crate::packed::SOUNDFONT)?;
+        let mut bytes = phone_core::embedded::decode(crate::packed::SOUNDFONT)?;
+        phone_core::embedded::soundfont::restore(&mut bytes)?;
+        Self::load(&bytes)
+    }
+    fn load(bytes: &[u8]) -> Result<Self, String> {
         let font =
             SoundFont::load(&mut Cursor::new(bytes)).map_err(|e| format!("原机音色库：{e:?}"))?;
         let mut synth = Synth::new(SynthDescriptor {
@@ -270,5 +284,22 @@ mod tests {
         // notes, pedals, programs or old effect tails may leak into a new clip.
         let energy = |s: &[f32]| s.iter().map(|v| v * v).sum::<f32>();
         assert!((energy(&first) - energy(&second)).abs() / energy(&first) < 0.01);
+    }
+    #[test]
+    fn restored_bank_produces_identical_pcm_without_an_output_device() {
+        let mut restored = MidiSynth::new().unwrap();
+        let mut original =
+            MidiSynth::load(include_bytes!("../../../../assets/audio/gm1_A21.sf2")).unwrap();
+        let midi = include_bytes!("../../../../assets/audio/snake-food.mid");
+        let expected = original.render(midi).unwrap();
+        let actual = restored.render(midi).unwrap();
+        assert_eq!(expected.len(), actual.len());
+        assert!(
+            expected
+                .iter()
+                .map(|s| s.to_bits())
+                .eq(actual.iter().map(|s| s.to_bits())),
+            "Restored soundfont changed synthesized PCM"
+        );
     }
 }

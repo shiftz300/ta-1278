@@ -1,5 +1,5 @@
 use super::*;
-use crate::phone::settings::Preferences;
+use crate::shell::settings::Preferences;
 use phone_core::sms::Mailbox;
 use std::path::PathBuf;
 #[test]
@@ -51,7 +51,7 @@ fn preferences_roundtrip_and_invalid_values_preserve_original() {
     std::fs::remove_dir_all(dir).unwrap();
 }
 
-use crate::phone::{Phone, alarm, organizer, tools::Tools};
+use crate::shell::{Shell, alarm, organizer, tools::Tools};
 use phone_core::{
     calendar::Date,
     input::{Event, Key, Phase},
@@ -75,7 +75,7 @@ impl Drop for Temp {
         let _ = std::fs::remove_dir_all(&self.0);
     }
 }
-fn press(p: &mut Phone, key: Key) {
+fn press(p: &mut Shell, key: Key) {
     p.handle(
         Event {
             key,
@@ -84,12 +84,12 @@ fn press(p: &mut Phone, key: Key) {
         0,
     );
 }
-fn restored(dir: &Path) -> Phone {
-    let mut p = Phone::new(Mailbox::default());
+fn restored(dir: &Path) -> Shell {
+    let mut p = Shell::new(Mailbox::default());
     p.apply_records(load_organizer(dir).unwrap());
     p
 }
-fn checkpoint(dir: &Path, p: &Phone) {
+fn checkpoint(dir: &Path, p: &Shell) {
     save_json(dir, "organizer.json", &p.records(), 8 * 1024 * 1024).unwrap();
 }
 fn one_alarm(repeat: &str) -> organizer::Alarm {
@@ -183,7 +183,7 @@ fn older_organizer_schema_migrates_and_future_or_invalid_data_is_preserved() {
 #[test]
 fn fired_once_alarm_and_snooze_survive_restart_and_midnight() {
     let dir = Temp::new();
-    let mut p = Phone::new(Mailbox::default());
+    let mut p = Shell::new(Mailbox::default());
     p.organizer.alarms.push(one_alarm("一次"));
     let day = Date::new(2026, 12, 31).unwrap();
     p.check_alarms(day, 1438);
@@ -211,7 +211,7 @@ fn fired_once_alarm_and_snooze_survive_restart_and_midnight() {
 #[test]
 fn dismissed_recurring_alarm_and_calendar_event_do_not_repeat_on_same_minute_restart() {
     let dir = Temp::new();
-    let mut p = Phone::new(Mailbox::default());
+    let mut p = Shell::new(Mailbox::default());
     let day = Date::new(2026, 10, 26).unwrap();
     p.organizer.alarms.push(one_alarm("每天"));
     p.organizer.events.push(organizer::CalendarEvent {
@@ -237,7 +237,7 @@ fn dismissed_recurring_alarm_and_calendar_event_do_not_repeat_on_same_minute_res
 #[test]
 fn failed_alarm_checkpoint_keeps_old_record_and_live_alert_for_retry() {
     let dir = Temp::new();
-    let mut p = Phone::new(Mailbox::default());
+    let mut p = Shell::new(Mailbox::default());
     p.organizer.alarms.push(one_alarm("一次"));
     checkpoint(&dir.0, &p);
     std::fs::create_dir(dir.0.join("organizer.json.bak")).unwrap();
@@ -288,7 +288,7 @@ fn running_and_paused_clocks_restore_elapsed_time_without_restarting_a_finished_
     utilities::Snapshot::capture(&tools, 30000)
         .save(&dir.0)
         .unwrap();
-    let mut p = Phone::new(Mailbox::default());
+    let mut p = Shell::new(Mailbox::default());
     utilities::Snapshot::load(&dir.0)
         .unwrap()
         .apply(&mut p.tools, 40000);
@@ -307,11 +307,11 @@ fn running_and_paused_clocks_restore_elapsed_time_without_restarting_a_finished_
 }
 #[test]
 fn timer_expiry_does_not_destroy_an_open_editor_and_can_be_acknowledged_later() {
-    let mut p = Phone::new(Mailbox::default());
+    let mut p = Shell::new(Mailbox::default());
     p.tick(0, 0.);
     p.tools.timer.start(1);
-    p.overlay = Some(crate::phone::Overlay::Text {
-        target: crate::phone::TextTarget::Tool(1),
+    p.overlay = Some(crate::shell::Overlay::Text {
+        target: crate::shell::TextTarget::Tool(1),
         editor: Box::new(phone_core::editor::Editor::new("draft", 20)),
     });
     p.tick(1000, 0.);
@@ -319,7 +319,7 @@ fn timer_expiry_does_not_destroy_an_open_editor_and_can_be_acknowledged_later() 
     assert!(!p.tools.timer_notice);
     assert!(matches!(
         p.overlay,
-        Some(crate::phone::Overlay::Text { .. })
+        Some(crate::shell::Overlay::Text { .. })
     ));
     press(&mut p, Key::End);
     p.tick(1100, 0.);
@@ -339,22 +339,22 @@ fn utility_future_schema_is_rejected_and_failed_checkpoint_remains_retryable() {
         crate::persistence::Resume::Paused,
     )
     .unwrap();
-    runtime.phone.tools.timer_name = "before".into();
-    runtime.phone.tools.dirty = true;
+    runtime.shell.tools.timer_name = "before".into();
+    runtime.shell.tools.dirty = true;
     runtime.flush(&mut store, false).unwrap();
     std::fs::create_dir(dir.0.join("utilities.json.bak")).unwrap();
-    runtime.phone.tools.timer_name = "after".into();
-    runtime.phone.tools.dirty = true;
+    runtime.shell.tools.timer_name = "after".into();
+    runtime.shell.tools.dirty = true;
     assert!(runtime.flush(&mut store, false).is_err());
-    assert!(runtime.phone.tools.dirty);
+    assert!(runtime.shell.tools.dirty);
     assert_eq!(
         utilities::Snapshot::load(&dir.0).unwrap().data.timer_name,
         "before"
     );
     std::fs::remove_dir(dir.0.join("utilities.json.bak")).unwrap();
     runtime.flush(&mut store, false).unwrap();
-    assert!(!runtime.phone.tools.dirty);
-    let mut future = utilities::Snapshot::capture(&runtime.phone.tools, 1000);
+    assert!(!runtime.shell.tools.dirty);
+    let mut future = utilities::Snapshot::capture(&runtime.shell.tools, 1000);
     future.schema_version = 9;
     let original = serde_json::to_vec(&future).unwrap();
     std::fs::write(dir.0.join("utilities.json"), &original).unwrap();

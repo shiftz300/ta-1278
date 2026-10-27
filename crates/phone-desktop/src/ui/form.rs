@@ -1,4 +1,4 @@
-//! Label/value fields and avatars shared by phone forms and contact headers.
+//! Label/value fields and avatars shared by shell forms and contact headers.
 use crate::canvas::{Canvas, Color, MUTED, WHITE};
 #[derive(Clone, Copy)]
 pub enum FieldKind {

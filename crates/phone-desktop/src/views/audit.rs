@@ -1,8 +1,8 @@
 //! CPU-only layout checks. No App, Media, USB, window or audio output is created.
 use super::*;
-use crate::phone::{files::FileView, tools::ToolPage};
+use crate::shell::{files::FileView, tools::ToolPage};
 
-pub(super) fn frame(c: &mut Canvas, p: &mut Phone, name: &str) {
+pub(super) fn frame(c: &mut Canvas, p: &mut Shell, name: &str) {
     render(c, p);
     if let Some(path) = std::env::var_os("TA1278_AUDIT_FRAMES") {
         let thread = std::thread::current();
@@ -37,7 +37,7 @@ fn sms_focus_uses_native_contacts_menu_delete_and_status_artwork() {
         }
     }
     let mut c = Canvas::new().unwrap();
-    let mut p = Phone::new(Default::default());
+    let mut p = Shell::new(Default::default());
     p.features.disable("sounds,music,video,network").unwrap();
     p.launch(Screen::Compose);
     assert!(p.messaging.compose.recipient);
@@ -57,7 +57,7 @@ fn sms_focus_uses_native_contacts_menu_delete_and_status_artwork() {
 
 #[test]
 fn audited_timer_fields_and_storage_pages_render_without_external_services() {
-    let mut p = Phone::new(Default::default());
+    let mut p = Shell::new(Default::default());
     p.features.disable("sounds,music,video,network").unwrap();
     p.settings.accent = 4;
     let mut c = Canvas::new().unwrap();
@@ -128,9 +128,9 @@ fn audited_timer_fields_and_storage_pages_render_without_external_services() {
 
 #[test]
 fn calendar_viewport_preserves_title_and_footer_and_file_checks_use_shared_rows() {
-    use crate::phone::organizer::OrganizerPage as Page;
+    use crate::shell::organizer::OrganizerPage as Page;
     use phone_core::input::{Event, Key, Phase};
-    let mut p = Phone::new(Default::default());
+    let mut p = Shell::new(Default::default());
     p.features.disable("sounds,music,video,network").unwrap();
     p.settings.accent = 4;
     let mut c = Canvas::new().unwrap();
@@ -208,7 +208,7 @@ fn calendar_viewport_preserves_title_and_footer_and_file_checks_use_shared_rows(
 #[test]
 fn converter_native_fields_keep_units_and_baselines_when_focus_changes() {
     use phone_core::input::{Event, Key, Phase};
-    fn press(p: &mut Phone, key: Key) {
+    fn press(p: &mut Shell, key: Key) {
         p.handle(
             Event {
                 key,
@@ -217,7 +217,7 @@ fn converter_native_fields_keep_units_and_baselines_when_focus_changes() {
             0,
         );
     }
-    let mut p = Phone::new(Default::default());
+    let mut p = Shell::new(Default::default());
     p.features.disable("sounds,music,video,network").unwrap();
     p.settings.accent = 4;
     let mut c = Canvas::new().unwrap();
@@ -257,7 +257,7 @@ fn converter_native_fields_keep_units_and_baselines_when_focus_changes() {
 
 #[test]
 fn music_and_radio_popups_preserve_their_background_and_wait_has_only_close() {
-    let mut p = Phone::new(Default::default());
+    let mut p = Shell::new(Default::default());
     p.features.disable("sounds,video,network").unwrap();
     p.settings.accent = 4;
     let mut c = Canvas::new().unwrap();
@@ -303,7 +303,7 @@ fn music_and_radio_popups_preserve_their_background_and_wait_has_only_close() {
 
 #[test]
 fn configured_core_menu_renders_with_hidden_shortcut_and_compact_focus() {
-    let mut p = Phone::new(Default::default());
+    let mut p = Shell::new(Default::default());
     p.features.disable("sounds,network").unwrap();
     let mut flags = serde_json::to_value(crate::config::Apps::default()).unwrap();
     for value in flags.as_object_mut().unwrap().values_mut() {
@@ -326,8 +326,8 @@ fn configured_core_menu_renders_with_hidden_shortcut_and_compact_focus() {
 
 #[test]
 fn shared_popup_app_pages_render_with_synthetic_content() {
-    use crate::phone::organizer::OrganizerPage as Page;
-    let mut p = Phone::new(Default::default());
+    use crate::shell::organizer::OrganizerPage as Page;
+    let mut p = Shell::new(Default::default());
     p.features.disable("sounds,music,video,network").unwrap();
     p.settings.accent = 4;
     let mut c = Canvas::new().unwrap();
@@ -338,17 +338,26 @@ fn shared_popup_app_pages_render_with_synthetic_content() {
     );
     p.launch(Screen::Contacts);
     for (page, name) in [
-        (Page::ContactsMenu, "framework-contacts-menu"),
-        (Page::ContactMenu, "framework-contact-menu"),
-        (Page::ContactGroupMenu, "framework-contact-group-menu"),
+        (
+            crate::shell::contacts::Page::ContactsMenu,
+            "framework-contacts-menu",
+        ),
+        (
+            crate::shell::contacts::Page::ContactMenu,
+            "framework-contact-menu",
+        ),
+        (
+            crate::shell::contacts::Page::ContactGroupMenu,
+            "framework-contact-group-menu",
+        ),
     ] {
-        p.organizer.page = page;
-        p.organizer.selected = 0;
+        p.contacts.page = page;
+        p.contacts.selected = 0;
         p.index = 0;
         frame(&mut c, &mut p, name);
     }
-    p.organizer_form(Page::ContactForm, None);
-    p.organizer.page = Page::ContactFormMenu;
+    p.contact_form(None);
+    p.contacts.page = crate::shell::contacts::Page::ContactFormMenu;
     frame(&mut c, &mut p, "framework-contact-save");
     p.launch(Screen::Organizer(Page::Calendar));
     p.organizer.date = phone_core::calendar::Date::new(2026, 1, 1).unwrap();
@@ -361,7 +370,7 @@ fn shared_popup_app_pages_render_with_synthetic_content() {
 
 #[test]
 fn phone_pages_share_editor_and_softkeys_without_call_backend() {
-    let mut p = Phone::new(Default::default());
+    let mut p = Shell::new(Default::default());
     let mut c = Canvas::new().unwrap();
     p.launch(Screen::Tools(ToolPage::Calls));
     frame(&mut c, &mut p, "calls-empty");
@@ -390,13 +399,13 @@ fn all_application_fixtures_render_without_host_services() {
         },
     )
     .unwrap();
-    runtime.phone.settings.accent = 4;
+    runtime.shell.settings.accent = 4;
     for stage in 0..126 {
         if runtime.pending_commit() {
             runtime.save(|_| Ok(())).unwrap();
         }
         let name = crate::frames::name(stage).expect("known scene");
-        frame(&mut runtime.canvas, &mut runtime.phone, name);
+        frame(&mut runtime.canvas, &mut runtime.shell, name);
         crate::frames::advance(&mut runtime, stage, 1000);
     }
 }

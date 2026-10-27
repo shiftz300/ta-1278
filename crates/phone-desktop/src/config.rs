@@ -1,4 +1,4 @@
-//! Host capabilities, separate from the phone's own settings.
+//! Host capabilities, separate from the shell's own settings.
 mod apps;
 pub use apps::Apps;
 use serde::{Deserialize, Serialize};

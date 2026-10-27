@@ -1,6 +1,6 @@
 //! Native conversation structure with explicitly local ordering/delivery policies.
 use super::*;
-use crate::phone::conversation::{Popup, number};
+use crate::shell::conversation::{Popup, number};
 const BLACK: Color = [0, 0, 0, 255];
 fn stamp(time: u64, short: bool) -> String {
     if time == 0 || time > 4_102_444_800_000 {
@@ -16,7 +16,7 @@ fn stamp(time: u64, short: bool) -> String {
         format!("{:02}/{:02} {h:02}:{m:02}", d.month, d.day)
     }
 }
-pub(super) fn root(c: &mut Canvas, p: &Phone) {
+pub(super) fn root(c: &mut Canvas, p: &Shell) {
     chrome::title(c, "信息");
     let threads = p.messaging.mailbox.conversations();
     let start = p.index.saturating_sub(3);
@@ -91,7 +91,7 @@ pub(super) fn root(c: &mut Canvas, p: &Phone) {
     Softkeys::menu(if p.index == 0 { "确认" } else { "打开" }).draw(c);
     popup(c, p);
 }
-pub(super) fn render(c: &mut Canvas, p: &Phone) {
+pub(super) fn render(c: &mut Canvas, p: &Shell) {
     let thread = p.messaging.mailbox.thread(&p.messaging.chat.peer);
     let items = thread.map(|t| t.items).unwrap_or_default();
     let (preview, _) = p.messaging.compose.body.preview();
@@ -172,7 +172,7 @@ pub(super) fn render(c: &mut Canvas, p: &Phone) {
         crate::ui::editor::message_tail(c, [x, y + height, 200], m.incoming, fill);
         let label = if m.unsent {
             m.delivery
-                .map(|s| crate::phone::mail::delivery_text(s).0)
+                .map(|s| crate::shell::mail::delivery_text(s).0)
                 .unwrap_or("未发送")
                 .into()
         } else {
@@ -208,7 +208,7 @@ pub(super) fn render(c: &mut Canvas, p: &Phone) {
     }
     popup(c, p);
 }
-fn popup(c: &mut Canvas, p: &Phone) {
+fn popup(c: &mut Canvas, p: &Shell) {
     let labels = match p.messaging.chat.popup {
         Popup::None => return,
         Popup::Root => ["草稿", "未发送"],

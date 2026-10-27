@@ -1,5 +1,5 @@
 use super::*;
-pub(super) fn render(c: &mut Canvas, p: &Phone) {
+pub(super) fn render(c: &mut Canvas, p: &Shell) {
     if p.music_refresh_visible() {
         chrome::title(c, "音乐");
         chrome::waiting(c, "正在刷新您的音乐收藏...", p.music_wait_time());

@@ -153,6 +153,9 @@ fn load(files: &Folder, path: &str, video: bool) -> Result<NativeVisual, String>
 /// Decoder results contain pixels or a bounded live video session, never app state.
 pub trait Decoder: Send + Sync {
     fn load(&self, files: &Folder, path: &str, video: bool) -> Result<Visual, String>;
+    fn audio_duration(&self, _files: &Folder, _path: &str) -> Result<f32, String> {
+        Err("此宿主未提供音频解码。".into())
+    }
 }
 pub trait Video: Send {
     fn command(&mut self, command: &str);
@@ -176,6 +179,16 @@ impl Video for NativeVideo {
 }
 pub(crate) struct SystemDecoder;
 impl Decoder for SystemDecoder {
+    fn audio_duration(&self, files: &Folder, path: &str) -> Result<f32, String> {
+        if crate::audio::midi::player::is_file(path) {
+            return crate::audio::midi::player::duration(files, path).map(|d| d.as_secs_f32());
+        }
+        crate::audio::decode(files, path)?
+            .total_duration()
+            .map(|duration| duration.as_secs_f32())
+            .ok_or("无法识别音频时长。".into())
+    }
+
     fn load(&self, files: &Folder, path: &str, video: bool) -> Result<Visual, String> {
         Ok(match load(files, path, video)? {
             NativeVisual::Image(image) => Visual::Image(image),

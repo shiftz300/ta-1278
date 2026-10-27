@@ -3,7 +3,7 @@ use winit::{event::MouseButton, keyboard::KeyCode};
 
 #[derive(Debug, PartialEq, Eq)]
 pub enum Keyboard {
-    Phone(Key),
+    Shell(Key),
     Text(char),
 }
 
@@ -15,7 +15,7 @@ pub fn key(code: KeyCode, shift: bool) -> Option<Keyboard> {
         return Some(Keyboard::Text('\n'));
     }
     if shift && code == Digit3 {
-        return Some(Keyboard::Phone(Key::Hash));
+        return Some(Keyboard::Shell(Key::Hash));
     }
     if shift {
         let symbol = match code {
@@ -35,7 +35,7 @@ pub fn key(code: KeyCode, shift: bool) -> Option<Keyboard> {
         }
     }
     if let Some(key) = keyboard(code) {
-        return Some(Keyboard::Phone(key));
+        return Some(Keyboard::Shell(key));
     }
     let (lower, upper) = match code {
         KeyA => ('a', 'A'),
@@ -156,17 +156,17 @@ mod tests {
     #[test]
     fn phone_digits_and_controls_still_reach_internal_input() {
         use KeyCode::*;
-        assert_eq!(key(Digit3, true), Some(Keyboard::Phone(Key::Hash)));
-        assert_eq!(key(NumpadHash, false), Some(Keyboard::Phone(Key::Hash)));
+        assert_eq!(key(Digit3, true), Some(Keyboard::Shell(Key::Hash)));
+        assert_eq!(key(NumpadHash, false), Some(Keyboard::Shell(Key::Hash)));
         assert_eq!(key(F4, false), None);
         assert_eq!(key(F5, false), None);
-        assert_eq!(key(Digit6, false), Some(Keyboard::Phone(Key::Digit(6))));
-        assert_eq!(key(Numpad6, true), Some(Keyboard::Phone(Key::Digit(6))));
+        assert_eq!(key(Digit6, false), Some(Keyboard::Shell(Key::Digit(6))));
+        assert_eq!(key(Numpad6, true), Some(Keyboard::Shell(Key::Digit(6))));
         assert_eq!(key(Digit6, true), Some(Keyboard::Text('^')));
-        assert_eq!(key(Enter, false), Some(Keyboard::Phone(Key::Center)));
+        assert_eq!(key(Enter, false), Some(Keyboard::Shell(Key::Center)));
         assert_eq!(key(Enter, true), Some(Keyboard::Text('\n')));
-        assert_eq!(key(ArrowLeft, true), Some(Keyboard::Phone(Key::Left)));
-        assert_eq!(key(Backspace, false), Some(Keyboard::Phone(Key::Delete)));
-        assert_eq!(key(NumpadMultiply, false), Some(Keyboard::Phone(Key::Star)));
+        assert_eq!(key(ArrowLeft, true), Some(Keyboard::Shell(Key::Left)));
+        assert_eq!(key(Backspace, false), Some(Keyboard::Shell(Key::Delete)));
+        assert_eq!(key(NumpadMultiply, false), Some(Keyboard::Shell(Key::Star)));
     }
 }

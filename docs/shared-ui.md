@@ -55,7 +55,7 @@ match menu::event(&items, &mut selected, key) {
 }
 ```
 
-The snippet illustrates the view and controller phases; they run separately. Actual examples are `phone/radio.rs` with `views/radio.rs`, and `phone/mail.rs` with `views/mail.rs`. Radio uses a fixed array; mail uses static slices. Neither requires an allocation to build its menu rows. `Item::marker` supplies a check/radio/switch marker when needed. Disabled entries remain focusable, but the shared event handler never activates them. Center activates and Right cancels; Left is not silently treated as confirmation.
+The snippet illustrates the view and controller phases; they run separately. Actual examples are `shell/radio.rs` with `views/radio.rs`, and `shell/mail.rs` with `views/mail.rs`. Radio uses a fixed array; mail uses static slices. Neither requires an allocation to build its menu rows. `Item::marker` supplies a check/radio/switch marker when needed. Disabled entries remain focusable, but the shared event handler never activates them. Center activates and Right cancels; Left is not silently treated as confirmation.
 
 ## Choosing a page control
 
@@ -85,10 +85,16 @@ The comparator requires identical frame names and 240×320 dimensions. Only the 
 
 Use one-word filenames under the owning feature. `ui/candidates.rs` and
 `ui/tones.rs` are shared controls; `views/browser/chrome.rs` is browser-specific.
-`phone/editor.rs` selects the active editor for both drawing and input, including
+`shell/editor.rs` selects the active editor for both drawing and input, including
 modal/reminder blocking. `ui/form.rs` shares the selected date/time digit renderer.
 `assets.rs` centralizes embedded PNG paths and decoding; resource IDs and order
 stay explicit at each call site. This avoids a separate resource registry or runtime
 path lookup.
 
 Embedded hosts call `Runtime::render`; the desktop host uses the same entry point. Controls remain private implementation details rather than a second public widget API. See [runtime](runtime.md).
+
+The Shell follow-up also migrates common overlays and contact root/detail menus
+to static typed Item declarations. Labels, enabled state, markers and activation
+come from the same entry. Grid movement and verified SoftLeft differences are
+retained; painting borrows overlay editors rather than cloning them. Radio/mail
+and the remaining app-specific controls continue using the shared components.

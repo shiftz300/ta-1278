@@ -1907,7 +1907,7 @@ dependencies = [
 
 [[package]]
 name = "phone-core"
-version = "0.2.3"
+version = "0.2.4"
 dependencies = [
  "miniz_oxide 0.8.9",
  "serde",
@@ -1916,7 +1916,7 @@ dependencies = [
 
 [[package]]
 name = "phone-desktop"
-version = "0.2.3"
+version = "0.2.4"
 dependencies = [
  "fontdue",
  "image",

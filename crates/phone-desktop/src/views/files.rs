@@ -1,6 +1,6 @@
 use super::*;
-use crate::phone::files::FileView;
-pub(super) fn render(c: &mut Canvas, p: &Phone) {
+use crate::shell::files::FileView;
+pub(super) fn render(c: &mut Canvas, p: &Shell) {
     if matches!(
         p.files.view,
         FileView::DeleteSelect | FileView::DeleteOptions | FileView::DeleteConfirm
@@ -104,7 +104,7 @@ pub(super) fn render(c: &mut Canvas, p: &Phone) {
     }
 }
 
-fn deletion(c: &mut Canvas, p: &Phone) {
+fn deletion(c: &mut Canvas, p: &Shell) {
     chrome::title(c, "删除");
     let entries = p.delete_entries();
     let focus = if p.files.view == FileView::DeleteSelect {
@@ -205,7 +205,7 @@ fn size(bytes: u64) -> String {
         format!("{:.1}MB", bytes as f64 / (1024. * 1024.))
     }
 }
-fn storage(c: &mut Canvas, p: &Phone) {
+fn storage(c: &mut Canvas, p: &Shell) {
     if p.files.view == FileView::StorageDetails {
         chrome::title(c, "详情");
         let values = if let Some((total, free)) = p.files.capacity {
@@ -265,7 +265,7 @@ fn storage(c: &mut Canvas, p: &Phone) {
     }
 }
 
-fn browse(c: &mut Canvas, p: &Phone, index: usize) {
+fn browse(c: &mut Canvas, p: &Shell, index: usize) {
     let labels: Vec<_> = p.files.entries.iter().map(|e| e.name.as_str()).collect();
     if labels.is_empty() {
         c.text(8, 120, "这里没有可显示的内容。", 17, WHITE);

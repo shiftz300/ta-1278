@@ -1,6 +1,6 @@
 //! SMS composer: bottom-growing bubble and caret-anchored prediction.
 use super::*;
-pub(super) fn render(c: &mut Canvas, p: &Phone) {
+pub(super) fn render(c: &mut Canvas, p: &Shell) {
     chrome::title(c, "新信息");
     c.text(6, 27, "收件人", 20, MUTED);
     if !p.messaging.compose.recipient {
@@ -33,7 +33,7 @@ pub(super) fn render(c: &mut Canvas, p: &Phone) {
     chrome::title(c, "新信息");
 }
 
-pub(super) fn body(c: &mut Canvas, p: &Phone, chat: bool) -> i32 {
+pub(super) fn body(c: &mut Canvas, p: &Shell, chat: bool) -> i32 {
     let active = !p.messaging.compose.recipient && (!chat || p.messaging.chat.focus.is_none());
     let (preview, _) = p.messaging.compose.body.preview();
     // Native recipient-focus capture: body begins no higher than y=91.

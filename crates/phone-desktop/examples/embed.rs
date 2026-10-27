@@ -4,8 +4,7 @@ use phone_runtime::{
     config::RuntimeConfig,
     input::Key,
     messaging::{Backend, Capabilities, Command, Envelope, Event, PortError},
-    persistence::{Record, Store},
-    platform::{self, Documents, Instance, Page, Platform},
+    platform::{self, Documents, Instance, Page, Platform, Record, Store},
 };
 struct Inbox(Option<Envelope>);
 impl Backend for Inbox {

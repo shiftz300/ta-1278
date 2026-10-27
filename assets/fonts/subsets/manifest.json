@@ -1,6 +1,6 @@
 {
-  "method": "Subset supplemental fonts in renderer fallback order; preserve Unicode cmap union. Remove unused layout shaping features. Rename derived font families; preserve copyright/license records. Original source fonts remain unchanged.",
-  "coverage_codepoints": 49332,
+  "method": "Subset supplemental fonts in renderer fallback order; preserve Unicode cmap union. Remove unused layout shaping features. Rename derived font families; preserve copyright/license records. Original source fonts remain unchanged. Emoji fallback is omitted; unsupported characters render as a square.",
+  "coverage_codepoints": 48262,
   "fonts": [
     {
       "source": "assets/fonts/NotoSansCJKsc-Regular.otf",
@@ -21,16 +21,6 @@
       "bytes": 1128096,
       "source_codepoints": 2955,
       "retained_codepoints": 2545
-    },
-    {
-      "source": "assets/fonts/NotoEmoji.ttf",
-      "file": "assets/fonts/subsets/FallbackEmoji.ttf",
-      "source_sha256": "de6c18832938afc99caf132b39d6a30a19bac7f2e812e28db2535b4608d27551",
-      "sha256": "ad88d1de1028f28202e4d55896d12a31d970003385f37d5fc71a753215dc6e29",
-      "source_bytes": 1982596,
-      "bytes": 1365532,
-      "source_codepoints": 1489,
-      "retained_codepoints": 1070
     }
   ]
 }

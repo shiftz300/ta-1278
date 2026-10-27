@@ -1,7 +1,7 @@
 use super::*;
-use crate::phone::tools::ToolPage;
+use crate::shell::tools::ToolPage;
 
-pub(super) fn render(c: &mut Canvas, p: &Phone) {
+pub(super) fn render(c: &mut Canvas, p: &Shell) {
     if p.tools.page == ToolPage::Dial {
         chrome::title(c, "呼叫");
         c.rect(0, 24, 240, 46, c.accent(3));
@@ -16,13 +16,13 @@ pub(super) fn render(c: &mut Canvas, p: &Phone) {
             if p.calls.selected == Some(i) {
                 c.rect(0, y, 240, 52, c.accent(3));
             }
-            let name = crate::phone::organizer::contact_name(contact);
+            let name = crate::shell::contacts::contact_name(contact);
             crate::ui::form::avatar(c, 7, y + 1, name.chars().next(), [90, 95, 90, 255]);
             c.fit(52, y + 10, &name, 20, WHITE, 180);
         }
         Softkeys::new(
             Button::Menu,
-            if super::super::phone::calls::valid(&p.dial_number()) {
+            if super::super::shell::calls::valid(&p.dial_number()) {
                 Button::Text("呼叫")
             } else {
                 Button::Disabled("呼叫")

@@ -1,19 +1,15 @@
 //! Shared local folder service for file browsing and the music library.
 mod files;
 pub(crate) mod visual;
+use crate::shell::{
+    Screen, Shell,
+    files::{FileRequest, FileView},
+};
 #[cfg(test)]
 use crate::storage;
 use crate::storage::files::Folder;
-use crate::{
-    audio,
-    phone::{
-        Phone, Screen,
-        files::{FileRequest, FileView},
-    },
-};
 #[cfg(test)]
 use phone_core::music::Repeat;
-use rodio::Source;
 #[cfg(test)]
 use std::{
     path::Path,
@@ -30,21 +26,23 @@ pub struct Track {
     pub seconds: f32,
 }
 #[cfg(test)]
-use crate::phone::music::SavedMusic;
+use crate::shell::music::SavedMusic;
 pub fn supported(path: &str) -> bool {
-    path.rsplit('.')
-        .next()
-        .is_some_and(|e| e.eq_ignore_ascii_case("mp3") || e.eq_ignore_ascii_case("wav"))
+    path.rsplit('.').next().is_some_and(|e| {
+        ["mp3", "wav", "mid", "midi"]
+            .iter()
+            .any(|extension| e.eq_ignore_ascii_case(extension))
+    })
 }
-pub fn probe(files: &Folder, path: &str) -> Result<Track, String> {
+pub fn probe(
+    files: &Folder,
+    decoder: &dyn crate::platform::Decoder,
+    path: &str,
+) -> Result<Track, String> {
     if !supported(path) {
-        return Err("暂不支持此文件类型。支持 MP3 和 WAV。".into());
+        return Err("暂不支持此文件类型。支持 MP3、WAV 和 MIDI。".into());
     }
-    let decoder = audio::decode(files, path)?;
-    let seconds = decoder
-        .total_duration()
-        .ok_or("无法识别音频时长。")?
-        .as_secs_f32();
+    let seconds = decoder.audio_duration(files, path)?;
     if seconds <= 0. || !seconds.is_finite() {
         return Err("音频时长无效。".into());
     }
@@ -54,7 +52,7 @@ pub fn probe(files: &Folder, path: &str) -> Result<Track, String> {
         seconds,
     })
 }
-fn scan(files: &Folder) -> (Vec<Track>, Vec<String>) {
+fn scan(files: &Folder, decoder: &dyn crate::platform::Decoder) -> (Vec<Track>, Vec<String>) {
     let mut queue = vec![("/".to_owned(), 0)];
     let mut tracks = vec![];
     let mut warnings = vec![];
@@ -80,7 +78,7 @@ fn scan(files: &Folder) -> (Vec<Track>, Vec<String>) {
                     warnings.push(format!("Scan depth limit: {}", e.path));
                 }
             } else if supported(&e.path) {
-                match probe(files, &e.path) {
+                match probe(files, decoder, &e.path) {
                     Ok(t) => tracks.push(t),
                     Err(err) => warnings.push(format!("{}: {err}", e.path)),
                 }
@@ -111,209 +109,257 @@ pub struct Media {
     pub files: Arc<Folder>,
     pub tracks: Vec<Track>,
     audio: Box<dyn crate::platform::Sound>,
+    decoder: Arc<dyn crate::platform::Decoder>,
     jobs: mpsc::SyncSender<()>,
     results: mpsc::Receiver<(Vec<Track>, Vec<String>)>,
     scanning: bool,
 }
 impl Media {
     #[cfg(test)]
-    pub fn new(files: Folder, dir: &Path, phone: &mut Phone) -> Result<Self, String> {
+    pub fn new(files: Folder, dir: &Path, shell: &mut Shell) -> Result<Self, String> {
         let saved = crate::persistence::read(
             &mut crate::persistence::Directory::new(dir),
             crate::persistence::Record::Music,
         )?;
-        phone.playback.restore(saved)?;
-        Ok(Self::attach(crate::platform::Devices::native(files), phone))
+        shell.playback.restore(saved)?;
+        Ok(Self::attach(crate::platform::Devices::native(files), shell))
     }
-    pub fn attach(devices: crate::platform::Devices, phone: &mut Phone) -> Self {
-        phone.playback.model.tracks.clear();
-        phone.playback.model.external_clock = true;
+    pub fn attach(devices: crate::platform::Devices, shell: &mut Shell) -> Self {
+        shell.playback.model.tracks.clear();
+        shell.playback.model.external_clock = true;
         let files = devices.folder;
         let worker = files.clone();
+        let decoder = devices.decoder.clone();
         let (jobs, rx) = mpsc::sync_channel(1);
         let (tx, results) = mpsc::channel();
         thread::spawn(move || {
             while rx.recv().is_ok() {
-                if tx.send(scan(&worker)).is_err() {
+                if tx.send(scan(&worker, decoder.as_ref())).is_err() {
                     break;
                 }
             }
         });
-        phone.playback.refresh = phone.features.music;
-        phone.playback.loading = phone.features.music;
+        shell.playback.refresh = shell.features.music;
+        shell.playback.loading = shell.features.music;
         let (transfer_results, transfers) = mpsc::channel();
         Self {
-            unread: phone.messaging.mailbox.unread(),
+            unread: shell.messaging.mailbox.unread(),
             transfers,
             transfer_results,
-            visual: crate::media::visual::VisualMedia::new(files.clone(), devices.decoder),
+            visual: crate::media::visual::VisualMedia::new(files.clone(), devices.decoder.clone()),
             files,
             tracks: vec![],
             audio: devices.sound,
+            decoder: devices.decoder,
             jobs,
             results,
             scanning: false,
         }
     }
-    fn apply_scan(&mut self, phone: &mut Phone, tracks: Vec<Track>, warnings: Vec<String>) {
+    fn apply_scan(&mut self, shell: &mut Shell, tracks: Vec<Track>, warnings: Vec<String>) {
         self.audio.stop();
-        phone.playback.model.playing = false;
-        phone.playback.model.index = 0;
-        phone.playback.model.position = 0.;
-        phone.playback.started = false;
-        phone.playback.loading = false;
-        phone.playback.model.tracks = tracks
+        shell.playback.model.playing = false;
+        shell.playback.model.index = 0;
+        shell.playback.model.position = 0.;
+        shell.playback.started = false;
+        shell.playback.loading = false;
+        shell.playback.model.tracks = tracks
             .iter()
             .map(|t| (t.title.clone(), t.seconds))
             .collect();
-        phone.set_music_paths(tracks.iter().map(|t| t.path.clone()).collect());
-        phone.playback.model.queue.clear();
+        shell.set_music_paths(tracks.iter().map(|t| t.path.clone()).collect());
+        shell.playback.model.queue.clear();
         self.tracks = tracks;
-        if let Some(saved) = phone.playback.resume.take() {
-            phone.playback.model.queue = saved
+        if let Some(saved) = shell.playback.resume.take() {
+            shell.playback.model.queue = saved
                 .queue
                 .iter()
-                .filter_map(|p| phone.music_index(p))
+                .filter_map(|p| shell.music_index(p))
                 .collect();
             if let Some(i) = self
                 .tracks
                 .iter()
                 .position(|t| Some(&t.path) == saved.path.as_ref())
             {
-                phone.playback.model.index = i;
-                phone.playback.model.position = saved.position.min(self.tracks[i].seconds);
-                phone.playback.started = true;
+                shell.playback.model.index = i;
+                shell.playback.model.position = saved.position.min(self.tracks[i].seconds);
+                shell.playback.started = true;
             }
         }
-        if phone.screen == Screen::Music
-            && phone.playback.model.tracks.is_empty()
-            && phone.playback.view == crate::phone::MusicView::Player
+        if shell.screen == Screen::Music
+            && shell.playback.model.tracks.is_empty()
+            && shell.playback.view == crate::shell::MusicView::Player
         {
-            phone.playback.view = crate::phone::MusicView::Root;
+            shell.playback.view = crate::shell::MusicView::Root;
         }
         // Songs and queue depend on the new library. Do not move a repeat-picker
         // selection or another app's shared focus while a background scan ends.
-        if phone.screen == Screen::Music
+        if shell.screen == Screen::Music
             && matches!(
-                phone.playback.view,
-                crate::phone::MusicView::Songs
-                    | crate::phone::MusicView::Queue
-                    | crate::phone::MusicView::Playlist
-                    | crate::phone::MusicView::Root
+                shell.playback.view,
+                crate::shell::MusicView::Songs
+                    | crate::shell::MusicView::Queue
+                    | crate::shell::MusicView::Playlist
+                    | crate::shell::MusicView::Root
             )
         {
-            phone.index = phone.index.min(phone.music_items().len().saturating_sub(1));
+            shell.index = shell.index.min(shell.music_items().len().saturating_sub(1));
         }
         if !warnings.is_empty() {
             eprintln!("Media scan: {} warning(s). {}", warnings.len(), warnings[0]);
-            if phone.screen == Screen::Music {
-                phone.notice(format!("部分文件无法读取（{} 项）。", warnings.len()));
+            if shell.screen == Screen::Music {
+                shell.notice(format!("部分文件无法读取（{} 项）。", warnings.len()));
             }
         }
     }
-    pub fn tick(&mut self, phone: &mut Phone) {
-        self.visual.tick(&self.files, phone);
-        let volume = if phone.settings.preferences.silent || !phone.features.sounds {
+    pub fn tick(&mut self, shell: &mut Shell) {
+        let mut paths: Vec<_> = shell
+            .settings
+            .preferences
+            .wallpaper
+            .iter()
+            .cloned()
+            .collect();
+        if matches!(shell.screen, Screen::Contacts | Screen::Organizer(_)) {
+            paths.extend(
+                shell
+                    .contacts
+                    .records
+                    .iter()
+                    .filter_map(|r| r.first())
+                    .filter(|s| !s.is_empty())
+                    .take(24)
+                    .cloned(),
+            );
+            if let Some(path) = shell.contacts.draft.first().filter(|s| !s.is_empty()) {
+                paths.push(path.clone());
+            }
+        }
+        let update = self.visual.tick(
+            &self.files,
+            &mut shell.media,
+            visual::Context {
+                active: shell.screen == Screen::Media,
+                pictures: shell.features.pictures,
+                paths,
+                index: shell.index,
+            },
+        );
+        if let Some(index) = update.index {
+            shell.index = index;
+        }
+        if update.pause_music {
+            shell.playback.model.playing = false;
+        }
+        if update.close {
+            shell.close_media();
+        }
+        if let Some(message) = update.notice {
+            shell.notice(message);
+        }
+        let volume = if shell.settings.preferences.silent || !shell.features.sounds {
             0
         } else {
-            phone.settings.preferences.volume
+            shell.settings.preferences.volume
         };
-        let unread = phone.messaging.mailbox.unread();
+        let unread = shell.messaging.mailbox.unread();
         if unread > self.unread {
-            phone.audio_preview = Some(
+            shell.audio_preview = Some(
                 if matches!(
-                    phone.settings.preferences.ringtone.as_str(),
+                    shell.settings.preferences.ringtone.as_str(),
                     "预设" | "默认"
                 ) {
                     "Message 1".into()
                 } else {
-                    phone.settings.preferences.ringtone.clone()
+                    shell.settings.preferences.ringtone.clone()
                 },
             );
         }
         self.unread = unread;
         self.audio.effect_volume(volume);
         if volume > 0 {
-            for cue in std::mem::take(&mut phone.cues) {
+            for cue in std::mem::take(&mut shell.cues) {
                 if let Err(e) = self.audio.feedback(cue, volume) {
-                    phone.status = format!("音效不可用：{e}");
+                    shell.status = format!("音效不可用：{e}");
                     break;
                 }
             }
-            if let Some(path) = phone.audio_preview.take()
+            if let Some(path) = shell.audio_preview.take()
                 && let Err(e) = self.audio.preview(&self.files, &path, volume)
             {
-                phone.notice(format!("无法播放铃声：{e}"));
+                shell.notice(format!("无法播放铃声：{e}"));
             }
         } else {
-            phone.cues.clear();
-            phone.audio_preview = None;
+            shell.cues.clear();
+            shell.audio_preview = None;
         }
         if let Err(e) = self.audio.poll_effects() {
-            phone.status = format!("原机音效无法播放：{e}");
+            shell.status = format!("原机音效无法播放：{e}");
         }
-        if phone.active_reminder().is_some() {
-            phone.playback.model.playing = false;
-            if phone.media.ui.playing {
-                phone
+        if shell.active_reminder().is_some() {
+            shell.playback.model.playing = false;
+            if shell.media.ui.playing {
+                shell
                     .media
                     .ui
                     .pending
-                    .push(crate::phone::media::Request::Command("pause".into()));
-                phone.media.ui.playing = false;
+                    .push(crate::shell::media::Request::Command("pause".into()));
+                shell.media.ui.playing = false;
             }
         }
-        let tone = phone.active_reminder().map(|a| a.tone.as_str());
+        let tone = shell.active_reminder().map(|a| a.tone.as_str());
         if let Err(e) = self.audio.alert(&self.files, tone, volume) {
-            phone.status = format!("闹钟声音不可用：{e}");
+            shell.status = format!("闹钟声音不可用：{e}");
         }
-        self.finish_file_jobs(phone);
-        if let Some(request) = phone.files.pending.take()
-            && let Err(e) = self.file_request(phone, request)
+        self.finish_file_jobs(shell);
+        if let Some(request) = shell.files.pending.take()
+            && let Err(e) = self.file_request(shell, request)
         {
-            phone.notice(e);
+            shell.notice(e);
         }
-        if phone.playback.refresh {
-            self.prepare_refresh(phone);
+        if shell.playback.refresh {
+            self.prepare_refresh(shell);
         }
         while let Ok((tracks, warnings)) = self.results.try_recv() {
             self.scanning = false;
             // A mutation/refresh requested after this job began invalidates it.
             // Keep the old library paused until a fresh scan completes.
-            if !phone.playback.refresh {
-                self.apply_scan(phone, tracks, warnings);
+            if !shell.playback.refresh {
+                self.apply_scan(shell, tracks, warnings);
             }
         }
-        if phone.playback.refresh
+        if shell.playback.refresh
             && !self.scanning
-            && phone.features.music
+            && shell.features.music
             && self.jobs.try_send(()).is_ok()
         {
-            phone.playback.refresh = false;
+            shell.playback.refresh = false;
             self.scanning = true;
         }
-        if phone.features.music && !phone.playback.loading {
+        if shell.features.music && !shell.playback.loading {
             let path = self
                 .tracks
-                .get(phone.playback.model.index)
+                .get(shell.playback.model.index)
                 .map(|t| t.path.as_str());
-            if let Err(e) = self
-                .audio
-                .sync(&self.files, path, &mut phone.playback.model)
-            {
-                phone.notice(format!("无法播放：{e}"));
+            let status = self.audio.sync(
+                &self.files,
+                path,
+                crate::shell::music::playback(&shell.playback.model),
+            );
+            if let Err(e) = crate::shell::music::apply_playback(&mut shell.playback.model, status) {
+                shell.notice(format!("无法播放：{e}"));
             }
         } else {
             self.audio.stop();
-            phone.playback.model.playing = false;
+            shell.playback.model.playing = false;
         }
     }
     #[cfg(test)]
-    pub fn save(&mut self, dir: &Path, phone: &Phone, _: bool) -> Result<(), String> {
+    pub fn save(&mut self, dir: &Path, shell: &Shell, _: bool) -> Result<(), String> {
         crate::persistence::write(
             &mut crate::persistence::Directory::new(dir),
             crate::persistence::Record::Music,
-            &phone.playback.snapshot(),
+            &shell.playback.snapshot(),
         )
     }
 }

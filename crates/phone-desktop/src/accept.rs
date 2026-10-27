@@ -4,8 +4,8 @@ use crate::{
     config::RuntimeConfig,
     input::Key,
     messaging::*,
-    phone::{BrowserView, MusicView, Screen, conversation::Popup},
     platform::Native,
+    shell::{BrowserView, MusicView, Screen, conversation::Popup},
     storage,
 };
 use phone_core::browser::Element;
@@ -164,8 +164,8 @@ fn pump(r: &mut Runtime, native: &mut Native, clock: Instant, until: impl Fn(&Ru
     }
 }
 fn focus(r: &mut Runtime, predicate: impl Fn(&Element) -> bool) {
-    r.phone.browsing.model.focus = r
-        .phone
+    r.shell.browsing.model.focus = r
+        .shell
         .browsing
         .model
         .page
@@ -212,14 +212,14 @@ fn complete_use_and_restart() {
         Box::new(Loopback(traffic.clone())),
     )
     .unwrap();
-    r.phone.settings.preferences.greeting = "Acceptance profile".into();
-    r.phone.settings.preferences.accent = 4;
-    r.phone.settings.accent = 4;
+    r.shell.settings.preferences.greeting = "Acceptance profile".into();
+    r.shell.settings.preferences.accent = 4;
+    r.shell.settings.accent = 4;
     let mut native = Native::from_folder(&r, Some(folder));
     let clock = Instant::now();
-    pump(&mut r, &mut native, clock, |r| !r.phone.playback.loading);
+    pump(&mut r, &mut native, clock, |r| !r.shell.playback.loading);
     assert!(
-        r.phone
+        r.shell
             .playback
             .model
             .tracks
@@ -227,7 +227,7 @@ fn complete_use_and_restart() {
             .any(|t| t.0.ends_with(".mp3"))
     );
     assert!(
-        r.phone
+        r.shell
             .playback
             .model
             .tracks
@@ -235,14 +235,14 @@ fn complete_use_and_restart() {
             .any(|t| t.0.ends_with(".wav"))
     );
     r.poll_services().unwrap();
-    r.phone.launch(Screen::Messages);
+    r.shell.launch(Screen::Messages);
     tap(&mut r, Key::Center);
     r.text("12345");
     r.tab();
     r.text("Local messagX");
     tap(&mut r, Key::Delete);
     r.text("e");
-    assert_eq!(r.phone.messaging.compose.body.text(), "Local message");
+    assert_eq!(r.shell.messaging.compose.body.text(), "Local message");
     frame(&mut r, &root, "message-edited");
     save(&mut r, &root);
     drop(native);
@@ -257,9 +257,9 @@ fn complete_use_and_restart() {
     assert_eq!(r.mailbox().drafts[0].body, "Local message");
     let folder = storage::setup::select(&root, None, false).unwrap().unwrap();
     native = Native::from_folder(&r, Some(folder));
-    pump(&mut r, &mut native, clock, |r| !r.phone.playback.loading);
-    r.phone.open_thread("12345".into());
-    assert_eq!(r.phone.messaging.compose.body.text(), "Local message");
+    pump(&mut r, &mut native, clock, |r| !r.shell.playback.loading);
+    r.shell.open_thread("12345".into());
+    assert_eq!(r.shell.messaging.compose.body.text(), "Local message");
     frame(&mut r, &root, "message-draft-restored");
     tap(&mut r, Key::Center);
     assert!(r.pending_commit());
@@ -274,15 +274,15 @@ fn complete_use_and_restart() {
     assert_eq!(traffic.borrow().acks, [1, 2]);
     assert!(r.mailbox().outbox[0].sent);
     assert_eq!(r.mailbox().inbox[0].body, "Local reply");
-    r.phone.overlay = None;
-    r.phone.open_thread("12345".into());
+    r.shell.overlay = None;
+    r.shell.open_thread("12345".into());
     assert_eq!(r.mailbox().unread(), 0);
     frame(&mut r, &root, "message-received");
     tap(&mut r, Key::Up);
     tap(&mut r, Key::SoftLeft);
-    assert!(r.phone.messaging.chat.popup == Popup::Bubble);
+    assert!(r.shell.messaging.chat.popup == Popup::Bubble);
     tap(&mut r, Key::Center);
-    assert!(r.phone.messaging.chat.popup == Popup::Delete);
+    assert!(r.shell.messaging.chat.popup == Popup::Delete);
     tap(&mut r, Key::Center);
     assert!(r.mailbox().inbox.is_empty());
     save(&mut r, &root);
@@ -290,14 +290,14 @@ fn complete_use_and_restart() {
     let http = Http::new();
     r.navigate(&http.base).unwrap();
     pump(&mut r, &mut native, clock, |r| {
-        !r.phone.browsing.model.loading
+        !r.shell.browsing.model.loading
     });
     focus(&mut r, |e| matches!(e, Element::Link { .. }));
     tap(&mut r, Key::Center);
     pump(&mut r, &mut native, clock, |r| {
-        !r.phone.browsing.model.loading
+        !r.shell.browsing.model.loading
     });
-    assert!(r.phone.browsing.model.page.url.ends_with("/next"));
+    assert!(r.shell.browsing.model.page.url.ends_with("/next"));
     focus(&mut r, |e| matches!(e, Element::Field { .. }));
     tap(&mut r, Key::Center);
     r.text("hello world");
@@ -312,9 +312,9 @@ fn complete_use_and_restart() {
     focus(&mut r, |e| matches!(e, Element::Submit { .. }));
     tap(&mut r, Key::Center);
     pump(&mut r, &mut native, clock, |r| {
-        !r.phone.browsing.model.loading
+        !r.shell.browsing.model.loading
     });
-    let url = url::Url::parse(&r.phone.browsing.model.page.url).unwrap();
+    let url = url::Url::parse(&r.shell.browsing.model.page.url).unwrap();
     let query = url
         .query_pairs()
         .collect::<std::collections::HashMap<_, _>>();
@@ -324,10 +324,10 @@ fn complete_use_and_restart() {
     assert_eq!(http.requests.lock().unwrap().len(), 3);
     frame(&mut r, &root, "browser-submitted");
     tap(&mut r, Key::SoftRight);
-    assert!(r.phone.browsing.model.page.url.ends_with("/next"));
-    assert_eq!(r.phone.browsing.view, BrowserView::Page);
+    assert!(r.shell.browsing.model.page.url.ends_with("/next"));
+    assert_eq!(r.shell.browsing.view, BrowserView::Page);
     assert!(
-        r.phone
+        r.shell
             .browsing
             .model
             .page
@@ -337,35 +337,35 @@ fn complete_use_and_restart() {
     );
     save(&mut r, &root);
 
-    r.phone.launch(Screen::Music);
+    r.shell.launch(Screen::Music);
     tap(&mut r, Key::Center);
-    assert_eq!(r.phone.playback.view, MusicView::Player);
-    assert_eq!(r.phone.playback.model.volume, 1);
+    assert_eq!(r.shell.playback.view, MusicView::Player);
+    assert_eq!(r.shell.playback.model.volume, 1);
     pump(&mut r, &mut native, clock, |r| {
-        r.phone.playback.model.position > 0.1
+        r.shell.playback.model.position > 0.1
     });
     frame(&mut r, &root, "music-wav-playing");
     tap(&mut r, Key::Center);
-    assert!(!r.phone.playback.model.playing);
+    assert!(!r.shell.playback.model.playing);
     native.poll(&mut r).unwrap();
-    let paused = r.phone.playback.model.position;
+    let paused = r.shell.playback.model.position;
     thread::sleep(Duration::from_millis(200));
     native.poll(&mut r).unwrap();
-    assert!((r.phone.playback.model.position - paused).abs() < 0.05);
+    assert!((r.shell.playback.model.position - paused).abs() < 0.05);
     tap(&mut r, Key::Right);
     tap(&mut r, Key::Center);
     assert!(
-        r.phone.playback.model.tracks[r.phone.playback.model.index]
+        r.shell.playback.model.tracks[r.shell.playback.model.index]
             .0
             .ends_with(".mp3")
     );
     pump(&mut r, &mut native, clock, |r| {
-        r.phone.playback.model.position > 0.1
+        r.shell.playback.model.position > 0.1
     });
     frame(&mut r, &root, "music-mp3-playing");
     tap(&mut r, Key::Center);
     native.poll(&mut r).unwrap();
-    let position = r.phone.playback.model.position;
+    let position = r.shell.playback.model.position;
     r.flush(&mut crate::persistence::Directory::new(&root), true)
         .unwrap();
     save(&mut r, &root);
@@ -375,34 +375,34 @@ fn complete_use_and_restart() {
     drop(r);
     let mut restored =
         Runtime::restore(config, now, &bytes, Box::new(Loopback(traffic.clone()))).unwrap();
-    assert_eq!(restored.phone.screen, Screen::Home);
+    assert_eq!(restored.shell.screen, Screen::Home);
     assert_eq!(
-        restored.phone.settings.preferences.greeting,
+        restored.shell.settings.preferences.greeting,
         "Acceptance profile"
     );
-    assert_eq!(restored.phone.settings.preferences.accent, 4);
+    assert_eq!(restored.shell.settings.preferences.accent, 4);
     assert!(restored.mailbox().outbox[0].sent);
     assert!(restored.mailbox().inbox.is_empty());
     let selected = storage::setup::select(&root, None, false).unwrap().unwrap();
     let mut native = Native::from_folder(&restored, Some(selected));
     pump(&mut restored, &mut native, clock, |r| {
-        !r.phone.playback.loading
+        !r.shell.playback.loading
     });
-    assert!(!restored.phone.playback.model.playing);
+    assert!(!restored.shell.playback.model.playing);
     assert!(
-        restored.phone.playback.model.tracks[restored.phone.playback.model.index]
+        restored.shell.playback.model.tracks[restored.shell.playback.model.index]
             .0
             .ends_with(".mp3")
     );
-    assert!((restored.phone.playback.model.position - position).abs() < 0.08);
-    restored.phone.launch(Screen::Music);
-    restored.phone.playback.view = MusicView::Player;
-    restored.phone.playback.model.queue = vec![restored.phone.playback.model.index];
-    restored.phone.playback.model.position = restored.phone.playback.model.duration() - 0.1;
-    restored.phone.playback.model.seek_revision += 1;
-    restored.phone.playback.model.playing = true;
+    assert!((restored.shell.playback.model.position - position).abs() < 0.08);
+    restored.shell.launch(Screen::Music);
+    restored.shell.playback.view = MusicView::Player;
+    restored.shell.playback.model.queue = vec![restored.shell.playback.model.index];
+    restored.shell.playback.model.position = restored.shell.playback.model.duration() - 0.1;
+    restored.shell.playback.model.seek_revision += 1;
+    restored.shell.playback.model.playing = true;
     pump(&mut restored, &mut native, clock, |r| {
-        !r.phone.playback.model.playing
+        !r.shell.playback.model.playing
     });
     frame(&mut restored, &root, "music-eof");
     eprintln!(

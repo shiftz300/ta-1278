@@ -29,5 +29,5 @@ impl App {
 }
 
 pub(super) fn theme(runtime: &mut crate::Runtime) {
-    runtime.phone.settings.accent = 4;
+    runtime.shell.settings.accent = 4;
 }

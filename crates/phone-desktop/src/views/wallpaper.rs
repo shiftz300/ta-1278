@@ -1,10 +1,10 @@
 //! Shared Home/Menu background; ordinary app pages keep their black canvas.
 use crate::{
     canvas::Canvas,
-    phone::{Phone, Screen},
+    shell::{Screen, Shell},
 };
 
-pub(super) fn draw(c: &mut Canvas, p: &Phone) {
+pub(super) fn draw(c: &mut Canvas, p: &Shell) {
     if !matches!(p.screen, Screen::Home | Screen::Menu)
         || !p.features.pictures
         || !p.settings.preferences.wallpaper_enabled
@@ -35,7 +35,7 @@ mod tests {
     #[test]
     fn wallpaper_is_shared_clipped_and_respects_custom_and_disabled_choices() {
         let mut c = Canvas::new().unwrap();
-        let mut p = Phone::new(Default::default());
+        let mut p = Shell::new(Default::default());
         c.background();
         draw(&mut c, &p);
         let pixel = |c: &Canvas, x: usize, y: usize| c.pixels[(y * 240 + x) * 4..][..4].to_vec();

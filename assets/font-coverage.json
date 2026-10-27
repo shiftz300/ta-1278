@@ -1,8 +1,8 @@
 {
-  "method": "Unicode cmap union in renderer fallback order; not full shaping or emoji sequence support",
+  "method": "Unicode cmap union in renderer fallback order; Emoji fallback is omitted and missing characters use a square",
   "before": 8744,
-  "after": 49332,
-  "added": 40588,
+  "after": 48262,
+  "added": 39518,
   "fonts": [
     {
       "file": "assets/fonts/device/font-0-latn.otf",
@@ -33,12 +33,6 @@
       "sha256": "7014f282150c4609b72ff77db46b35be95764ad166e7efdfb69094b49ba5976f",
       "characters": 2545,
       "added": 2545
-    },
-    {
-      "file": "assets/fonts/subsets/FallbackEmoji.ttf",
-      "sha256": "ad88d1de1028f28202e4d55896d12a31d970003385f37d5fc71a753215dc6e29",
-      "characters": 1070,
-      "added": 1070
     }
   ]
 }

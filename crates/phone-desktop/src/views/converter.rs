@@ -1,6 +1,6 @@
 //! Native two-field conversion form; pair navigation uses the shared list.
 use super::*;
-pub(super) fn render(c: &mut Canvas, p: &Phone) {
+pub(super) fn render(c: &mut Canvas, p: &Shell) {
     let labels = p.conversion_pair().labels;
     let state = &p.tools.conversion;
     for (i, label) in labels.iter().enumerate() {

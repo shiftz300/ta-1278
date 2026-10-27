@@ -1,5 +1,5 @@
-//! Optional application policy. Core phone routes cannot be removed by configuration.
-use crate::phone::{Screen, alarm, contacts, organizer::OrganizerPage, tools::ToolPage};
+//! Optional application policy. Core shell routes cannot be removed by configuration.
+use crate::shell::{Screen, alarm, organizer::OrganizerPage, tools::ToolPage};
 use serde::{Deserialize, Serialize};
 #[derive(Clone, Copy, Debug, Deserialize, Serialize)]
 #[serde(default, deny_unknown_fields)]
@@ -48,11 +48,6 @@ impl Apps {
                 if alarm::is_alarm(page) || page == OrganizerPage::DeleteAlarm =>
             {
                 self.alarms
-            }
-            Screen::Organizer(page)
-                if contacts::is_contact(page) || page == OrganizerPage::DeleteContact =>
-            {
-                true
             }
             Screen::Organizer(_) => self.calendar,
             Screen::Tools(page) => self.tool(page),

@@ -89,9 +89,7 @@ pub const ENTRIES: [Entry; 16] = [
     },
 ];
 pub const INITIAL_FOCUS: usize = 4;
-pub fn phone_disabled(screen: Screen) -> bool {
-    matches!(screen, Screen::Tools(ToolPage::Calls))
-}
+
 pub fn visible(apps: crate::config::Apps) -> Vec<&'static Entry> {
     ENTRIES.iter().filter(|e| apps.allows(e.screen)).collect()
 }

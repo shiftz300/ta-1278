@@ -419,7 +419,7 @@ pub fn run() -> Result<(), Box<dyn std::error::Error>> {
             }
             "--help" => {
                 println!(
-                    "cargo run -p phone-desktop -- [--config JSON] [--check-config] [--data-dir PATH] [--storage-dir DIRECTORY] [--read-only-storage] [--disable music,files,network,pictures,video,sounds] [--smoke-test OUTPUT]\nOffline tone preview: --render-tone NAME OUTPUT.wav (creates a new file)\nArrows: navigate; Enter: center; F1/F2: softkeys; F3: disabled; Home: end/home; Tab: recipient/body; # (Shift+3): input mode. Mouse left/right/middle = left/right/center key."
+                    "cargo run -p phone-desktop -- [--config JSON] [--check-config] [--data-dir PATH] [--storage-dir DIRECTORY] [--read-only-storage] [--disable music,files,network,javascript,pictures,video,sounds] [--smoke-test OUTPUT]\nOffline tone preview: --render-tone NAME OUTPUT.wav (creates a new file)\nArrows: navigate; Enter: center; F1/F2: softkeys; F3: call history/dial; Home: end/home; Tab: recipient/body; # (Shift+3): input mode. Mouse left/right/middle = left/right/center key."
                 );
                 return Ok(());
             }

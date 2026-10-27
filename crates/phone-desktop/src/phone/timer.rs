@@ -46,6 +46,7 @@ impl Phone {
                 Key::Center if self.index == 0 => self.open_timer(),
                 Key::Center => {
                     self.tools.timer = Default::default();
+                    self.tools.timer_feedback = Some(("计时已停止", 2000));
                     self.tools.timer_notice = false;
                     self.tools.page = ToolPage::Other;
                     self.index = 0;
@@ -101,6 +102,7 @@ impl Phone {
                 self.tools.timer_seconds = edit.seconds;
                 self.tools.timer_name = edit.name.text();
                 self.tools.timer.start(edit.seconds);
+                self.tools.timer_feedback = Some(("计时开始", 2000));
                 self.tools.timer_notice = false;
                 self.tools.page = ToolPage::Other;
                 self.index = 0;

@@ -4,9 +4,8 @@ pub fn title(c: &mut Canvas, label: &str) {
 }
 pub fn status(c: &mut Canvas) {
     c.text(184, 1, "离线", 12, WHITE);
-    c.rect(218, 4, 17, 9, WHITE);
-    c.rect(220, 6, 12, 5, [30, 30, 30, 255]);
-    c.rect(235, 7, 2, 3, WHITE);
+    // Desktop placeholder: native full-battery artwork, not a hardware reading.
+    c.symbol(crate::assets::Symbol::Battery, 210, 4);
 }
 
 /// Shared waiting caption. Dot animation is local; placement follows the library capture.

@@ -4,7 +4,16 @@
 
 A user-space phone interaction runtime and desktop app, based on the Nokia TA-1278 experience.
 
-[Service interface](docs/services.md) · [Input engine](docs/input-engine.md) · [Architecture](docs/architecture.md)
+[Phone](docs/calls.md) · [Service interface](docs/services.md) · [Input engine](docs/input-engine.md) · [Architecture](docs/architecture.md)
+
+## Screenshots
+
+The desktop app in use, with demo messages and local browser pages.
+
+| Messages | Snake | Browser |
+| --- | --- | --- |
+| <img src="docs/screens/compose.jpg" width="240" alt="Desktop app: message editor"><br>Message editor | <img src="docs/screens/snake.jpg" width="240" alt="Desktop app: Snake running"><br>Playing | <img src="docs/screens/browser.jpg" width="240" alt="Desktop app: browser text and form"><br>Text and forms |
+| <img src="docs/screens/messages.jpg" width="240" alt="Desktop app: message conversation"><br>Conversation | <img src="docs/screens/menu.jpg" width="240" alt="Desktop app: Snake menu"><br>Menu | <img src="docs/screens/script.jpg" width="240" alt="Desktop app: JavaScript content and click result"><br>JavaScript and events |
 
 ## Embed
 
@@ -27,9 +36,9 @@ cargo run --release --locked -p phone-desktop
 For an optimized local macOS app: `sh scripts/package-macos.sh`, then open `target/TA1278.app`.
 
 - **Messages:** Chinese pinyin/stroke, Abc/abc/ABC multi-tap and direct typing, cursor movement, line breaks, character counts, drafts, conversations with incoming/outgoing bubbles, inline replies, forwarding, confirmed deletion and an unsent queue.
-- **Browser:** HTTP(S) text pages, links, fields, radios/checkboxes, selects and GET forms; saved bookmarks/history/offline pages. The demo works offline. [Browser capabilities](docs/browser-capabilities.md).
+- **Browser:** HTTP(S) text pages, bounded basic JavaScript/DOM, links, fields, radios/checkboxes, selects and GET forms; saved bookmarks/history/offline pages. The demo works offline. [Browser capabilities](docs/browser-capabilities.md) · [Script security and limits](docs/javascript.md).
 - **Music:** real MP3/WAV playback from the chosen phone-storage folder; pause, track changes, long-press seek, volume, repeat, shuffle and saved playlists. Local images and video open from Files; the same file picker supplies contact pictures, wallpaper and ringtones.
-- Calendar, alarms, local contacts, calculator, timer, stopwatch and Snake with recovered maps/artwork are available. Phone/call-history entries are grey and disabled. **The desktop app makes no calls and sends no real SMS.**
+- Calendar, alarms, local contacts, calculator, timer, stopwatch and Snake with recovered maps/artwork are available. Dialing and local attempted-call history are enabled; no call transport is connected. **The desktop app makes no calls and sends no real SMS.**
 
 Arrow keys navigate. Enter confirms. F1/F2 are the softkeys; Escape is also F2. Mouse **left/right/middle** map to **left softkey/right softkey/confirm**, anywhere in the window. Home returns home or asks to save a message.
 
@@ -51,6 +60,8 @@ cargo run --release --locked -p phone-desktop -- --storage-dir /path/to/phone-fi
 [SMS conversations](docs/sms-conversations.md) · [Build size](docs/build-size.md)
 
 [Delivery scope](docs/remaining-work.md) · [Local app additions and exact limits](docs/local-completion.md)
+
+[UI review](docs/review.md) · [Local acceptance and repeatable checks](docs/acceptance.md)
 
 The target is a faithful standalone phone interaction replica. Exhaustive firmware reconstruction is not a release requirement.
 

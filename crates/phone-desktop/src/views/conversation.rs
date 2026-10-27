@@ -160,15 +160,7 @@ pub(super) fn render(c: &mut Canvas, p: &mut Phone) {
                 }
             }
         }
-        c.rect(x, y + height, 200, 2, WHITE);
-        let tail = if m.incoming { 208 } else { 29 };
-        for row in 0..16 {
-            let xx = if m.incoming { tail - 17 + row } else { tail };
-            c.rect(xx, y + height + 1 + row, 18 - row, 1, WHITE);
-            if row < 12 {
-                c.rect(xx + 2, y + height + 1 + row, 14 - row, 1, fill);
-            }
-        }
+        crate::ui::editor::message_tail(c, [x, y + height, 200], m.incoming, fill);
         let label = if m.unsent {
             m.delivery
                 .map(|s| crate::phone::mail::delivery_text(s).0)
@@ -223,7 +215,7 @@ fn popup(c: &mut Canvas, p: &Phone) {
     };
     PopupMenu::default().draw(c, labels.len(), p.chat.choice, |i| list::Row {
         label: labels[i],
-        enabled: !(p.chat.popup == Popup::Number && i == 0),
+        enabled: true,
         marker: list::Marker::None,
     });
 }

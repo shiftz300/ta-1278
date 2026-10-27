@@ -7,6 +7,30 @@ pub(super) const INK: Color = [0, 8, 0, 255];
 pub(super) const FOCUS: Color = [239, 154, 0, 255];
 pub(super) const LINK: Color = [0, 0, 238, 255];
 pub(super) fn render(c: &mut Canvas, p: &mut Phone) {
+    if p.browser_view == BrowserView::Details {
+        crate::ui::chrome::title(c, "页面详情");
+        c.text(10, 32, "书签名称", 20, WHITE);
+        c.fit(
+            10,
+            74,
+            if p.browser.page.title.is_empty() {
+                "无标题"
+            } else {
+                &p.browser.page.title
+            },
+            20,
+            WHITE,
+            224,
+        );
+        c.text(10, 114, "URL:", 16, WHITE);
+        let lines = c.wrap(&p.browser.page.url, 16, 224);
+        p.index = p.index.min(lines.len().saturating_sub(5));
+        for (i, line) in lines.iter().skip(p.index).take(5).enumerate() {
+            c.text(10, 154 + i as i32 * 23, &line.text, 16, WHITE);
+        }
+        Softkeys::back("").draw(c);
+        return;
+    }
     if matches!(
         p.browser_view,
         BrowserView::Settings | BrowserView::HomeType | BrowserView::FontSize | BrowserView::Clear

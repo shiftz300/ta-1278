@@ -36,7 +36,10 @@ impl Native {
             .transpose()?;
         Ok(Self {
             owner: runtime.owner,
-            web: Web::new(runtime.phone.features.network),
+            web: Web::configured(
+                runtime.phone.features.network,
+                runtime.phone.features.javascript,
+            ),
             media,
             request: None,
         })
@@ -53,7 +56,11 @@ impl Native {
             media.tick(&mut runtime.phone);
         }
         if let Some(request) = runtime.take_request() {
-            let result = self.web.load(request.id, request.url.clone());
+            let page = request
+                .url
+                .starts_with("about:script/")
+                .then(|| runtime.phone.browser.page.clone());
+            let result = self.web.load_page(request.id, request.url.clone(), page);
             match result {
                 Ok(()) => self.request = Some(request),
                 Err(error) => {
@@ -62,13 +69,29 @@ impl Native {
                 }
             }
         }
+        if self.request.is_some() && !runtime.phone.browser.loading {
+            self.web.cancel();
+            self.request = None;
+        }
         while let Ok((id, result)) = self.web.results.try_recv() {
             if self
                 .request
                 .as_ref()
                 .is_some_and(|request| request.id == id)
             {
-                runtime.complete(&self.request.take().unwrap(), result);
+                let request = self.request.take().unwrap();
+                let keep_position = request.url.starts_with("about:script/")
+                    && result
+                        .as_ref()
+                        .is_ok_and(|p| p.url == runtime.phone.browser.page.url);
+                let position = (runtime.phone.browser.focus, runtime.phone.browser.scroll);
+                runtime.complete(&request, result);
+                if keep_position {
+                    runtime.phone.browser.focus = position
+                        .0
+                        .min(runtime.phone.browser.page.elements.len().saturating_sub(1));
+                    runtime.phone.browser.scroll = position.1;
+                }
             }
         }
         Ok(())

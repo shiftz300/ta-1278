@@ -4,6 +4,7 @@ use crate::canvas::{Canvas, MUTED, WHITE};
 pub enum Marker {
     #[default]
     None,
+    Child,
     Radio(bool),
     Check(bool),
     Switch(bool),
@@ -24,6 +25,7 @@ impl<'a> Row<'a> {
 }
 #[derive(Clone, Copy)]
 pub struct ListStyle {
+    pub first: Option<usize>,
     pub top: i32,
     pub row_height: i32,
     pub row_width: i32,
@@ -36,6 +38,7 @@ pub struct ListStyle {
 }
 impl ListStyle {
     pub const STANDARD: Self = Self {
+        first: None,
         top: super::TITLE_HEIGHT,
         row_height: 42,
         row_width: 240,
@@ -64,7 +67,11 @@ pub fn draw<'a>(
     style: ListStyle,
     mut row: impl FnMut(usize) -> Row<'a>,
 ) {
-    let start = index.saturating_sub(style.visible.saturating_sub(1));
+    let start = style
+        .first
+        .unwrap_or(0)
+        .min(index)
+        .max(index.saturating_sub(style.visible.saturating_sub(1)));
     for i in start..count.min(start + style.visible) {
         let y = style.top + (i - start) as i32 * style.row_height;
         let item = row(i);
@@ -90,13 +97,23 @@ pub fn draw<'a>(
         );
         let color = if let Some((focused, normal)) = style.marker_shades {
             c.accent(if i == index { focused } else { normal })
-        } else if i == index {
-            WHITE
         } else {
-            c.accent(3)
+            c.accent(if i == index { 6 } else { 3 })
         };
         match item.marker {
             Marker::None => {}
+            Marker::Child => {
+                let cy = y + style.row_height / 2;
+                for d in -10_i32..=10 {
+                    c.rect(
+                        228 - d.abs(),
+                        cy + d,
+                        1,
+                        1,
+                        if item.enabled { WHITE } else { MUTED },
+                    );
+                }
+            }
             Marker::Switch(on) => {
                 let y = y + style.row_height / 2;
                 let track = if item.enabled {
@@ -122,10 +139,7 @@ pub fn draw<'a>(
                 }
             }
             Marker::Radio(selected) => {
-                c.ring(225, y + style.row_height / 2, 7, color);
-                if selected {
-                    c.rect(222, y + style.row_height / 2 - 3, 6, 6, color);
-                }
+                radio(c, selected, 216, y + style.row_height / 2 - 9, color);
             }
             Marker::Check(selected) => {
                 c.rect(
@@ -143,7 +157,17 @@ pub fn draw<'a>(
                         c.rect(12 + d, y + 23 - d, 2, 2, WHITE);
                     }
                 } else {
-                    c.rect(8, y + 14, 14, 14, [0, 0, 0, 255]);
+                    c.rect(
+                        8,
+                        y + 14,
+                        14,
+                        14,
+                        if i == index {
+                            c.accent(3)
+                        } else {
+                            [0, 0, 0, 255]
+                        },
+                    );
                 }
             }
         }
@@ -158,7 +182,19 @@ pub fn plain(c: &mut Canvas, labels: &[String], index: usize) {
     });
 }
 pub fn popup<'a>(c: &mut Canvas, count: usize, index: usize, row: impl FnMut(usize) -> Row<'a>) {
+    popup_at(c, count, index, None, row);
+}
+pub fn popup_at<'a>(
+    c: &mut Canvas,
+    count: usize,
+    index: usize,
+    top: Option<i32>,
+    row: impl FnMut(usize) -> Row<'a>,
+) {
     let mut style = ListStyle::popup(count);
+    if let Some(top) = top {
+        style.top = top;
+    }
     if count > style.visible {
         style.row_width = 234;
         style.text_width = 222;
@@ -167,7 +203,11 @@ pub fn popup<'a>(c: &mut Canvas, count: usize, index: usize, row: impl FnMut(usi
         0,
         style.top,
         240,
-        super::SOFTKEY_TOP - style.top,
+        if top.is_some() {
+            count.min(style.visible) as i32 * style.row_height
+        } else {
+            super::SOFTKEY_TOP - style.top
+        },
         [0, 0, 0, 255],
     );
     draw(c, count, index, style, row);
@@ -202,4 +242,18 @@ pub fn detail_rows<'a>(
         c.text(6, y + 10, label, 20, WHITE);
         c.text(6, y + 38, value, 16, MUTED);
     }
+}
+
+/// Theme-colored native 18px radio artwork, with the original round center.
+pub fn radio(c: &mut Canvas, selected: bool, x: i32, y: i32, color: crate::canvas::Color) {
+    c.tint_symbol(
+        if selected {
+            crate::assets::Symbol::Selected
+        } else {
+            crate::assets::Symbol::Radio
+        },
+        x,
+        y,
+        color,
+    );
 }

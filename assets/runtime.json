@@ -474,6 +474,48 @@
       "bytes": 2256,
       "sha256": "929e84a59e606520047e1c432d0dea757f0b668a3e0d136becc55ffb814a506e",
       "archive_source": "nokia-ta1278-research/analysis/ui/audio/01532-sound-00154348.mp3"
+    },
+    {
+      "file": "assets/icons/00455-icon-000765e0.png",
+      "bytes": 380,
+      "sha256": "1bfe34fc687cd215c68d6f97073b36df3f333588edee7ef48695cf47150c032a",
+      "archive_source": "nokia-ta1278-research/analysis/extracted/png/00455-icon-000765e0.png"
+    },
+    {
+      "file": "assets/icons/00542-icon-000b3b3c.png",
+      "bytes": 127,
+      "sha256": "1a38d37ada1db447136f872eb9f84d355df4dc4e4cde610b7d3b3c64edc2fe89",
+      "archive_source": "nokia-ta1278-research/analysis/extracted/png/00542-icon-000b3b3c.png"
+    },
+    {
+      "file": "assets/icons/01152-icon-000cff58.png",
+      "bytes": 233,
+      "sha256": "b02eabc3e83c8baad7d05c9fdf3b607785208e0b99c5b27dabc338255339de67",
+      "archive_source": "nokia-ta1278-research/analysis/extracted/png/01152-icon-000cff58.png"
+    },
+    {
+      "file": "assets/icons/01204-icon-000d44dc.png",
+      "bytes": 197,
+      "sha256": "a811efc2e405fc921b969a3bed4ed7387f7723f947365408b2b91cb5acbbec02",
+      "archive_source": "nokia-ta1278-research/analysis/extracted/png/01204-icon-000d44dc.png"
+    },
+    {
+      "file": "assets/icons/01294-icon-000da20c.png",
+      "bytes": 232,
+      "sha256": "5d780cc3d5533c0aed4d8bc705fbb5384c6513be24d3be6285a4364448d9b9b0",
+      "archive_source": "nokia-ta1278-research/analysis/extracted/png/01294-icon-000da20c.png"
+    },
+    {
+      "file": "assets/icons/01295-icon-000da2d0.png",
+      "bytes": 245,
+      "sha256": "39ba893fbb4ad32dc5d630799341bf4fdc792696ede5a8f32db4646a9db49e4e",
+      "archive_source": "nokia-ta1278-research/analysis/extracted/png/01295-icon-000da2d0.png"
+    },
+    {
+      "file": "assets/icons/01153-icon-000d0028.png",
+      "bytes": 227,
+      "sha256": "2b7eb0478510f32b3476819b613bf53b71fc4aca220772e753a5836b1a46fb9a",
+      "archive_source": "nokia-ta1278-research/analysis/extracted/png/01153-icon-000d0028.png"
     }
   ]
 }

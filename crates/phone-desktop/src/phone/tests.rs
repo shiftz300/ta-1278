@@ -331,7 +331,7 @@ fn sms_focus_menus_insert_and_save_failure_keep_editor() {
     press(&mut p, Key::SoftLeft);
     assert_eq!(
         p.menu_labels(MenuKind::Sms),
-        vec!["插入选项", "附件", "移除附件", "清除文字", "另存为草稿"]
+        vec!["插入选项", "添加附件", "移除附件", "清除文字", "另存为草稿"]
     );
     press(&mut p, Key::Center);
     option(&mut p, MenuKind::SmsInsert, 2);
@@ -763,16 +763,7 @@ fn all_enabled_menu_entries_have_routes_and_cancel_without_backend_actions() {
             },
             0,
         );
-        assert_eq!(
-            p.screen,
-            if crate::menu::phone_disabled(expected) {
-                Screen::Menu
-            } else {
-                expected
-            },
-            "{}",
-            entry.label
-        );
+        assert_eq!(p.screen, expected, "{}", entry.label);
         p.handle(
             Event {
                 key: Key::End,
@@ -1473,7 +1464,7 @@ fn snake_death_keeps_board_records_once_and_only_back_returns() {
 }
 
 #[test]
-fn contact_native_routes_preserve_edits_and_disable_calling() {
+fn contact_native_routes_preserve_edits_and_open_dialer() {
     use organizer::OrganizerPage as P;
     let mut p = phone();
     p.launch(Screen::Contacts);
@@ -1511,7 +1502,11 @@ fn contact_native_routes_preserve_edits_and_disable_calling() {
     press(&mut p, Key::Center);
     assert_eq!(p.organizer.page, P::ContactDetail);
     press(&mut p, Key::Center);
-    press(&mut p, Key::Call);
+    assert_eq!(p.screen, Screen::Tools(tools::ToolPage::Dial));
+    assert_eq!(p.calls.number.text(), "12345");
+    press(&mut p, Key::SoftLeft);
+    press(&mut p, Key::Down);
+    press(&mut p, Key::Center);
     assert_eq!(p.organizer.page, P::ContactDetail);
     assert_eq!(p.screen, Screen::Contacts);
     press(&mut p, Key::SoftLeft);
@@ -1849,15 +1844,7 @@ fn contact_fields_use_measured_input_date_and_choice_geometry() {
         p.contact_load_field(field);
         crate::views::render(&mut c, &mut p);
         let offset = (y * 240 + x) * 4;
-        assert_eq!(
-            &c.pixels[offset..offset + 4],
-            &if field == 6 {
-                crate::canvas::MUTED
-            } else {
-                c.accent(3)
-            },
-            "field {field}"
-        );
+        assert_eq!(&c.pixels[offset..offset + 4], &c.accent(3), "field {field}");
     }
 }
 
@@ -2011,4 +1998,24 @@ fn hash_cycles_editor_modes_through_phone_events_without_inserting_text() {
     assert_eq!(p.compose.body.mode_label(), "笔");
     assert_eq!(p.compose.body.text(), "你");
     assert!(!p.compose.body.prediction.active());
+}
+
+#[test]
+fn shortcut_reopens_at_current_assignment_and_scrolls_without_changing_it() {
+    use settings::SettingsPage;
+    let mut p = phone();
+    p.preferences.left_shortcut = 12;
+    p.launch(Screen::Settings);
+    p.settings_open(SettingsPage::Shortcuts, 1);
+    press(&mut p, Key::Center);
+    assert_eq!(p.settings_page, SettingsPage::Shortcut { left: true });
+    assert_eq!((p.index, p.settings_first), (12, 12));
+    press(&mut p, Key::Down);
+    assert_eq!((p.index, p.settings_first), (13, 12));
+    press(&mut p, Key::Up);
+    press(&mut p, Key::Up);
+    assert_eq!((p.index, p.settings_first), (11, 11));
+    press(&mut p, Key::SoftRight);
+    assert_eq!(p.preferences.left_shortcut, 12);
+    assert_eq!(p.settings_page, SettingsPage::Shortcuts);
 }

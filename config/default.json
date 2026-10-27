@@ -19,6 +19,7 @@
     "music": true,
     "files": true,
     "network": true,
+    "javascript": true,
     "pictures": true,
     "video": true,
     "sounds": true

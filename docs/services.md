@@ -1,6 +1,6 @@
 # Service interface
 
-API version 1. The shipped app uses `Offline`: no modem, real messages, calls or service connection. Existing call controls stay grey. The interface adds no dependency.
+API version 1. The shipped app uses `Offline`: no modem, real messages, calls or service connection. The local dialer is enabled; call commands/events remain reserved and are not dispatched. The interface adds no dependency.
 
 - `phone-core/src/services.rs`: public commands, events, capabilities and `Backend` trait.
 - `phone-core/src/services/state.rs`: mailbox updates, delivery states, replay cursor and alerts.

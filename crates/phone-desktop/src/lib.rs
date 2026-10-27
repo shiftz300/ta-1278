@@ -4,6 +4,8 @@ mod audio;
 mod canvas;
 pub mod config;
 mod effects;
+#[cfg(any(feature = "desktop", test))]
+mod frames;
 #[cfg(feature = "desktop")]
 mod gpu;
 #[cfg(feature = "desktop")]
@@ -26,3 +28,6 @@ mod runtime;
 pub use effects::Cue;
 pub use phone_core::{input, services as messaging};
 pub use runtime::{Frame, Request, Runtime, Time};
+
+#[cfg(all(test, feature = "desktop"))]
+mod accept;

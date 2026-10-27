@@ -1,5 +1,6 @@
 mod alarm;
 mod browser;
+mod calls;
 mod compose;
 mod contacts;
 mod conversation;
@@ -70,17 +71,7 @@ pub fn render(c: &mut Canvas, p: &mut Phone) {
         Screen::Menu => {
             let entries = crate::menu::visible(p.apps);
             p.index = p.index.min(entries.len() - 1);
-            c.text(
-                6,
-                1,
-                entries[p.index].label,
-                14,
-                if crate::menu::phone_disabled(entries[p.index].screen) {
-                    MUTED
-                } else {
-                    WHITE
-                },
-            );
+            c.text(6, 1, entries[p.index].label, 14, WHITE);
             let first_row = (p.index / 3).saturating_sub(2);
             for (i, entry) in entries.iter().enumerate().skip(first_row * 3).take(12) {
                 let x = 38 + (i % 3) as i32 * 81;
@@ -88,13 +79,7 @@ pub fn render(c: &mut Canvas, p: &mut Phone) {
                 if p.index == i {
                     c.ring(x, y, 31, c.accent(2));
                 }
-                c.icon_enabled(
-                    entry.icon,
-                    x - 38,
-                    y - 38,
-                    76,
-                    !crate::menu::phone_disabled(entry.screen),
-                );
+                c.icon_enabled(entry.icon, x - 38, y - 38, 76, true);
             }
             c.rect(0, 288, 240, 32, [0, 0, 0, 255]);
             Softkeys::menu("").draw(c);
@@ -152,6 +137,13 @@ pub fn render(c: &mut Canvas, p: &mut Phone) {
         if browser_modal
             || file_editor
             || music_library_menu
+            || matches!(
+                overlay,
+                Overlay::Menu {
+                    kind: MenuKind::Sms | MenuKind::SmsInsert | MenuKind::Dial,
+                    ..
+                }
+            )
             || matches!(overlay, Overlay::TimerElapsed)
         {
             c.dim();
@@ -182,6 +174,22 @@ pub fn render(c: &mut Canvas, p: &mut Phone) {
                     PopupMenu::default()
                         .unshaded()
                         .draw(c, labels.len(), index, |i| list::Row::text(&labels[i]));
+                } else if matches!(kind, MenuKind::Sms | MenuKind::SmsInsert | MenuKind::Dial) {
+                    let labels = p.menu_labels(kind);
+                    let mut popup = PopupMenu::default().unshaded();
+                    if kind == MenuKind::SmsInsert {
+                        chrome::title(c, "插入选项");
+                        popup = popup.at(84);
+                    }
+                    popup.draw(c, labels.len(), index, |i| list::Row {
+                        label: &labels[i],
+                        enabled: p.menu_enabled(kind, i),
+                        marker: if kind == MenuKind::Sms && i < 2 {
+                            list::Marker::Child
+                        } else {
+                            list::Marker::None
+                        },
+                    });
                 } else if matches!(kind, MenuKind::Symbols | MenuKind::Smileys) {
                     pickers::render(c, p, kind, index);
                 } else {
@@ -261,6 +269,7 @@ pub fn render(c: &mut Canvas, p: &mut Phone) {
                 selected,
                 ..
             } => {
+                status(c);
                 chrome::title(c, "选择");
                 if let Some(Element::Select { options, .. }) = p.browser.page.elements.get(element)
                 {
@@ -269,8 +278,9 @@ pub fn render(c: &mut Canvas, p: &mut Phone) {
                         options.len(),
                         index,
                         list::ListStyle {
-                            font: 18,
+                            font: 16,
                             text_width: 204,
+                            marker_shades: Some((6, 3)),
                             ..list::ListStyle::STANDARD
                         },
                         |i| list::Row {
@@ -297,6 +307,17 @@ pub fn render(c: &mut Canvas, p: &mut Phone) {
     if let Some(e) = p.editor() {
         crate::ui::candidates::render(c, e);
     }
+    if matches!(p.screen, Screen::Tools(_))
+        && matches!(
+            p.tools.page,
+            crate::phone::tools::ToolPage::Other | crate::phone::tools::ToolPage::TimerMenu
+        )
+        && p.overlay.is_none()
+        && let Some((label, _)) = p.tools.timer_feedback
+    {
+        c.rect(0, 0, 240, 24, c.accent(5));
+        chrome::title(c, label);
+    }
     alarm::alert(c, p);
 }
 fn mode(e: &Editor) -> &'static str {
@@ -305,6 +326,8 @@ fn mode(e: &Editor) -> &'static str {
 
 #[cfg(test)]
 mod audit;
+#[cfg(test)]
+mod samples;
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -379,6 +402,11 @@ mod sms_geometry_tests {
         };
         assert_eq!(pixel(&c, 199, 220), fill);
         assert_eq!(pixel(&c, 199, 219), [0, 0, 0, 255]);
+        // The triangular tail and rectangular body have one continuous interior.
+        assert_eq!(pixel(&c, 35, 254), fill);
+        assert_eq!(pixel(&c, 35, 255), fill);
+        assert_eq!(pixel(&c, 29, 254), WHITE);
+        assert_eq!(pixel(&c, 48, 254), WHITE);
         let chrome = c.pixels[254 * 240 * 4..].to_vec();
         p.compose.body.insert("\n");
         render(&mut c, &mut p);
@@ -460,7 +488,7 @@ mod shared_controls_tests {
         }
     }
     #[test]
-    fn message_and_browser_editors_share_delete_control() {
+    fn editor_softkeys_use_shared_geometry_with_app_specific_labels() {
         let mut c = Canvas::new().unwrap();
         let mut p = Phone::new(Default::default());
         p.go(Screen::Compose);
@@ -474,7 +502,11 @@ mod shared_controls_tests {
             editor: Box::new(Editor::new("test", 4096)),
         });
         render(&mut c, &mut p);
-        assert_eq!(region(&c, 208, 284, 32, 36), message_delete);
+        let browser_delete = region(&c, 194, 284, 46, 36);
+        assert_ne!(region(&c, 208, 284, 32, 36), message_delete);
+        c.background();
+        Softkeys::new(Button::Text("确认"), Button::None, Button::Text("删除")).draw(&mut c);
+        assert_eq!(region(&c, 194, 284, 46, 36), browser_delete);
         // A grid without a center action must not inherit the editor's label.
         p.go(Screen::Menu);
         render(&mut c, &mut p);

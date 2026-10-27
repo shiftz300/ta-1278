@@ -1,6 +1,6 @@
 //! One three-slot softkey control. Pages supply actions, never baselines or glyphs.
 use super::{SOFTKEY_TEXT_Y, SOFTKEY_TOP};
-use crate::canvas::{Canvas, MUTED, WHITE};
+use crate::canvas::{Canvas, WHITE};
 #[derive(Clone, Copy)]
 pub enum Button<'a> {
     None,
@@ -101,7 +101,7 @@ fn draw_button(c: &mut Canvas, slot: usize, button: Button<'_>) {
                 label,
                 20,
                 if matches!(button, Button::Disabled(_)) {
-                    MUTED
+                    [82, 85, 82, 255]
                 } else {
                     WHITE
                 },
@@ -109,41 +109,9 @@ fn draw_button(c: &mut Canvas, slot: usize, button: Button<'_>) {
         }
         Button::Menu | Button::Back => c.softkey_symbol(matches!(button, Button::Back), x, 287),
         Button::Shortcut(index) => c.home_shortcut(index, x, 287),
-        Button::Close => {
-            for d in 0..14 {
-                c.rect(x + 7 + d, 291 + d, 2, 2, WHITE);
-                c.rect(x + 20 - d, 291 + d, 2, 2, WHITE);
-            }
-        }
-        Button::Delete => {
-            // Fitted to the sampled native outline, shared by every editor.
-            c.rect(x + 10, 291, 15, 2, WHITE);
-            c.rect(x + 10, 306, 15, 2, WHITE);
-            c.rect(x + 23, 291, 2, 17, WHITE);
-            for d in 0..9 {
-                c.rect(x + 2 + d, 299 - d, 2, 2, WHITE);
-                c.rect(x + 2 + d, 298 + d, 2, 2, WHITE);
-            }
-            for d in 0..7 {
-                c.rect(x + 12 + d, 296 + d, 1, 1, WHITE);
-                c.rect(x + 18 - d, 296 + d, 1, 1, WHITE);
-            }
-        }
-        Button::Contacts => {
-            for (dx, y) in [(5, 294), (19, 294), (12, 292)] {
-                for dy in -3..=3 {
-                    for xx in -3..=3 {
-                        if xx * xx + dy * dy <= 9 {
-                            c.rect(x + dx + xx, y + dy, 1, 1, WHITE);
-                        }
-                    }
-                }
-                for row in 0..6 {
-                    let half = (row + 2).min(5);
-                    c.rect(x + dx - half, y + 5 + row, half * 2 + 1, 1, WHITE);
-                }
-            }
-        }
+        Button::Close => c.symbol(crate::assets::Symbol::Close, x, 287),
+        Button::Delete => c.symbol(crate::assets::Symbol::Delete, x, 287),
+        Button::Contacts => c.symbol(crate::assets::Symbol::Contacts, x, 287),
     }
 }
 /// A specialized control shares the bar and baseline, while adding transport keys.

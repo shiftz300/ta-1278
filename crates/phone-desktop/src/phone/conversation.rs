@@ -260,7 +260,14 @@ impl Phone {
                             self.open_thread(n);
                         }
                     }
-                    _ => {} // Calling is permanently disabled.
+                    Popup::Number => {
+                        let number = self.mailbox.content(item).and_then(|m| number(m.body));
+                        if let Some(number) = number {
+                            self.chat.popup = Popup::None;
+                            self.open_dialer(number);
+                        }
+                    }
+                    _ => {}
                 }
             }
             _ => {}

@@ -191,6 +191,15 @@ impl Phone {
         if !is_contact(page) {
             return false;
         }
+        if page == Page::Contacts && key == Key::Call && !self.organizer.pick_recipient {
+            if let Some(id) = self.contact_ids().get(self.index).copied() {
+                self.organizer.selected = id;
+                if let Some((_, number)) = self.contact_numbers().first().cloned() {
+                    self.open_dialer(number);
+                }
+            }
+            return true;
+        }
         if self.contact_groups_key(key) {
             return true;
         }
@@ -389,7 +398,12 @@ impl Phone {
                         self.contact_compose(number);
                     }
                 }
-                _ => {} // Calling is deliberately disabled, including the physical call key.
+                Key::Center | Key::Call => {
+                    if let Some((_, number)) = self.contact_numbers().get(self.index / 2).cloned() {
+                        self.open_dialer(number);
+                    }
+                }
+                _ => {}
             },
             Page::DeleteContact => match key {
                 Key::Center => {

@@ -4,6 +4,15 @@
 
 用户态的功能机交互运行库与桌面程序，以 Nokia TA-1278 的使用体验为基础。
 
+## 运行截图
+
+桌面程序的实际运行窗口。短信为模拟内容，浏览器展示本地演示页面。
+
+| 短信 | 贪吃蛇 | 浏览器 |
+| --- | --- | --- |
+| <img src="docs/screens/compose.jpg" width="240" alt="桌面程序：短信编辑"><br>短信编辑 | <img src="docs/screens/snake.jpg" width="240" alt="桌面程序：贪吃蛇运行"><br>运行画面 | <img src="docs/screens/browser.jpg" width="240" alt="桌面程序：浏览器文字与表单"><br>文字与表单 |
+| <img src="docs/screens/messages.jpg" width="240" alt="桌面程序：短信会话"><br>短信会话 | <img src="docs/screens/menu.jpg" width="240" alt="桌面程序：贪吃蛇菜单"><br>菜单 | <img src="docs/screens/script.jpg" width="240" alt="桌面程序：JavaScript 内容与点击结果"><br>JavaScript 与事件 |
+
 ## 运行
 
 需要 Rust 和图形驱动。macOS 还需要 Apple Command Line Tools 来编译媒体助手。
@@ -19,14 +28,16 @@ macOS 打包：`sh scripts/package-macos.sh`，结果在 `target/TA1278.app`。
 ## 功能
 
 - 信息：编辑、会话、草稿、接收记录和本地发送队列；预留后端接口，不发送真实短信。
-- 浏览器：HTTP(S) 文本页面、链接、基础表单和 GET 提交；不支持 JavaScript、CSS 排版、POST 或网页图片。
+- 浏览器：HTTP(S) 文本页面、基础 JavaScript/DOM、链接、表单和 GET 提交；不支持完整 CSS、复杂单页应用、POST 或网页图片。[脚本能力与安全边界](docs/javascript.md)。
 - 音乐：播放本地 MP3/WAV，支持播放列表、重复、随机和断点位置。
 - 通讯录、日历、闹钟、文件、计算器、计时器、秒表和贪吃蛇。
-- 电话保持灰色、不可操作。
+- 电话：拨号、通讯录/短信号码入口和本地拨号记录；尚未连接真实通话后端。
 
 首次启动选择一个文件夹作为“手机存储”，直接访问文件，不使用 VFS 或导入副本。可用 `--storage-dir PATH` 指定路径，或 `--read-only-storage` 禁止写入。私人配置和消息另存于用户数据目录。
 
 [统一配置](docs/config.md)可关闭可选应用；主屏、信息、通讯录、设置和文件保留，其他已实现应用默认开启。
+
+[界面核对](docs/review.md) · [完整使用验收与复跑方法](docs/acceptance.md)
 
 ## 嵌入
 

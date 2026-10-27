@@ -23,4 +23,4 @@ Pages share title, lists, popups, editors and softkeys. File, image, wallpaper a
 
 ## Boundaries
 
-Calls remain disabled. Messages use the local mailbox and [service interface](services.md), with no real transport. The [browser](browser-capabilities.md) handles basic text pages and GET forms. The [input engine](input-engine.md) retains T9 resources and private learning. [Runtime](runtime.md) describes embedding and save/restore limits.
+The dialer and local attempted-call history are enabled without call transport. Messages use the local mailbox and [service interface](services.md), with no real transport. The [browser](browser-capabilities.md) handles basic text pages and GET forms. The [input engine](input-engine.md) retains T9 resources and private learning. [Runtime](runtime.md) describes embedding and save/restore limits.

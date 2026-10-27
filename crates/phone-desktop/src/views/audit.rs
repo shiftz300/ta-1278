@@ -2,13 +2,57 @@
 use super::*;
 use crate::phone::{files::FileView, tools::ToolPage};
 
-fn frame(c: &mut Canvas, p: &mut Phone, name: &str) {
+pub(super) fn frame(c: &mut Canvas, p: &mut Phone, name: &str) {
     render(c, p);
     if let Some(path) = std::env::var_os("TA1278_AUDIT_FRAMES") {
-        let path = std::path::PathBuf::from(path);
+        let thread = std::thread::current();
+        let suite = thread
+            .name()
+            .unwrap_or("frames")
+            .rsplit("::")
+            .next()
+            .unwrap();
+        let path = std::path::PathBuf::from(path).join(suite);
         std::fs::create_dir_all(&path).unwrap();
         c.save(&path.join(format!("{name}.png"))).unwrap();
     }
+}
+
+#[test]
+fn sms_focus_uses_native_contacts_menu_delete_and_status_artwork() {
+    // Check real page output, including transparent padding around each symbol.
+    fn artwork(c: &Canvas, bytes: &[u8], x: usize, y: usize) {
+        let icon = crate::assets::decode(bytes).unwrap();
+        for (dx, dy, pixel) in icon.enumerate_pixels() {
+            let at = ((y + dy as usize) * 240 + x + dx as usize) * 4;
+            let expected = pixel.0[..3]
+                .iter()
+                .map(|v| (u16::from(*v) * u16::from(pixel[3]) / 255) as u8)
+                .collect::<Vec<_>>();
+            assert_eq!(
+                &c.pixels[at..at + 3],
+                expected,
+                "symbol at {x},{y}, pixel {dx},{dy}"
+            );
+        }
+    }
+    let mut c = Canvas::new().unwrap();
+    let mut p = Phone::new(Default::default());
+    p.features.disable("sounds,music,video,network").unwrap();
+    p.launch(Screen::Compose);
+    assert!(p.compose.recipient);
+    frame(&mut c, &mut p, "sms-recipient-icons");
+    artwork(&c, crate::assets::png!("00455-icon-000765e0.png"), 5, 287);
+    artwork(&c, crate::assets::png!("00542-icon-000b3b3c.png"), 210, 4);
+    p.tab();
+    assert!(!p.compose.recipient);
+    p.text("A");
+    frame(&mut c, &mut p, "sms-body-icons");
+    artwork(&c, crate::assets::png!("01160-icon-000d0620.png"), 5, 287);
+    artwork(&c, crate::assets::png!("01152-icon-000cff58.png"), 208, 287);
+    p.tab();
+    frame(&mut c, &mut p, "sms-recipient-restored-icons");
+    artwork(&c, crate::assets::png!("00455-icon-000765e0.png"), 5, 287);
 }
 
 #[test]
@@ -313,4 +357,46 @@ fn shared_popup_app_pages_render_with_synthetic_content() {
     p.launch(Screen::Organizer(Page::Alarms));
     p.organizer.page = Page::AlarmMenu;
     frame(&mut c, &mut p, "framework-alarm-menu");
+}
+
+#[test]
+fn phone_pages_share_editor_and_softkeys_without_call_backend() {
+    let mut p = Phone::new(Default::default());
+    let mut c = Canvas::new().unwrap();
+    p.launch(Screen::Tools(ToolPage::Calls));
+    frame(&mut c, &mut p, "calls-empty");
+    p.open_dialer("+12025550123".into());
+    frame(&mut c, &mut p, "calls-dialer");
+    assert!(c.caret.is_some());
+    p.handle(
+        phone_core::input::Event {
+            key: phone_core::input::Key::Call,
+            phase: phone_core::input::Phase::Down,
+        },
+        0,
+    );
+    frame(&mut c, &mut p, "calls-unavailable");
+    p.launch(Screen::Tools(ToolPage::Calls));
+    frame(&mut c, &mut p, "calls-history");
+}
+
+#[test]
+fn all_application_fixtures_render_without_host_services() {
+    let mut runtime = crate::Runtime::new(
+        Default::default(),
+        crate::Time {
+            elapsed_ms: 0,
+            unix_ms: 1792857600000,
+        },
+    )
+    .unwrap();
+    runtime.phone.accent = 4;
+    for stage in 0..126 {
+        if runtime.pending_commit() {
+            runtime.save(|_| Ok(())).unwrap();
+        }
+        let name = crate::frames::name(stage).expect("known scene");
+        frame(&mut runtime.canvas, &mut runtime.phone, name);
+        crate::frames::advance(&mut runtime, stage, 1000);
+    }
 }

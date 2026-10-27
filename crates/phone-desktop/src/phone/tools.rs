@@ -22,10 +22,12 @@ pub enum ToolPage {
     Video,
     Gallery,
     Calls,
+    Dial,
 }
 pub struct Tools {
     pub dirty: bool,
     pub timer_notice: bool,
+    pub timer_feedback: Option<(&'static str, u64)>,
     pub page: ToolPage,
     pub calculator: Calculator,
     pub stopwatch: Stopwatch,
@@ -48,6 +50,7 @@ impl Default for Tools {
         Self {
             dirty: false,
             timer_notice: false,
+            timer_feedback: None,
             page: ToolPage::Other,
             calculator: Default::default(),
             stopwatch: Default::default(),
@@ -88,10 +91,10 @@ impl Phone {
     pub fn tools_title(&self) -> &'static str {
         use ToolPage::*;
         match self.tools.page {
-            Other => "其他",
+            Other | TimerMenu => "其他",
             Calculator => "计算器",
             Stopwatch => "秒表",
-            Timer | TimerMenu => "定时器",
+            Timer => "定时器",
             Converter => "单位转换",
             ConversionPairs(n) | Conversion(n) => phone_core::converter::CATEGORIES[n.min(5)],
             Flashlight => "手电筒",
@@ -105,6 +108,7 @@ impl Phone {
             Video => "视频",
             Gallery => "多媒体资料",
             Calls => "通话历史记录",
+            Dial => "电话",
         }
     }
     pub fn tools_items(&self) -> Vec<String> {
@@ -118,7 +122,7 @@ impl Phone {
                         Timer => "定时器",
                         Stopwatch => "秒表",
                         Flashlight => "手电筒",
-                        _ => "单位换算",
+                        _ => "单位转换",
                     }
                     .to_owned()
                 })
@@ -160,8 +164,12 @@ impl Phone {
         }
     }
     pub(super) fn tools_key(&mut self, key: Key) {
-        self.tools.dirty = true;
         use ToolPage::*;
+        if matches!(self.tools.page, Calls | Dial) {
+            self.calls_key(key);
+            return;
+        }
+        self.tools.dirty = true;
         match self.tools.page {
             Files => {
                 self.files_key(key);

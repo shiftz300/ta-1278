@@ -13,6 +13,7 @@ pub struct Features {
     pub music: bool,
     pub files: bool,
     pub network: bool,
+    pub javascript: bool,
     pub pictures: bool,
     pub video: bool,
     pub sounds: bool,
@@ -23,6 +24,7 @@ impl Default for Features {
             music: true,
             files: true,
             network: true,
+            javascript: true,
             pictures: true,
             video: true,
             sounds: true,
@@ -36,12 +38,13 @@ impl Features {
                 "music" => self.music = false,
                 "files" => self.files = false,
                 "network" => self.network = false,
+                "javascript" => self.javascript = false,
                 "pictures" => self.pictures = false,
                 "video" => self.video = false,
                 "sounds" => self.sounds = false,
                 _ => {
                     return Err(format!(
-                        "Unknown feature: {name}. Expected music, files, network, pictures, video or sounds"
+                        "Unknown feature: {name}. Expected music, files, network, javascript, pictures, video or sounds"
                     ));
                 }
             }
@@ -122,6 +125,10 @@ mod tests {
     fn config_defaults_keep_apps_and_unknown_or_core_app_flags_are_rejected() {
         let c: RuntimeConfig = serde_json::from_str("{}").unwrap();
         assert!(c.apps.browser && c.apps.music && c.apps.alarms && c.apps.utilities);
+        assert!(c.capabilities.javascript);
+        let mut restricted = c.capabilities;
+        restricted.disable("javascript").unwrap();
+        assert!(!restricted.javascript && restricted.network);
         for bad in [
             r#"{"apps":{"messages":false}}"#,
             r#"{"apps":{"broser":false}}"#,

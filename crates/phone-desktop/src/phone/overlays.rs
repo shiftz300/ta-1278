@@ -12,6 +12,7 @@ impl Phone {
                 } else if matches!(key, Key::SoftRight | Key::End) {
                     self.tools.timer = Default::default();
                     self.tools.timer_notice = false;
+                    self.tools.timer_feedback = Some(("计时已停止", 2000));
                     self.tools.dirty = true;
                 } else {
                     self.overlay = Some(Overlay::TimerElapsed);
@@ -199,6 +200,13 @@ impl Phone {
     }
     fn menu_action(&mut self, kind: MenuKind, index: usize) {
         match kind {
+            MenuKind::Dial => {
+                if index == 0 {
+                    self.launch(Screen::Contacts);
+                } else {
+                    self.leave_dialer();
+                }
+            }
             MenuKind::Sms => match index {
                 0 => {
                     self.overlay = Some(Overlay::Menu {

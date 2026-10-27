@@ -2,7 +2,7 @@
 
 The project is a user-space phone interaction runtime and a desktop host. Research has moved out of this repository. Runtime resources, input code, tests and supported behavior are retained; full original-system reconstruction is not a release requirement.
 
-Home, Messages, Contacts, Settings and Files are core applications. Other implemented apps are optional and enabled by default. Telephone remains grey and inactive. See [configuration](config.md).
+Home, Messages, Contacts, Settings and Files are core applications. Other implemented apps are optional and enabled by default. Telephone has a local dialer and attempted-call history, without an active backend. See [configuration](config.md).
 
 Messages support local sending/receiving state and a replaceable service interface. No real message or call backend is provided. The [browser](browser-capabilities.md) handles text pages and basic GET forms; complex web compatibility is excluded. Music plays local MP3/WAV files. Storage maps one user-selected folder directly. See [local features](local-completion.md) and [storage](storage.md).
 

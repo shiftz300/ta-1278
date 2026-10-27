@@ -291,7 +291,8 @@ impl Editor {
             .current()
             .filter(|_| self.prediction.active() && !self.prediction.associating())
         else {
-            return (units, None);
+            let span = self.pending.map(|(_, _, at, _)| at..at + 1);
+            return (units, span);
         };
         let (start, end) = self
             .selection
@@ -704,5 +705,25 @@ mod original_input_tests {
         e.digit(1, 0);
         e.long_digit(1);
         assert_eq!(e.text(), "1");
+    }
+}
+
+#[cfg(test)]
+mod composition_tests {
+    use super::*;
+    #[test]
+    fn multitap_preview_marks_the_existing_character_until_commit() {
+        let mut e = Editor::new("", 20);
+        e.titlecase = true;
+        for _ in 0..3 {
+            e.digit(2, 0);
+        }
+        assert_eq!(
+            e.preview(),
+            ("C".encode_utf16().collect::<Vec<_>>(), Some(0..1))
+        );
+        assert_eq!(e.units.len(), 1);
+        e.tick(800);
+        assert_eq!(e.preview(), (e.units.clone(), None));
     }
 }

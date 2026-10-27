@@ -77,9 +77,6 @@ pub(super) fn render(c: &mut Canvas, p: &Phone) {
             })
             .collect();
         list::plain(c, &labels, p.index);
-        if labels.is_empty() {
-            c.text(8, 130, "这里没有可显示的内容。", 18, MUTED);
-        }
         Softkeys::back(if labels.is_empty() { "" } else { "打开" }).draw(c);
     }
 }

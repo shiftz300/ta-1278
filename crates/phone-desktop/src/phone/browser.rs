@@ -5,6 +5,7 @@ use super::*;
 pub enum BrowserView {
     Start,
     Page,
+    Details,
     Bookmarks,
     History,
     Offline,
@@ -38,7 +39,7 @@ impl Phone {
                 .iter()
                 .map(|p| p.title.clone())
                 .collect(),
-            BrowserView::Page => vec![],
+            BrowserView::Page | BrowserView::Details => vec![],
             BrowserView::Settings => [
                 "SIM1 接入点",
                 "SIM2 接入点",
@@ -117,10 +118,10 @@ impl Phone {
                 self.chat = Default::default();
                 self.go(Screen::Compose);
             }
-            (MenuKind::Browser, 5) => self.notice(format!(
-                "{}\n{}",
-                self.browser.page.title, self.browser.page.url
-            )),
+            (MenuKind::Browser, 5) => {
+                self.browser_view = BrowserView::Details;
+                self.index = 0;
+            }
             (MenuKind::Browser, 7) => self.overlay = Some(Overlay::ClosePage),
             (MenuKind::BrowserOpen, 1) => self.address_editor(),
             (MenuKind::BrowserOpen, 2..=4) => {
@@ -176,6 +177,15 @@ impl Phone {
         }
     }
     pub(super) fn browser_key(&mut self, key: Key) {
+        if self.browser_view == BrowserView::Details {
+            match key {
+                Key::SoftRight | Key::End => self.browser_view = BrowserView::Page,
+                Key::Up => self.index = self.index.saturating_sub(1),
+                Key::Down => self.index = self.index.saturating_add(1),
+                _ => {}
+            }
+            return;
+        }
         if matches!(
             self.browser_view,
             BrowserView::Settings

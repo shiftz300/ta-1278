@@ -1,0 +1,18 @@
+<!doctype html>
+<html><head><title>Loading</title></head><body>
+<main id="app">Loading script…</main>
+<noscript>This page needs JavaScript.</noscript>
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+  const response = await fetch('/data.json');
+  const data = await response.json();
+  document.title = 'Script ready';
+  const app = document.getElementById('app');
+  app.innerHTML = '<h1>Basic JavaScript</h1><p>' + data.text + '</p>' +
+    '<input id="name" value="Nokia"><button type="button" id="hello">Greet</button>' +
+    '<p id="answer"></p><a href="/next.html">Next page</a>';
+  document.getElementById('hello').onclick = () => {
+    document.getElementById('answer').textContent = 'Hello, ' + document.getElementById('name').value;
+  };
+});
+</script></body></html>

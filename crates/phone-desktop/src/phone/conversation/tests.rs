@@ -81,7 +81,7 @@ fn inline_reply_save_failure_receive_and_restart_preserve_text() {
 }
 
 #[test]
-fn bubble_number_actions_disabled_calls_and_cancel_keep_reply() {
+fn bubble_number_actions_and_dialer_return_keep_reply() {
     let mut p = phone();
     p.receive_message("12345".into(), "call 67890 later".into())
         .unwrap();
@@ -95,9 +95,13 @@ fn bubble_number_actions_disabled_calls_and_cancel_keep_reply() {
     press(&mut p, Key::SoftLeft);
     assert!(p.chat.popup == Popup::Number);
     press(&mut p, Key::Center);
-    assert!(p.chat.popup == Popup::Number);
+    assert_eq!(p.screen, Screen::Tools(tools::ToolPage::Dial));
+    assert_eq!(p.calls.number.text(), "67890");
+    assert_eq!(p.compose.body.text(), "my draft");
+    press(&mut p, Key::SoftLeft);
+    press(&mut p, Key::Down);
+    press(&mut p, Key::Center);
     assert_eq!(p.screen, Screen::Conversation);
-    press(&mut p, Key::SoftRight);
     press(&mut p, Key::Center);
     assert_eq!(p.organizer.draft[3], "67890");
     press(&mut p, Key::SoftRight);
@@ -125,28 +129,27 @@ fn bubble_number_actions_disabled_calls_and_cancel_keep_reply() {
 }
 
 #[test]
-fn calls_disabled_from_menu_home_shortcut_and_direct_route() {
+fn calls_enabled_from_menu_home_shortcut_and_direct_route() {
     let mut p = phone();
-    for key in [Key::Call, Key::Digit(1)] {
-        press(&mut p, key);
-        assert_eq!(p.screen, Screen::Home);
-    }
+    press(&mut p, Key::Digit(1));
+    assert_eq!(p.calls.number.text(), "1");
+    press(&mut p, Key::End);
+    press(&mut p, Key::Call);
+    assert_eq!(p.screen, Screen::Tools(tools::ToolPage::Calls));
+    p.go(Screen::Home);
     p.preferences.left_shortcut = 2;
     press(&mut p, Key::SoftLeft);
-    assert_eq!(p.screen, Screen::Home);
-    p.launch(Screen::Tools(tools::ToolPage::Calls));
-    assert_eq!(p.screen, Screen::Home);
+    assert_eq!(p.screen, Screen::Tools(tools::ToolPage::Calls));
     p.go(Screen::Menu);
     p.index = 7;
     press(&mut p, Key::Center);
-    assert_eq!(p.screen, Screen::Menu);
-    assert!(p.overlay.is_none());
+    assert_eq!(p.screen, Screen::Tools(tools::ToolPage::Calls));
     p.go(Screen::Settings);
     p.settings_page = settings::SettingsPage::Shortcut { left: true };
     p.index = 2;
     p.preferences.left_shortcut = 3;
     press(&mut p, Key::Center);
-    assert_eq!(p.preferences.left_shortcut, 3);
+    assert_eq!(p.preferences.left_shortcut, 2);
 }
 
 #[test]

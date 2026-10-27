@@ -258,7 +258,7 @@ fn detail(c: &mut Canvas, p: &Phone, index: usize) {
         if i == index {
             c.rect(0, y, 240, 68, c.accent(3));
         }
-        let color = if i.is_multiple_of(2) { MUTED } else { WHITE };
+        let color = WHITE;
         c.text(6, y + 7, label, 16, color);
         c.text(6, y + 32, number, 16, color);
     }
@@ -267,7 +267,7 @@ fn detail(c: &mut Canvas, p: &Phone, index: usize) {
         if labels.is_empty() {
             Button::None
         } else if index.is_multiple_of(2) {
-            Button::Disabled("呼叫")
+            Button::Text("呼叫")
         } else {
             Button::Text("发送信息")
         },

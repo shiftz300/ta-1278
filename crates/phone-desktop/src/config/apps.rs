@@ -71,7 +71,7 @@ impl Apps {
             Counter => self.counter,
             Gallery => self.pictures,
             Video => self.video,
-            Files | Calls => true, // Calls keep their explicitly disabled grey entry.
+            Files | Calls | Dial => true,
         }
     }
 }

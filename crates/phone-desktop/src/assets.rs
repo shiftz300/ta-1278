@@ -16,3 +16,19 @@ pub fn decode(bytes: &[u8]) -> Result<image::RgbaImage, String> {
         .map(|image| image.to_rgba8())
         .map_err(|error| error.to_string())
 }
+
+/// Native control artwork, kept at its original pixel size and padding.
+#[derive(Clone, Copy)]
+pub enum Symbol {
+    Browser,
+    Messages,
+    Menu,
+    Back,
+    Delete,
+    Contacts,
+    Battery,
+    Pen,
+    Radio,
+    Selected,
+    Close,
+}

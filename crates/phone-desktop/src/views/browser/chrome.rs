@@ -101,15 +101,23 @@ pub(in crate::views) fn editor(c: &mut Canvas, p: &mut Phone, target: TextTarget
         p.editor_lines = Edit::new([6, 27, 228, height]).sized(16, 23).draw(c, e);
     }
     c.rect(6, 27 + height, 228, 3, c.accent(3));
-    c.text(188, 34 + height, &format!("✎{}", mode(e)), 16, c.accent(3));
+    crate::ui::editor::input_mode(c, e, 232, 34 + height);
     Softkeys::new(
-        Button::Text("确认"),
-        Button::None,
-        if e.units.is_empty() {
-            Button::Text("取消")
+        if target == TextTarget::Address && e.units.is_empty() {
+            Button::None
         } else {
-            Button::Delete
+            Button::Text("确认")
         },
+        Button::None,
+        Button::Text(if e.units.is_empty() {
+            if target == TextTarget::Address {
+                "取消"
+            } else {
+                "返回"
+            }
+        } else {
+            "删除"
+        }),
     )
     .draw(c);
 }
@@ -283,19 +291,17 @@ pub(in crate::views) fn settings(c: &mut Canvas, p: &Phone) {
             } else {
                 p.browser_data.settings.font_size.min(1)
             };
-            c.ring(
-                213,
-                y + 21,
-                7,
+            list::radio(
+                c,
+                i == selected,
+                204,
+                y + 12,
                 if i == p.index {
-                    [32, 51, 43, 255]
+                    c.accent(6)
                 } else {
                     c.accent(3)
                 },
             );
-            if i == selected {
-                c.rect(210, y + 18, 6, 6, [32, 51, 43, 255]);
-            }
         }
     }
     if p.browser_view == BrowserView::Clear {

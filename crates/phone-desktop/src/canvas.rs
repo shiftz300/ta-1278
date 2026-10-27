@@ -20,7 +20,7 @@ pub struct Canvas {
     pub icons: Vec<image::RgbaImage>,
     pub default_wallpaper: std::sync::Arc<image::RgbaImage>,
     sprites: Vec<image::RgbaImage>,
-    softkey_icons: [image::RgbaImage; 4],
+    symbols: [image::RgbaImage; 11],
     pub theme: crate::theme::Theme,
     pub accent: usize,
     pub caret: Option<(i32, i32, i32)>,
@@ -83,11 +83,18 @@ impl Canvas {
             .map_err(|e| e.to_string())?
             .to_rgba8()
             .into(),
-            softkey_icons: [
+            symbols: [
                 crate::assets::decode(crate::assets::png!("00397-icon-00052900.png"))?,
                 crate::assets::decode(crate::assets::png!("00398-icon-00052abc.png"))?,
                 crate::assets::decode(crate::assets::png!("01160-icon-000d0620.png"))?,
                 crate::assets::decode(crate::assets::png!("01151-icon-000cfe9c.png"))?,
+                crate::assets::decode(crate::assets::png!("01152-icon-000cff58.png"))?,
+                crate::assets::decode(crate::assets::png!("00455-icon-000765e0.png"))?,
+                crate::assets::decode(crate::assets::png!("00542-icon-000b3b3c.png"))?,
+                crate::assets::decode(crate::assets::png!("01204-icon-000d44dc.png"))?,
+                crate::assets::decode(crate::assets::png!("01294-icon-000da20c.png"))?,
+                crate::assets::decode(crate::assets::png!("01295-icon-000da2d0.png"))?,
+                crate::assets::decode(crate::assets::png!("01153-icon-000d0028.png"))?,
             ],
             sprites: crate::views::snake::art::load()?,
         })
@@ -173,15 +180,26 @@ impl Canvas {
         }
     }
     pub fn fit(&mut self, x: i32, y: i32, text: &str, size: u16, c: Color, max: i32) {
+        if max <= 0 {
+            return;
+        }
+        if self.width(text, size) <= max {
+            self.text(x, y, text, size, c);
+            return;
+        }
+        let available = max - self.width("…", size);
+        if available < 0 {
+            return;
+        }
         let mut s = String::new();
         for ch in text.chars() {
             let next = format!("{s}{ch}");
-            if self.width(&next, size) > max - 10 {
-                s.push('…');
+            if self.width(&next, size) > available {
                 break;
             }
             s.push(ch);
         }
+        s.push('…');
         self.text(x, y, &s, size, c);
     }
     pub fn wrap(&mut self, text: &str, size: u16, width: i32) -> Vec<Line> {
@@ -290,26 +308,57 @@ impl Canvas {
             return;
         }
         if matches!(shortcut, 12 | 3) {
-            self.softkey_image(usize::from(shortcut == 3), x, y);
+            self.symbol(
+                if shortcut == 3 {
+                    crate::assets::Symbol::Messages
+                } else {
+                    crate::assets::Symbol::Browser
+                },
+                x,
+                y,
+            );
         } else {
             let icons = [0, 4, 3, 0, 2, 7, 11, 9, 12, 19, 6, 15, 1, 14, 5, 16, 17];
             if let Some(icon) = icons.get(shortcut) {
-                self.icon_enabled(*icon, x, y, 26, shortcut != 2);
+                self.icon_enabled(*icon, x, y, 26, true);
             }
         }
     }
     pub fn softkey_symbol(&mut self, back: bool, x: i32, y: i32) {
-        self.softkey_image(if back { 3 } else { 2 }, x, y);
+        self.symbol(
+            if back {
+                crate::assets::Symbol::Back
+            } else {
+                crate::assets::Symbol::Menu
+            },
+            x,
+            y,
+        );
     }
-    fn softkey_image(&mut self, index: usize, x: i32, y: i32) {
-        for (ox, oy, pixel) in self.softkey_icons[index].enumerate_pixels() {
+    pub fn symbol(&mut self, symbol: crate::assets::Symbol, x: i32, y: i32) {
+        self.paint_symbol(symbol, x, y, None);
+    }
+    pub fn tint_symbol(&mut self, symbol: crate::assets::Symbol, x: i32, y: i32, color: Color) {
+        self.paint_symbol(symbol, x, y, Some(color));
+    }
+    fn paint_symbol(
+        &mut self,
+        symbol: crate::assets::Symbol,
+        x: i32,
+        y: i32,
+        color: Option<Color>,
+    ) {
+        for (ox, oy, pixel) in self.symbols[symbol as usize].enumerate_pixels() {
             Self::blend_into(
                 &mut self.pixels,
                 self.clip,
                 x + ox as i32,
                 y + oy as i32,
-                pixel.0,
-                pixel[3],
+                color.map_or(pixel.0, |mut c| {
+                    c[3] = pixel[3];
+                    c
+                }),
+                255,
             );
         }
     }
@@ -384,6 +433,27 @@ impl Canvas {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn fitted_button_label_keeps_all_text_when_its_measured_width_fits() {
+        let mut c = Canvas::new().unwrap();
+        c.background();
+        c.text(0, 0, "Submit", 12, WHITE);
+        let full = c.pixels.clone();
+        let width = c.width("Submit", 12);
+        c.background();
+        c.fit(0, 0, "Submit", 12, WHITE, width);
+        assert_eq!(c.pixels, full);
+        c.background();
+        c.fit(0, 0, "Submit a much longer label", 12, WHITE, width);
+        assert_ne!(c.pixels, full);
+        assert!(
+            c.pixels
+                .chunks_exact(4)
+                .enumerate()
+                .filter(|(i, _)| i % 240 >= width as usize)
+                .all(|(_, p)| p == [0, 0, 0, 255])
+        );
+    }
     #[test]
     fn fallback_has_outlines_for_expanded_scripts_and_emoji() {
         let mut c = Canvas::new().unwrap();

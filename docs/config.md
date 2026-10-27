@@ -32,7 +32,7 @@ For example:
 
 ## Application flags
 
-Home, Messages, Contacts, Settings and Files remain available; they have no application flag. The telephone/history entry remains grey and inert as requested. The excluded Alipay and Ximalaya entries remain absent.
+Home, Messages, Contacts, Settings and Files remain available; they have no application flag. Telephone provides local dialing and attempted-call history without a transport. The excluded Alipay and Ximalaya entries remain absent.
 
 | `apps` key | Application |
 |---|---|
@@ -56,10 +56,10 @@ Disabled alarms/calendar do not create new reminders; their pending reminders do
 
 ## Capabilities and storage
 
-`capabilities` retains the existing controls: `music`, `files`, `network`, `pictures`, `video`, `sounds`. These control services, independently of whether an application's entry is present. Disabling an application also disables its corresponding music/network/image/video service. `sounds: false` mutes notification/effect/ringtone output; music and video playback have separate controls. To prohibit all playback, also disable `music` and `video` capabilities.
+`capabilities` controls `music`, `files`, `network`, `javascript`, `pictures`, `video`, `sounds`. These control services, independently of whether an application's entry is present. `javascript: false` (or `--disable javascript`) retains the static browser without running page scripts. Disabling an application also disables its corresponding music/network/image/video service. `sounds: false` mutes notification/effect/ringtone output; music and video playback have separate controls. To prohibit all playback, also disable `music` and `video` capabilities.
 
 `storage.directory` selects the one mapped folder. It must exist; a relative path is resolved beside the JSON file. `null` retains the saved folder or first-launch chooser. `storage.read_only` blocks file mutations, not private profile saves.
 
 CLI `--storage-dir` overrides the configured directory. `--read-only-storage` and `--disable ...` can further restrict the JSON settings regardless of argument order. `--data-dir` still selects the private profile. `--check-config` prints the configuration with those CLI overrides applied and exits before profile locking, data loading, device access or media startup.
 
-The runtime config is not an application database: phone settings and user state remain in their existing private JSON files. App switches are runtime flags and do **not** remove code or assets from the binary. No new dependencies or backend were added.
+The runtime config is not an application database: phone settings and user state remain in their existing private JSON files. App switches are runtime flags and do **not** remove code or assets from the binary.

@@ -2,6 +2,7 @@
 use super::*;
 
 enum Focus {
+    Dial,
     Overlay,
     Recipient,
     Body,
@@ -20,6 +21,7 @@ impl Phone {
             return matches!(overlay, Overlay::Text { .. }).then_some(Focus::Overlay);
         }
         Some(match self.screen {
+            Screen::Tools(tools::ToolPage::Dial) => Focus::Dial,
             Screen::Compose if self.compose.recipient => Focus::Recipient,
             Screen::Compose => Focus::Body,
             Screen::Conversation
@@ -46,6 +48,7 @@ impl Phone {
                 Overlay::Text { editor, .. } => editor,
                 _ => return None,
             },
+            Focus::Dial => &self.calls.number,
             Focus::Recipient => &self.compose.to,
             Focus::Body => &self.compose.body,
             Focus::Query => &self.organizer.contact.query,
@@ -61,6 +64,7 @@ impl Phone {
                 Overlay::Text { editor, .. } => editor,
                 _ => return None,
             },
+            Focus::Dial => &mut self.calls.number,
             Focus::Recipient => &mut self.compose.to,
             Focus::Body => &mut self.compose.body,
             Focus::Query => &mut self.organizer.contact.query,

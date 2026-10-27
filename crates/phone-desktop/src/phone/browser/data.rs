@@ -58,6 +58,23 @@ impl BrowserData {
                 Element::Select {
                     selected, initial, ..
                 } => *selected = initial.clone(),
+                Element::Link { label, url } if url.starts_with("about:script/") => {
+                    let target = url::Url::parse(url)
+                        .ok()
+                        .and_then(|u| {
+                            u.query_pairs()
+                                .find(|(k, _)| k == "target")
+                                .map(|(_, v)| v.into_owned())
+                        })
+                        .filter(|u| {
+                            url::Url::parse(u).is_ok_and(|u| matches!(u.scheme(), "http" | "https"))
+                        });
+                    if let Some(target) = target {
+                        *url = target;
+                    } else {
+                        *e = Element::Text(label.clone());
+                    }
+                }
                 _ => {}
             }
         }
@@ -80,6 +97,19 @@ mod tests {
         let mut data = BrowserData::default();
         data.save_page(&page);
         assert_eq!(data.offline[0].title, "Saved");
+    }
+    #[test]
+    fn offline_pages_do_not_keep_live_script_actions() {
+        let page = crate::web::parse(
+            "https://example.org/",
+            "<a href='about:script/1/2?target=https%3A%2F%2Fexample.org%2Fnext'>Next</a><a href='about:script/1/3'>Run</a>",
+        );
+        let mut data = BrowserData::default();
+        data.save_page(&page);
+        assert!(
+            matches!(&data.offline[0].elements[0],Element::Link{url,..} if url=="https://example.org/next")
+        );
+        assert!(matches!(&data.offline[0].elements[1],Element::Text(label) if label=="Run"));
     }
     #[test]
     fn offline_copy_resets_user_fields_and_history_survives_navigation() {

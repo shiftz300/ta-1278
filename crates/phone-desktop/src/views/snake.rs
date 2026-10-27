@@ -115,7 +115,7 @@ pub(super) fn render(c: &mut Canvas, p: &Phone) {
                 labels.len(),
                 p.index,
                 list::ListStyle {
-                    marker_shades: Some((2, 2)),
+                    marker_shades: Some((6, 3)),
                     ..list::ListStyle::STANDARD
                 },
                 |i| list::Row {

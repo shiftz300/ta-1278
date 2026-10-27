@@ -20,12 +20,19 @@ impl Field<'_> {
     /// Schedule fields share the same controls with shorter choice rows.
     pub fn draw_sized(&self, c: &mut Canvas, y: i32, height: i32, compact: bool) -> [i32; 4] {
         let choice = matches!(self.kind, FieldKind::Choice);
+        let date_focus = self.focused && !compact && matches!(self.kind, FieldKind::Date);
         if choice && self.focused {
             c.rect(0, y, 240, height, c.accent(3));
         }
         c.fit(
             6,
-            y + if choice || compact { 8 } else { 4 },
+            y + if choice || compact {
+                8
+            } else if date_focus {
+                -3
+            } else {
+                4
+            },
             self.label,
             if choice && !compact { 20 } else { 16 },
             if self.focused && !choice {
@@ -43,6 +50,8 @@ impl Field<'_> {
                 37
             } else if compact {
                 33
+            } else if date_focus {
+                21
             } else if matches!(self.kind, FieldKind::Date) {
                 25
             } else {
@@ -79,11 +88,7 @@ impl Field<'_> {
                 },
                 228,
                 3,
-                if self.focused && !matches!(self.kind, FieldKind::Date) {
-                    c.accent(3)
-                } else {
-                    MUTED
-                },
+                if self.focused { c.accent(3) } else { MUTED },
             );
         }
         [6, y + 27, 228, 26]
@@ -108,10 +113,11 @@ pub fn scroll_to(top: i32, height: i32, bottom: i32) -> i32 {
 }
 
 pub fn date(c: &mut Canvas, value: &str, y: i32, selected: usize) {
+    let y = y - 4;
     c.text(6, y, value, 16, WHITE);
     if value.len() == 10 && value.is_ascii() {
         let position = phone_core::calendar::Date::DIGIT_OFFSETS[selected.min(7)];
-        selected_digit(c, value, position, 6, y);
+        selected_digit(c, value, position, 6, y, 29);
     }
 }
 pub fn datetime(c: &mut Canvas, date: &str, time: &str, y: i32, digit: Option<usize>) {
@@ -123,16 +129,16 @@ pub fn datetime(c: &mut Canvas, date: &str, time: &str, y: i32, digit: Option<us
         } else {
             (time, [0, 1, 3, 4][digit - 8], 124)
         };
-        selected_digit(c, value, offset, left, y);
+        selected_digit(c, value, offset, left, y, 19);
     }
 }
 
-fn selected_digit(c: &mut Canvas, value: &str, offset: usize, left: i32, y: i32) {
+fn selected_digit(c: &mut Canvas, value: &str, offset: usize, left: i32, y: i32, height: i32) {
     if value.is_ascii() && offset < value.len() {
         let x = left + c.width(&value[..offset], 16);
         let glyph = &value[offset..offset + 1];
         let width = c.width(glyph, 16);
-        c.rect(x, y + 3, width, 19, WHITE);
+        c.rect(x, y + 3, width, height, WHITE);
         c.text(x, y, glyph, 16, [0, 0, 0, 255]);
     }
 }
@@ -154,7 +160,7 @@ pub fn numeric(
         if focused { c.accent(3) } else { MUTED },
     );
     if focused {
-        c.text(185, y + 8, "✎123", 16, c.accent(3));
+        super::editor::input_mode(c, editor, 228, y + 8);
     }
     let lines = if focused {
         super::editor::Edit::new([6, y + 33, 228, 26])

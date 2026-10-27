@@ -7,6 +7,10 @@ pub(super) fn render(c: &mut Canvas, p: &mut Phone) {
         super::files::render(c, p);
         return;
     }
+    if matches!(p.tools.page, Calls | Dial) {
+        super::calls::render(c, p);
+        return;
+    }
     chrome::title(c, p.tools_title());
     let t = &p.tools;
     let mut left = Button::None;
@@ -50,7 +54,7 @@ pub(super) fn render(c: &mut Canvas, p: &mut Phone) {
         }
         Stopwatch => {
             let time = stopwatch_time(t.stopwatch.elapsed_ms);
-            c.fit(7, 33, &time, 44, c.accent(3), 228);
+            c.fit(7, 29, &time, 44, c.accent(3), 228);
             for (i, lap) in t.stopwatch.laps.iter().take(6).enumerate() {
                 let y = 98 + i as i32 * 29;
                 c.text(
@@ -113,7 +117,7 @@ pub(super) fn render(c: &mut Canvas, p: &mut Phone) {
                 p.editor_lines = Edit::new([7, 125, 227, 27])
                     .sized(20, 26)
                     .draw(c, &edit.name);
-                c.text(203, 103, mode(&edit.name), 16, MUTED);
+                crate::ui::editor::input_mode(c, &edit.name, 232, 103);
             } else {
                 c.text(7, 125, &edit.name.text(), 20, WHITE);
             }
@@ -154,7 +158,7 @@ pub(super) fn render(c: &mut Canvas, p: &mut Phone) {
                     Timer => ("定时器", remaining.as_str()),
                     Stopwatch => ("秒表", if t.stopwatch.running { "开" } else { "关" }),
                     Flashlight => ("手电筒", if t.torch { "开" } else { "关" }),
-                    _ => ("单位换算", ""),
+                    _ => ("单位转换", ""),
                 })
                 .collect();
             chrome::title(c, "其他");
@@ -164,7 +168,7 @@ pub(super) fn render(c: &mut Canvas, p: &mut Phone) {
                 if t.page == TimerMenu { 0 } else { p.index },
                 |i| rows[i],
             );
-            if t.page == TimerMenu {
+            if t.page == TimerMenu && !matches!(p.overlay, Some(Overlay::TimerElapsed)) {
                 c.dim();
                 let style = list::ListStyle {
                     top: 103,
@@ -217,7 +221,13 @@ pub(super) fn render(c: &mut Canvas, p: &mut Phone) {
             .draw(c);
             return;
         }
-        Counter | Video | Gallery | Calls => {
+        Counter => {
+            let text = "这里没有可显示的内容。";
+            let x = (240 - c.width(text, 20)) / 2;
+            c.text(x, 142, text, 20, MUTED);
+            center = "";
+        }
+        Video | Gallery => {
             c.text(8, 120, "这里没有可显示的内容。", 17, WHITE);
             center = "";
         }

@@ -70,7 +70,7 @@ mod tests {
         c.background();
         draw(&mut c, &p);
         assert_eq!(pixel(&c, 80, 200), [0, 0, 0, 255]);
-        // Disabled calling must not turn the surrounding wallpaper into a grey square.
+        // Disabled icon rendering must preserve the surrounding wallpaper.
         c.rect(0, 0, 240, 320, [20, 80, 40, 255]);
         let size = c.icons[3].width();
         assert_eq!(size, c.icons[3].height());

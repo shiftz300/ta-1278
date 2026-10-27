@@ -155,6 +155,11 @@ impl Phone {
     pub(super) fn settings_open(&mut self, page: SettingsPage, index: usize) {
         self.settings_page = page;
         self.index = index;
+        self.settings_first = if matches!(page, SettingsPage::Shortcut { .. }) {
+            index
+        } else {
+            0
+        };
     }
     pub(super) fn settings_key(&mut self, key: Key) {
         use SettingsPage::*;
@@ -175,8 +180,17 @@ impl Phone {
         }
         let n = self.settings_labels().len();
         match key {
-            Key::Up => self.index = (self.index + n - 1) % n,
-            Key::Down => self.index = (self.index + 1) % n,
+            Key::Up | Key::Down => {
+                self.index = if key == Key::Up {
+                    (self.index + n - 1) % n
+                } else {
+                    (self.index + 1) % n
+                };
+                self.settings_first = self
+                    .settings_first
+                    .min(self.index)
+                    .max(self.index.saturating_sub(5));
+            }
             Key::SoftRight => match self.settings_page {
                 Root => self.leave_app(),
                 Personalization => self.settings_open(Root, 2),
@@ -298,9 +312,6 @@ impl Phone {
                     self.settings_open(Shortcut { left }, assigned);
                 }
                 (Shortcut { left }, index) => {
-                    if index == 2 {
-                        return;
-                    }
                     if left {
                         self.preferences.left_shortcut = index;
                     } else {
@@ -326,7 +337,6 @@ impl Phone {
                 | (SettingsPage::Connections, 1)
                 | (SettingsPage::Security, _)
                 | (SettingsPage::Keyboard, 0)
-                | (SettingsPage::Shortcut { .. }, 2)
         )
     }
     pub fn local_clock(&self) -> (phone_core::calendar::Date, u64) {

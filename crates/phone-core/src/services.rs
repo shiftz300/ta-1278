@@ -10,7 +10,7 @@ pub struct Capabilities {
     pub send_messages: bool,
     pub receive_messages: bool,
     pub alerts: bool,
-    // Calls deliberately have no UI/implementation yet.
+    // Call transport is reserved. The desktop dialer remains offline.
 }
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct SendMessage {

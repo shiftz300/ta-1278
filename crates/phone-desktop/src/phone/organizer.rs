@@ -12,6 +12,8 @@ pub struct LocalData {
     pub groups: Vec<String>,
     #[serde(default)]
     pub playlists: Vec<super::music::Playlist>,
+    #[serde(default)]
+    pub calls: Vec<super::calls::Record>,
     pub contacts: Vec<Vec<String>>,
     pub events: Vec<CalendarEvent>,
     pub alarms: Vec<Alarm>,
@@ -26,6 +28,7 @@ impl Default for LocalData {
             reminders: Default::default(),
             groups: vec![],
             playlists: vec![],
+            calls: vec![],
             contacts: vec![],
             events: vec![],
             alarms: vec![],
@@ -164,7 +167,7 @@ impl Phone {
     pub fn organizer_items(&self) -> Vec<String> {
         use OrganizerPage::*;
         match self.organizer.page {
-            CalendarMenu => ["添加事件", "转到日期", "删除今天之前的项目"]
+            CalendarMenu => ["添加新事件", "转至另一日期", "删除今天前的所有项"]
                 .map(str::to_owned)
                 .to_vec(),
             Contacts => self

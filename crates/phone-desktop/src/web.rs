@@ -1,10 +1,13 @@
+mod client;
 mod flow;
+mod script;
+pub use client::Web;
 use phone_core::browser::{Element, Form, Page};
 use scraper::{ElementRef, Html};
-use std::{sync::mpsc, thread, time::Duration};
-use ureq::ResponseExt;
+#[cfg(test)]
+use std::time::Duration;
 use url::Url;
-pub const DEMO: &str = r#"<html><head><title>Browser demo</title></head><body><h1>TA-1278 browser</h1><p>A small text browser. Up/down selects a line. Center opens a link or field.</p><a href="https://example.com">Open example.com</a><form action="about:result" method="get"><p>Local form: no network request</p><input name="message" value="Hello" maxlength="80"><input type="checkbox" name="updates" value="yes"> Updates<select name="color"><option value="blue">Blue</option><option value="red">Red</option></select><select name="music" multiple><option value="one">Track one</option><option value="two">Track two</option></select><button type="submit">Test form</button><button type="reset">Reset</button></form><p>No JavaScript, CSS layout or WML. HTTP(S) only.</p></body></html>"#;
+pub const DEMO: &str = r#"<html><head><title>Browser demo</title></head><body><h1>TA-1278 browser</h1><p>A small text browser. Up/down selects a line. Center opens a link or field.</p><a href="https://example.com">Open example.com</a><form action="about:result" method="get"><p>Local form: no network request</p><input name="message" value="Hello" maxlength="80"><input type="checkbox" name="updates" value="yes"> Updates<select name="color"><option value="blue">Blue</option><option value="red">Red</option></select><select name="music" multiple><option value="one">Track one</option><option value="two">Track two</option></select><button type="submit">Test form</button><button type="reset">Reset</button></form><p>Basic page scripts. No CSS layout or WML. HTTP(S) only.</p></body></html>"#;
 pub fn demo() -> Page {
     parse("about:demo", DEMO)
 }
@@ -23,6 +26,9 @@ fn resolve(base: &str, value: &str) -> String {
         .unwrap_or_else(|_| value.into())
 }
 pub fn parse(base: &str, html: &str) -> Page {
+    parsed(base, html).0
+}
+fn parsed(base: &str, html: &str) -> (Page, Vec<(usize, u64)>) {
     let doc = Html::parse_document(html);
     let title = doc
         .select(&scraper::Selector::parse("title").unwrap())
@@ -43,10 +49,11 @@ pub fn parse(base: &str, html: &str) -> Page {
     let mut controls = vec![];
     walk(body, &mut page, None, &mut String::new(), 0, &mut controls);
     page.flow = flow::build(body, &controls);
-    if page.elements.is_empty() {
-        page.elements.push(Element::Text("Empty page".into()));
-    }
-    page
+    let nodes = controls
+        .iter()
+        .filter_map(|(e, index)| Some((*index, e.value().attr("data-phone-node")?.parse().ok()?)))
+        .collect();
+    (page, nodes)
 }
 fn flush(p: &mut Page, s: &mut String) {
     let t = s.split_whitespace().collect::<Vec<_>>().join(" ");
@@ -108,9 +115,7 @@ fn walk<'a>(
     }
     let v = e.value();
     let tag = v.name();
-    if matches!(tag, "script" | "style" | "head" | "template" | "noscript")
-        || v.attr("hidden").is_some()
-    {
+    if matches!(tag, "script" | "style" | "head" | "template") || v.attr("hidden").is_some() {
         return;
     }
     if matches!(tag, "input" | "textarea" | "select" | "button") && v.attr("disabled").is_some() {
@@ -141,42 +146,52 @@ fn walk<'a>(
         .or_else(|| v.attr("name").map(str::to_owned))
         .unwrap_or_default();
     let f = form.unwrap_or(usize::MAX);
-    let element = match tag {
-        "a" if v.attr("href").is_some() => Some(Element::Link {
-            label: text(e),
-            url: resolve(&p.url, v.attr("href").unwrap()),
-        }),
-        "input" if v.attr("disabled").is_none() => {
-            let value = v.attr("value").unwrap_or("").to_owned();
-            match v.attr("type").unwrap_or("text") {
-                "checkbox" | "radio" => Some(Element::Check {
-                    radio: v.attr("type") == Some("radio"),
-                    label,
-                    name,
-                    checked: v.attr("checked").is_some(),
-                    initial: v.attr("checked").is_some(),
-                    value: if value.is_empty() { "on".into() } else { value },
-                    form: f,
-                }),
-                "submit" => Some(Element::Submit {
-                    label: if value.is_empty() {
-                        "Submit".into()
-                    } else {
-                        value.clone()
-                    },
-                    name,
-                    value,
-                    form: f,
-                }),
-                "reset" => Some(Element::Reset { form: f }),
-                "hidden" => {
-                    if let Some(form) = p.forms.get_mut(f) {
-                        form.hidden.push((name, value));
+    let element = if let Some(action) = v.attr("data-phone-action") {
+        Some(Element::Link {
+            label: if tag == "input" {
+                v.attr("value").unwrap_or("Button").into()
+            } else {
+                text(e)
+            },
+            url: action.into(),
+        })
+    } else {
+        match tag {
+            "a" if v.attr("href").is_some() => Some(Element::Link {
+                label: text(e),
+                url: resolve(&p.url, v.attr("href").unwrap()),
+            }),
+            "input" if v.attr("disabled").is_none() => {
+                let value = v.attr("value").unwrap_or("").to_owned();
+                match v.attr("type").unwrap_or("text") {
+                    "checkbox" | "radio" => Some(Element::Check {
+                        radio: v.attr("type") == Some("radio"),
+                        label,
+                        name,
+                        checked: v.attr("checked").is_some(),
+                        initial: v.attr("checked").is_some(),
+                        value: if value.is_empty() { "on".into() } else { value },
+                        form: f,
+                    }),
+                    "submit" => Some(Element::Submit {
+                        label: if value.is_empty() {
+                            "Submit".into()
+                        } else {
+                            value.clone()
+                        },
+                        name,
+                        value,
+                        form: f,
+                    }),
+                    "reset" => Some(Element::Reset { form: f }),
+                    "hidden" => {
+                        if let Some(form) = p.forms.get_mut(f) {
+                            form.hidden.push((name, value));
+                        }
+                        None
                     }
-                    None
-                }
-                "text" | "search" | "email" | "url" | "tel" | "number" | "password" | "time" => {
-                    Some(Element::Field {
+                    "text" | "search" | "email" | "url" | "tel" | "number" | "password"
+                    | "time" => Some(Element::Field {
                         label,
                         name,
                         value: value.clone(),
@@ -190,69 +205,69 @@ fn walk<'a>(
                         password: v.attr("type") == Some("password"),
                         read_only: v.attr("readonly").is_some(),
                         form: f,
-                    })
+                    }),
+                    other => Some(Element::Text(format!("[Unsupported input: {other}]"))),
                 }
-                other => Some(Element::Text(format!("[Unsupported input: {other}]"))),
             }
-        }
-        "textarea" => {
-            let value = e.text().collect::<String>();
-            Some(Element::Field {
-                label,
-                name,
-                value: value.clone(),
-                initial: value,
-                limit: v
-                    .attr("maxlength")
-                    .and_then(|s| s.parse::<usize>().ok())
-                    .filter(|n| *n > 0)
-                    .unwrap_or(1024)
-                    .min(1024),
-                password: false,
-                read_only: v.attr("readonly").is_some(),
-                form: f,
-            })
-        }
-        "select" => {
-            let options: Vec<_> = e
-                .select(&scraper::Selector::parse("option").unwrap())
-                .collect();
-            let multiple = v.attr("multiple").is_some();
-            let mut selected: Vec<_> = options
-                .iter()
-                .map(|o| o.value().attr("selected").is_some())
-                .collect();
-            if !multiple && !selected.is_empty() && !selected.iter().any(|x| *x) {
-                selected[0] = true;
+            "textarea" => {
+                let value = e.text().collect::<String>();
+                Some(Element::Field {
+                    label,
+                    name,
+                    value: value.clone(),
+                    initial: value,
+                    limit: v
+                        .attr("maxlength")
+                        .and_then(|s| s.parse::<usize>().ok())
+                        .filter(|n| *n > 0)
+                        .unwrap_or(1024)
+                        .min(1024),
+                    password: false,
+                    read_only: v.attr("readonly").is_some(),
+                    form: f,
+                })
             }
-            Some(Element::Select {
-                label,
-                name,
-                options: options
+            "select" => {
+                let options: Vec<_> = e
+                    .select(&scraper::Selector::parse("option").unwrap())
+                    .collect();
+                let multiple = v.attr("multiple").is_some();
+                let mut selected: Vec<_> = options
                     .iter()
-                    .map(|o| {
-                        let t = text(*o);
-                        let value = o.value().attr("value").unwrap_or(&t).to_owned();
-                        (t, value)
-                    })
-                    .collect(),
-                initial: selected.clone(),
-                selected,
-                multiple,
-                form: f,
-            })
-        }
-        "button" => Some(if v.attr("type") == Some("reset") {
-            Element::Reset { form: f }
-        } else {
-            Element::Submit {
-                label: text(e),
-                name,
-                value: v.attr("value").unwrap_or("").into(),
-                form: f,
+                    .map(|o| o.value().attr("selected").is_some())
+                    .collect();
+                if !multiple && !selected.is_empty() && !selected.iter().any(|x| *x) {
+                    selected[0] = true;
+                }
+                Some(Element::Select {
+                    label,
+                    name,
+                    options: options
+                        .iter()
+                        .map(|o| {
+                            let t = text(*o);
+                            let value = o.value().attr("value").unwrap_or(&t).to_owned();
+                            (t, value)
+                        })
+                        .collect(),
+                    initial: selected.clone(),
+                    selected,
+                    multiple,
+                    form: f,
+                })
             }
-        }),
-        _ => None,
+            "button" => Some(if v.attr("type") == Some("reset") {
+                Element::Reset { form: f }
+            } else {
+                Element::Submit {
+                    label: text(e),
+                    name,
+                    value: v.attr("value").unwrap_or("").into(),
+                    form: f,
+                }
+            }),
+            _ => None,
+        }
     };
     if let Some(el) = element {
         flush(p, buffer);
@@ -289,95 +304,6 @@ pub fn submit(page: &Page, form: usize, values: Vec<(String, String)>) -> Result
     url.set_query(None);
     url.query_pairs_mut().extend_pairs(values);
     Ok(url.into())
-}
-pub struct Web {
-    jobs: mpsc::SyncSender<(u64, String)>,
-    network: bool,
-    pub results: mpsc::Receiver<(u64, Result<Page, String>)>,
-}
-impl Web {
-    pub fn new(network: bool) -> Self {
-        let (tx, rx) = mpsc::sync_channel::<(u64, String)>(2);
-        let (rt, rr) = mpsc::channel();
-        thread::spawn(move || {
-            let config = ureq::Agent::config_builder()
-                .timeout_global(Some(Duration::from_secs(12)))
-                .build();
-            let agent: ureq::Agent = config.into();
-            while let Ok((id, url)) = rx.recv() {
-                let result = fetch(&agent, &url);
-                if rt.send((id, result)).is_err() {
-                    break;
-                }
-            }
-        });
-        Self {
-            network,
-            jobs: tx,
-            results: rr,
-        }
-    }
-    pub fn load(&self, id: u64, url: String) -> Result<(), String> {
-        if !self.network && !url.starts_with("about:") {
-            return Err("网络功能已停用。".into());
-        }
-        self.jobs
-            .try_send((id, url))
-            .map_err(|_| "Browser is busy; stop and try again shortly".into())
-    }
-}
-fn fetch(agent: &ureq::Agent, address: &str) -> Result<Page, String> {
-    let url = Url::parse(address).map_err(|e| e.to_string())?;
-    if address == "about:demo" {
-        return Ok(demo());
-    }
-    if url.scheme() == "about" && url.path() == "result" {
-        return Ok(Page {
-            flow: vec![],
-            url: address.into(),
-            title: "Local form result".into(),
-            elements: url
-                .query_pairs()
-                .map(|(k, v)| Element::Text(format!("{k} = {v}")))
-                .collect(),
-            forms: vec![],
-        });
-    }
-    if !matches!(url.scheme(), "http" | "https") {
-        return Err("Only http://, https:// and about:demo are supported".into());
-    }
-    let mut response = agent.get(url.as_str()).call().map_err(|e| e.to_string())?;
-    let final_url = response.get_uri().to_string();
-    let content_type = response
-        .headers()
-        .get("content-type")
-        .and_then(|v| v.to_str().ok())
-        .unwrap_or("text/html")
-        .to_owned();
-    if !(content_type.starts_with("text/") || content_type.starts_with("application/xhtml+xml")) {
-        return Err(format!("Unsupported content: {content_type}"));
-    }
-    let body = response
-        .body_mut()
-        .with_config()
-        .limit(2 * 1024 * 1024)
-        .read_to_string()
-        .map_err(|e| e.to_string())?;
-    if content_type.starts_with("text/plain") {
-        Ok(Page {
-            flow: vec![],
-            url: final_url.clone(),
-            title: "Text document".into(),
-            elements: body
-                .lines()
-                .take(1200)
-                .map(|s| Element::Text(s.into()))
-                .collect(),
-            forms: vec![],
-        })
-    } else {
-        Ok(parse(&final_url, &body))
-    }
 }
 #[cfg(test)]
 mod tests {

@@ -50,7 +50,7 @@ Core code has no USB, modem, network or filesystem access. The browser worker re
 | Enter / middle mouse | Center |
 | F1 / left mouse | Left softkey |
 | F2 / Escape / right mouse | Right softkey |
-| F3 | Disabled call key |
+| F3 | Call history on Home; dial action in phone pages |
 | Home | End/home; asks about a nonempty draft |
 | Digits | Current input mode; hold inserts a digit |
 | # (Shift+3) in a text editor | 拼 → 笔 → Abc → abc → ABC → 123 |
@@ -65,7 +65,7 @@ Mouse buttons apply anywhere in the client area, including first activation clic
 
 ## App boundaries
 
-SMS supports one recipient, peer conversations with an inline composer, drafts, received records and a local unsent queue. Received-message input is an explicit local service method; normal startup generates no incoming traffic. Contacts are created locally; no device contacts are imported. Body Save closes only after successful storage. A failed save keeps editing active, including after a later retry. Calling is disabled; SMS stays in the local unsent queue.
+SMS supports one recipient, peer conversations with an inline composer, drafts, received records and a local unsent queue. Received-message input is an explicit local service method; normal startup generates no incoming traffic. Contacts are created locally; no device contacts are imported. Body Save closes only after successful storage. A failed save keeps editing active, including after a later retry. The dialer is enabled but reports unavailable call service; SMS stays in the local unsent queue.
 
 Browser opens its four-entry start page. `about:demo` is an offline test document. Text pages, links, fields, radios, checkboxes, single/multiple selects and GET forms work. Single-select reopens focused on row zero, separately from its selected marker. A text editor's right softkey deletes until empty, then cancels. Back/Forward restore in-session focus and scroll. Closing a page and exiting the app are separate confirmations. History URLs survive either action and app restart.
 

@@ -53,6 +53,7 @@ struct Builder<'a> {
     right: i32,
     line: i32,
     gap: i32,
+    controls: bool,
     font: u16,
     boxes: Vec<(usize, i32, i32)>,
 }
@@ -65,6 +66,7 @@ impl Builder<'_> {
         }
         self.x = self.left;
         self.line = i32::from(self.font) + 1;
+        self.controls = false;
         self.gap = gap;
     }
     fn mark(&mut self, i: usize, y: i32, h: i32) {
@@ -103,11 +105,26 @@ impl Builder<'_> {
                 self.mark(i, self.y, i32::from(size) + 3);
             }
             self.x += w;
-            self.line = self
-                .line
-                .max(i32::from(size) + if size > self.font { 6 } else { 1 });
+            self.line = self.line.max(
+                i32::from(size)
+                    + if size > self.font {
+                        6
+                    } else if self.controls {
+                        1
+                    } else {
+                        4
+                    },
+            );
             self.gap = 0;
         }
+    }
+    fn control_line(&mut self, height: i32) {
+        // Native form rows follow the field height, while text-only rows have leading.
+        if self.line == i32::from(self.font) + 4 {
+            self.line = i32::from(self.font) + 1;
+        }
+        self.controls = true;
+        self.line = self.line.max(height);
     }
     fn control(&mut self, index: usize, width: i32, height: i32) {
         let w = width.min(self.right - self.left);
@@ -123,7 +140,7 @@ impl Builder<'_> {
         });
         self.mark(index, self.y + 2, height);
         self.x += w;
-        self.line = self.line.max(height);
+        self.control_line(height);
         self.gap = 0;
     }
 }
@@ -138,6 +155,7 @@ pub fn layout(c: &mut Canvas, page: &Page, font: u16) -> Layout {
         right: 234,
         line: i32::from(font) + 1,
         gap: 0,
+        controls: false,
         font,
         boxes: vec![],
     };
@@ -190,6 +208,7 @@ pub fn layout(c: &mut Canvas, page: &Page, font: u16) -> Layout {
                     continue;
                 };
                 match e {
+                    Element::Text(text) => b.words(text, font, false, None),
                     Element::Link { label, .. } => b.words(label, font, false, Some(*element)),
                     _ => {
                         let w = if *width == 0 {
@@ -233,7 +252,7 @@ pub fn layout(c: &mut Canvas, page: &Page, font: u16) -> Layout {
                     value: value.clone(),
                 });
                 b.x += w;
-                b.line = b.line.max(h);
+                b.control_line(h);
                 b.gap = 0;
             }
             Flow::BoxStart(legend) => {
@@ -337,7 +356,7 @@ pub fn paint(c: &mut Canvas, p: &Phone, layout: &Layout) {
                     Element::Check { radio, checked, .. } => {
                         let xx = *x;
                         let size = 9;
-                        if focused {
+                        if focused && !radio {
                             c.rect(xx, y, size, size, FOCUS);
                         }
                         if *radio {
@@ -346,6 +365,8 @@ pub fn paint(c: &mut Canvas, p: &Phone, layout: &Layout) {
                                     let r = dx * dx + dy * dy;
                                     if (9..=16).contains(&r) {
                                         c.rect(xx + 4 + dx, y + 4 + dy, 1, 1, INK);
+                                    } else if r < 9 && focused {
+                                        c.rect(xx + 4 + dx, y + 4 + dy, 1, 1, FOCUS);
                                     }
                                 }
                             }
@@ -434,7 +455,7 @@ pub fn paint(c: &mut Canvas, p: &Phone, layout: &Layout) {
             Draw::Legend { x, y, text } => {
                 let y = y + shift;
                 let w = c.width(text, font);
-                c.rect(*x, y, w + 4, i32::from(font) + 1, PAPER);
+                c.rect(*x, y, w + 4, i32::from(font) + 4, PAPER);
                 c.text(*x, y, text, font, INK);
             }
         }

@@ -15,6 +15,12 @@ These files are part of the application. Building, testing and packaging do not 
 
 `runtime.json` records the SHA-256 of each resource copied out of the research tree. Its `archive_source` fields are historical provenance paths, not build inputs. The copied bytes were checked against the originals. `sources.json` records the public font/dictionary downloads. Adjacent manifests retain source hashes and technical provenance; old firmware paths refer to the external archive.
 
+## Shared control icons
+
+The contact picker (`00455`), backspace (`01152`) and battery (`00542`) use the decoded handset PNGs at native size. Their resource IDs are `0x400001c8`, `0x40000481` and `0x4000021f`. Softkey images keep their padding at y=287; the battery image starts at (210, 4). The desktop battery is a fixed full-battery placeholder, not a hardware measurement.
+
+SMS recipient focus uses the contact picker. Body focus uses the existing menu image (`01160`), as seen in the separate handset captures. The shared blitter applies PNG alpha once. Pencil (`01204`), radio markers (`01294`/`01295`) and Close (`01153`) also use native artwork. Pencil and radio alpha masks take the active theme color.
+
 ## Rights
 
 Original handset fonts, icons, tones, the sound bank, maps and T9 resources retain their original rights. They are not relicensed under this project's code or the libraries used to render them. No full firmware image is needed or included in the current application tree. This separation does not remove images from earlier Git history.

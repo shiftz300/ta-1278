@@ -62,7 +62,7 @@ this is not a minimal-dependency or bare-metal build.
 ## Host services and documents
 
 Construct with `Runtime::with_backend(config, time, Box<dyn messaging::Backend>)`
-to provide message/alert events. Calls remain reserved and their UI stays disabled.
+to provide message/alert events. Call transport remains reserved; the local dialer does not dispatch call commands.
 Call `poll_services` from the host loop. A `pending_commit` means that the mailbox
 must be saved before outbound submission or acknowledgment can proceed. The
 [existing ordering and replay contract](services.md) still applies. Do not create

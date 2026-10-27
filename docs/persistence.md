@@ -1,5 +1,7 @@
 # Saving and recovery
 
+Local attempted-call history is stored in `organizer.json` (`calls`, at most 100 entries). Older profiles default to an empty list. Entries are numbers and timestamps of offline attempts, not connected calls.
+
 2026-10-26. Local persistence update after release 0.2.0. These are desktop policies; no new handset behavior is claimed.
 
 ## Records

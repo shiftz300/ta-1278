@@ -1,6 +1,7 @@
 pub mod alarm;
 pub mod browser;
 pub mod calendar;
+pub mod calls;
 pub mod contacts;
 pub mod conversation;
 pub mod converter;
@@ -53,6 +54,7 @@ pub enum Screen {
 }
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub enum MenuKind {
+    Dial,
     Sms,
     ExitSms,
     SmsRecipient,
@@ -165,6 +167,7 @@ pub struct Phone {
     pub snake_data: snake::SnakeData,
     pub snake_dirty: bool,
     pub tools: tools::Tools,
+    pub calls: calls::Calls,
     pub organizer: organizer::Organizer,
     pub local_data: organizer::LocalData,
     pub local_dirty: bool,
@@ -184,6 +187,7 @@ pub struct Phone {
     pub preferences: Preferences,
     pub preferences_dirty: bool,
     pub settings_page: SettingsPage,
+    pub settings_first: usize,
     pub theme_preview: usize,
     pub browser_view: BrowserView,
     pub browser_settings_origin: BrowserView,
@@ -234,6 +238,7 @@ impl Phone {
             snake_data: Default::default(),
             snake_dirty: false,
             tools: Default::default(),
+            calls: Default::default(),
             organizer: Default::default(),
             local_data: Default::default(),
             local_dirty: false,
@@ -255,6 +260,7 @@ impl Phone {
             preferences: Preferences::default(),
             preferences_dirty: false,
             settings_page: SettingsPage::Root,
+            settings_first: 0,
             theme_preview: 1,
             browser_view: BrowserView::Start,
             browser_settings_origin: BrowserView::Start,
@@ -274,7 +280,7 @@ impl Phone {
         }
     }
     pub fn go(&mut self, s: Screen) {
-        if crate::menu::phone_disabled(s) || !self.apps.allows(s) {
+        if !self.apps.allows(s) {
             return;
         }
         if (s == Screen::Music && !self.features.music)
@@ -334,7 +340,7 @@ impl Phone {
             self.notice("文件操作尚未结束，请稍候。");
             return;
         }
-        if crate::menu::phone_disabled(screen) || !self.apps.allows(screen) {
+        if !self.apps.allows(screen) {
             return;
         }
         if screen == Screen::Music {
@@ -346,6 +352,7 @@ impl Phone {
             Screen::Home
         };
         if let Screen::Tools(page) = screen {
+            self.calls.confirm_delete = false;
             self.tools.page = page;
             if page == tools::ToolPage::Timer {
                 self.open_timer();
@@ -394,7 +401,8 @@ impl Phone {
     }
     pub fn menu_labels(&self, kind: MenuKind) -> Vec<String> {
         match kind {
-            MenuKind::Sms => vec!["插入选项", "附件", "移除附件", "清除文字", "另存为草稿"],
+            MenuKind::Dial => vec!["通讯录", "返回"],
+            MenuKind::Sms => vec!["插入选项", "添加附件", "移除附件", "清除文字", "另存为草稿"],
             MenuKind::SmsRecipient => vec!["通讯录", "群组"],
             MenuKind::SmsInsert => vec!["插入表情符号", "插入符号", "插入模板"],
             MenuKind::Smileys => vec![
@@ -466,6 +474,13 @@ impl Phone {
         }
     }
     pub fn text(&mut self, s: &str) {
+        if self.screen == Screen::Tools(tools::ToolPage::Dial)
+            && self.overlay.is_none()
+            && self.active_reminder().is_none()
+        {
+            self.dial_text(s);
+            return;
+        }
         if self.conversion_active() {
             self.conversion_text(s);
             return;
@@ -529,6 +544,12 @@ impl Phone {
             .last_tick
             .replace(now)
             .map_or(0, |last| now.saturating_sub(last));
+        if let Some((_, remaining)) = &mut self.tools.timer_feedback {
+            *remaining = remaining.saturating_sub(elapsed);
+            if *remaining == 0 {
+                self.tools.timer_feedback = None;
+            }
+        }
         let (date, minute) = self.local_clock();
         self.check_alarms(date, minute);
         self.check_events(date, minute);
@@ -610,6 +631,9 @@ impl Phone {
             self.music.event(event);
         }
         if phase == Phase::Long {
+            if self.screen == Screen::Tools(tools::ToolPage::Dial) {
+                return;
+            }
             if let Key::Digit(d) = key
                 && let Some(e) = self.editor_mut()
             {
@@ -684,7 +708,8 @@ impl Phone {
                 return;
             }
         }
-        if self.editor().is_some()
+        if self.screen != Screen::Tools(tools::ToolPage::Dial)
+            && self.editor().is_some()
             && !((self.alarm_name_active()
                 || self.contact_editor_active()
                 || self.event_editor_active()
@@ -699,7 +724,10 @@ impl Phone {
                 Key::Center => self.go(Screen::Menu),
                 Key::SoftLeft => self.shortcut(true),
                 Key::SoftRight => self.shortcut(false),
-                Key::Call | Key::Digit(_) => {}
+                Key::Call => self.launch(Screen::Tools(tools::ToolPage::Calls)),
+                Key::Digit(d) if d < 10 => self.open_dialer(d.to_string()),
+                Key::Star => self.open_dialer("*".into()),
+                Key::Hash => self.open_dialer("#".into()),
                 _ => {}
             },
             Screen::Menu => match key {

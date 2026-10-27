@@ -70,6 +70,12 @@ fn calendar(c: &mut Canvas, p: &Phone) {
         20,
         c.accent(3),
     );
+    // The approved January 1 capture shows this caption. Other holiday tables
+    // have not been recovered, so no lunar or regional dates are inferred.
+    if date.month == 1 && date.day == 1 {
+        let width = c.width("元旦", 16);
+        c.text(234 - width, 24, "元旦", 16, WHITE);
+    }
     for (i, label) in ["一", "二", "三", "四", "五", "六", "日"]
         .iter()
         .enumerate()

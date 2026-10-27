@@ -1,6 +1,6 @@
 //! One edit control owns measurement, selection, cursor stops and painting.
 use super::text::TextMetrics;
-use crate::canvas::{Canvas, Line, WHITE};
+use crate::canvas::{Canvas, Color, Line, WHITE};
 use phone_core::editor::{Editor, VisualRow};
 pub struct Edit {
     rect: [i32; 4],
@@ -88,13 +88,12 @@ impl Edit {
                 if a < b {
                     let prefix = String::from_utf16_lossy(&units[line.start..a]);
                     let xx = metrics.width(c, &prefix, size);
-                    c.text(
-                        x + xx,
-                        yy,
-                        &String::from_utf16_lossy(&units[a..b]),
-                        17,
-                        [0, 8, 0, 255],
-                    );
+                    let text = String::from_utf16_lossy(&units[a..b]);
+                    if e.prediction.active() {
+                        c.text(x + xx, yy, &text, 17, [0, 8, 0, 255]);
+                    } else {
+                        metrics.draw(c, x + xx, yy, &text, size, [0, 8, 0, 255]);
+                    }
                 }
             }
             if i == row {
@@ -163,11 +162,27 @@ pub fn input_mode(c: &mut Canvas, editor: &Editor, right: i32, y: i32) {
     let label = editor.mode_label();
     let x = right - super::text::MESSAGE.width(c, label, 16);
     if label != "拼" && label != "笔" {
-        for d in 0..11 {
-            c.rect(x - 19 + d, y + 16 - d, 1, 3, c.accent(3));
-            c.rect(x - 16 + d, y + 16 - d, 1, 3, c.accent(3));
-        }
-        c.rect(x - 20, y + 17, 5, 1, c.accent(3));
+        c.tint_symbol(crate::assets::Symbol::Pen, x - 20, y + 3, c.accent(3));
     }
     super::text::MESSAGE.draw(c, x, y, label, 16, c.accent(3));
+}
+
+/// One continuous message contour, shared by the composer and both thread directions.
+pub fn message_tail(c: &mut Canvas, [x, bottom, width]: [i32; 3], incoming: bool, fill: Color) {
+    c.rect(x, bottom, width, 2, WHITE);
+    let tip = if incoming { x + width - 32 } else { x + 29 };
+    c.rect(
+        if incoming { tip - 16 } else { tip + 2 },
+        bottom,
+        15,
+        1,
+        fill,
+    );
+    for row in 0..16 {
+        let xx = if incoming { tip - 17 + row } else { tip };
+        c.rect(xx, bottom + 1 + row, 18 - row, 1, WHITE);
+        if row < 12 {
+            c.rect(xx + 2, bottom + 1 + row, 14 - row, 1, fill);
+        }
+    }
 }

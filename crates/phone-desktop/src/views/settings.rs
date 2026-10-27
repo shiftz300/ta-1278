@@ -38,7 +38,7 @@ pub(super) fn render(c: &mut Canvas, p: &Phone) {
         .iter()
         .enumerate()
         {
-            let y = 24 + i as i32 * 96;
+            let y = 24 + i as i32 * 64;
             if p.index == i {
                 c.rect(0, y, 240, 64, c.accent(3));
             }
@@ -85,6 +85,8 @@ pub(super) fn render(c: &mut Canvas, p: &Phone) {
             labels.len(),
             p.index,
             list::ListStyle {
+                first: matches!(p.settings_page, SettingsPage::Shortcut { .. })
+                    .then_some(p.settings_first),
                 text_width: 203,
                 ..list::ListStyle::STANDARD
             },

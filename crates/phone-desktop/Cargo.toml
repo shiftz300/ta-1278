@@ -28,6 +28,7 @@ image = { version = "0.25", default-features = false, features = ["png"] }
 ureq = "3"
 url = "2"
 scraper = "0.29"
+rquickjs = { version = "=0.14.0", default-features = false, features = ["std"] }
 oxisynth = "=0.1.0"
 midly = { version = "=0.5.3", default-features = false, features = ["std"] }
 

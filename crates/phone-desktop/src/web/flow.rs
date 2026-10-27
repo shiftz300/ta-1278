@@ -21,7 +21,7 @@ fn walk(
     let tag = v.name();
     if matches!(
         tag,
-        "head" | "title" | "script" | "style" | "template" | "noscript" | "legend"
+        "head" | "title" | "script" | "style" | "template" | "legend"
     ) || v.attr("hidden").is_some()
     {
         return;
@@ -55,9 +55,11 @@ fn walk(
             .unwrap_or_default();
         out.push(Flow::BoxStart(legend));
     }
-    let control = matches!(tag, "input" | "textarea" | "select" | "button")
+    let control = v.attr("data-phone-action").is_some()
+        || matches!(tag, "input" | "textarea" | "select" | "button")
         || (tag == "a" && v.attr("href").is_some());
     if tag == "input"
+        && v.attr("data-phone-action").is_none()
         && !matches!(
             v.attr("type").unwrap_or("text"),
             "text"

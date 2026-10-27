@@ -1,6 +1,6 @@
 # SMS conversations
 
-The main Messages screen now follows the observed handset structure (research archive): New message, peer conversations, bubbles and a bottom composer. It replaces the earlier folder-first interface. Phone/call-history entries are grey and disabled. The dial screen is removed; Call/F3 and Home-screen digits do not open it. Calling from detected SMS numbers and assigning the call-history shortcut are also disabled.
+The main Messages screen now follows the observed handset structure (research archive): New message, peer conversations, bubbles and a bottom composer. It replaces the earlier folder-first interface. Dialing and local attempted-call history are enabled; no call transport is connected. Call/F3 opens call history on Home; Home-screen digits open the dialer. Detected SMS numbers and contacts can open the dialer without losing their draft or selected row. The call-history shortcut is available.
 
 ## Supported local flow
 

@@ -56,13 +56,7 @@ pub(super) fn body(c: &mut Canvas, p: &mut Phone, chat: bool) -> i32 {
         c.accent(3)
     };
     c.rect(0, y, 200, height, bubble);
-    c.rect(0, 254, 200, 2, WHITE);
-    for row in 0..16 {
-        c.rect(29, 255 + row, 18 - row, 1, WHITE);
-        if row < 12 {
-            c.rect(31, 255 + row, 14 - row, 1, bubble);
-        }
-    }
+    crate::ui::editor::message_tail(c, [0, 254, 200], false, bubble);
     if p.compose.body.units.is_empty() && !p.compose.body.prediction.active() {
         text::MESSAGE.draw(c, 0, y + 4, "键入信息", 20, MUTED);
         if active {
@@ -122,7 +116,7 @@ pub(super) fn body(c: &mut Canvas, p: &mut Phone, chat: bool) -> i32 {
         &p.compose.body
     };
     if p.compose.recipient {
-        c.text(187, 70, &format!("✎{}", mode(e)), 16, c.accent(3));
+        crate::ui::editor::input_mode(c, e, 228, 70);
     } else {
         crate::ui::editor::input_mode(c, e, 193, 258);
     }
@@ -146,7 +140,7 @@ pub(super) fn body(c: &mut Canvas, p: &mut Phone, chat: bool) -> i32 {
         } else {
             Button::Disabled(center)
         },
-        if active && (!e.units.is_empty() || e.prediction.active()) {
+        if active && !e.units.is_empty() {
             Button::Delete
         } else {
             Button::Back

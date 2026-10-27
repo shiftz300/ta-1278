@@ -90,7 +90,7 @@ jobs:
             -o Dir::Etc::sourceparts=- -o APT::Get::List-Cleanup=0
             -o Acquire::Retries=2 -o Acquire::https::Timeout=30)
           "${apt[@]}" update
-          "${apt[@]}" install -y libasound2-dev libudev-dev libxkbcommon-dev libxkbcommon-x11-dev libwayland-dev libdbus-1-dev mesa-vulkan-drivers xvfb xauth
+          "${apt[@]}" install -y pkg-config libasound2-dev libxkbcommon-x11-0 libdbus-1-3 mesa-vulkan-drivers xvfb xauth
       - name: Install Rust
         id: rust
         run: |

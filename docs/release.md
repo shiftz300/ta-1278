@@ -7,10 +7,14 @@ macOS keeps its Swift folder/media helper. Windows uses a native folder dialog a
 Linux needs ALSA, X11 (including libxkbcommon-x11) or Wayland, and a Vulkan/OpenGL driver. Build prerequisites on Ubuntu 24.04:
 
 ```sh
-sudo apt-get install libasound2-dev libudev-dev libxkbcommon-dev libxkbcommon-x11-dev libwayland-dev libdbus-1-dev
+sudo apt-get install pkg-config libasound2-dev
+# X11 startup and the folder portal also need their runtime libraries:
+sudo apt-get install libxkbcommon-x11-0 libdbus-1-3
 ```
 
-A desktop portal backend or Zenity is needed for the folder dialog. No portal is needed when using `--storage-dir`. Windows builds need the MSVC C++ tools for the native JS/audio dependencies. macOS builds need Apple Command Line Tools. Window portability alone does not supply multimedia codecs or a phone modem backend.
+D-Bus, Wayland and XKB use dynamic loading; their development headers and libudev-dev are not build requirements. A desktop portal backend or Zenity is needed for the folder dialog. No portal is needed when using `--storage-dir`. Windows builds need the MSVC C++ tools for the native JS/audio dependencies. macOS builds need Apple Command Line Tools. Window portability alone does not supply multimedia codecs or a phone modem backend.
+
+The HTML parser disables its upstream command-line support and unused parse-error collection. wgpu enables native backends and WGSL input without WebGPU/browser features. The Rust image and playback crates enable only PNG and MP3/WAV/PCM codecs respectively; MIDI and macOS system media decoding use separate paths. Remaining direct dependencies serve active features. fontTools (font generation) and Pillow (screenshot comparisons) are optional local developer tools; neither is installed in CI or shipped with the app.
 
 ## CI
 

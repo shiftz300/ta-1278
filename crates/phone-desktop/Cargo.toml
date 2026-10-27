@@ -21,13 +21,15 @@ rodio = { version = "0.21.1", default-features = false, features = ["playback", 
 serde.workspace = true
 serde_json.workspace = true
 winit = { version = "0.30.13", optional = true }
-wgpu = { version = "30.0.1", optional = true }
+# Native desktop backends only; the embedded JS engine does not use WebGPU.
+wgpu = { version = "30.0.1", optional = true, default-features = false, features = ["std", "parking_lot", "dx12", "metal", "gles", "vulkan", "wgsl"] }
 pollster = { version = "0.4", optional = true }
 fontdue = "0.9"
 image = { version = "0.25", default-features = false, features = ["png"] }
 ureq = "3"
 url = "2"
-scraper = "0.29"
+# Parse DOM/selectors without the upstream CLI or unused error collection.
+scraper = { version = "0.29", default-features = false }
 rquickjs = { version = "=0.14.0", default-features = false, features = ["std"] }
 oxisynth = "=0.1.0"
 midly = { version = "=0.5.3", default-features = false, features = ["std"] }

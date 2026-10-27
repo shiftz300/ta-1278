@@ -1,6 +1,7 @@
 # Application source, runtime resources and development tools.
 /*
 !/.gitignore
+!/.gitattributes
 !/README.md
 !/README.zh-CN.md
 !/THIRD_PARTY_NOTICES.md

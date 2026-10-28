@@ -30,3 +30,5 @@ The previous `input-learning.json` is retained untouched. Its independent freque
 ## Host keyboard
 
 System IME is disabled for the entire window, and IME events are ignored. Physical key positions produce US-English letters and symbols, with Shift for uppercase/symbols; OS event text, dead-key composition and Option/Alt text input are not consumed. Digits still use the selected internal phone input mode. # (Shift+3 or a dedicated keypad hash key) uses the phone key path to cycle 拼 → 笔 → Abc → abc → ABC → 123. F4/F5 do not switch input modes. English nine-key prediction remains available through the engine API.
+
+The handset `*` key opens the symbol grid in text editors, including while a candidate is pending. Selecting a symbol inserts it after the selected candidate; cancelling preserves the unfinished input. Text dialogs return to their own editor. Dial and recipient fields keep literal `*` input. Candidate cycling uses the direction pad.

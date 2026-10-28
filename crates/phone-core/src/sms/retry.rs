@@ -8,7 +8,9 @@ pub enum Decision {
 }
 pub fn allowed(cause: u16) -> bool {
     include_bytes!("../../../../assets/ui/sms-retry-causes.bin")
-        .chunks_exact(2)
+        .as_chunks::<2>()
+        .0
+        .iter()
         .any(|pair| u16::from_le_bytes([pair[0], pair[1]]) == cause)
 }
 /// cause is the error event; rl_cause is its network reason. Neither is a UI label ID.

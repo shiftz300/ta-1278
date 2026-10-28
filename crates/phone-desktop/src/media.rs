@@ -212,6 +212,19 @@ impl Media {
             }
         }
     }
+    pub fn suspend(&mut self, shell: &mut Shell) {
+        let index = shell.playback.model.index;
+        let path = self.tracks.get(index).map(|t| t.path.as_str());
+        let status = self.audio.sync(
+            &self.files,
+            path,
+            crate::shell::music::playback(&shell.playback.model),
+        );
+        let _ = crate::shell::music::apply_playback(&mut shell.playback.model, status);
+        self.audio.effect_volume(0);
+        let _ = self.audio.alert(&self.files, None, 0);
+        self.audio.stop();
+    }
     pub fn tick(&mut self, shell: &mut Shell) {
         let mut paths: Vec<_> = shell
             .settings

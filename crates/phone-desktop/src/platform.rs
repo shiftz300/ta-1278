@@ -105,6 +105,13 @@ impl Native {
             devices: folder.map(Devices::native),
         }
     }
+    /// Supply a host decoder while retaining the native document and audio services.
+    pub fn with_decoder(mut self, decoder: Arc<dyn Decoder>) -> Self {
+        if let Some(devices) = &mut self.devices {
+            devices.decoder = decoder;
+        }
+        self
+    }
     /// Compatibility convenience; all app integration lives in Runtime now.
     pub fn poll(&mut self, runtime: &mut Runtime) -> Result<(), String> {
         runtime.poll_platform(self)

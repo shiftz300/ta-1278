@@ -161,7 +161,7 @@ fn long_conversation_scroll_and_clipping_preserve_fixed_composer() {
     p.open_thread("12345".into());
     let mut c = crate::canvas::Canvas::new().unwrap();
     crate::views::render(&mut c, &mut p);
-    let bottom = c.pixels[220 * 240 * 4..].to_vec();
+    let bottom = c.pixels[224 * 240 * 4..].to_vec();
     press(&mut p, Key::Up);
     crate::views::render(&mut c, &mut p);
     assert_eq!(p.messaging.chat.scroll, 0);
@@ -171,5 +171,5 @@ fn long_conversation_scroll_and_clipping_preserve_fixed_composer() {
     assert_eq!(p.messaging.chat.scroll, 48);
     press(&mut p, Key::SoftRight);
     crate::views::render(&mut c, &mut p);
-    assert_eq!(&c.pixels[220 * 240 * 4..], bottom.as_slice());
+    assert_eq!(&c.pixels[224 * 240 * 4..], bottom.as_slice());
 }

@@ -27,5 +27,10 @@
   "storage": {
     "directory": null,
     "read_only": false
+  },
+  "controls": {
+    "titlebar": false,
+    "keypad": false,
+    "haptics": true
   }
 }

@@ -1,219 +1,10 @@
-use crate::runtime::Time;
-use crate::{audio, config, gpu, host, platform, runtime::Runtime, storage};
-mod smoke;
-use std::{
-    path::PathBuf,
-    sync::Arc,
-    time::{Duration, Instant},
+use crate::{
+    audio, config, host, platform,
+    runtime::{Runtime, Time},
+    storage,
 };
-use winit::{
-    application::ApplicationHandler,
-    dpi::LogicalSize,
-    event::{ElementState, WindowEvent},
-    event_loop::{ActiveEventLoop, ControlFlow, EventLoop},
-    keyboard::{KeyCode, ModifiersState, PhysicalKey},
-    window::{Window, WindowId},
-};
-struct App {
-    window: Option<Arc<Window>>,
-    gpu: Option<gpu::Gpu>,
-    runtime: Runtime,
-    platform: platform::Native,
-    modifiers: ModifiersState,
-    save_retry_at: Instant,
-    start: Instant,
-    next_redraw: Instant,
-    occluded: bool,
-    store: crate::persistence::Directory,
-    smoke: Option<PathBuf>,
-    smoke_stage: usize,
-    failure: Option<String>,
-}
-impl App {
-    fn now(&self) -> u64 {
-        self.start.elapsed().as_millis() as u64
-    }
-    fn press(&mut self, source: u32, key: phone_core::input::Key) {
-        self.runtime.press(source, key);
-    }
-    fn release(&mut self, source: u32) {
-        self.runtime.release(source);
-    }
-    fn flush(&mut self) {
-        if Instant::now() < self.save_retry_at {
-            return;
-        }
-        if let Err(error) = self.runtime.flush(&mut self.store, false) {
-            self.save_retry_at = Instant::now() + Duration::from_secs(5);
-            self.runtime.report(error);
-        }
-    }
-    fn quit(&mut self, event_loop: &ActiveEventLoop) {
-        if self.runtime.close(&mut self.store) {
-            event_loop.exit();
-        }
-    }
-    fn fail(&mut self, event_loop: &ActiveEventLoop, e: String) {
-        eprintln!("{e}");
-        self.failure = Some(e);
-        event_loop.exit();
-    }
-}
-impl ApplicationHandler for App {
-    fn resumed(&mut self, event_loop: &ActiveEventLoop) {
-        if self.window.is_some() {
-            return;
-        }
-        let attributes = Window::default_attributes()
-            .with_title("TA-1278 · Phone interaction")
-            .with_inner_size(LogicalSize::new(480., 640.))
-            .with_min_inner_size(LogicalSize::new(240., 320.));
-        #[cfg(target_os = "macos")]
-        let attributes = {
-            use winit::platform::macos::WindowAttributesExtMacOS;
-            attributes.with_accepts_first_mouse(true)
-        };
-        match event_loop.create_window(attributes) {
-            Ok(window) => {
-                let window = Arc::new(window);
-                window.set_ime_allowed(false);
-                match pollster::block_on(gpu::Gpu::new(window.clone())) {
-                    Ok(gpu) => {
-                        if self.smoke.is_some() {
-                            window.focus_window();
-                        }
-                        self.gpu = Some(gpu);
-                        self.window = Some(window);
-                    }
-                    Err(e) => self.fail(event_loop, e),
-                }
-            }
-            Err(e) => self.fail(event_loop, e.to_string()),
-        }
-    }
-    fn window_event(&mut self, event_loop: &ActiveEventLoop, id: WindowId, event: WindowEvent) {
-        if self.window.as_ref().is_none_or(|w| w.id() != id) {
-            return;
-        }
-        match event {
-            WindowEvent::CloseRequested => self.quit(event_loop),
-            WindowEvent::Occluded(value) => self.occluded = value,
-            WindowEvent::Resized(size) => {
-                if let Some(gpu) = &mut self.gpu {
-                    gpu.resize(size.width, size.height);
-                }
-            }
-            WindowEvent::Focused(false) => {
-                self.runtime.cancel_input();
-                self.modifiers = ModifiersState::empty();
-            }
-            WindowEvent::ModifiersChanged(m) => self.modifiers = m.state(),
-            // Ignore even late IME events queued before the window disabled composition.
-            WindowEvent::Ime(_) => {}
-            WindowEvent::MouseInput { state, button, .. } => {
-                if let Some((source, key)) = host::input::mouse(button) {
-                    if state == ElementState::Pressed {
-                        self.press(source, key)
-                    } else {
-                        self.release(source)
-                    }
-                }
-            }
-            WindowEvent::KeyboardInput {
-                event,
-                is_synthetic: false,
-                ..
-            } => {
-                if let PhysicalKey::Code(code) = event.physical_key {
-                    let source = code as u32;
-                    if event.state == ElementState::Released {
-                        self.release(source);
-                        return;
-                    }
-                    if self.modifiers.super_key() || self.modifiers.control_key() {
-                        if code == KeyCode::KeyA {
-                            self.runtime.select_all();
-                        } else if code == KeyCode::KeyQ {
-                            self.quit(event_loop);
-                        }
-                        return;
-                    }
-                    if code == KeyCode::Tab {
-                        if !event.repeat {
-                            self.runtime.tab();
-                        }
-                        return;
-                    }
-                    // Option/Alt must not open a second, host-controlled text path.
-                    if self.modifiers.alt_key() {
-                        return;
-                    }
-                    match host::input::key(code, self.modifiers.shift_key()) {
-                        Some(host::input::Keyboard::Shell(key)) if !event.repeat => {
-                            self.press(source, key);
-                        }
-                        Some(host::input::Keyboard::Text(ch)) => self.runtime.text(&ch.to_string()),
-                        _ => {}
-                    }
-                }
-            }
-            WindowEvent::RedrawRequested => {
-                if self.occluded {
-                    return;
-                }
-                let before = self.gpu.as_ref().map_or(0, |g| g.presented);
-                self.runtime.render();
-                if let Some(gpu) = &mut self.gpu
-                    && let Err(e) = gpu.render(&self.runtime.canvas.pixels)
-                {
-                    self.fail(event_loop, e);
-                    return;
-                }
-                if self.smoke.is_some() && self.gpu.as_ref().is_some_and(|g| g.presented > before) {
-                    self.smoke_frame(event_loop);
-                }
-            }
-            _ => {}
-        }
-    }
-    fn about_to_wait(&mut self, event_loop: &ActiveEventLoop) {
-        #[cfg(target_os = "macos")]
-        if host::lifecycle::take_quit_request() {
-            self.quit(event_loop);
-        }
-        if event_loop.exiting() {
-            return;
-        }
-        let now = Instant::now();
-        if self.smoke.is_some() && self.start.elapsed() > Duration::from_secs(30) {
-            self.fail(event_loop, "Window smoke test timed out before all frames were presented; ensure the window is visible.".into());
-            return;
-        }
-        if let Err(error) = self.runtime.advance(Time {
-            elapsed_ms: self.now(),
-            unix_ms: storage::session::wall_ms(),
-        }) {
-            self.fail(event_loop, error);
-            return;
-        }
-        if let Err(error) = self.runtime.poll_platform(&mut self.platform) {
-            self.runtime.report(error);
-        }
-        self.flush();
-        if let Some(w) = &self.window {
-            if let Err(e) = self.runtime.poll_services() {
-                self.runtime.report(e);
-            }
-            if now >= self.next_redraw {
-                self.next_redraw = now + Duration::from_millis(33);
-                if !self.occluded {
-                    w.request_redraw();
-                }
-            }
-        }
-        event_loop.set_control_flow(ControlFlow::WaitUntil(self.next_redraw));
-    }
-}
+use std::path::PathBuf;
+use winit::event_loop::EventLoop;
 
 pub fn run() -> Result<(), Box<dyn std::error::Error>> {
     let mut data_dir = storage::default_dir();
@@ -223,6 +14,9 @@ pub fn run() -> Result<(), Box<dyn std::error::Error>> {
     let mut disabled = Vec::new();
     let mut storage_dir = None;
     let mut read_only = false;
+    let mut keypad = false;
+    let mut titlebar = false;
+    let mut haptics = true;
     let mut args = std::env::args().skip(1);
     while let Some(arg) = args.next() {
         match arg.as_str() {
@@ -244,6 +38,9 @@ pub fn run() -> Result<(), Box<dyn std::error::Error>> {
                 println!("{}", option_env!("TA1278_MEDIA_HELPER").unwrap_or(""));
                 return Ok(());
             }
+            "--keypad" => keypad = true,
+            "--titlebar" => titlebar = true,
+            "--no-haptics" => haptics = false,
             "--check-config" => check_config = true,
             "--config" => {
                 config_path = Some(PathBuf::from(args.next().ok_or("--config needs a path")?))
@@ -270,7 +67,7 @@ pub fn run() -> Result<(), Box<dyn std::error::Error>> {
             }
             "--help" => {
                 println!(
-                    "cargo run -p phone-desktop -- [--config JSON] [--check-config] [--data-dir PATH] [--storage-dir DIRECTORY] [--read-only-storage] [--disable music,files,network,javascript,pictures,video,sounds] [--smoke-test OUTPUT]\nOffline tone preview: --render-tone NAME OUTPUT.wav (creates a new file)\nArrows: navigate; Enter: center; F1/F2: softkeys; F3: call history/dial; Home: end/home; Tab: recipient/body; # (Shift+3): input mode. Mouse left/right/middle = left/right/center key."
+                    "cargo run -p phone-desktop -- [--config JSON] [--check-config] [--keypad] [--titlebar] [--no-haptics] [--data-dir PATH] [--storage-dir DIRECTORY] [--read-only-storage] [--disable music,files,network,javascript,pictures,video,sounds] [--smoke-test OUTPUT]\nOffline tone preview: --render-tone NAME OUTPUT.wav (creates a new file)\nArrows: navigate; Enter: center; F1/F2: softkeys; F3: call history/dial; Home: end/home; Tab: recipient/body; # (Shift+3): input mode. Mouse left/right/middle = left/right/center key; with --keypad, click the drawn buttons. Titlebar is hidden by default; --titlebar restores it."
                 );
                 return Ok(());
             }
@@ -287,6 +84,10 @@ pub fn run() -> Result<(), Box<dyn std::error::Error>> {
     }
     runtime_config.storage.directory = storage_dir.or(runtime_config.storage.directory);
     runtime_config.storage.read_only |= read_only;
+    runtime_config.controls.keypad |= keypad;
+    runtime_config.controls.titlebar |= titlebar;
+    runtime_config.controls.haptics &= haptics;
+    let controls = runtime_config.controls;
     if check_config {
         println!("{}", serde_json::to_string_pretty(&runtime_config)?);
         return Ok(());
@@ -313,30 +114,10 @@ pub fn run() -> Result<(), Box<dyn std::error::Error>> {
         crate::persistence::Resume::WallClock,
     )?;
     if smoke.is_some() {
-        smoke::theme(&mut runtime);
+        host::theme(&mut runtime);
     }
     let platform = platform::Native::from_folder(&runtime, folder);
-    let now = Instant::now();
-    let mut app = App {
-        window: None,
-        gpu: None,
-        runtime,
-        platform,
-        modifiers: ModifiersState::empty(),
-        save_retry_at: now,
-        start: now,
-        next_redraw: now,
-        occluded: false,
-        store,
-        smoke,
-        smoke_stage: 0,
-        failure: None,
-    };
     #[cfg(target_os = "macos")]
     host::lifecycle::initialize()?;
-    EventLoop::new()?.run_app(&mut app)?;
-    if let Some(e) = app.failure {
-        return Err(e.into());
-    }
-    Ok(())
+    host::App::new(runtime, platform, store, controls, smoke)?.run(EventLoop::new()?)
 }

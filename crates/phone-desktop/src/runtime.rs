@@ -159,6 +159,12 @@ impl Runtime {
             self.dispatch(event);
         }
     }
+    /// Cancel one touch/mouse source without turning a drag into a key release.
+    pub fn cancel_source(&mut self, source: u32) {
+        for event in self.input.cancel_source(source) {
+            self.dispatch(event);
+        }
+    }
     /// Call on focus loss or before suspending the host. Cancellation never confirms a key.
     pub fn cancel_input(&mut self) {
         for event in self.input.cancel() {

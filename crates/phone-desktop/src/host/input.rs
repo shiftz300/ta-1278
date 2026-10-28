@@ -101,7 +101,7 @@ pub fn keyboard(code: KeyCode) -> Option<Key> {
         KeyCode::ArrowRight => Key::Right,
         KeyCode::Enter | KeyCode::NumpadEnter => Key::Center,
         KeyCode::F1 => Key::SoftLeft,
-        KeyCode::F2 | KeyCode::Escape => Key::SoftRight,
+        KeyCode::F2 | KeyCode::Escape | KeyCode::BrowserBack => Key::SoftRight,
         KeyCode::F3 => Key::Call,
         KeyCode::Home => Key::End,
         KeyCode::Backspace | KeyCode::Delete => Key::Delete,

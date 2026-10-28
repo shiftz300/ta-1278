@@ -87,6 +87,10 @@ pub enum TextTarget {
 }
 #[derive(Clone, Debug)]
 pub enum Overlay {
+    Symbols {
+        index: usize,
+        parent: Option<Box<Overlay>>,
+    },
     Menu {
         kind: MenuKind,
         index: usize,
@@ -402,7 +406,7 @@ impl Shell {
         }
         match key {
             Key::Up => e.prediction.cycle(-1),
-            Key::Down | Key::Star => e.prediction.cycle(1),
+            Key::Down => e.prediction.cycle(1),
             Key::Left if !e.prediction.spellings.is_empty() => e.prediction.spelling_focus = true,
             Key::Right if !e.prediction.spellings.is_empty() => e.prediction.spelling_focus = false,
             Key::Left => e.prediction.cycle(-1),
@@ -543,6 +547,9 @@ impl Shell {
         if matches!(key, Key::SoftRight | Key::End) {
             self.audio_preview = Some("无".into());
         }
+        if key == Key::Star && self.open_symbols() {
+            return;
+        }
         if self.prediction_key(key) {
             return;
         }
@@ -570,10 +577,7 @@ impl Shell {
         }
         if matches!(self.screen, Screen::Compose | Screen::Conversation) && self.overlay.is_none() {
             if key == Key::Star && !self.messaging.compose.recipient {
-                self.overlay = Some(Overlay::Menu {
-                    kind: MenuKind::Symbols,
-                    index: 0,
-                });
+                self.open_symbols();
                 return;
             }
             if key == Key::Down && self.messaging.compose.recipient {

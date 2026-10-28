@@ -1,6 +1,6 @@
-# Desktop phone
+# Phone runtime
 
-The public `phone_runtime` library owns phone interaction and CPU drawing. The optional desktop host uses `winit` for the window and input. `wgpu` presents a 240×320 RGBA texture with nearest sampling and letterboxing. CPU drawing uses original fonts/icons and fallback fonts. This is a new interaction program, not execution of the ARM firmware.
+The public `phone_runtime` library owns phone interaction and CPU drawing. Desktop and Android share a `winit` host for the window and input. `wgpu` presents the 240×320 RGBA phone frame with nearest sampling and letterboxing. The optional host keypad extends the composed frame to 240×576, without changing application layout. CPU drawing uses original fonts/icons and fallback fonts. This is a new interaction program, not execution of the ARM firmware.
 
 ## Ownership
 
@@ -24,7 +24,9 @@ resource and capture filenames keep their evidence identifiers.
 | `utilities.rs`, `converter.rs`, `calendar.rs`, `snake.rs` | Local utility models, date arithmetic and replacement game rules |
 | `lib.rs`, `runtime.rs`, `runtime/app/*` | Public input/time/frame entry point, service/document ports and host-owned user-data checkpoints |
 | `platform.rs` | Explicit native folder/audio/HTTP adapter, bound to one runtime |
-| `main.rs`, `desktop.rs`, `host/input.rs`, `desktop/smoke.rs` | Desktop entry point, window lifecycle, native events and window smoke run |
+| `desktop.rs`, `android.rs`, `host/app.rs`, `host/input.rs`, `host/smoke.rs` | Platform startup, shared window lifecycle/input and window regression run |
+| `host/keypad.rs`, `host/keypad/` | Shared handset artwork, touch geometry and per-pointer key ownership |
+| `android/` | Minimal NativeActivity, system haptics and bounded bitmap decoder |
 | `storage/profile.rs`, `storage/session.rs` | Existing desktop JSON profile and wall-clock utility persistence |
 | `shell.rs`, `shell/editor.rs`, `shell/overlays.rs` | Top-level routes and shared editor/menu overlays |
 | `shell/sms.rs`, `conversation.rs`, `mail.rs`, `browser.rs`, `shell/browser/data.rs`, `music.rs` | App routes, local mailbox reading and browser persistence |

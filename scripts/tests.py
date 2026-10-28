@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Release integrity checks, using isolated workspaces and a local bare Git remote."""
 import os
+import hashlib
 from copy import deepcopy
 from pathlib import Path
 import subprocess
@@ -103,9 +104,9 @@ class Versions(unittest.TestCase):
         jobs.append({"name": "tag", "status": "in_progress", "conclusion": None})
         return source, {"jobs": jobs}
 
-    def verify_source(self, source, jobs):
+    def verify_source(self, source, jobs, *, android=False):
         with patch.dict(os.environ, {"GITHUB_REPOSITORY": "owner/app", "GITHUB_REF": "refs/tags/v0.2.2"}), patch.object(publishing, "github", side_effect=[source, jobs]):
-            publishing.verify_source("123", self.root)
+            publishing.verify_source("123", self.root, android=android)
 
     def test_release_reuses_only_matching_successful_ci_builds(self):
         source, jobs = self.ci_source()
@@ -135,6 +136,69 @@ class Versions(unittest.TestCase):
         self.command("git", "commit", "--allow-empty", "-m", "Different commit")
         with self.assertRaises(ValueError):
             self.verify_source(source, jobs)
+
+    def android_source(self):
+        source, _ = self.ci_source()
+        source.update(path=".github/workflows/android.yml", status="completed", conclusion="success")
+        jobs = {"jobs": [{"name": "Android arm64", "status": "completed", "conclusion": "success"}]}
+        return source, jobs
+
+    def test_android_reuse_requires_successful_exact_commit_and_workflow(self):
+        source, jobs = self.android_source()
+        self.verify_source(source, jobs, android=True)
+        for changes in (
+            {"head_sha": "0" * 40}, {"head_branch": "other"}, {"event": "pull_request"},
+            {"path": ".github/workflows/ci.yml"}, {"status": "in_progress", "conclusion": None},
+            {"repository": {"full_name": "other/app"}}, {"head_repository": {"full_name": "fork/app"}},
+            {"conclusion": "failure"},
+        ):
+            with self.subTest(changes=changes), self.assertRaises(ValueError):
+                self.verify_source(dict(source, **changes), jobs, android=True)
+        with self.assertRaises(ValueError):
+            self.verify_source(source, {"jobs": []}, android=True)
+
+    def test_android_discovery_rebuilds_when_artifact_is_missing_or_expired(self):
+        source, jobs = self.android_source()
+        listed = dict(source, id=123)
+        for artifacts, expected in (
+            ([], ""),
+            ([{"name": "ta1278-android-arm64", "expired": True}], ""),
+            ([{"name": "ta1278-android-arm64", "expired": False}], "123"),
+        ):
+            with patch.dict(os.environ, {"GITHUB_REPOSITORY": "owner/app"}), patch.object(
+                publishing, "github", side_effect=[{"workflow_runs": [listed]}, source, jobs, {"artifacts": artifacts}]
+            ):
+                self.assertEqual(publishing.find_android(self.root), expected)
+        with patch.dict(os.environ, {"GITHUB_REPOSITORY": "owner/app"}), patch.object(
+            publishing, "github", return_value={"workflow_runs": []}
+        ):
+            self.assertEqual(publishing.find_android(self.root), "")
+        with patch.dict(os.environ, {"GITHUB_REPOSITORY": "owner/app"}), patch.object(
+            publishing, "github", side_effect=[{"workflow_runs": [listed]}, dict(source, head_sha="0" * 40)]
+        ), self.assertRaises(ValueError):
+            publishing.find_android(self.root)
+
+    def test_release_requires_apk_and_checks_every_package_hash_and_name(self):
+        directory = self.base / "packages"
+        directory.mkdir()
+        names = [f"TA1278-v0.2.2-{platform}" + (".tar.gz" if "linux" in target else ".zip")
+                 for target, platform in publishing.TARGETS.items()]
+        names.append("TA1278-v0.2.2-android-arm64.apk")
+        for name in names:
+            (directory / name).write_bytes(name.encode())
+            digest = hashlib.sha256(name.encode()).hexdigest()
+            (directory / (name + ".sha256")).write_text(f"{digest}  {name}\n")
+        files, sums = publishing.packages(directory, "0.2.2")
+        self.assertEqual(len(files), 10)
+        self.assertEqual(len(sums.splitlines()), 5)
+        apk = directory / names[-1]
+        checksum = directory / (apk.name + ".sha256")
+        checksum.write_text(hashlib.sha256(apk.read_bytes()).hexdigest() + "  wrong.apk\n")
+        with self.assertRaises(ValueError):
+            publishing.packages(directory, "0.2.2")
+        apk.unlink()
+        with self.assertRaises(FileNotFoundError):
+            publishing.packages(directory, "0.2.2")
 
 
 if __name__ == "__main__":

@@ -101,7 +101,21 @@ impl DataLock {
             .write(true)
             .open(dir.join(".instance.lock"))
             .map_err(|e| e.to_string())?;
-        file.try_lock().map_err(|e| {
+        #[cfg(not(target_os = "android"))]
+        let result = file.try_lock().map_err(|e| format!("{e:?}"));
+        // Rust 1.96 excludes Android from std's flock implementation (rust-lang/rust#148325).
+        // Retain the same nonblocking OS lock; never silently bypass profile protection.
+        #[cfg(target_os = "android")]
+        let result = {
+            use std::os::fd::AsRawFd;
+            // SAFETY: file owns a live fd, and flock only changes its advisory lock.
+            if unsafe { libc::flock(file.as_raw_fd(), libc::LOCK_EX | libc::LOCK_NB) } == 0 {
+                Ok(())
+            } else {
+                Err(std::io::Error::last_os_error().to_string())
+            }
+        };
+        result.map_err(|e| {
             format!("Cannot lock this data directory; another instance may be using it: {e}")
         })?;
         Ok(Self { _file: file })

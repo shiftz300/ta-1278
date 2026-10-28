@@ -170,6 +170,9 @@ pub fn paint(c: &mut Canvas, p: &Shell) {
             c.background();
         }
         match overlay {
+            Overlay::Symbols { index, .. } => {
+                pickers::render(c, p, MenuKind::Symbols, *index);
+            }
             Overlay::TimerElapsed => tools::timer_elapsed(c, p),
             Overlay::Notice(_) | Overlay::ServiceAlert { .. } => {
                 let (title, s) = match overlay {
@@ -398,7 +401,7 @@ mod tests {
 mod sms_geometry_tests {
     use super::*;
     #[test]
-    fn native_sms_rows_share_baseline_and_keep_counter_and_footer_clear() {
+    fn compact_sms_rows_share_baseline_and_keep_counter_and_footer_clear() {
         let mut c = Canvas::new().unwrap();
         let mut p = Shell::new(Default::default());
         p.go(Screen::Compose);
@@ -406,13 +409,13 @@ mod sms_geometry_tests {
         p.messaging.compose.body.prediction.set_language(None);
         p.messaging.compose.body.insert("你");
         render(&mut c, &mut p);
-        assert_eq!(c.caret.unwrap().1, 224);
+        assert_eq!(c.caret.unwrap().1, 228);
         let fill = c.accent(3);
         let pixel = |c: &Canvas, x: usize, y: usize| {
             c.pixels[(y * 240 + x) * 4..(y * 240 + x) * 4 + 4].to_vec()
         };
-        assert_eq!(pixel(&c, 199, 220), fill);
-        assert_eq!(pixel(&c, 199, 219), [0, 0, 0, 255]);
+        assert_eq!(pixel(&c, 199, 224), fill);
+        assert_eq!(pixel(&c, 199, 223), [0, 0, 0, 255]);
         // The triangular tail and rectangular body have one continuous interior.
         assert_eq!(pixel(&c, 35, 254), fill);
         assert_eq!(pixel(&c, 35, 255), fill);
@@ -421,19 +424,19 @@ mod sms_geometry_tests {
         let chrome = c.pixels[254 * 240 * 4..].to_vec();
         p.messaging.compose.body.insert("\n");
         render(&mut c, &mut p);
-        assert_eq!(c.caret.unwrap().1, 224);
-        assert_eq!(pixel(&c, 199, 194), fill);
-        assert_eq!(pixel(&c, 199, 193), [0, 0, 0, 255]);
+        assert_eq!(c.caret.unwrap().1, 228);
+        assert_eq!(pixel(&c, 199, 202), fill);
+        assert_eq!(pixel(&c, 199, 201), [0, 0, 0, 255]);
         // Count changes, but the softkey row does not move.
         assert_eq!(&c.pixels[286 * 240 * 4..], &chrome[(286 - 254) * 240 * 4..]);
         p.messaging.compose.body.clear();
         p.messaging
             .compose
             .body
-            .insert(&format!("{}1", "1234567890".repeat(16)));
+            .insert(&format!("{}1", "1234567890".repeat(24)));
         render(&mut c, &mut p);
-        assert_eq!(p.editor_lines.len(), 11);
-        assert_eq!(c.caret.unwrap().1, 224);
+        assert!(p.editor_lines.len() > 11);
+        assert_eq!(c.caret.unwrap().1, 228);
         assert_eq!(pixel(&c, 199, 24), fill);
         assert_eq!(pixel(&c, 199, 23), [0, 0, 0, 255]);
         assert_eq!(pixel(&c, 238, 30), [38, 43, 37, 255]);
@@ -445,24 +448,54 @@ mod sms_geometry_tests {
         );
     }
     #[test]
+    fn compact_new_message_and_reply_share_text_caret_and_wrap() {
+        let mut c = Canvas::new().unwrap();
+        let mut p = Shell::new(Default::default());
+        p.messaging.compose.recipient = false;
+        p.messaging.compose.to.insert("12345");
+        p.messaging.chat.peer = "12345".into();
+        for (name, body) in [
+            ("empty", ""),
+            ("one", "好的，三点见！"),
+            ("wrap", "See you at three. Bring your headphones."),
+            ("newline", "第一行\nSecond line"),
+        ] {
+            p.messaging.compose.body.clear();
+            p.messaging.compose.body.insert(body);
+            p.go(Screen::Compose);
+            super::audit::frame(&mut c, &mut p, &format!("new-{name}"));
+            let pixels = c.pixels[194 * 240 * 4..].to_vec();
+            let caret = c.caret;
+            let rows = p.editor_lines.clone();
+            p.go(Screen::Conversation);
+            super::audit::frame(&mut c, &mut p, &format!("reply-{name}"));
+            assert_eq!(c.caret, caret);
+            assert_eq!(
+                p.editor_lines.iter().map(|r| &r.stops).collect::<Vec<_>>(),
+                rows.iter().map(|r| &r.stops).collect::<Vec<_>>()
+            );
+            assert_eq!(&c.pixels[194 * 240 * 4..], pixels.as_slice(), "{name}");
+        }
+    }
+    #[test]
     fn sms_integer_advances_word_wrap_and_utf16_stops_agree() {
         let mut c = Canvas::new().unwrap();
         let rows = text::MESSAGE.wrap(
             &mut c,
             &format!("呢{}123456789", "1234567890".repeat(6)),
-            20,
+            18,
             200,
         );
         assert_eq!(rows[0].text, "呢");
-        assert_eq!(rows[1].text, "1234567890123456");
-        assert_eq!(rows.len(), 6);
-        assert_eq!(text::MESSAGE.width(&mut c, &rows[1].text, 20), 192);
+        assert_eq!(rows[1].text, "123456789012345678");
+        assert_eq!(rows.len(), 5);
+        assert_eq!(text::MESSAGE.width(&mut c, &rows[1].text, 18), 198);
         let mut p = Shell::new(Default::default());
         p.go(Screen::Compose);
         p.messaging.compose.recipient = false;
         p.messaging.compose.body.insert("中😀\n12");
         render(&mut c, &mut p);
-        assert_eq!(p.editor_lines[1].stops, [(4, 0), (5, 12), (6, 24)]);
+        assert_eq!(p.editor_lines[1].stops, [(4, 0), (5, 11), (6, 22)]);
     }
 }
 

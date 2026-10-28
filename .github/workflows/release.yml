@@ -19,14 +19,37 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  android-source:
+    runs-on: ubuntu-24.04
+    outputs:
+      run: ${{ steps.source.outputs.run }}
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Find verified Android CI artifacts
+        id: source
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/release.py --find-android
+  android:
+    needs: android-source
+    if: needs.android-source.outputs.run == ''
+    uses: ./.github/workflows/android.yml
+    with:
+      release: true
   build:
     if: inputs.ci_run == ''
     uses: ./.github/workflows/build.yml
     with:
       release: true
   publish:
-    needs: build
-    if: always() && !cancelled() && (needs.build.result == 'success' || (needs.build.result == 'skipped' && inputs.ci_run != ''))
+    needs: [build, android-source, android]
+    if: >-
+      always() && !cancelled() && needs.android-source.result == 'success' &&
+      (needs.build.result == 'success' || (needs.build.result == 'skipped' && inputs.ci_run != '')) &&
+      (needs.android.result == 'success' || (needs.android.result == 'skipped' && needs.android-source.outputs.run != ''))
     runs-on: ubuntu-24.04
     permissions:
       contents: write
@@ -48,6 +71,14 @@ jobs:
           github-token: ${{ github.token }}
           run-id: ${{ inputs.ci_run || github.run_id }}
           merge-multiple: true
+          path: target/release-artifacts
+      - name: Download Android APK and checksum
+        if: inputs.ci_run != '' || needs.android-source.outputs.run != ''
+        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7
+        with:
+          name: ta1278-android-arm64
+          github-token: ${{ github.token }}
+          run-id: ${{ needs.android-source.outputs.run || github.run_id }}
           path: target/release-artifacts
       - name: Verify all packages and publish
         env:

@@ -1,16 +1,17 @@
-# Nokia TA-1278
+# TA-1278
 
 [简体中文](README.zh-CN.md)
 
 [![CI](https://github.com/shiftz300/ta-1278/actions/workflows/ci.yml/badge.svg)](https://github.com/shiftz300/ta-1278/actions/workflows/ci.yml)
+[![Android](https://github.com/shiftz300/ta-1278/actions/workflows/android.yml/badge.svg)](https://github.com/shiftz300/ta-1278/actions/workflows/android.yml)
 
-A user-space phone interaction runtime and desktop app, based on the Nokia TA-1278 experience.
+A user-space phone interaction runtime and desktop/Android app, with a classic keypad-phone interface.
 
 [Phone](docs/calls.md) · [Service interface](docs/services.md) · [Input engine](docs/input-engine.md) · [Architecture](docs/architecture.md)
 
 ## Screenshots
 
-The desktop app in use, with demo messages and local browser pages.
+The app display, without the system titlebar. Messages and browser pages use demo data.
 
 | Messages | Snake | Browser |
 | --- | --- | --- |
@@ -35,6 +36,8 @@ Targets macOS (arm64/Intel), Windows x64 and Linux x64. [Downloads](https://gith
 cargo run --release --locked -p phone-desktop
 ```
 
+Android ARM64 APKs are also available in [Releases](https://github.com/shiftz300/ta-1278/releases/latest). `python3 scripts/android.py` builds a locally signed APK. [Setup, signing, controls and platform limits](docs/android.md). On desktop, add `--keypad` for the same on-screen handset buttons. The titlebar is hidden by default; `--titlebar` restores it.
+
 For an optimized local macOS app: `sh scripts/package-macos.sh`, then open `target/TA1278.app`.
 
 - **Messages:** Chinese pinyin/stroke, Abc/abc/ABC multi-tap and direct typing, cursor movement, line breaks, character counts, drafts, conversations with incoming/outgoing bubbles, inline replies, forwarding, confirmed deletion and an unsent queue.
@@ -42,7 +45,7 @@ For an optimized local macOS app: `sh scripts/package-macos.sh`, then open `targ
 - **Music:** real MP3/WAV/MIDI playback from the chosen phone-storage folder; pause, track changes, long-press seek, volume, repeat, shuffle and saved playlists. Local images and video open from Files; the same file picker supplies contact pictures, wallpaper and ringtones.
 - Calendar, alarms, local contacts, calculator, timer, stopwatch and Snake with recovered maps/artwork are available. Dialing and local attempted-call history are enabled; no call transport is connected. **The desktop app makes no calls and sends no real SMS.**
 
-Arrow keys navigate. Enter confirms. F1/F2 are the softkeys; Escape is also F2. Mouse **left/right/middle** map to **left softkey/right softkey/confirm**, anywhere in the window. Home returns home or asks to save a message.
+Arrow keys navigate. Enter confirms. F1/F2 are the softkeys; Escape is also F2. Without `--keypad`, mouse **left/right/middle** map to **left softkey/right softkey/confirm**, anywhere in the window. Home returns home or asks to save a message.
 
 In an editor: 0–9 use the selected input mode; hold for a digit. # (Shift+3 on a computer keyboard) switches 拼 → 笔 → Abc → abc → ABC → 123. In a candidate popup, up/down selects, left/right switches spelling/word columns, and confirm chooses. Host typing uses fixed US-English key positions (Shift for uppercase/symbols). System IME composition is disabled; Chinese input uses the phone’s internal modes. Tab switches recipient/body. Shift+Enter inserts a line break. Backspace deletes; Cmd/Ctrl+A selects all. [Full controls and design](docs/architecture.md).
 

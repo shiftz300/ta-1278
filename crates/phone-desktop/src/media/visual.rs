@@ -1,5 +1,4 @@
 //! Presentation/controller bridge. Decoders only exchange pixels and video commands.
-pub(crate) use crate::platform::visual::helper;
 use crate::platform::{Decoder, Video, Visual};
 use crate::shell::media::{Purpose, Request, State};
 use crate::storage::files::Folder;

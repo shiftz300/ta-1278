@@ -59,6 +59,23 @@ pub struct StorageConfig {
     pub directory: Option<PathBuf>,
     pub read_only: bool,
 }
+/// Host presentation only; application/world state belongs to Runtime/backend.
+#[derive(Clone, Copy, Debug, Deserialize, Serialize)]
+#[serde(default, deny_unknown_fields)]
+pub struct Controls {
+    pub titlebar: bool,
+    pub keypad: bool,
+    pub haptics: bool,
+}
+impl Default for Controls {
+    fn default() -> Self {
+        Self {
+            titlebar: false,
+            keypad: false,
+            haptics: true,
+        }
+    }
+}
 #[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(default, deny_unknown_fields)]
 pub struct RuntimeConfig {
@@ -66,6 +83,7 @@ pub struct RuntimeConfig {
     pub apps: Apps,
     pub capabilities: Features,
     pub storage: StorageConfig,
+    pub controls: Controls,
 }
 impl Default for RuntimeConfig {
     fn default() -> Self {
@@ -74,6 +92,7 @@ impl Default for RuntimeConfig {
             apps: Default::default(),
             capabilities: Default::default(),
             storage: Default::default(),
+            controls: Default::default(),
         }
     }
 }

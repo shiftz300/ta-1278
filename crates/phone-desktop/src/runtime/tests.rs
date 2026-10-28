@@ -245,3 +245,24 @@ fn browser_rejects_stale_generation_and_different_instance_results() {
 }
 
 mod ports;
+
+#[test]
+fn host_suspend_cancels_held_keys_and_pauses_playback_without_discarding_records() {
+    let mut runtime = Runtime::new(RuntimeConfig::default(), time(0)).unwrap();
+    runtime.shell.playback.model.playing = true;
+    runtime.shell.playback.model.position = 12.;
+    runtime.shell.messaging.compose.body = phone_core::editor::Editor::new("keep this draft", 4096);
+    runtime.press(123, Key::Digit(2));
+    runtime.suspend_media();
+    assert!(!runtime.shell.playback.model.playing);
+    assert_eq!(runtime.shell.playback.model.position, 12.);
+    assert_eq!(
+        runtime.shell.messaging.compose.body.text(),
+        "keep this draft"
+    );
+    assert!(runtime.shell.cues.is_empty());
+    assert!(runtime.shell.audio_preview.is_none());
+    let frame = runtime.render().pixels.to_vec();
+    runtime.release(123);
+    assert_eq!(runtime.render().pixels, frame);
+}

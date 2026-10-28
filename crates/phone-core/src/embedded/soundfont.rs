@@ -60,7 +60,7 @@ pub fn encode(bytes: &[u8]) -> Result<Vec<u8>, String> {
     let count = span.len() / 2;
     let mut packed = bytes.to_vec();
     let (mut previous, mut difference) = (0u16, 0u16);
-    for (i, sample) in bytes[span.clone()].chunks_exact(2).enumerate() {
+    for (i, sample) in bytes[span.clone()].as_chunks::<2>().0.iter().enumerate() {
         let sample = u16::from_le_bytes([sample[0], sample[1]]);
         let next = sample.wrapping_sub(previous);
         let value = next.wrapping_sub(difference).to_le_bytes();
@@ -78,7 +78,7 @@ pub fn restore(bytes: &mut [u8]) -> Result<(), String> {
     let encoded = bytes[span.clone()].to_vec();
     let count = encoded.len() / 2;
     let (mut sample, mut difference) = (0u16, 0u16);
-    for (i, out) in bytes[span].chunks_exact_mut(2).enumerate() {
+    for (i, out) in bytes[span].as_chunks_mut::<2>().0.iter_mut().enumerate() {
         difference = difference.wrapping_add(u16::from_le_bytes([encoded[i], encoded[count + i]]));
         sample = sample.wrapping_add(difference);
         out.copy_from_slice(&sample.to_le_bytes());

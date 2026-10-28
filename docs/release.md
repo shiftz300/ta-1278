@@ -1,4 +1,4 @@
-# Desktop builds and releases
+# Builds and releases
 
 The winit/wgpu desktop host targets macOS arm64/Intel, Windows x64 and Linux x64. These share input, rendering, local messages, contacts, settings, Snake, browser/JavaScript, folder access and MP3/WAV playback.
 
@@ -22,6 +22,10 @@ The HTML parser disables its upstream command-line support and unused parse-erro
 
 Archives and their SHA-256 files are retained as workflow artifacts for 14 days. Already compressed archives are uploaded without another compression pass. Cargo caches use platform, Rust version, lockfile and source hashes; fallback keys reuse dependencies. Caches exclude packaged app bundles and archives. GitHub Actions dependencies are fixed to inspected commit SHAs. Build jobs have read-only repository permission; only tagging and publication jobs receive the writes they need. No personal access token is required.
 
+The separate `Android` workflow also runs on branch pushes and manual dispatch.
+Its ARM64 APK and checksum are workflow artifacts and Release downloads;
+see [Android builds](android.md#build) for signing, device checks and supported services.
+
 ## Change the version
 
 ```sh
@@ -35,9 +39,21 @@ Review and commit the changed Cargo.toml and Cargo.lock, then push to `main`. Af
 
 CI explicitly dispatches `Release` at the new tag and passes its run ID: a tag pushed with `GITHUB_TOKEN` does not itself start another push-triggered workflow. Automatic releases reuse those four CI archives without rebuilding. Before download, Release verifies the source repository, CI workflow, event, main branch, exact tagged commit and success of all four native builds and shared checks. The final CI tagging job may still be finishing when Release starts. Every archive's SHA-256 is also checked before publication. [Cross-run artifact download](https://github.com/actions/download-artifact/blob/v7/README.md#download-artifacts-from-other-workflow-runs-or-repositories).
 
-A manually pushed `v*` tag, or a manual Release with no CI run ID, runs the full native build matrix as a fallback. Both routes require the version tag to match the exact checked-out commit. The first successful CI run can tag the existing untagged 0.2.2 version.
+A manually pushed `v*` tag, or a manual Release with no CI run ID, runs the full desktop build matrix as a fallback. Both routes require the version tag to match the exact checked-out commit.
 
-Release uploads macOS arm64/Intel ZIPs, a Windows x64 ZIP, a Linux x64 tar.gz and SHA256SUMS. It uploads into a draft and publishes only after all uploads succeed. A failed draft may be resumed; a published release is retained without replacing its assets. macOS packages are ad-hoc signed, not notarized; Windows packages have no code-signing certificate.
+Release also finds a successful `Android` CI run for the same tagged commit on
+main. It verifies the source repository, workflow, event, commit and completed
+Android build before reusing its unexpired artifact. If none is available, Release
+calls the shared Android workflow to build the tagged sources. Android failure,
+a missing APK or an invalid checksum prevents publication.
+
+Release uploads macOS arm64/Intel ZIPs, a Windows x64 ZIP, a Linux x64 tar.gz,
+an Android ARM64 APK, individual SHA-256 files and combined SHA256SUMS. It uploads
+into a draft and publishes only after all uploads succeed. A failed draft may be
+resumed; a published release is retained without replacing its assets. macOS
+packages are ad-hoc signed, not notarized; Windows packages have no code-signing
+certificate. Android uses a temporary development key per build; APKs from
+different builds cannot update each other in place.
 
 To retry publication, choose `Release` → Run workflow and select the matching `vX.Y.Z` tag. Supply its successful CI run ID to reuse unexpired artifacts; leave it blank to rebuild. Invalid run IDs fail rather than publishing unverified files. Selecting a branch works only when its HEAD is exactly that version tag. Run `CI` manually on `main` to retry a failed tag/dispatch step.
 

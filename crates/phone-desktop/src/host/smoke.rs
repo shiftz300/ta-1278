@@ -15,7 +15,20 @@ impl App {
             return;
         };
         let dir = self.smoke.clone().unwrap();
-        if let Err(e) = self.runtime.canvas.save(&dir.join(format!("{name}.png"))) {
+        let path = dir.join(format!("{name}.png"));
+        let result = if let Some(pad) = &mut self.keypad {
+            image::save_buffer(
+                &path,
+                pad.compose(&self.runtime.canvas.pixels),
+                super::super::keypad::WIDTH,
+                super::super::keypad::HEIGHT,
+                image::ColorType::Rgba8,
+            )
+            .map_err(|e| e.to_string())
+        } else {
+            self.runtime.canvas.save(&path).map_err(|e| e.to_string())
+        };
+        if let Err(e) = result {
             self.fail(event_loop, e.to_string());
             return;
         }
@@ -26,8 +39,4 @@ impl App {
         }
         self.smoke_stage += 1;
     }
-}
-
-pub(super) fn theme(runtime: &mut crate::Runtime) {
-    runtime.shell.settings.accent = 4;
 }

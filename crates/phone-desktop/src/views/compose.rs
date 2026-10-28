@@ -1,5 +1,6 @@
 //! SMS composer: bottom-growing bubble and caret-anchored prediction.
 use super::*;
+use crate::ui::editor::MessageLayout;
 pub(super) fn render(c: &mut Canvas, p: &Shell) {
     chrome::title(c, "新信息");
     c.text(6, 27, "收件人", 20, MUTED);
@@ -44,11 +45,7 @@ pub(super) fn body(c: &mut Canvas, p: &Shell, chat: bool) -> i32 {
     } else {
         230
     };
-    let layout = crate::ui::editor::MessageLayout::measure(
-        c,
-        &String::from_utf16_lossy(&preview),
-        max_height,
-    );
+    let layout = MessageLayout::measure(c, &String::from_utf16_lossy(&preview), max_height);
     let (body_rows, height, y) = (layout.rows, layout.height, layout.top);
     let lines = body_rows.len();
     if chat {
@@ -62,10 +59,10 @@ pub(super) fn body(c: &mut Canvas, p: &Shell, chat: bool) -> i32 {
     c.rect(0, y, 200, height, bubble);
     crate::ui::editor::message_tail(c, [0, 254, 200], false, bubble);
     if p.messaging.compose.body.units.is_empty() && !p.messaging.compose.body.prediction.active() {
-        text::MESSAGE.draw(c, 0, y + 4, "键入信息", 20, MUTED);
+        text::MESSAGE.draw(c, 0, y + 4, "键入信息", MessageLayout::SIZE, MUTED);
         if active {
-            c.rect(0, y + 5, 1, 27, WHITE);
-            c.caret = Some((0, y + 4, 26));
+            c.rect(0, y + 5, 1, MessageLayout::LINE + 1, WHITE);
+            c.caret = Some((0, y + 4, MessageLayout::LINE));
         }
         if active {
             c.layout.editor = Some(vec![phone_core::editor::VisualRow {
@@ -73,22 +70,35 @@ pub(super) fn body(c: &mut Canvas, p: &Shell, chat: bool) -> i32 {
             }]);
         }
     } else if active {
-        c.layout.editor =
-            Some(Edit::message([0, y + 4, 200, height - 4]).draw(c, &p.messaging.compose.body));
+        let mut rows = Vec::new();
+        c.clipped([0, y, 200, height], |c| {
+            rows = Edit::message([0, y + 4, 200, height - 4]).draw(c, &p.messaging.compose.body);
+        });
+        c.layout.editor = Some(rows);
     } else {
         // The inactive body has no caret/selection and never changes recipient metrics.
         let row = body_rows
             .partition_point(|r| r.start <= p.messaging.compose.body.cursor)
             .saturating_sub(1);
-        let visible = ((height - 4) / 26).max(1) as usize;
+        let visible = ((height - 8) / MessageLayout::LINE).max(1) as usize;
+        let baseline = 250 - visible as i32 * MessageLayout::LINE;
         let start = row.saturating_sub(visible.saturating_sub(1));
-        for (i, line) in body_rows.iter().skip(start).take(visible).enumerate() {
-            text::MESSAGE.draw(c, 0, y + 4 + i as i32 * 26, &line.text, 20, WHITE);
-        }
+        c.clipped([0, y, 200, height], |c| {
+            for (i, line) in body_rows.iter().skip(start).take(visible).enumerate() {
+                text::MESSAGE.draw(
+                    c,
+                    0,
+                    baseline + i as i32 * MessageLayout::LINE,
+                    &line.text,
+                    MessageLayout::SIZE,
+                    WHITE,
+                );
+            }
+        });
     }
-    if !chat && active && height == 230 && lines > 9 {
-        // Native 161-character capture: fixed track y=24..281 at the right edge.
-        let visible = 9usize;
+    let visible = MessageLayout::visible_rows(height);
+    if !chat && active && lines > visible {
+        // Keep the fixed track aligned with the compact editor viewport.
         let (_, composing) = p.messaging.compose.body.preview();
         let cursor = composing
             .as_ref()

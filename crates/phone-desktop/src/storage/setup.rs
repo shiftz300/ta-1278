@@ -66,7 +66,7 @@ fn resolve(
 
 #[cfg(target_os = "macos")]
 fn choose(initial: &Path) -> Result<Option<PathBuf>, String> {
-    let result = std::process::Command::new(crate::media::visual::helper()?)
+    let result = std::process::Command::new(crate::platform::visual::helper()?)
         .arg("choose-folder")
         .arg(initial)
         .output()

@@ -4,6 +4,27 @@ impl Shell {
     pub(super) fn overlay_event(&mut self, key: Key, now: u64) {
         let overlay = self.overlay.take().unwrap();
         match overlay {
+            Overlay::Symbols { mut index, parent } => {
+                let items = MenuKind::Symbols.items();
+                let cols = MenuKind::Symbols.columns();
+                match key {
+                    Key::Up => index = index.saturating_sub(cols),
+                    Key::Down => index = (index + cols).min(items.len() - 1),
+                    Key::Left => index = index.saturating_sub(1),
+                    Key::Right => index = (index + 1).min(items.len() - 1),
+                    Key::SoftRight | Key::End => {
+                        self.overlay = parent.map(|p| *p);
+                        return;
+                    }
+                    Key::Center | Key::SoftLeft => {
+                        self.overlay = parent.map(|p| *p);
+                        self.text(items[index].label);
+                        return;
+                    }
+                    _ => {}
+                }
+                self.overlay = Some(Overlay::Symbols { index, parent });
+            }
             Overlay::TimerElapsed => {
                 if key == Key::Center {
                     self.tools.timer.start(self.tools.timer_seconds);

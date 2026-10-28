@@ -25,8 +25,8 @@ impl Edit {
     pub const fn message(rect: [i32; 4]) -> Self {
         Self {
             rect,
-            size: 20,
-            line_height: 26,
+            size: MessageLayout::SIZE,
+            line_height: MessageLayout::LINE,
             metrics: TextMetrics::Message,
         }
     }
@@ -146,9 +146,14 @@ pub struct MessageLayout {
     pub top: i32,
 }
 impl MessageLayout {
+    pub const SIZE: u16 = 18;
+    pub const LINE: i32 = 22;
+    pub fn visible_rows(height: i32) -> usize {
+        ((height - 8 + Self::LINE - 1) / Self::LINE).max(1) as usize
+    }
     pub fn measure(c: &mut Canvas, value: &str, max_height: i32) -> Self {
-        let rows = super::text::MESSAGE.wrap(c, value, 20, 200);
-        let height = (rows.len() as i32 * 26 + 8).clamp(34, max_height);
+        let rows = super::text::MESSAGE.wrap(c, value, Self::SIZE, 200);
+        let height = (rows.len() as i32 * Self::LINE + 8).clamp(Self::LINE + 8, max_height);
         Self {
             rows,
             height,

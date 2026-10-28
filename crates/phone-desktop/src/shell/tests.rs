@@ -549,6 +549,71 @@ fn sms_grids_disabled_focus_and_direct_cancel() {
 }
 
 #[test]
+fn star_opens_symbols_with_pending_prediction_and_cancel_preserves_it() {
+    for screen in [Screen::Compose, Screen::Conversation] {
+        let mut p = shell();
+        p.go(screen);
+        p.messaging.compose.recipient = false;
+        press(&mut p, Key::Digit(6));
+        press(&mut p, Key::Digit(4));
+        let e = &p.messaging.compose.body;
+        assert!(e.prediction.active());
+        let candidate = e.prediction.current().unwrap().text.clone();
+        press(&mut p, Key::Star);
+        assert!(matches!(p.overlay, Some(Overlay::Symbols { .. })));
+        press(&mut p, Key::Right);
+        press(&mut p, Key::SoftRight);
+        assert!(p.overlay.is_none());
+        assert!(p.messaging.compose.body.text().is_empty());
+        assert_eq!(
+            p.messaging.compose.body.prediction.current().unwrap().text,
+            candidate
+        );
+        press(&mut p, Key::Star);
+        press(&mut p, Key::Right);
+        press(&mut p, Key::Center);
+        assert_eq!(p.messaging.compose.body.text(), format!("{candidate},"));
+        assert!(!p.messaging.compose.body.prediction.active());
+    }
+}
+
+#[test]
+fn star_symbols_return_to_text_overlay_and_dialer_keeps_literal_star() {
+    let mut p = shell();
+    p.go(Screen::Browser);
+    p.overlay = Some(Overlay::Text {
+        target: TextTarget::Address,
+        editor: Box::new(Editor::new("https://example", 100)),
+    });
+    press(&mut p, Key::Star);
+    assert!(matches!(
+        p.overlay,
+        Some(Overlay::Symbols {
+            parent: Some(_),
+            ..
+        })
+    ));
+    press(&mut p, Key::Center);
+    assert!(matches!(
+        p.overlay,
+        Some(Overlay::Text {
+            target: TextTarget::Address,
+            ..
+        })
+    ));
+    assert_eq!(p.editor().unwrap().text(), "https://example.");
+    assert!(p.browsing.pending.is_none());
+    assert!(p.messaging.compose.body.text().is_empty());
+    press(&mut p, Key::Star);
+    press(&mut p, Key::End);
+    assert_eq!(p.editor().unwrap().text(), "https://example.");
+    p.open_dialer(String::new());
+    press(&mut p, Key::Star);
+    assert!(p.overlay.is_none());
+    assert_eq!(p.calls.number.text(), "*");
+}
+
+#[test]
 fn music_library_player_back_and_repeat_cancel() {
     let mut p = shell();
     p.launch(Screen::Music);

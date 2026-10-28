@@ -60,7 +60,7 @@ impl Folder {
     pub fn capacity(&self) -> Option<(u64, u64)> {
         #[cfg(target_os = "macos")]
         {
-            let output = std::process::Command::new(crate::media::visual::helper().ok()?)
+            let output = std::process::Command::new(crate::platform::visual::helper().ok()?)
                 .arg("folder-stats")
                 .arg(&self.root)
                 .output()

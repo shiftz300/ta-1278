@@ -152,7 +152,7 @@ pub(crate) fn advance(runtime: &mut Runtime, stage: usize, now: u64) {
                 .messaging
                 .compose
                 .body
-                .insert("Hello Nokia!\n短信编辑测试。\n240 × 320");
+                .insert("Hello TA-1278!\n短信编辑测试。\n240 × 320");
             runtime.shell.messaging.compose.recipient = false;
             runtime.shell.go(Screen::Compose);
         }

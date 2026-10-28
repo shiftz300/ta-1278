@@ -164,3 +164,19 @@ Decoder implementations may override `audio_duration` for library scans/file
 playback. Its default reports unsupported audio decoding; the built-in decoder
 supports MP3/WAV/MIDI playback. Visual requests return pixels or video sessions; the
 application bridge returns explicit UI effects rather than editing Shell.
+
+## Local backend ownership
+
+Backend means an owner of external state, not necessarily a network service.
+`Runtime::with_backend` accepts a Rust `Backend` directly; the trait does not
+require a socket, server or `Send`. An embedding host may share local backend
+state/debug controls with its adapter (see the `Rc<RefCell<_>>` test adapters),
+or provide a worker/network implementation when needed. World/scenario state
+and its persistence remain with that backend. Runtime only owns handset state.
+Calls into an adapter must return promptly even in the same process.
+
+The Android/desktop hosts share input, keypad rendering and the winit loop.
+`Runtime::cancel_source` cancels one pointer without releasing another finger's
+key. `suspend_media` cancels held input and pauses/stops media and notification
+audio before host suspension. Android drops its GPU surface synchronously on
+suspend and recreates it on resume, while keeping Runtime/backend state alive.

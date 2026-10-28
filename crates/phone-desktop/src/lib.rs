@@ -6,9 +6,9 @@ pub mod config;
 mod effects;
 #[cfg(any(feature = "desktop", test))]
 mod frames;
-#[cfg(feature = "desktop")]
+#[cfg(feature = "window")]
 mod gpu;
-#[cfg(feature = "desktop")]
+#[cfg(feature = "window")]
 mod host;
 mod media;
 mod menu;
@@ -32,3 +32,6 @@ pub use runtime::{Frame, Request, Runtime, Time};
 
 #[cfg(all(test, feature = "desktop"))]
 mod accept;
+
+#[cfg(all(target_os = "android", feature = "android"))]
+mod android;

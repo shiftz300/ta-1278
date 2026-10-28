@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="dev.shiftz.ta1278">
+    <uses-sdk android:minSdkVersion="26" android:targetSdkVersion="35" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-feature android:name="android.hardware.vulkan.level" android:required="false" />
+    <application android:label="TA-1278" android:theme="@style/AppTheme"
+        android:enableOnBackInvokedCallback="false" android:allowBackup="false" android:usesCleartextTraffic="true" android:extractNativeLibs="false">
+        <activity android:name=".App" android:exported="true"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|keyboard|navigation|uiMode|density"
+            android:screenOrientation="portrait" android:windowSoftInputMode="stateAlwaysHidden">
+            <meta-data android:name="android.app.lib_name" android:value="phone_runtime" />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+</manifest>

@@ -6,7 +6,7 @@ mod profile;
 pub(crate) mod setup;
 #[cfg(any(feature = "desktop", test))]
 pub use profile::*;
-#[cfg(any(feature = "desktop", test))]
+#[cfg(any(feature = "window", test))]
 pub mod session;
 pub mod utilities;
 #[cfg(test)]

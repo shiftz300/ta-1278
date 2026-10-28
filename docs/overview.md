@@ -6,7 +6,7 @@
 flowchart TB
     Config["config：应用开关、能力、目录"] --> Desktop
     Config --> Runtime
-    Desktop["桌面宿主 desktop<br/>winit：窗口、键鼠、时钟、调度"] --> Runtime
+    Desktop["共享宿主 host/app<br/>winit：窗口、键鼠/触摸、时钟、调度"] --> Runtime
     Embedded["其他用户态宿主"] -.-> Runtime
     Runtime["Runtime：统一宿主入口<br/>输入、时间、帧、服务与保存调用"] --> Shell
     subgraph App["交互与应用"]
@@ -99,7 +99,7 @@ flowchart LR
 | 宿主接口与系统解码 | `platform.rs`、`platform/visual.rs` |
 | 各应用状态 | `shell/*/state.rs`、`shell/contacts.rs`、`shell/calls.rs`、`shell/organizer.rs` |
 | 只读页面和共享测量 | `views/*`、`ui/layout.rs`、`canvas.rs` |
-| 桌面窗口 | `desktop.rs`、`host/input.rs`、`gpu.rs` |
+| 桌面/Android 窗口 | `desktop.rs`、`android.rs`、`host/app.rs`、`host/input.rs`、`host/keypad/`、`gpu.rs` |
 | 状态算法 | `crates/phone-core/src/*` |
 
 接口和保存语义详见 [Runtime](runtime.md)、[服务](services.md)、[恢复](persistence.md)。

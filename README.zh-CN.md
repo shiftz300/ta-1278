@@ -1,12 +1,14 @@
-# Nokia TA-1278
+# TA-1278
 
 [English](README.md)
 
-用户态的功能机交互运行库与桌面程序，以 Nokia TA-1278 的使用体验为基础。
+[![Android](https://github.com/shiftz300/ta-1278/actions/workflows/android.yml/badge.svg)](https://github.com/shiftz300/ta-1278/actions/workflows/android.yml)
+
+用户态的功能机交互运行库与桌面/Android 程序，提供经典实体键盘手机的交互体验。
 
 ## 运行截图
 
-桌面程序的实际运行窗口。短信为模拟内容，浏览器展示本地演示页面。
+程序画面，不含系统标题栏。短信为模拟内容，浏览器展示本地演示页面。
 
 | 短信 | 贪吃蛇 | 浏览器 |
 | --- | --- | --- |
@@ -54,3 +56,5 @@ cargo run -p phone-desktop --no-default-features --locked --example embed -- /tm
 本仓库只保留程序、运行资源和回归测试。固件镜像、采集工具、反汇编、实机截图和分析报告已迁至独立研究归档；构建和测试不依赖研究目录或实机。
 
 运行需要的原机字体、图标、铃声和 T9 代码及词库继续保留，来源与权利说明见 [资源](assets/README.md)及[第三方说明](THIRD_PARTY_NOTICES.md)。这里不声称完成了原机整个系统的逆向。
+
+Android ARM64：`python3 scripts/android.py` 构建本地签名 APK，默认显示实体风格按键并提供按键震动。桌面加 `--keypad` 可显示同一键盘。默认隐藏标题栏，`--titlebar` 可恢复。[构建和平台限制](docs/android.md)。

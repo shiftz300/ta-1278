@@ -63,6 +63,12 @@ impl Input {
         }
     }
     pub fn release(&mut self, source: u32) -> Vec<Event> {
+        self.finish(source, Phase::Up)
+    }
+    pub fn cancel_source(&mut self, source: u32) -> Vec<Event> {
+        self.finish(source, Phase::Cancel)
+    }
+    fn finish(&mut self, source: u32, phase: Phase) -> Vec<Event> {
         let keys: Vec<_> = self
             .held
             .iter_mut()
@@ -74,10 +80,7 @@ impl Input {
         keys.into_iter()
             .map(|key| {
                 self.held.remove(&key);
-                Event {
-                    key,
-                    phase: Phase::Up,
-                }
+                Event { key, phase }
             })
             .collect()
     }

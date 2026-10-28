@@ -1,0 +1,75 @@
+name: Android
+
+on:
+  push:
+    branches: ['**']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: android-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  CARGO_TERM_COLOR: always
+  CARGO_INCREMENTAL: '0'
+  LIBCLANG_PATH: /usr/lib/llvm-18/lib
+
+jobs:
+  build:
+    name: Android arm64
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - name: Install Android build tools
+        run: |
+          echo "JAVA_HOME=$JAVA_HOME_17_X64" >> "$GITHUB_ENV"
+          python3 - <<'PY'
+          import os
+          import subprocess
+          import runpy
+          versions = runpy.run_path('scripts/android.py')
+          subprocess.run([
+              os.environ['ANDROID_HOME'] + '/cmdline-tools/latest/bin/sdkmanager',
+              'platforms;android-' + versions['SDK_VERSION'],
+              'build-tools;' + versions['BUILD_VERSION'],
+              'ndk;' + versions['NDK_VERSION'],
+          ], check=True)
+          with open(os.environ['GITHUB_ENV'], 'a') as output:
+              output.write('ANDROID_NDK_HOME=' + os.environ['ANDROID_HOME']
+                           + '/ndk/' + versions['NDK_VERSION'] + '\n')
+          PY
+          rustup toolchain install stable --profile minimal --component clippy --target aarch64-linux-android
+          rustup default stable
+          python3 scripts/version.py check
+      - name: Rust cache identity
+        id: rust
+        run: echo "version=$(rustc --version | cut -d' ' -f2)" >> "$GITHUB_OUTPUT"
+      - uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5
+        with:
+          path: |
+            ~/.cargo/registry/index
+            ~/.cargo/registry/cache
+            ~/.cargo/git/db
+            target/release
+            target/aarch64-linux-android/release
+          key: android-v1-${{ steps.rust.outputs.version }}-${{ hashFiles('Cargo.lock', 'scripts/android.py') }}-${{ hashFiles('crates/**/*.rs', 'crates/**/Cargo.toml', 'build/*.rs') }}
+          restore-keys: |
+            android-v1-${{ steps.rust.outputs.version }}-${{ hashFiles('Cargo.lock', 'scripts/android.py') }}-
+            android-v1-${{ steps.rust.outputs.version }}-
+      - name: Check and build APK
+        run: python3 scripts/android.py --check
+      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        with:
+          name: ta1278-android-arm64
+          path: |
+            target/android/TA1278-v*-android-arm64.apk
+            target/android/TA1278-v*-android-arm64.apk.sha256
+          compression-level: 0
+          if-no-files-found: error
+          retention-days: 14

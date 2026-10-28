@@ -27,8 +27,8 @@ cat > "$bundle/Contents/Info.plist" <<PLIST
 <plist version="1.0"><dict>
 <key>CFBundleExecutable</key><string>phone-desktop</string>
 <key>CFBundleIdentifier</key><string>dev.shiftz.ta1278</string>
-<key>CFBundleName</key><string>TA1278</string>
-<key>CFBundleDisplayName</key><string>TA1278</string>
+<key>CFBundleName</key><string>TA-1278</string>
+<key>CFBundleDisplayName</key><string>TA-1278</string>
 <key>CFBundlePackageType</key><string>APPL</string>
 <key>CFBundleVersion</key><string>$version</string>
 <key>CFBundleShortVersionString</key><string>$version</string>

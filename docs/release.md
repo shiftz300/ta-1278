@@ -22,6 +22,11 @@ The HTML parser disables its upstream command-line support and unused parse-erro
 
 Archives and their SHA-256 files are retained as workflow artifacts for 14 days. Already compressed archives are uploaded without another compression pass. Cargo caches use platform, Rust version, lockfile and source hashes; fallback keys reuse dependencies. Caches exclude packaged app bundles and archives. GitHub Actions dependencies are fixed to inspected commit SHAs. Build jobs have read-only repository permission; only tagging and publication jobs receive the writes they need. No personal access token is required.
 
+The separate `Android` workflow also runs on branch pushes and manual dispatch.
+Its ARM64 APK and checksum are workflow artifacts; see [Android builds](android.md#build)
+for signing, device checks and supported services. Desktop Release publishes the
+four desktop packages described below.
+
 ## Change the version
 
 ```sh

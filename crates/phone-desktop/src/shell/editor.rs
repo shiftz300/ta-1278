@@ -13,6 +13,18 @@ enum Focus {
     Alarm,
 }
 impl Shell {
+    pub(super) fn open_symbols(&mut self) -> bool {
+        match self.editor_focus() {
+            None | Some(Focus::Dial | Focus::Recipient) => return false,
+            Some(Focus::Contact) if self.contacts.ui.input.numeric => return false,
+            _ => {}
+        }
+        self.overlay = Some(Overlay::Symbols {
+            index: 0,
+            parent: self.overlay.take().map(Box::new),
+        });
+        true
+    }
     fn editor_focus(&self) -> Option<Focus> {
         if self.active_reminder().is_some() || self.messaging.ui.pending.is_some() {
             return None;

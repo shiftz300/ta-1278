@@ -25,16 +25,28 @@ impl Server {
                     thread::sleep(Duration::from_millis(4));
                     continue;
                 };
+                // Accepted sockets can inherit nonblocking mode on macOS. A
+                // WouldBlock/partial read must not turn a request into GET /.
+                stream.set_nonblocking(false).unwrap();
                 stream
                     .set_read_timeout(Some(Duration::from_secs(1)))
                     .unwrap();
                 let mut bytes = [0; 8192];
-                let n = stream.read(&mut bytes).unwrap_or(0);
-                let path = String::from_utf8_lossy(&bytes[..n])
-                    .split_whitespace()
-                    .nth(1)
-                    .unwrap_or("/")
-                    .to_owned();
+                let mut n = 0;
+                while n < bytes.len() && !bytes[..n].windows(4).any(|w| w == b"\r\n\r\n") {
+                    match stream.read(&mut bytes[n..]) {
+                        Ok(0) | Err(_) => break,
+                        Ok(count) => n += count,
+                    }
+                }
+                if !bytes[..n].windows(4).any(|w| w == b"\r\n\r\n") {
+                    continue;
+                }
+                let request = String::from_utf8_lossy(&bytes[..n]);
+                let Some(path) = request.split_whitespace().nth(1) else {
+                    continue;
+                };
+                let path = path.to_owned();
                 log.lock().unwrap().push(path.clone());
                 if path == "/redirect" {
                     let _=stream.write_all(b"HTTP/1.1 302 Found\r\nLocation: http://127.0.0.1:9/blocked\r\nContent-Length: 0\r\nConnection: close\r\n\r\n");
@@ -208,4 +220,26 @@ fn public_pages() {
         );
         assert!(!page.elements.is_empty());
     }
+}
+
+#[test]
+#[ignore = "Requires localhost TCP; no external network"]
+fn fixture_server_waits_for_split_requests_and_ignores_empty_connections() {
+    use std::net::TcpStream;
+    let server = Server::new();
+    let address = server.base.trim_start_matches("http://");
+    drop(TcpStream::connect(address).unwrap());
+    let mut stream = TcpStream::connect(address).unwrap();
+    stream
+        .set_read_timeout(Some(Duration::from_secs(2)))
+        .unwrap();
+    stream.write_all(b"GET /app").unwrap();
+    thread::sleep(Duration::from_millis(20));
+    stream
+        .write_all(b".js HTTP/1.1\r\nHost: localhost\r\n\r\n")
+        .unwrap();
+    let mut response = String::new();
+    stream.read_to_string(&mut response).unwrap();
+    assert!(response.contains("Content-Type: text/javascript"));
+    assert_eq!(&*server.hits.lock().unwrap(), &["/app.js"]);
 }

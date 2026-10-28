@@ -3,6 +3,17 @@ use super::*;
 use crate::platform::Platform;
 
 impl Runtime {
+    /// Host lifecycle pause. Keep user data; silence devices before losing the surface.
+    pub fn suspend_media(&mut self) {
+        self.cancel_input();
+        self.shell.playback.model.playing = false;
+        if let Some(media) = &mut self.app.media {
+            media.suspend(&mut self.shell);
+        }
+        self.shell.cues.clear();
+        self.shell.audio_preview = None;
+    }
+
     pub(in crate::runtime) fn connect(&mut self, backend: Box<dyn Backend>) {
         self.shell.messaging.backend = backend
             .capabilities()

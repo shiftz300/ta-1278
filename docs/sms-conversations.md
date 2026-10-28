@@ -36,4 +36,4 @@ Only the first contiguous number of 3–40 characters is detected. Exact multi-l
 
 The main application grid has only its left menu and right back icons; the extra center “选择” label was removed after comparison with the native grid. The clock Home retains its center “功能表” action.
 
-The shared composer now uses the measured SMS geometry (research archive), including mixed-script metrics and whole-pixel wrap. Conversation viewport measurement uses that same function.
+Both New message and conversation replies use a shared compact editor: 18px text, 22px rows and a 30px single-line bubble. This is an intentional usability choice, not a claim of exact handset geometry. Wrapping, cursor stops and conversation viewport measurement use the same metrics; counts and softkeys keep their existing positions. Long replies retain a smaller maximum height to leave room for message history.

@@ -12,9 +12,15 @@ pub struct Gpu {
     pipeline: wgpu::RenderPipeline,
     bind: wgpu::BindGroup,
     pub presented: u64,
+    height: u32,
 }
 impl Gpu {
-    pub async fn new(window: Arc<Window>) -> Result<Self, String> {
+    pub async fn new(window: Arc<Window>, keypad: bool) -> Result<Self, String> {
+        let height = if keypad {
+            crate::host::keypad::HEIGHT
+        } else {
+            H
+        };
         let instance = wgpu::Instance::new(wgpu::InstanceDescriptor::new_with_display_handle(
             Box::new(window.clone()),
         ));
@@ -46,7 +52,7 @@ impl Gpu {
             label: Some("240x320 framebuffer"),
             size: wgpu::Extent3d {
                 width: W,
-                height: H,
+                height,
                 depth_or_array_layers: 1,
             },
             mip_level_count: 1,
@@ -117,6 +123,7 @@ impl Gpu {
             pipeline,
             bind,
             presented: 0,
+            height,
         })
     }
     pub fn resize(&mut self, w: u32, h: u32) {
@@ -127,7 +134,11 @@ impl Gpu {
         self.config.height = h;
         self.surface.configure(&self.device, &self.config);
     }
-    pub fn render(&mut self, pixels: &[u8]) -> Result<(), String> {
+    pub fn render(
+        &mut self,
+        pixels: &[u8],
+        viewport: crate::host::keypad::Viewport,
+    ) -> Result<(), String> {
         let frame = match self.surface.get_current_texture() {
             wgpu::CurrentSurfaceTexture::Success(f)
             | wgpu::CurrentSurfaceTexture::Suboptimal(f) => f,
@@ -161,11 +172,11 @@ impl Gpu {
             wgpu::TexelCopyBufferLayout {
                 offset: 0,
                 bytes_per_row: Some(W * 4),
-                rows_per_image: Some(H),
+                rows_per_image: Some(self.height),
             },
             wgpu::Extent3d {
                 width: W,
-                height: H,
+                height: self.height,
                 depth_or_array_layers: 1,
             },
         );
@@ -189,22 +200,32 @@ impl Gpu {
                 occlusion_query_set: None,
                 multiview_mask: None,
             });
-            let scale =
-                (self.config.width as f32 / W as f32).min(self.config.height as f32 / H as f32);
-            let scale = if scale >= 1. { scale.floor() } else { scale };
-            let w = W as f32 * scale;
-            let h = H as f32 * scale;
-            pass.set_viewport(
-                (self.config.width as f32 - w) / 2.,
-                (self.config.height as f32 - h) / 2.,
-                w,
-                h,
-                0.,
-                1.,
-            );
             pass.set_pipeline(&self.pipeline);
             pass.set_bind_group(0, &self.bind, &[]);
-            pass.draw(0..3, 0..1);
+            if let Some(lcd) = viewport.lcd_height {
+                let width = lcd * 240. / 320.;
+                pass.set_viewport(
+                    viewport.x + (viewport.w - width) / 2.,
+                    viewport.y,
+                    width,
+                    lcd,
+                    0.,
+                    1.,
+                );
+                pass.draw(0..3, 1..2);
+                pass.set_viewport(
+                    viewport.x,
+                    viewport.y + lcd,
+                    viewport.w,
+                    viewport.h - lcd,
+                    0.,
+                    1.,
+                );
+                pass.draw(0..3, 2..3);
+            } else {
+                pass.set_viewport(viewport.x, viewport.y, viewport.w, viewport.h, 0., 1.);
+                pass.draw(0..3, 0..1);
+            }
         }
         self.queue.submit([encoder.finish()]);
         self.queue.present(frame);

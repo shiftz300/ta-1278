@@ -63,3 +63,19 @@ Disabled alarms/calendar do not create new reminders; their pending reminders do
 CLI `--storage-dir` overrides the configured directory. `--read-only-storage` and `--disable ...` can further restrict the JSON settings regardless of argument order. `--data-dir` still selects the private profile. `--check-config` prints the configuration with those CLI overrides applied and exits before profile locking, data loading, device access or media startup.
 
 The runtime config is not an application database: phone settings and user state remain in their existing private JSON files. App switches are runtime flags and do **not** remove code or assets from the binary.
+
+## Host controls
+
+`controls.titlebar` defaults to false. Desktop windows hide system decorations;
+`--titlebar` restores them when needed. Close with Cmd/Ctrl+Q when hidden.
+
+`controls.keypad` enables the handset keypad below the 240×320 display (desktop
+default: false). `--keypad` enables it for desktop debugging. In keypad mode, the
+left mouse button hits the drawn keys; the old anywhere-left/right/middle mapping
+is used only when keypad mode is off. Physical keyboard controls keep working.
+
+`controls.haptics` defaults to true. `--no-haptics` disables it. Android always
+shows the keypad and uses short system haptic feedback on accepted presses, with
+a 40 ms minimum interval and no repeated vibration while holding. Android system
+haptic settings take precedence. Desktop has no vibration adapter. These options
+belong to the host, not to the phone's application settings or backend state.
